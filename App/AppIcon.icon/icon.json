@@ -88,7 +88,7 @@
             {
               "idiom" : "square",
               "value" : {
-                "scale" : 1.15,
+                "scale" : 1.1,
                 "translation-in-points" : [
                   0,
                   0
@@ -102,7 +102,7 @@
         {
           "idiom" : "square",
           "value" : {
-            "scale" : 1.15,
+            "scale" : 1.18,
             "translation-in-points" : [
               0,
               0
@@ -339,6 +339,18 @@
               }
             }
           ]
+        }
+      ],
+      "position-specializations" : [
+        {
+          "idiom" : "square",
+          "value" : {
+            "scale" : 1.08,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
         }
       ],
       "shadow" : {
