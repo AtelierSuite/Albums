@@ -119,11 +119,11 @@ struct MoreView: View {
             }
             #endif
             Section {
-                Link(destination: URL(string: "https://github.com/katagaki/IllustMate")!) {
+                Link(destination: URL(string: "https://github.com/Atelier/Albums")!) {
                     HStack {
                         Text(String(localized: "GitHub", table: "More"))
                         Spacer()
-                        Text(verbatim: "katagaki/IllustMate")
+                        Text(verbatim: "Atelier/Albums")
                             .foregroundStyle(.secondary)
                     }
                 }

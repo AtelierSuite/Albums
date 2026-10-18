@@ -11,7 +11,7 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>PicMate Backup</string>
+			<string>Albums Backup</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
@@ -33,8 +33,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.com.tsubuzaki.IllustMate</key>
@@ -42,7 +40,7 @@
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
 			<key>NSUbiquitousContainerName</key>
-			<string>PicMate</string>
+			<string>Albums</string>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>Any</string>
 		</dict>
@@ -93,7 +91,7 @@
 				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>PicMate Backup</string>
+			<string>Albums Backup</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.tsubuzaki.IllustMate.picsBackup</string>
 			<key>UTTypeTagSpecification</key>

@@ -1,4 +1,4 @@
-# PicMate
+# Albums
 
 Image management app with albums that can contain both nested albums and images.
 

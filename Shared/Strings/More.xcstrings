@@ -212,37 +212,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Face ID oder Touch ID zum Öffnen von PicMate erforderlich."
+            "value" : "Face ID oder Touch ID erforderlich."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Require Face ID or Touch ID to open PicMate."
+            "value" : "Require Face ID or Touch ID to unlock."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateを開くときにFace IDまたはTouch IDを要求します。"
+            "value" : "Face IDまたはTouch IDを要求します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate를 열 때 Face ID 또는 Touch ID를 요구합니다."
+            "value" : "Face ID 또는 Touch ID를 요구합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "需要使用 Face ID 或 Touch ID 才能打开 PicMate。"
+            "value" : "需要使用 Face ID 或 Touch ID。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "需要使用 Face ID 或 Touch ID 才能開啟 PicMate。"
+            "value" : "需要使用 Face ID 或 Touch ID。"
           }
         }
       }
@@ -2869,37 +2869,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Zahlen beziehen sich auf Ihre PicMate-Bibliothek, nicht auf die Fotomediathek."
+            "value" : "Diese Zahlen beziehen sich auf die eigene Mediathek, nicht auf die Fotomediathek."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "These numbers reflect your PicMate library, not the Photos library."
+            "value" : "These numbers reflect your library, not the Photos library."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この数値はPicMateライブラリのものであり、写真ライブラリのものではありません。"
+            "value" : "この数値はアプリ内ライブラリのものであり、写真ライブラリのものではありません。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 수치는 사진 보관함이 아닌 PicMate 라이브러리를 반영합니다."
+            "value" : "이 수치는 사진 보관함이 아닌 앱 라이브러리를 반영합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "这些数字反映的是您的 PicMate 数据库，而非「照片」图库。"
+            "value" : "这些数字反映的是应用图库，而非「照片」图库。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "這些數字反映的是您的 PicMate 資料庫，而非「照片」圖庫。"
+            "value" : "這些數字反映的是應用程式圖庫，而非「照片」圖庫。"
           }
         }
       }
@@ -4768,37 +4768,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eine einzelne Datei, die du später wieder in PicMate wiederherstellen kannst."
+            "value" : "Eine einzelne Datei, die du später wiederherstellen kannst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A single file you can restore back into PicMate later."
+            "value" : "A single file you can restore later."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "後でPicMateに復元できる単一のファイルです。"
+            "value" : "後で復元できる単一のファイルです。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "나중에 PicMate로 복원할 수 있는 단일 파일입니다."
+            "value" : "나중에 복원할 수 있는 단일 파일입니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "单个文件，之后可以恢复回 PicMate。"
+            "value" : "可供日后恢复的单个文件。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "單一檔案，之後可以還原回 PicMate。"
+            "value" : "可供日後還原的單一檔案。"
           }
         }
       }

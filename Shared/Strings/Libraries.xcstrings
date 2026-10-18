@@ -581,37 +581,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         }
       }

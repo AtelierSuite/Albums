@@ -71,37 +71,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate ist gesperrt"
+            "value" : "Gesperrt"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate is Locked"
+            "value" : "Locked"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateはロックされています"
+            "value" : "ロック中"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate가 잠겨 있습니다"
+            "value" : "잠김"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 已锁定"
+            "value" : "已锁定"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 已鎖定"
+            "value" : "已鎖定"
           }
         }
       }
@@ -112,37 +112,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate entsperren"
+            "value" : "Entsperren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock PicMate"
+            "value" : "Unlock"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateのロックを解除"
+            "value" : "ロックを解除"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 잠금 해제"
+            "value" : "잠금 해제"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解锁 PicMate"
+            "value" : "解锁"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解鎖 PicMate"
+            "value" : "解鎖"
           }
         }
       }
@@ -1349,37 +1349,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate erkennt, was auf jedem Bild zu sehen ist, und schlägt das passende Album dafür vor."
+            "value" : "Erkennt, was auf jedem Bild zu sehen ist, und schlägt das passende Album dafür vor."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate recognizes what's in each picture and suggests the right album to file it in."
+            "value" : "Recognizes what's in each picture and suggests the right album to file it in."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateが各画像の内容を認識し、最適なアルバムへの振り分けを提案します。"
+            "value" : "各画像の内容を認識し、最適なアルバムへの振り分けを提案します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate가 각 사진의 내용을 인식하여 알맞은 앨범으로 정리하도록 제안합니다."
+            "value" : "각 사진의 내용을 인식하여 알맞은 앨범으로 정리하도록 제안합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 能识别每张图片的内容，并建议最合适的相册来归类。"
+            "value" : "可识别每张图片的内容，并建议最合适的相册来归类。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 能辨識每張圖片的內容，並建議最合適的相簿來歸類。"
+            "value" : "可辨識每張圖片的內容，並建議最合適的相簿來歸類。"
           }
         }
       }
@@ -1426,7 +1426,7 @@
       }
     },
     "Onboarding.Welcome.Title" : {
-      "comment" : "Welcome screen title. %@ is the app name (PicMate); word order varies by language.",
+      "comment" : "Welcome screen title. %@ is the app name (Albums); word order varies by language.",
       "localizations" : {
         "de" : {
           "stringUnit" : {

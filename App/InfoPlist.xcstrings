@@ -7,37 +7,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         }
       },
@@ -49,37 +49,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         }
       },
@@ -92,13 +92,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate verwendet Face ID, um Ihre Sammlung zu schützen."
+            "value" : "Face ID schützt Ihre Sammlung."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate uses Face ID to protect your collection."
+            "value" : "Use Face ID to protect your collection."
           }
         },
         "ja" : {
@@ -110,19 +110,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate는 컬렉션을 보호하기 위해 Face ID를 사용합니다."
+            "value" : "Face ID를 사용해 컬렉션을 보호합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 使用 Face ID 来保护您的收藏。"
+            "value" : "使用 Face ID 保护您的收藏。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 使用 Face ID 來保護您的收藏。"
+            "value" : "使用 Face ID 保護您的收藏。"
           }
         }
       }
@@ -134,13 +134,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate benötigt Zugriff auf Ihre Fotomediathek, um Bilder aus Ihren Alben zu durchsuchen und zu importieren."
+            "value" : "Für das Durchsuchen und Importieren von Bildern aus deinen Alben wird Zugriff auf deine Fotomediathek benötigt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "PicMate needs access to your Photos library to browse and import images from your albums."
+            "value" : "Allow access to Photos to browse and import images from your albums."
           }
         },
         "ja" : {
@@ -152,19 +152,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate가 앨범에서 이미지를 탐색하고 가져오려면 사진 보관함에 대한 접근 권한이 필요합니다."
+            "value" : "앨범에서 이미지를 탐색하고 가져오려면 사진 보관함 접근 권한이 필요합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 需要访问您的照片图库，以便浏览和导入相册中的图片。"
+            "value" : "允许访问照片图库，以便浏览和导入相册中的图片。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 需要存取您的照片圖庫，以便瀏覽和匯入相簿中的圖片。"
+            "value" : "允許存取照片圖庫，以便瀏覽和匯入相簿中的圖片。"
           }
         }
       }
@@ -175,37 +175,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate"
+            "value" : "Albums"
           }
         }
       }
@@ -215,37 +215,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate-Backup"
+            "value" : "Albums-Backup"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate Backup"
+            "value" : "Albums Backup"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateバックアップ"
+            "value" : "Albumsバックアップ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 백업"
+            "value" : "Albums 백업"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 备份"
+            "value" : "Albums 备份"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate 備份"
+            "value" : "Albums 備份"
           }
         }
       }

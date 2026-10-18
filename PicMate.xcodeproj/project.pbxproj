@@ -722,7 +722,7 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PicMate needs access to your Photos library to browse and import images from your albums.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Albums needs access to your Photos library to browse and import images from your albums.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -776,7 +776,7 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PicMate needs access to your Photos library to browse and import images from your albums.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Albums needs access to your Photos library to browse and import images from your albums.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -811,7 +811,7 @@
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-ShareWith.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Save to PicMate";
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -844,7 +844,7 @@
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-ShareWith.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Save to PicMate";
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -876,7 +876,7 @@
 				CURRENT_PROJECT_VERSION = 10;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Save to PicMate";
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -910,7 +910,7 @@
 				CURRENT_PROJECT_VERSION = 10;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Save to PicMate";
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (

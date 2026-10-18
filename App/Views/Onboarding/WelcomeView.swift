@@ -4,7 +4,7 @@ struct WelcomeView: View {
 
     var onContinue: () -> Void
 
-    private let appName = "PicMate"
+    private let appName = "Albums"
 
     private var welcomeTitle: Text {
         let format = String(localized: "Onboarding.Welcome.Title")

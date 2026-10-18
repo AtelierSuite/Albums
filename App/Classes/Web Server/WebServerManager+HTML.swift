@@ -10,7 +10,7 @@ extension WebServerManager {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PicMate</title>
+        <title>Albums</title>
         <style>
             :root {
                 --bg: #f2f2f7;
@@ -327,7 +327,7 @@ extension WebServerManager {
     </head>
     <body>
         <div class="header">
-            <h1 id="pageTitle">PicMate</h1>
+            <h1 id="pageTitle">Albums</h1>
             <div class="header-actions">
                 <button class="btn btn-primary" id="uploadBtn" onclick="openUpload()">
                     Upload

@@ -7,37 +7,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In PicMate sichern"
+            "value" : "Sichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save to PicMate"
+            "value" : "Save Image"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateに保存"
+            "value" : "画像を保存"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate에 저장"
+            "value" : "이미지 저장"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存到 PicMate"
+            "value" : "保存图片"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "儲存至 PicMate"
+            "value" : "儲存影像"
           }
         }
       }
@@ -49,37 +49,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In PicMate sichern"
+            "value" : "Sichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save to PicMate"
+            "value" : "Save Image"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMateに保存"
+            "value" : "画像を保存"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PicMate에 저장"
+            "value" : "이미지 저장"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存到 PicMate"
+            "value" : "保存图片"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "儲存至 PicMate"
+            "value" : "儲存影像"
           }
         }
       }
