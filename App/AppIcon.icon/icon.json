@@ -1,167 +1,366 @@
 {
+  "features" : [
+    "specular-location"
+  ],
   "fill" : {
-    "linear-gradient" : [
-      "display-p3:0.20681,0.44907,0.70700,1.00000",
-      "display-p3:0.26070,0.07549,0.60654,1.00000"
-    ],
-    "orientation" : {
-      "start" : {
-        "x" : 0.5,
-        "y" : 0
-      },
-      "stop" : {
-        "x" : 0.5,
-        "y" : 0.7
-      }
-    }
+    "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
   },
   "groups" : [
     {
-      "blur-material-specializations" : [
+      "layers" : [
         {
-          "value" : 0.5
-        },
-        {
-          "appearance" : "tinted",
-          "value" : 1
+          "fill-specializations" : [
+            {
+              "value" : {
+                "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
+              }
+            },
+            {
+              "appearance" : "tinted",
+              "value" : {
+                "automatic-gradient" : "gray:0.00000,1.00000"
+              }
+            }
+          ],
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "Face.svg",
+          "name" : "Face",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  22.01259216099413
+                ]
+              }
+            }
+          ]
         }
       ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0
+      },
+      "specular" : "inside",
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.4
+      }
+    },
+    {
+      "blur-material" : 1,
       "layers" : [
         {
           "fill-specializations" : [
             {
               "appearance" : "dark",
               "value" : {
-                "linear-gradient" : [
-                  "display-p3:0.15918,0.15967,0.16016,1.00000",
-                  "display-p3:0.10736,0.10675,0.10596,1.00000"
-                ],
-                "orientation" : {
-                  "start" : {
-                    "x" : 0.5,
-                    "y" : 0
-                  },
-                  "stop" : {
-                    "x" : 0.5,
-                    "y" : 0.7
-                  }
-                }
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
               }
             }
           ],
-          "image-name" : "PicMate.015.png",
-          "name" : "X3"
-        }
-      ],
-      "name" : "X3",
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.5
-      },
-      "specular-specializations" : [
-        {
-          "value" : false
-        },
-        {
-          "appearance" : "tinted",
-          "value" : true
-        }
-      ],
-      "translucency-specializations" : [
-        {
-          "value" : {
-            "enabled" : true,
-            "value" : 0.5
-          }
-        },
-        {
-          "appearance" : "tinted",
-          "value" : {
-            "enabled" : true,
-            "value" : 0
-          }
-        }
-      ]
-    },
-    {
-      "blend-mode" : "normal",
-      "blur-material" : null,
-      "hidden" : false,
-      "layers" : [
-        {
           "glass" : true,
-          "image-name" : "PicMate.012.png",
+          "hidden" : false,
+          "image-name" : "Nucleus.svg",
           "name" : "Nucleus",
-          "opacity-specializations" : [
+          "position-specializations" : [
             {
-              "value" : 0.71
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
             },
             {
-              "appearance" : "tinted",
-              "value" : 0
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
             }
           ]
         }
       ],
-      "name" : "Nucleus",
-      "opacity" : 1,
+      "position-specializations" : [
+        {
+          "idiom" : "square",
+          "value" : {
+            "scale" : 1.15,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
       "shadow" : {
         "kind" : "neutral",
-        "opacity" : 0.5
+        "opacity" : 0.6
       },
-      "specular" : true,
+      "specular" : "inside",
       "translucency" : {
-        "enabled" : false,
-        "value" : 0.5
+        "enabled" : true,
+        "value" : 0.6
       }
     },
     {
-      "blur-material" : 0.5,
+      "blend-mode" : "normal",
+      "blur-material" : 1,
       "layers" : [
         {
-          "image-name" : "PicMate.003 3.png",
-          "name" : "North"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "North.svg",
+          "name" : "North",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.004 3.png",
-          "name" : "North East"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "North East.svg",
+          "name" : "North East",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.005 3.png",
-          "name" : "East"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "East.svg",
+          "name" : "East",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.006 3.png",
-          "name" : "South East"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South East.svg",
+          "name" : "South East",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.007 3.png",
-          "name" : "South"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South.svg",
+          "name" : "South",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.008 3.png",
-          "name" : "South West"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South West.svg",
+          "name" : "South West",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.009 3.png",
-          "name" : "West"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "West.svg",
+          "name" : "West",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         },
         {
-          "image-name" : "PicMate.010 3.png",
-          "name" : "North West"
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "North West.svg",
+          "name" : "North West",
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
         }
       ],
-      "name" : "Petals",
-      "opacity" : 1,
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
       },
       "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.5
-      }
+      "translucency-specializations" : [
+        {
+          "value" : {
+            "enabled" : true,
+            "value" : 0.4
+          }
+        },
+        {
+          "appearance" : "tinted",
+          "value" : {
+            "enabled" : true,
+            "value" : 0.75
+          }
+        }
+      ]
     }
   ],
   "supported-platforms" : {
