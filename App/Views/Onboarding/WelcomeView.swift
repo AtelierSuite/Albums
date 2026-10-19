@@ -59,21 +59,12 @@ struct WelcomeView: View {
             .padding(18.0)
         }
         .background {
-            ZStack(alignment: .bottom) {
-                LinearGradient(
-                    colors: [.accent.opacity(0.12), .clear],
-                    startPoint: .top,
-                    endPoint: .center
-                )
-                .ignoresSafeArea()
-                Image("OnboardingBackground")
-                    .resizable()
-                    .scaledToFit()
-                    .tint(.accent)
-                    .opacity(0.07)
-                    .ignoresSafeArea(edges: .bottom)
-                    .offset(y: 130.0)
-            }
+            LinearGradient(
+                colors: [.accent.opacity(0.12), .clear],
+                startPoint: .top,
+                endPoint: .center
+            )
+            .ignoresSafeArea()
         }
         .safeAreaInset(edge: .bottom, spacing: 0.0) {
             VStack(spacing: 12.0) {
