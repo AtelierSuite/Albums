@@ -1,83 +1,21 @@
 {
   "features" : [
-    "specular-location"
+    "refractivity"
   ],
   "fill" : {
-    "automatic-gradient" : "srgb:0.35686,0.29412,0.84706,1.00000"
+    "automatic-gradient" : "extended-gray:0.38294,1.00000"
   },
   "groups" : [
     {
+      "blur-material" : 1,
       "layers" : [
         {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "Face.svg",
-          "name" : "Face",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ],
           "fill-specializations" : [
             {
               "appearance" : "dark",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
+              "value" : "automatic"
             }
-          ]
-        }
-      ],
-      "position-specializations" : [
-        {
-          "idiom" : "square",
-          "value" : {
-            "scale" : 1.08,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        }
-      ],
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0
-      },
-      "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.1
-      },
-      "hidden-specializations" : [
-        {
-          "value" : true
-        },
-        {
-          "appearance" : "dark",
-          "value" : false
-        }
-      ]
-    },
-    {
-      "layers" : [
-        {
+          ],
           "glass" : true,
           "hidden" : false,
           "image-name" : "Nucleus.svg",
@@ -109,7 +47,7 @@
         {
           "idiom" : "square",
           "value" : {
-            "scale" : 1.08,
+            "scale" : 1.29,
             "translation-in-points" : [
               0,
               0
@@ -121,21 +59,22 @@
         "kind" : "neutral",
         "opacity" : 0.6
       },
-      "specular" : "inside",
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
-        "value" : 0.3
+        "value" : 0.5
       }
     },
     {
       "blend-mode" : "normal",
-      "blur-material" : 1,
+      "blur-material" : 0,
       "layers" : [
         {
           "glass" : true,
           "hidden" : false,
-          "image-name" : "North.svg",
-          "name" : "North",
+          "image-name" : "Upper Petals.svg",
+          "name" : "Upper Petals",
+          "opacity" : 0.85,
           "position-specializations" : [
             {
               "value" : {
@@ -161,170 +100,9 @@
         {
           "glass" : true,
           "hidden" : false,
-          "image-name" : "North East.svg",
-          "name" : "North East",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "East.svg",
-          "name" : "East",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South East.svg",
-          "name" : "South East",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South.svg",
-          "name" : "South",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South West.svg",
-          "name" : "South West",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "West.svg",
-          "name" : "West",
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "North West.svg",
-          "name" : "North West",
+          "image-name" : "Lower Petals.svg",
+          "name" : "Lower Petals",
+          "opacity" : 0.85,
           "position-specializations" : [
             {
               "value" : {
@@ -360,6 +138,11 @@
           }
         }
       ],
+      "refractivity" : {
+        "depth" : 0.5,
+        "enabled" : true,
+        "strength" : 0
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
@@ -369,7 +152,7 @@
         {
           "value" : {
             "enabled" : true,
-            "value" : 0.4
+            "value" : 0.6
           }
         },
         {

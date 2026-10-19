@@ -279,8 +279,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		281BC3717F00C5F359D4E4E3 /* PicMateUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = PicMateUITests;
 			sourceTree = "<group>";
 		};
@@ -294,8 +292,6 @@
 		};
 		A5B1A90FEBFCC8F13E01C388 /* Engine */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Engine;
 			sourceTree = "<group>";
 		};
@@ -683,7 +679,7 @@
 			);
 			mainGroup = E4614CDA2ACA86C900D751FB;
 			packageReferences = (
-				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4614CE42ACA86C900D751FB /* Products */;
@@ -693,11 +689,11 @@
 				E4614CE22ACA86C900D751FB /* PicMate */,
 				E4614CFB2ACA86EC00D751FB /* Share with PicMate */,
 				E4D6F05D2F4D4DF1006965BD /* Save to Albums */,
+				68BDC48DEF3253812332CF54 /* Save to Photos */,
+				523AC691388D6A6A757F3C9A /* Save to Last Used */,
 				E4E717BB2F5F09CA000C13CB /* Photostand */,
 				21819FBCE2349FC3ED09E6FC /* PicMateUITests */,
 				9DDE70E504B28B90D16F332C /* Engine */,
-				68BDC48DEF3253812332CF54 /* Save to Photos */,
-				523AC691388D6A6A757F3C9A /* Save to Last Used */,
 			);
 		};
 /* End PBXProject section */
@@ -1688,7 +1684,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
 			requirement = {
@@ -1701,12 +1697,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		8985FAD43D565C373AF23DCD /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
 		};
 		E4E717D12F5F0DC6000C13CB /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */
