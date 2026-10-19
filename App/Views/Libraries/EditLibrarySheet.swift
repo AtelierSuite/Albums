@@ -42,7 +42,8 @@ struct EditLibrarySheet: View {
     var body: some View {
         NavigationStack {
             List {
-                if library.id != libraryManager.currentLibrary.id || isPhotosModeEnabled {
+                if UIDevice.current.userInterfaceIdiom != .phone,
+                   library.id != libraryManager.currentLibrary.id || isPhotosModeEnabled {
                     Section {
                         Button(String(localized: "Libraries.SetActive", table: "Libraries")) {
                             withAnimation(.smooth.speed(2.0)) {
@@ -143,7 +144,8 @@ struct EditLibrarySheet: View {
                 if !library.isDefault {
                     Section {
                         Button(role: .destructive) {
-                            if library.id == libraryManager.currentLibrary.id {
+                            if UIDevice.current.userInterfaceIdiom != .phone,
+                               library.id == libraryManager.currentLibrary.id {
                                 isShowingActiveDeleteAlert = true
                                 return
                             }
@@ -273,6 +275,9 @@ struct EditLibrarySheet: View {
                 guard let library = libraryToDelete,
                       deleteConfirmationCode == expectedDeleteCode else { return }
                 let wasCurrentLibrary = library.id == libraryManager.currentLibrary.id
+                if wasCurrentLibrary {
+                    libraryManager.switchLibrary(to: PicLibrary())
+                }
                 Task {
                     await libraryManager.deleteLibrary(library)
                     if wasCurrentLibrary {

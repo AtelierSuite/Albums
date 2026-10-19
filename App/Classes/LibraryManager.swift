@@ -6,6 +6,7 @@ class LibraryManager: ObservableObject {
 
     @Published var currentLibrary: PicLibrary = PicLibrary()
     @Published var libraries: [PicLibrary] = []
+    @Published var hasLoadedLibraries: Bool = false
 
     @AppStorage("CurrentCollectionID",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
@@ -35,6 +36,7 @@ class LibraryManager: ObservableObject {
             currentLibraryID = PicLibrary.defaultID
         }
         switchActors(to: currentLibrary.id)
+        hasLoadedLibraries = true
     }
 
     func reloadList() async {
@@ -84,9 +86,19 @@ class LibraryManager: ObservableObject {
         AlbumCoverCache.shared.removeAllImages()
     }
 
-    func createLibrary(name: String) async -> PicLibrary {
+    func createLibrary(name: String, syncEnabled: Bool = false) async -> PicLibrary {
         let library = await LibrariesActor.shared.createLibrary(name: name)
+        if syncEnabled {
+            if await DataActor.instance(for: library.id).isLibraryV2MigrationComplete() {
+                await LibrariesActor.shared.setLibraryMigrated(true, forID: library.id)
+            }
+            await LibrariesActor.shared.setSyncEnabled(true, forID: library.id)
+            library.syncEnabled = true
+        }
         await loadLibraries()
+        if syncEnabled {
+            await SyncManager.shared.refresh()
+        }
         return library
     }
 

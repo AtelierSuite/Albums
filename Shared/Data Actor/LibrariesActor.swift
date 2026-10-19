@@ -18,6 +18,7 @@ actor LibrariesActor {
     let librarySyncEnabled = Expression<Bool>("sync_enabled")
     let libraryStorageMode = Expression<String>("storage_mode")
     let libraryMigratedV2 = Expression<Bool>("migrated_v2")
+    let libraryCoverPicIDs = Expression<String>("cover_pic_ids")
     let tombstonesTable = Table("library_tombstones")
     let tombstoneId = Expression<String>("id")
     let tombstoneDeletedAt = Expression<Double>("deleted_at")
@@ -66,6 +67,7 @@ actor LibrariesActor {
             _ = try? database.run(librariesTable.addColumn(libraryStorageMode,
                                                            defaultValue: StorageMode.optimize.rawValue))
             _ = try? database.run(librariesTable.addColumn(libraryMigratedV2, defaultValue: false))
+            _ = try? database.run(librariesTable.addColumn(libraryCoverPicIDs, defaultValue: ""))
             try database.run(tombstonesTable.create(ifNotExists: true) { table in
                 table.column(tombstoneId, primaryKey: true)
                 table.column(tombstoneDeletedAt, defaultValue: 0)
@@ -127,6 +129,17 @@ actor LibrariesActor {
             libraryDirty <- true,
             libraryLastModified <- Date.now.timeIntervalSince1970
         ))
+    }
+
+    func coverPicIDs(forID id: String) -> [String] {
+        guard let row = try? database.pluck(librariesTable.filter(libraryId == id)),
+              let joined = try? row.get(libraryCoverPicIDs) else { return [] }
+        return joined.split(separator: ",").map(String.init)
+    }
+
+    func setCoverPicIDs(_ picIDs: [String], forID id: String) {
+        _ = try? database.run(librariesTable.filter(libraryId == id)
+            .update(libraryCoverPicIDs <- picIDs.joined(separator: ",")))
     }
 
     // MARK: - Delete

@@ -9,8 +9,12 @@ class NavigationManager: ObservableObject {
     @Published var moreTabPath: [ViewPath] = []
     @Published var dataVersion: Int = 0
 
+    private let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
+    private let lastLocationKey = "LastLibraryLocation"
+    private let lastAlbumIDKey = "LastAlbumID"
+
     func popAll() {
-        collectionTabPath.removeAll()
+        collectionTabPath = collectionTabPath.first.map { $0.isLibraryRoot ? [$0] : [] } ?? []
         albumsTabPath.removeAll()
         picsTabPath.removeAll()
         moreTabPath.removeAll()
@@ -35,6 +39,37 @@ class NavigationManager: ObservableObject {
             picsTabPath.append(viewPath)
         case .more:
             moreTabPath.append(viewPath)
+        }
+    }
+
+    func saveLibraryLocation() {
+        switch collectionTabPath.first {
+        case .library: defaults?.set("library", forKey: lastLocationKey)
+        case .photosLibrary: defaults?.set("photos", forKey: lastLocationKey)
+        default: defaults?.set("root", forKey: lastLocationKey)
+        }
+        let lastAlbumID = collectionTabPath.reversed().lazy.compactMap { viewPath -> String? in
+            if case .album(let album) = viewPath { return album.id }
+            return nil
+        }.first
+        defaults?.set(lastAlbumID, forKey: lastAlbumIDKey)
+    }
+
+    func restoredLibraryPath(currentLibraryID: String, isPhotosModeEnabled: Bool) async -> [ViewPath] {
+        let location = defaults?.string(forKey: lastLocationKey) ?? "library"
+        switch location {
+        case "root":
+            return []
+        case "photos" where isPhotosModeEnabled:
+            return [.photosLibrary]
+        default:
+            guard !isPhotosModeEnabled else { return [.photosLibrary] }
+            var path: [ViewPath] = [.library(id: currentLibraryID)]
+            if let albumID = defaults?.string(forKey: lastAlbumIDKey) {
+                let albums = await DataActor.shared.albumPath(forAlbumWithID: albumID)
+                path.append(contentsOf: albums.map { .album(album: $0) })
+            }
+            return path
         }
     }
 }

@@ -15,7 +15,7 @@ struct PhotosLibrarySheet: View {
     var body: some View {
         NavigationStack {
             List {
-                if !isPhotosModeEnabled {
+                if UIDevice.current.userInterfaceIdiom != .phone, !isPhotosModeEnabled {
                     Section {
                         Button(String(localized: "Libraries.SetActive", table: "Libraries")) {
                             withAnimation(.smooth.speed(2.0)) {

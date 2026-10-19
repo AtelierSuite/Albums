@@ -20,4 +20,13 @@ enum ViewPath: Hashable {
     case photosAssetViewer(asset: PHAssetWrapper, namespace: Namespace.ID)
     case picViewerRestore
     case photosAssetViewerRestore
+    case library(id: String)
+    case photosLibrary
+
+    var isLibraryRoot: Bool {
+        switch self {
+        case .library, .photosLibrary: true
+        default: false
+        }
+    }
 }

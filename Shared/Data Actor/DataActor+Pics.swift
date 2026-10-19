@@ -93,6 +93,36 @@ extension DataActor {
         return (try? database.scalar(query.count)) ?? 0
     }
 
+    func allPicSkeletons() throws -> [Pic] {
+        let query = picsTable
+            .select(picSkeletonColumns)
+            .order(picDateAdded.desc)
+        return try database.safeRows(query).map { picFrom(row: $0) }
+    }
+
+    func recentThumbnails(limit: Int) -> [Data] {
+        let query = picsTable
+            .filter(picThumbnailData != nil)
+            .select(picThumbnailData)
+            .order(picDateAdded.desc)
+            .limit(limit)
+        return ((try? database.safeRows(query)) ?? []).compactMap { try? $0.get(picThumbnailData) }
+    }
+
+    func thumbnails(forPicIDs ids: [String]) -> [Data] {
+        guard !ids.isEmpty else { return [] }
+        let query = picsTable
+            .filter(ids.contains(picId))
+            .select(picId, picThumbnailData)
+        var byID: [String: Data] = [:]
+        for row in (try? database.safeRows(query)) ?? [] {
+            if let id = try? row.get(picId), let data = try? row.get(picThumbnailData) {
+                byID[id] = data
+            }
+        }
+        return ids.compactMap { byID[$0] }
+    }
+
     func thumbnailData(forPicWithID id: String) -> Data? {
         let query = picsTable
             .filter(picId == id)

@@ -7,66 +7,73 @@ struct CollectionView: View {
     @EnvironmentObject var libraryManager: LibraryManager
     @Environment(ViewerManager.self) var viewer
     @Environment(PhotosViewerManager.self) var photosViewer
-    @Environment(ConcurrencyManager.self) var concurrency
-    @Environment(ImageMigrationManager.self) var imageMigration
-    @State var isMoreViewPresenting: Bool = false
-    @State var isLibraryManagerPresented: Bool = false
-    @Namespace var sheetNamespace
+    @State var hasRestoredPath: Bool = false
 
     @AppStorage("PhotosModeEnabled",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var isPhotosModeEnabled: Bool = false
 
+    private var isPhone: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone
+    }
+
     var body: some View {
+        if isPhone {
+            Group {
+                if hasRestoredPath {
+                    navigationStack
+                } else {
+                    Color(uiColor: .systemBackground)
+                        .ignoresSafeArea()
+                }
+            }
+            .task(id: libraryManager.hasLoadedLibraries) {
+                guard libraryManager.hasLoadedLibraries, !hasRestoredPath else { return }
+                navigation.collectionTabPath = await navigation.restoredLibraryPath(
+                    currentLibraryID: libraryManager.currentLibrary.id,
+                    isPhotosModeEnabled: isPhotosModeEnabled
+                )
+                hasRestoredPath = true
+            }
+            .onChange(of: navigation.collectionTabPath) { _, _ in
+                guard hasRestoredPath else { return }
+                navigation.saveLibraryLocation()
+            }
+            .onChange(of: libraryManager.currentLibrary.id) { _, newID in
+                guard case .library(let openID) = navigation.collectionTabPath.first,
+                      openID != newID else { return }
+                navigation.collectionTabPath = [.library(id: newID)]
+            }
+            .onChange(of: isPhotosModeEnabled) { _, isEnabled in
+                if !isEnabled, navigation.collectionTabPath.first == .photosLibrary {
+                    navigation.collectionTabPath.removeAll()
+                }
+            }
+        } else {
+            navigationStack
+                .onChange(of: isPhotosModeEnabled) { _, _ in
+                    navigation.collectionTabPath.removeAll()
+                }
+        }
+    }
+
+    var navigationStack: some View {
         NavigationStack(path: $navigation.collectionTabPath) {
             Group {
-                if isPhotosModeEnabled {
+                if isPhone {
+                    LibrariesView()
+                } else if isPhotosModeEnabled {
                     PhotosCollectionView()
                 } else {
                     AlbumView()
                 }
             }
-            .toolbar {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        Button {
-                            isMoreViewPresenting = true
-                        } label: {
-                            Image(systemName: "ellipsis")
-                        }
-                        .matchedTransitionSource(id: "moreView", in: sheetNamespace)
-                    }
-                    ToolbarSpacer(.fixed, placement: .topBarLeading)
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        Button {
-                            isLibraryManagerPresented = true
-                        } label: {
-                            if isPhotosModeEnabled {
-                                Label(String(localized: "PhotosMode", table: "More"),
-                                      systemImage: "square.stack.3d.up")
-                            } else {
-                                Label(libraryManager.displayName(for: libraryManager.currentLibrary),
-                                      systemImage: "square.stack.3d.up")
-                            }
-                        }
-                        .matchedTransitionSource(id: "libraryManager", in: sheetNamespace)
-                    }
-                }
-            }
-            .sheet(isPresented: $isMoreViewPresenting) {
-                MoreView()
-                    .phonePresentationDetents([.medium, .large])
-                    .navigationTransition(.zoom(sourceID: "moreView", in: sheetNamespace))
-            }
-            .sheet(isPresented: $isLibraryManagerPresented) {
-                LibraryManagerSheet()
-                    .environmentObject(libraryManager)
-                    .environmentObject(navigation)
-                    .environment(concurrency)
-                    .environment(imageMigration)
-                    .navigationTransition(.zoom(sourceID: "libraryManager", in: sheetNamespace))
-            }
             .navigationDestination(for: ViewPath.self, destination: { viewPath in
               switch viewPath {
+              case .library:
+                  AlbumView()
+                      .id(libraryManager.currentLibrary.id)
+              case .photosLibrary:
+                  PhotosCollectionView()
               case .album(let album):
                   AlbumView(currentAlbum: album)
               case .picViewer(let namespace):
@@ -103,9 +110,6 @@ struct CollectionView: View {
               default: Color.clear
               }
             })
-        }
-        .onChange(of: isPhotosModeEnabled) { _, _ in
-            navigation.collectionTabPath.removeAll()
         }
     }
 }

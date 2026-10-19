@@ -131,6 +131,12 @@ struct IllustMateApp: App {
                 Task {
                     if let album = await DataActor.shared.album(for: albumID) {
                         navigation.popAll()
+                        if UIDevice.current.userInterfaceIdiom == .phone {
+                            if libraryManager.isPhotosModeEnabled {
+                                libraryManager.switchLibrary(to: libraryManager.currentLibrary)
+                            }
+                            navigation.collectionTabPath = [.library(id: libraryManager.currentLibrary.id)]
+                        }
                         try? await Task.sleep(for: .milliseconds(250))
                         navigation.push(.album(album: album), for: .collection)
                     }
