@@ -1,19 +1,22 @@
 {
   "features" : [
-    "refractivity"
+    "specular-location"
   ],
   "fill" : {
-    "automatic-gradient" : "extended-gray:0.38294,1.00000"
+    "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
   },
   "groups" : [
     {
       "blur-material" : 1,
+      "hidden" : false,
       "layers" : [
         {
           "fill-specializations" : [
             {
               "appearance" : "dark",
-              "value" : "automatic"
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
             }
           ],
           "glass" : true,
@@ -33,7 +36,7 @@
             {
               "idiom" : "square",
               "value" : {
-                "scale" : 1.15,
+                "scale" : 1.1,
                 "translation-in-points" : [
                   0,
                   0
@@ -47,10 +50,10 @@
         {
           "idiom" : "square",
           "value" : {
-            "scale" : 1.29,
+            "scale" : 0.43,
             "translation-in-points" : [
               0,
-              0
+              -7.45
             ]
           }
         }
@@ -59,10 +62,10 @@
         "kind" : "neutral",
         "opacity" : 0.6
       },
-      "specular" : true,
+      "specular" : "inside",
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.6
       }
     },
     {
@@ -72,9 +75,9 @@
         {
           "glass" : true,
           "hidden" : false,
-          "image-name" : "Upper Petals.svg",
-          "name" : "Upper Petals",
-          "opacity" : 0.85,
+          "image-name" : "North.svg",
+          "name" : "North",
+          "opacity" : 0.95,
           "position-specializations" : [
             {
               "value" : {
@@ -100,9 +103,177 @@
         {
           "glass" : true,
           "hidden" : false,
-          "image-name" : "Lower Petals.svg",
-          "name" : "Lower Petals",
-          "opacity" : 0.85,
+          "image-name" : "North East.svg",
+          "name" : "North East",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "East.svg",
+          "name" : "East",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South East.svg",
+          "name" : "South East",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South.svg",
+          "name" : "South",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "South West.svg",
+          "name" : "South West",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "West.svg",
+          "name" : "West",
+          "opacity" : 0.95,
+          "position-specializations" : [
+            {
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1.15,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "North West.svg",
+          "name" : "North West",
+          "opacity" : 0.95,
           "position-specializations" : [
             {
               "value" : {
@@ -126,6 +297,7 @@
           ]
         }
       ],
+      "lighting" : "individual",
       "position-specializations" : [
         {
           "idiom" : "square",
@@ -138,21 +310,16 @@
           }
         }
       ],
-      "refractivity" : {
-        "depth" : 0.5,
-        "enabled" : true,
-        "strength" : 0
-      },
       "shadow" : {
         "kind" : "neutral",
-        "opacity" : 0.5
+        "opacity" : 0.4
       },
-      "specular" : true,
+      "specular" : "inside",
       "translucency-specializations" : [
         {
           "value" : {
             "enabled" : true,
-            "value" : 0.6
+            "value" : 0.5
           }
         },
         {

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <g>
-    <path d="M426 300A86 112 0 1 0 598 300A86 112 0 1 0 426 300Z" fill="#F09748" transform="rotate(45 512 512)"/>
-    <path d="M426 300A86 112 0 1 0 598 300A86 112 0 1 0 426 300Z" fill="#68CE67" transform="rotate(135 512 512)"/>
-    <path d="M426 300A86 112 0 1 0 598 300A86 112 0 1 0 426 300Z" fill="#3F8FF7" transform="rotate(225 512 512)"/>
-    <path d="M426 300A86 112 0 1 0 598 300A86 112 0 1 0 426 300Z" fill="#CA43EA" transform="rotate(315 512 512)"/>
-  </g>
-</svg>
