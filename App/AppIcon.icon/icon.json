@@ -3,25 +3,12 @@
     "specular-location"
   ],
   "fill" : {
-    "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
+    "automatic-gradient" : "srgb:0.94000,0.92000,0.99000,1.00000"
   },
   "groups" : [
     {
       "layers" : [
         {
-          "fill-specializations" : [
-            {
-              "value" : {
-                "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "automatic-gradient" : "gray:0.00000,1.00000"
-              }
-            }
-          ],
           "glass" : true,
           "hidden" : false,
           "image-name" : "Face.svg",
@@ -46,31 +33,30 @@
                 ]
               }
             }
+          ],
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
           ]
         }
       ],
       "shadow" : {
         "kind" : "neutral",
-        "opacity" : 0
+        "opacity" : 0.3
       },
       "specular" : "inside",
       "translucency" : {
         "enabled" : true,
-        "value" : 0.4
+        "value" : 0.2
       }
     },
     {
-      "blur-material" : 1,
       "layers" : [
         {
-          "fill-specializations" : [
-            {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            }
-          ],
           "glass" : true,
           "hidden" : false,
           "image-name" : "Nucleus.svg",
@@ -88,7 +74,7 @@
             {
               "idiom" : "square",
               "value" : {
-                "scale" : 1.1,
+                "scale" : 1.15,
                 "translation-in-points" : [
                   0,
                   0
@@ -102,7 +88,7 @@
         {
           "idiom" : "square",
           "value" : {
-            "scale" : 1.18,
+            "scale" : 1.08,
             "translation-in-points" : [
               0,
               0
@@ -117,7 +103,7 @@
       "specular" : "inside",
       "translucency" : {
         "enabled" : true,
-        "value" : 0.6
+        "value" : 0.2
       }
     },
     {
