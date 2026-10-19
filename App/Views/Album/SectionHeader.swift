@@ -60,6 +60,7 @@ struct SectionHeader<Buttons: View, Content: View>: View {
                 Menu("Shared.More") {
                     trailingViews()
                 }
+                .accessibilityIdentifier("sectionMenu")
 #else
                 Menu {
                     trailingViews()
@@ -69,6 +70,7 @@ struct SectionHeader<Buttons: View, Content: View>: View {
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.circle)
+                .accessibilityIdentifier("sectionMenu")
 #endif
             }
         }

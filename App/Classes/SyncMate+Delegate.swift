@@ -1,4 +1,5 @@
 @preconcurrency import CloudKit
+import Engine
 import Foundation
 
 extension SyncMate: CKSyncEngineDelegate {

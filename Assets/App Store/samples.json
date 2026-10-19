@@ -1,0 +1,278 @@
+{
+  "libraries": [
+    {
+      "default": true,
+      "cover": [
+        "abydos-dunes",
+        "shiba-ramen",
+        "millennium-skyline",
+        "trinity-cathedral"
+      ],
+      "albums": [
+        {
+          "name": {
+            "en": "Downloads",
+            "ja": "ダウンロード"
+          },
+          "pics": [
+            "kivotos-beach~copy",
+            "sleepy-cat",
+            "momotalk-abydos",
+            "kivotos-beach",
+            "sleepy-cat~copy",
+            "angel24-receipt",
+            "fireworks",
+            "schale-schedule"
+          ]
+        },
+        {
+          "name": {
+            "en": "Abydos",
+            "ja": "アビドス"
+          },
+          "pics": [
+            "abydos-dunes",
+            "abydos-classroom",
+            "shiba-ramen",
+            "debt-notice",
+            "abydos-night",
+            "ramen-receipt",
+            "momotalk-abydos"
+          ],
+          "albums": [
+            {
+              "name": {
+                "en": "Task Force",
+                "ja": "対策委員会"
+              },
+              "pics": [
+                "momotalk-abydos",
+                "debt-notice",
+                "abydos-classroom",
+                "abydos-dunes~crop"
+              ]
+            },
+            {
+              "name": {
+                "en": "Night Rides",
+                "ja": "夜のサイクリング"
+              },
+              "pics": [
+                "abydos-night"
+              ]
+            },
+            {
+              "name": {
+                "en": "Shiba Seki",
+                "ja": "柴関ラーメン"
+              },
+              "pics": [
+                "shiba-ramen",
+                "ramen-receipt"
+              ]
+            }
+          ]
+        },
+        {
+          "name": {
+            "en": "Millennium",
+            "ja": "ミレニアム"
+          },
+          "pics": [
+            "millennium-skyline",
+            "game-title"
+          ]
+        },
+        {
+          "name": {
+            "en": "Trinity",
+            "ja": "トリニティ"
+          },
+          "pics": [
+            "trinity-cathedral",
+            "tea-party"
+          ]
+        },
+        {
+          "name": {
+            "en": "Gehenna",
+            "ja": "ゲヘナ"
+          },
+          "pics": [
+            "gehenna-sunset"
+          ]
+        },
+        {
+          "name": {
+            "en": "Hyakkiyako",
+            "ja": "百鬼夜行"
+          },
+          "pics": [
+            "hyakkiyako-festival",
+            "fireworks"
+          ]
+        },
+        {
+          "name": {
+            "en": "Receipts",
+            "ja": "レシート"
+          },
+          "pics": [
+            "angel24-receipt",
+            "ramen-receipt"
+          ]
+        }
+      ],
+      "pics": [
+        "kivotos-beach",
+        "sleepy-cat",
+        "schale-office",
+        "sakura-street",
+        "schale-schedule",
+        "momotalk-abydos",
+        "fireworks",
+        "tea-party",
+        "game-title",
+        "gehenna-sunset",
+        "hyakkiyako-festival",
+        "millennium-skyline"
+      ]
+    },
+    {
+      "name": {
+        "en": "Schale Office",
+        "ja": "シャーレ業務"
+      },
+      "cover": [
+        "schale-office",
+        "schale-schedule",
+        "angel24-receipt",
+        "momotalk-abydos"
+      ],
+      "albums": [
+        {
+          "name": {
+            "en": "Schedules",
+            "ja": "予定表"
+          },
+          "pics": [
+            "schale-schedule"
+          ]
+        },
+        {
+          "name": {
+            "en": "Expenses",
+            "ja": "経費"
+          },
+          "pics": [
+            "angel24-receipt",
+            "ramen-receipt"
+          ]
+        }
+      ],
+      "pics": [
+        "schale-office",
+        "momotalk-abydos",
+        "schale-schedule",
+        "angel24-receipt"
+      ]
+    },
+    {
+      "name": {
+        "en": "Summer in Kivotos",
+        "ja": "キヴォトスの夏"
+      },
+      "sync": true,
+      "albums": [],
+      "pics": [
+        "kivotos-beach",
+        "fireworks",
+        "hyakkiyako-festival",
+        "sakura-street",
+        "sleepy-cat"
+      ]
+    }
+  ],
+  "titles": {
+    "abydos-dunes": {
+      "en": "Abydos at noon",
+      "ja": "昼のアビドス"
+    },
+    "abydos-night": {
+      "en": "Night ride",
+      "ja": "夜のサイクリング"
+    },
+    "shiba-ramen": {
+      "en": "Shiba Seki ramen",
+      "ja": "柴関ラーメン"
+    },
+    "millennium-skyline": {
+      "en": "Millennium skyline",
+      "ja": "ミレニアムの夜景"
+    },
+    "game-title": {
+      "en": "Tales Saga title screen",
+      "ja": "テイルズ・サガ タイトル画面"
+    },
+    "trinity-cathedral": {
+      "en": "Trinity cathedral",
+      "ja": "トリニティの大聖堂"
+    },
+    "tea-party": {
+      "en": "Tea party",
+      "ja": "ティーパーティー"
+    },
+    "hyakkiyako-festival": {
+      "en": "Hyakkiyako festival",
+      "ja": "百鬼夜行の祭り"
+    },
+    "fireworks": {
+      "en": "Fireworks",
+      "ja": "花火"
+    },
+    "angel24-receipt": {
+      "en": "Angel 24 receipt",
+      "ja": "エンジェル24のレシート"
+    },
+    "ramen-receipt": {
+      "en": "Ramen receipt",
+      "ja": "ラーメンのレシート"
+    },
+    "momotalk-abydos": {
+      "en": "MomoTalk screenshot",
+      "ja": "モモトークのスクショ"
+    },
+    "schale-schedule": {
+      "en": "Weekly schedule",
+      "ja": "週間予定"
+    },
+    "schale-office": {
+      "en": "Schale office",
+      "ja": "シャーレのオフィス"
+    },
+    "sleepy-cat": {
+      "en": "Sleepy cat",
+      "ja": "おひるねネコ"
+    },
+    "kivotos-beach": {
+      "en": "Beach day",
+      "ja": "海の日"
+    },
+    "sakura-street": {
+      "en": "Sakura street",
+      "ja": "桜並木"
+    },
+    "gehenna-sunset": {
+      "en": "Gehenna sunset",
+      "ja": "ゲヘナの夕焼け"
+    },
+    "abydos-classroom": {
+      "en": "Revival plan",
+      "ja": "復興計画"
+    },
+    "debt-notice": {
+      "en": "Repayment notice",
+      "ja": "返済のお知らせ"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 
 struct PicsGrid<Content: View>: View {
@@ -134,6 +135,7 @@ struct PicsGrid<Content: View>: View {
                 }
             }
             .contentShape(.rect)
+            .accessibilityIdentifier("pic:\(pic.name)")
             .onTapGesture {
                 onSelect(pic)
             }

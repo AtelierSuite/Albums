@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="desk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3c4a5e"/>
+      <stop offset="1" stop-color="#262f3d"/>
+    </linearGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#desk)"/>
+  <g transform="translate(600 800) rotate(-3)">
+    <rect x="-430" y="-620" width="860" height="1240" fill="#000" opacity="0.35" filter="url(#shadow)" transform="translate(14 18)"/>
+    <rect x="-430" y="-620" width="860" height="1240" fill="#fbfaf6"/>
+    <rect x="-430" y="-620" width="860" height="16" fill="#1f2a44"/>
+    <g font-family="Hiragino Sans" fill="#1f2a44">
+      <text x="-370" y="-520" font-size="40" font-weight="800">KAISER LOAN</text>
+      <text x="-370" y="-480" font-size="22" fill="#6b7489">⟦Kaiser Corporation Financial Services|カイザーコーポレーション 金融部門⟧</text>
+      <text x="370" y="-520" font-size="22" text-anchor="end" fill="#6b7489">No. 0962-358</text>
+      <text x="0" y="-380" font-size="48" font-weight="800" text-anchor="middle">⟦REPAYMENT NOTICE|返済のお知らせ⟧</text>
+      <text x="-370" y="-290" font-size="28">⟦To: Abydos High School|アビドス高等学校 御中⟧</text>
+      <text x="-370" y="-246" font-size="28">⟦Foreclosure Task Force|廃校対策委員会 様⟧</text>
+      <path d="M-370 -200 H 370" stroke="#1f2a44" stroke-width="2"/>
+      <g font-size="30">
+        <text x="-370" y="-130">⟦Principal remaining|残元金⟧</text><text x="370" y="-130" text-anchor="end">¥962,358,000</text>
+        <text x="-370" y="-70">⟦Interest this month|今月の利息⟧</text><text x="370" y="-70" text-anchor="end">¥7,880,000</text>
+        <text x="-370" y="-10">⟦Paid this month|今月のお支払い⟧</text><text x="370" y="-10" text-anchor="end">¥7,881,240</text>
+      </g>
+      <path d="M-370 30 H 370" stroke="#1f2a44" stroke-width="2"/>
+      <text x="-370" y="100" font-size="34" font-weight="700">⟦Next payment due|次回お支払い期日⟧</text>
+      <text x="370" y="100" font-size="34" font-weight="700" text-anchor="end">⟦Nov 1|11月1日⟧</text>
+      <g font-size="24" fill="#6b7489">
+        <text x="-370" y="190">⟦Thank you for your continued patronage.|毎度ご利用いただき誠にありがとうございます。⟧</text>
+        <text x="-370" y="230">⟦Late payments incur additional fees.|お支払いが遅れた場合は延滞金が発生します。⟧</text>
+      </g>
+    </g>
+    <g transform="translate(150 420) rotate(-10)">
+      <rect x="-260" y="-60" width="520" height="120" rx="10" fill="none" stroke="#2f7d4a" stroke-width="8" opacity="0.85"/>
+      <text x="0" y="15" font-family="Hiragino Sans" font-size="40" font-weight="800" fill="#2f7d4a" text-anchor="middle" opacity="0.85">⟦PAID +¥1,240|お支払い済 +1,240円⟧</text>
+    </g>
+    <g transform="translate(-250 450) rotate(6)">
+      <rect x="-120" y="-90" width="240" height="180" fill="#ffe47a"/>
+      <text x="0" y="-26" font-family="Hiragino Sans" font-size="30" font-weight="700" fill="#5a4a1a" text-anchor="middle">⟦We did it!|やった！⟧</text>
+      <text x="0" y="22" font-family="Hiragino Sans" font-size="24" fill="#5a4a1a" text-anchor="middle">⟦— Serika|― セリカ⟧</text>
+      <text x="0" y="60" font-family="Hiragino Sans" font-size="22" fill="#5a4a1a" text-anchor="middle">⟦(only 961M left…)|（残り9億6千万…）⟧</text>
+    </g>
+  </g>
+</svg>

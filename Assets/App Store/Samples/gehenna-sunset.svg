@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a0d24"/>
+      <stop offset="0.45" stop-color="#8a1e2e"/>
+      <stop offset="0.8" stop-color="#e2573a"/>
+      <stop offset="1" stop-color="#f7a23e"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffe1a0"/>
+      <stop offset="0.4" stop-color="#ff9a4a" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ff6a3a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="smoke"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#sky)"/>
+  <circle cx="800" cy="860" r="420" fill="url(#sun)"/>
+  <circle cx="800" cy="860" r="120" fill="#ffd27a"/>
+  <g fill="#3a0f1e" opacity="0.5" filter="url(#smoke)">
+    <ellipse cx="300" cy="420" rx="260" ry="50"/><ellipse cx="1300" cy="360" rx="300" ry="60"/><ellipse cx="900" cy="300" rx="200" ry="40"/>
+  </g>
+  <g fill="#1a0610">
+    <path d="M0 1200 V 820 L 60 820 L 60 700 L 90 640 L 120 700 L 120 820 L 200 820 L 200 760 L 260 760 L 260 860 L 0 860 Z"/>
+    <path d="M260 1200 V 640 L 300 520 L 340 640 V 720 L 400 720 V 560 L 430 420 L 460 560 V 720 L 520 720 V 1200 Z"/>
+    <path d="M520 1200 V 780 L 600 780 L 600 700 L 640 660 L 680 700 L 680 900 L 760 900 L 760 1200 Z"/>
+    <path d="M1000 1200 V 600 L 1040 460 L 1080 600 V 680 L 1140 680 V 380 L 1180 220 L 1220 380 V 680 L 1280 680 V 540 L 1320 440 L 1360 540 V 1200 Z"/>
+    <path d="M1360 1200 V 800 L 1440 800 L 1440 720 L 1480 680 L 1520 720 L 1520 840 L 1600 840 V 1200 Z"/>
+    <path d="M0 1080 C 400 1040 1200 1040 1600 1080 V 1200 H 0 Z"/>
+  </g>
+  <g fill="#ffb347">
+    <rect x="410" y="600" width="16" height="30" rx="8"/><rect x="440" y="600" width="16" height="30" rx="8"/>
+    <rect x="1160" y="420" width="16" height="30" rx="8"/><rect x="1188" y="420" width="16" height="30" rx="8"/>
+    <rect x="1160" y="500" width="16" height="30" rx="8"/><rect x="1188" y="500" width="16" height="30" rx="8"/>
+    <rect x="1300" y="580" width="14" height="26" rx="7"/><rect x="300" y="680" width="14" height="26" rx="7"/>
+    <circle cx="1180" cy="300" r="22" fill="none" stroke="#ffb347" stroke-width="6"/>
+  </g>
+  <g fill="#3a0f1e" opacity="0.6" filter="url(#smoke)">
+    <ellipse cx="640" cy="600" rx="60" ry="120"/><ellipse cx="660" cy="460" rx="90" ry="70"/>
+  </g>
+  <g stroke="#1a0610" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M700 260 c 14 -16 30 -16 42 0 c 12 -16 28 -16 42 0"/>
+    <path d="M820 320 c 10 -12 22 -12 30 0 c 8 -12 20 -12 30 0"/>
+  </g>
+</svg>

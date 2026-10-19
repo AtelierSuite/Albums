@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b6fb6"/>
+      <stop offset="0.45" stop-color="#9fc3dd"/>
+      <stop offset="0.7" stop-color="#f6d9a8"/>
+      <stop offset="1" stop-color="#f3b878"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="0.25" stop-color="#fff1c4" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffd38a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dune1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9b77a"/>
+      <stop offset="1" stop-color="#c98a4f"/>
+    </linearGradient>
+    <linearGradient id="dune2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2c993"/>
+      <stop offset="1" stop-color="#d79b5c"/>
+    </linearGradient>
+    <linearGradient id="dune3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7d6a6"/>
+      <stop offset="1" stop-color="#e2a96a"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4ebdd"/>
+      <stop offset="1" stop-color="#d9c6a8"/>
+    </linearGradient>
+    <filter id="haze"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#sky)"/>
+  <g opacity="0.7" fill="#ffffff" filter="url(#haze)">
+    <ellipse cx="300" cy="230" rx="220" ry="34"/>
+    <ellipse cx="420" cy="205" rx="140" ry="26"/>
+    <ellipse cx="1220" cy="160" rx="260" ry="30"/>
+    <ellipse cx="1350" cy="190" rx="160" ry="22"/>
+  </g>
+  <circle cx="1180" cy="560" r="300" fill="url(#sun)"/>
+  <path d="M0 690 C 180 640 330 650 520 700 C 700 745 900 640 1100 650 C 1300 660 1450 700 1600 680 L1600 1200 L0 1200 Z" fill="#e7c69a" opacity="0.7"/>
+  <g transform="translate(560 560)">
+    <rect x="0" y="120" width="520" height="210" fill="url(#wall)"/>
+    <rect x="200" y="0" width="120" height="160" fill="url(#wall)"/>
+    <path d="M190 0 L260 -60 L330 0 Z" fill="#b9574a"/>
+    <circle cx="260" cy="70" r="38" fill="#fdfaf3" stroke="#8c7356" stroke-width="6"/>
+    <path d="M260 70 L260 46 M260 70 L278 80" stroke="#3b3128" stroke-width="5" stroke-linecap="round"/>
+    <g fill="#7ea3c4">
+      <rect x="30" y="160" width="52" height="64" rx="4"/>
+      <rect x="110" y="160" width="52" height="64" rx="4"/>
+      <rect x="360" y="160" width="52" height="64" rx="4"/>
+      <rect x="440" y="160" width="52" height="64" rx="4"/>
+      <rect x="30" y="246" width="52" height="64" rx="4"/>
+      <rect x="440" y="246" width="52" height="64" rx="4"/>
+    </g>
+    <rect x="215" y="230" width="90" height="100" fill="#6b5640"/>
+    <rect x="0" y="112" width="520" height="14" fill="#c7b392"/>
+  </g>
+  <path d="M520 905 C 600 860 680 860 760 895 L760 905 Z" fill="#e8bd86"/>
+  <path d="M0 860 C 220 760 420 760 640 820 C 820 870 980 900 1180 840 C 1360 790 1490 800 1600 830 L1600 1200 L0 1200 Z" fill="url(#dune2)"/>
+  <path d="M640 820 C 820 870 980 900 1180 840 C 1100 900 900 950 640 820 Z" fill="#c4874c" opacity="0.45"/>
+  <path d="M0 980 C 260 880 520 900 760 960 C 980 1015 1200 1000 1600 920 L1600 1200 L0 1200 Z" fill="url(#dune1)"/>
+  <path d="M0 1080 C 300 1010 600 1040 900 1090 C 1150 1130 1380 1110 1600 1060 L1600 1200 L0 1200 Z" fill="url(#dune3)"/>
+  <g stroke="#ffffff" stroke-opacity="0.35" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#soft)">
+    <path d="M80 1000 C 240 950 380 950 520 980"/>
+    <path d="M900 1050 C 1050 1080 1200 1080 1360 1050"/>
+    <path d="M300 1120 C 480 1090 640 1100 820 1130"/>
+  </g>
+  <g transform="translate(250 905)">
+    <rect x="-6" y="-120" width="12" height="130" fill="#6e5a46"/>
+    <rect x="-70" y="-120" width="140" height="56" rx="6" fill="#f4ede0" stroke="#6e5a46" stroke-width="5"/>
+    <path d="M-48 -92 H48" stroke="#b9574a" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g fill="#7a5a3a" opacity="0.55">
+    <ellipse cx="1320" cy="1015" rx="28" ry="8"/>
+    <ellipse cx="1390" cy="1022" rx="18" ry="5"/>
+  </g>
+</svg>

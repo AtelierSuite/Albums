@@ -7,12 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1B2C3062ACABCDE00D751FB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3042ACABCDE00D751FB /* SQLite */; };
-		A1B2C3072ACABCDE00D751FB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3052ACABCDE00D751FB /* SQLite */; };
+		1D46AE0D8742F764AD3086C8 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		4FD400684B5592EC7AAC1B91 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8985FAD43D565C373AF23DCD /* SQLite */; };
+		92E52CFA44C5ABBC3B7DDE70 /* Save to Photos.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A6B15AF95D716B1706E55908 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		C972C07C039BBA0840300BA6 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		CE38A9F588BB5C358A001834 /* Save to Last Used.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D738D4F7816DD37629FC1DA3 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		E4614D062ACA86ED00D751FB /* Share with PicMate.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4D6F0602F4D4DF1006965BD /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6F05F2F4D4DF1006965BD /* UniformTypeIdentifiers.framework */; };
-		E4D6F06C2F4D4DF1006965BD /* Save to PicMate.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4D6F05E2F4D4DF1006965BD /* Save to PicMate.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E4D6F0822F4D5C13006965BD /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = E4D6F0812F4D5C13006965BD /* SQLite */; };
+		E4D6F06C2F4D4DF1006965BD /* Save to Albums.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4D6F05E2F4D4DF1006965BD /* Save to Albums.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4E717BE2F5F09CA000C13CB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E717BD2F5F09CA000C13CB /* WidgetKit.framework */; };
 		E4E717C02F5F09CA000C13CB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E717BF2F5F09CA000C13CB /* SwiftUI.framework */; };
 		E4E717CB2F5F09CB000C13CB /* Photostand.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4E717BC2F5F09CA000C13CB /* Photostand.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -20,6 +26,55 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2904D376833E4B8C23761AB3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68BDC48DEF3253812332CF54;
+			remoteInfo = "Save to Photos";
+		};
+		35CAF6D6739DD9022F1D1E56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
+		49BF9E659C1CA882924FF7C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
+		4EAC714EDAEDDE73D264E1A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
+		6F8D3DC721B95E4A30683DF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
+		9E581B2EB1693FE54DD50DDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
+		E33B6F43012B8B218500AEC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4614CE22ACA86C900D751FB;
+			remoteInfo = PicMate;
+		};
 		E4614D042ACA86ED00D751FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
@@ -41,18 +96,38 @@
 			remoteGlobalIDString = E4E717BB2F5F09CA000C13CB;
 			remoteInfo = PhotostandExtension;
 		};
+		FE87E2C8AC83FDCCD5964F21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 523AC691388D6A6A757F3C9A;
+			remoteInfo = "Save to Last Used";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CB3FAC6B7C8422195C3FE19D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4614D0A2ACA86ED00D751FB /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				E4D6F06C2F4D4DF1006965BD /* Save to PicMate.appex in Embed Foundation Extensions */,
+				E4D6F06C2F4D4DF1006965BD /* Save to Albums.appex in Embed Foundation Extensions */,
 				E4E717CB2F5F09CB000C13CB /* Photostand.appex in Embed Foundation Extensions */,
 				E4614D062ACA86ED00D751FB /* Share with PicMate.appex in Embed Foundation Extensions */,
+				92E52CFA44C5ABBC3B7DDE70 /* Save to Photos.appex in Embed Foundation Extensions */,
+				CE38A9F588BB5C358A001834 /* Save to Last Used.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,9 +135,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to Last Used.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		27B3EAF4F021334CADD9AF51 /* Engine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Engine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		552E3C943E41315B74C4BDC6 /* PicMateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicMateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F42FAE0F7A3DC547098315C /* Save to Photos.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to Photos.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4614CE32ACA86C900D751FB /* PicMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share with PicMate.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4D6F05E2F4D4DF1006965BD /* Save to PicMate.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to PicMate.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4D6F05E2F4D4DF1006965BD /* Save to Albums.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to Albums.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D6F05F2F4D4DF1006965BD /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		E4E717BC2F5F09CA000C13CB /* Photostand.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Photostand.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E717BD2F5F09CA000C13CB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -70,11 +149,24 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		02F66BFB6DA9E1B3E7AA24A4 /* Exceptions for "Save to Last Used" folder in "Save to Last Used" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
+		};
+		B9C40B07340FA55888D2D1E3 /* Exceptions for "Save to Photos" folder in "Save to Photos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 68BDC48DEF3253812332CF54 /* Save to Photos */;
+		};
 		E42BDB4E2F4D67A3000F6E10 /* Exceptions for "Importer" folder in "Share with PicMate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AlbumsScrollView.swift,
-				InfoPlist.xcstrings,
 				ShareView.swift,
 				ShareViewController.swift,
 			);
@@ -93,7 +185,6 @@
 				Classes/AlbumCoverCache.swift,
 				Enums/Drop.swift,
 				Enums/PHCollectionItem.swift,
-				Enums/SortType.swift,
 				Enums/ViewPath.swift,
 				Enums/ViewStyle.swift,
 				Extensions/Color.swift,
@@ -102,7 +193,6 @@
 				Structs/PHAssetWrapper.swift,
 				Structs/PHCollectionListWrapper.swift,
 				Utilities/Animations.swift,
-				Utilities/UIImage.swift,
 				"View Modifiers/AlbumDropModifier.swift",
 				"View Modifiers/ButtonStyleModifier.swift",
 				Views/Album/AlbumGridLabel.swift,
@@ -126,44 +216,29 @@
 			);
 			target = E4614CFB2ACA86EC00D751FB /* Share with PicMate */;
 		};
-		E4D6F0702F4D4DF1006965BD /* Exceptions for "Importer" folder in "Save to PicMate" target */ = {
+		E4D6F0702F4D4DF1006965BD /* Exceptions for "Importer" folder in "Save to Albums" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Info-SaveTo.plist",
 				"Info-ShareWith.plist",
 			);
-			target = E4D6F05D2F4D4DF1006965BD /* Save to PicMate */;
+			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 		};
-		E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to PicMate" target */ = {
+		E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to Albums" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				"Data Actor/CoverCacheActor.swift",
-				"Data Actor/DataActor.swift",
-				"Data Actor/DataActor+Albums.swift",
-				"Data Actor/DataActor+Backup.swift",
-				"Data Actor/DataActor+ImageMigration.swift",
-				"Data Actor/DataActor+ImageStorage.swift",
-				"Data Actor/DataActor+Pics.swift",
-				"Data Actor/DataActor+Sync.swift",
-				"Data Actor/DataActor+VideoStorage.swift",
-				"Data Actor/DatabaseMigrator.swift",
-				"Data Models/Album.swift",
-				"Data Models/MediaType.swift",
-				"Data Models/Pic.swift",
-				"Data Models/PicLibrary.swift",
 				Strings/Albums.xcstrings,
 				Strings/Import.xcstrings,
 				Strings/Localizable.xcstrings,
 			);
-			target = E4D6F05D2F4D4DF1006965BD /* Save to PicMate */;
+			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 		};
-		E4D6F07F2F4D5BEF006965BD /* Exceptions for "App" folder in "Save to PicMate" target */ = {
+		E4D6F07F2F4D5BEF006965BD /* Exceptions for "App" folder in "Save to Albums" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Classes/AlbumCoverCache.swift,
 				Enums/Drop.swift,
-				Enums/SortType.swift,
 				Enums/ViewPath.swift,
 				Enums/ViewStyle.swift,
 				Extensions/Color.swift,
@@ -171,7 +246,6 @@
 				Structs/PHAssetTransferable.swift,
 				Structs/PHAssetWrapper.swift,
 				Structs/PHCollectionListWrapper.swift,
-				Utilities/UIImage.swift,
 				"View Modifiers/AlbumDropModifier.swift",
 				"View Modifiers/ButtonStyleModifier.swift",
 				Views/Album/AlbumGridLabel.swift,
@@ -183,7 +257,7 @@
 				Views/Shared/AlbumCover/AsyncPhotosAlbumCover.swift,
 				Views/Shared/AlbumCover/AsyncPhotosFolderCover.swift,
 			);
-			target = E4D6F05D2F4D4DF1006965BD /* Save to PicMate */;
+			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 		};
 		E4E717CF2F5F09CB000C13CB /* Exceptions for "Photostand" folder in "Photostand" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -203,11 +277,41 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		281BC3717F00C5F359D4E4E3 /* PicMateUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = PicMateUITests;
+			sourceTree = "<group>";
+		};
+		471948BE611481E93F12541D /* Save to Photos */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B9C40B07340FA55888D2D1E3 /* Exceptions for "Save to Photos" folder in "Save to Photos" target */,
+			);
+			path = "Save to Photos";
+			sourceTree = "<group>";
+		};
+		A5B1A90FEBFCC8F13E01C388 /* Engine */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		D66492773C82DA6C694E0AD5 /* Save to Last Used */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				02F66BFB6DA9E1B3E7AA24A4 /* Exceptions for "Save to Last Used" folder in "Save to Last Used" target */,
+			);
+			path = "Save to Last Used";
+			sourceTree = "<group>";
+		};
 		E4A15D602F49EE8C00CD6892 /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E4C47BEF2F66BEB200BDF3F8 /* Exceptions for "Shared" folder in "Share with PicMate" target */,
-				E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to PicMate" target */,
+				E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to Albums" target */,
 				E4E717D42F5F0EA6000C13CB /* Exceptions for "Shared" folder in "Photostand" target */,
 			);
 			path = Shared;
@@ -218,7 +322,7 @@
 			exceptions = (
 				E4A15DF82F49EE8F00CD6892 /* Exceptions for "App" folder in "PicMate" target */,
 				E4A15DF92F49EE8F00CD6892 /* Exceptions for "App" folder in "Share with PicMate" target */,
-				E4D6F07F2F4D5BEF006965BD /* Exceptions for "App" folder in "Save to PicMate" target */,
+				E4D6F07F2F4D5BEF006965BD /* Exceptions for "App" folder in "Save to Albums" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -227,7 +331,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E42BDB4E2F4D67A3000F6E10 /* Exceptions for "Importer" folder in "Share with PicMate" target */,
-				E4D6F0702F4D4DF1006965BD /* Exceptions for "Importer" folder in "Save to PicMate" target */,
+				E4D6F0702F4D4DF1006965BD /* Exceptions for "Importer" folder in "Save to Albums" target */,
 			);
 			path = Importer;
 			sourceTree = "<group>";
@@ -243,11 +347,26 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		57CDDAA53822172D4ADAE40C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D46AE0D8742F764AD3086C8 /* Engine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98397EB700EDAD449D1569E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4614CE02ACA86C900D751FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3062ACABCDE00D751FB /* SQLite in Frameworks */,
+				4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,7 +374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3072ACABCDE00D751FB /* SQLite in Frameworks */,
+				A6B15AF95D716B1706E55908 /* Engine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,8 +382,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4D6F0822F4D5C13006965BD /* SQLite in Frameworks */,
 				E4D6F0602F4D4DF1006965BD /* UniformTypeIdentifiers.framework in Frameworks */,
+				D738D4F7816DD37629FC1DA3 /* Engine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,18 +397,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5367914D028A51A14DD9648 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C972C07C039BBA0840300BA6 /* Engine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB8C43BF52D2C7E648F50F9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FD400684B5592EC7AAC1B91 /* SQLite in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7297C6A0963BB4C73587FC41 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		E4614CDA2ACA86C900D751FB = {
 			isa = PBXGroup;
 			children = (
+				A5B1A90FEBFCC8F13E01C388 /* Engine */,
 				E4A15D602F49EE8C00CD6892 /* Shared */,
 				E4A15DB32F49EE8F00CD6892 /* App */,
+				471948BE611481E93F12541D /* Save to Photos */,
+				D66492773C82DA6C694E0AD5 /* Save to Last Used */,
 				E4D6F0612F4D4DF1006965BD /* Importer */,
 				E4E717C12F5F09CA000C13CB /* Photostand */,
 				E4614CE42ACA86C900D751FB /* Products */,
 				E46712DF2ADC2B6E006CB15D /* Frameworks */,
+				281BC3717F00C5F359D4E4E3 /* PicMateUITests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -298,8 +444,12 @@
 			children = (
 				E4614CE32ACA86C900D751FB /* PicMate.app */,
 				E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */,
-				E4D6F05E2F4D4DF1006965BD /* Save to PicMate.appex */,
+				E4D6F05E2F4D4DF1006965BD /* Save to Albums.appex */,
 				E4E717BC2F5F09CA000C13CB /* Photostand.appex */,
+				552E3C943E41315B74C4BDC6 /* PicMateUITests.xctest */,
+				27B3EAF4F021334CADD9AF51 /* Engine.framework */,
+				9F42FAE0F7A3DC547098315C /* Save to Photos.appex */,
+				134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -310,6 +460,7 @@
 				E4D6F05F2F4D4DF1006965BD /* UniformTypeIdentifiers.framework */,
 				E4E717BD2F5F09CA000C13CB /* WidgetKit.framework */,
 				E4E717BF2F5F09CA000C13CB /* SwiftUI.framework */,
+				7297C6A0963BB4C73587FC41 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -317,6 +468,92 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		21819FBCE2349FC3ED09E6FC /* PicMateUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6915BA1AE67CAD6A888A27D /* Build configuration list for PBXNativeTarget "PicMateUITests" */;
+			buildPhases = (
+				AED132DD45228CB4C8657132 /* Sources */,
+				98397EB700EDAD449D1569E1 /* Frameworks */,
+				F842F907D9032CD5F8FC246F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15CB00A5489B94E273E2EC6F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				281BC3717F00C5F359D4E4E3 /* PicMateUITests */,
+			);
+			name = PicMateUITests;
+			productName = PicMateUITests;
+			productReference = 552E3C943E41315B74C4BDC6 /* PicMateUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		523AC691388D6A6A757F3C9A /* Save to Last Used */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61FEBD42AAA4482BD59A2036 /* Build configuration list for PBXNativeTarget "Save to Last Used" */;
+			buildPhases = (
+				05152D626B78F27AB67A0A71 /* Sources */,
+				E5367914D028A51A14DD9648 /* Frameworks */,
+				6F1A7C2B86FBD89443BEBB63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F58B9730D05A1BE6CA4317FE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D66492773C82DA6C694E0AD5 /* Save to Last Used */,
+			);
+			name = "Save to Last Used";
+			productName = "Save to Last Used";
+			productReference = 134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		68BDC48DEF3253812332CF54 /* Save to Photos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3B4B2D7BE892BBEE659FEE1 /* Build configuration list for PBXNativeTarget "Save to Photos" */;
+			buildPhases = (
+				C88A7261BA25B8C1F9636ADF /* Sources */,
+				57CDDAA53822172D4ADAE40C /* Frameworks */,
+				66E11AD4BDC6CC00B9EAF7F8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4EB8E473A0742A12EF811BE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				471948BE611481E93F12541D /* Save to Photos */,
+			);
+			name = "Save to Photos";
+			productName = "Save to Photos";
+			productReference = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		9DDE70E504B28B90D16F332C /* Engine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 998FDA8683C14F78891FF876 /* Build configuration list for PBXNativeTarget "Engine" */;
+			buildPhases = (
+				223E3B8FC28EEEAF71F56C9C /* Sources */,
+				EB8C43BF52D2C7E648F50F9C /* Frameworks */,
+				CABBDD8220E7AD7A02842E6D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A5B1A90FEBFCC8F13E01C388 /* Engine */,
+			);
+			name = Engine;
+			packageProductDependencies = (
+				8985FAD43D565C373AF23DCD /* SQLite */,
+			);
+			productName = Engine;
+			productReference = 27B3EAF4F021334CADD9AF51 /* Engine.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		E4614CE22ACA86C900D751FB /* PicMate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4614CF52ACA86CA00D751FB /* Build configuration list for PBXNativeTarget "PicMate" */;
@@ -326,6 +563,7 @@
 				E4614CE12ACA86C900D751FB /* Resources */,
 				E4614D0A2ACA86ED00D751FB /* Embed Foundation Extensions */,
 				E4614D1F2ACAFCF200D751FB /* ShellScript */,
+				CB3FAC6B7C8422195C3FE19D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -333,15 +571,15 @@
 				E4614D052ACA86ED00D751FB /* PBXTargetDependency */,
 				E4D6F06B2F4D4DF1006965BD /* PBXTargetDependency */,
 				E4E717CA2F5F09CB000C13CB /* PBXTargetDependency */,
+				C42983F50409AC7259F37EAA /* PBXTargetDependency */,
+				867FF2447D1FEC83608D7D38 /* PBXTargetDependency */,
+				21E762ABFE8E170584AE05DA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E4A15D602F49EE8C00CD6892 /* Shared */,
 				E4A15DB32F49EE8F00CD6892 /* App */,
 			);
 			name = PicMate;
-			packageProductDependencies = (
-				A1B2C3042ACABCDE00D751FB /* SQLite */,
-			);
 			productName = PicMate;
 			productReference = E4614CE32ACA86C900D751FB /* PicMate.app */;
 			productType = "com.apple.product-type.application";
@@ -357,21 +595,19 @@
 			buildRules = (
 			);
 			dependencies = (
+				A4C72402E801008547EB8043 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E4A15D602F49EE8C00CD6892 /* Shared */,
 			);
 			name = "Share with PicMate";
-			packageProductDependencies = (
-				A1B2C3052ACABCDE00D751FB /* SQLite */,
-			);
 			productName = Importer;
 			productReference = E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		E4D6F05D2F4D4DF1006965BD /* Save to PicMate */ = {
+		E4D6F05D2F4D4DF1006965BD /* Save to Albums */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4D6F06F2F4D4DF1006965BD /* Build configuration list for PBXNativeTarget "Save to PicMate" */;
+			buildConfigurationList = E4D6F06F2F4D4DF1006965BD /* Build configuration list for PBXNativeTarget "Save to Albums" */;
 			buildPhases = (
 				E4D6F05A2F4D4DF1006965BD /* Sources */,
 				E4D6F05B2F4D4DF1006965BD /* Frameworks */,
@@ -380,16 +616,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				17AD857AF03CDD9BA82ED5E5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E4D6F0612F4D4DF1006965BD /* Importer */,
 			);
-			name = "Save to PicMate";
-			packageProductDependencies = (
-				E4D6F0812F4D5C13006965BD /* SQLite */,
-			);
-			productName = SaveTo;
-			productReference = E4D6F05E2F4D4DF1006965BD /* Save to PicMate.appex */;
+			name = "Save to Albums";
+			productName = "Save to Albums";
+			productReference = E4D6F05E2F4D4DF1006965BD /* Save to Albums.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		E4E717BB2F5F09CA000C13CB /* Photostand */ = {
@@ -449,7 +683,7 @@
 			);
 			mainGroup = E4614CDA2ACA86C900D751FB;
 			packageReferences = (
-				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */,
+				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4614CE42ACA86C900D751FB /* Products */;
@@ -458,13 +692,38 @@
 			targets = (
 				E4614CE22ACA86C900D751FB /* PicMate */,
 				E4614CFB2ACA86EC00D751FB /* Share with PicMate */,
-				E4D6F05D2F4D4DF1006965BD /* Save to PicMate */,
+				E4D6F05D2F4D4DF1006965BD /* Save to Albums */,
 				E4E717BB2F5F09CA000C13CB /* Photostand */,
+				21819FBCE2349FC3ED09E6FC /* PicMateUITests */,
+				9DDE70E504B28B90D16F332C /* Engine */,
+				68BDC48DEF3253812332CF54 /* Save to Photos */,
+				523AC691388D6A6A757F3C9A /* Save to Last Used */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		66E11AD4BDC6CC00B9EAF7F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F1A7C2B86FBD89443BEBB63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CABBDD8220E7AD7A02842E6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4614CE12ACA86C900D751FB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -487,6 +746,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E4E717BA2F5F09CA000C13CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F842F907D9032CD5F8FC246F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -517,6 +783,34 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		05152D626B78F27AB67A0A71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		223E3B8FC28EEEAF71F56C9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AED132DD45228CB4C8657132 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C88A7261BA25B8C1F9636ADF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4614CDF2ACA86C900D751FB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -548,6 +842,50 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		15CB00A5489B94E273E2EC6F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PicMate;
+			target = E4614CE22ACA86C900D751FB /* PicMate */;
+			targetProxy = E33B6F43012B8B218500AEC8 /* PBXContainerItemProxy */;
+		};
+		17AD857AF03CDD9BA82ED5E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = 6F8D3DC721B95E4A30683DF0 /* PBXContainerItemProxy */;
+		};
+		21E762ABFE8E170584AE05DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Save to Last Used";
+			platformFilter = ios;
+			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
+			targetProxy = FE87E2C8AC83FDCCD5964F21 /* PBXContainerItemProxy */;
+		};
+		867FF2447D1FEC83608D7D38 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Save to Photos";
+			platformFilter = ios;
+			target = 68BDC48DEF3253812332CF54 /* Save to Photos */;
+			targetProxy = 2904D376833E4B8C23761AB3 /* PBXContainerItemProxy */;
+		};
+		A4C72402E801008547EB8043 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = 49BF9E659C1CA882924FF7C3 /* PBXContainerItemProxy */;
+		};
+		C42983F50409AC7259F37EAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = 4EAC714EDAEDDE73D264E1A0 /* PBXContainerItemProxy */;
+		};
+		C4EB8E473A0742A12EF811BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = 35CAF6D6739DD9022F1D1E56 /* PBXContainerItemProxy */;
+		};
 		E4614D052ACA86ED00D751FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E4614CFB2ACA86EC00D751FB /* Share with PicMate */;
@@ -556,7 +894,7 @@
 		E4D6F06B2F4D4DF1006965BD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
-			target = E4D6F05D2F4D4DF1006965BD /* Save to PicMate */;
+			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 			targetProxy = E4D6F06A2F4D4DF1006965BD /* PBXContainerItemProxy */;
 		};
 		E4E717CA2F5F09CB000C13CB /* PBXTargetDependency */ = {
@@ -565,9 +903,170 @@
 			target = E4E717BB2F5F09CA000C13CB /* Photostand */;
 			targetProxy = E4E717C92F5F09CB000C13CB /* PBXContainerItemProxy */;
 		};
+		F58B9730D05A1BE6CA4317FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = 9E581B2EB1693FE54DD50DDB /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5958CFEB1608C0D7AA735731 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Engine;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		88B13350F755E701C3E0C589 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Engine;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C690AEF5B48CB029E84F1CE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
+				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save to Photos/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to Photos to save pictures into your albums.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Photos";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D32007A24A076F8E39F4FC0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PicMate;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E0456C891EEBAA54EC0AF3DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PicMate;
+			};
+			name = Debug;
+		};
 		E4614CF32ACA86CA00D751FB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -997,9 +1496,132 @@
 			};
 			name = Release;
 		};
+		E9F6B2D754BCFDD0F9976AA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
+				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save to Last Used/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to Photos to save pictures into your albums.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Last-Used";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F0C6AD86D4B71D71EEB8963A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
+				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save to Last Used/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to Photos to save pictures into your albums.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Last-Used";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F4A4593D6B9577D548FE0208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
+				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Save to Photos/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to Photos to save pictures into your albums.";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Photos";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		61FEBD42AAA4482BD59A2036 /* Build configuration list for PBXNativeTarget "Save to Last Used" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0C6AD86D4B71D71EEB8963A /* Release */,
+				E9F6B2D754BCFDD0F9976AA1 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		998FDA8683C14F78891FF876 /* Build configuration list for PBXNativeTarget "Engine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5958CFEB1608C0D7AA735731 /* Release */,
+				88B13350F755E701C3E0C589 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E4614CDE2ACA86C900D751FB /* Build configuration list for PBXProject "PicMate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1027,7 +1649,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4D6F06F2F4D4DF1006965BD /* Build configuration list for PBXNativeTarget "Save to PicMate" */ = {
+		E4D6F06F2F4D4DF1006965BD /* Build configuration list for PBXNativeTarget "Save to Albums" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4D6F06D2F4D4DF1006965BD /* Debug */,
@@ -1045,10 +1667,28 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		F3B4B2D7BE892BBEE659FEE1 /* Build configuration list for PBXNativeTarget "Save to Photos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4A4593D6B9577D548FE0208 /* Release */,
+				C690AEF5B48CB029E84F1CE7 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6915BA1AE67CAD6A888A27D /* Build configuration list for PBXNativeTarget "PicMateUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32007A24A076F8E39F4FC0A /* Release */,
+				E0456C891EEBAA54EC0AF3DD /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */ = {
+		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
 			requirement = {
@@ -1059,24 +1699,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A1B2C3042ACABCDE00D751FB /* SQLite */ = {
+		8985FAD43D565C373AF23DCD /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
-			productName = SQLite;
-		};
-		A1B2C3052ACABCDE00D751FB /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
-			productName = SQLite;
-		};
-		E4D6F0812F4D5C13006965BD /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
 		};
 		E4E717D12F5F0DC6000C13CB /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */

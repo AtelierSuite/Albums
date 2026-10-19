@@ -1,3 +1,4 @@
+import Engine
 import UIKit
 
 enum ProminentColor {
@@ -63,11 +64,11 @@ enum ProminentColor {
             bucketSumB[bucketIndex] += blue
         }
 
-        let averageColor: (Int) -> RGBColor = { bucket in
+        let averageColor: (Int) -> Engine.RGBColor = { bucket in
             let count = bucketCounts[bucket]
-            return RGBColor(red: bucketSumR[bucket] / count,
-                            green: bucketSumG[bucket] / count,
-                            blue: bucketSumB[bucket] / count)
+            return Engine.RGBColor(red: bucketSumR[bucket] / count,
+                                   green: bucketSumG[bucket] / count,
+                                   blue: bucketSumB[bucket] / count)
         }
 
         // Primary: the most populated bucket overall
@@ -79,7 +80,7 @@ enum ProminentColor {
         }
 
         guard primaryBucket >= 0 else {
-            let gray = RGBColor(red: 128, green: 128, blue: 128)
+            let gray = Engine.RGBColor(red: 128, green: 128, blue: 128)
             return PicColors(primary: gray, accent: gray, contrasting: gray)
         }
 

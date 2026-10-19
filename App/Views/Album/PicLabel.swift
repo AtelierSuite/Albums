@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 
 final class ThumbnailCache: @unchecked Sendable {

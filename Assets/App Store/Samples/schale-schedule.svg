@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e6f2ff"/>
+      <stop offset="1" stop-color="#c9e1fb"/>
+    </linearGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <g stroke="#ffffff" stroke-opacity="0.6" stroke-width="2">
+    <path d="M0 100 L 1600 0 M0 400 L 1600 300 M0 700 L 1600 600 M0 1000 L 1600 900"/>
+  </g>
+  <rect x="120" y="110" width="1360" height="980" rx="40" fill="#2a3a5c" opacity="0.18" filter="url(#shadow)" transform="translate(0 14)"/>
+  <rect x="120" y="110" width="1360" height="980" rx="40" fill="#ffffff"/>
+  <path d="M120 150 A 40 40 0 0 1 160 110 H 1440 A 40 40 0 0 1 1480 150 V 250 H 120 Z" fill="#2b6fd6"/>
+  <g font-family="Hiragino Sans">
+    <ellipse cx="220" cy="168" rx="46" ry="14" fill="none" stroke="#9fe6ff" stroke-width="7"/>
+    <text x="300" y="200" font-size="56" font-weight="800" fill="#ffffff">SCHALE</text>
+    <text x="1430" y="196" font-size="36" fill="#dbe9ff" text-anchor="end">⟦Weekly Schedule · Oct 5–11|週間予定 · 10/5〜10/11⟧</text>
+    <g font-size="30" font-weight="700" fill="#5a6b85">
+      <text x="200" y="320">⟦MON|月⟧</text><text x="200" y="440">⟦TUE|火⟧</text><text x="200" y="560">⟦WED|水⟧</text>
+      <text x="200" y="680">⟦THU|木⟧</text><text x="200" y="800">⟦FRI|金⟧</text><text x="200" y="920">⟦SAT|土⟧</text><text x="200" y="1040">⟦SUN|日⟧</text>
+    </g>
+    <g stroke="#e3eaf4" stroke-width="3">
+      <path d="M180 350 H 1440 M180 470 H 1440 M180 590 H 1440 M180 710 H 1440 M180 830 H 1440 M180 950 H 1440"/>
+    </g>
+    <g font-size="32" fill="#ffffff">
+      <rect x="320" y="278" width="490" height="60" rx="16" fill="#ffb84a"/><text x="344" y="320">⟦Abydos · Task Force meeting|アビドス · 対策委員会⟧</text>
+      <rect x="850" y="278" width="380" height="60" rx="16" fill="#5aa6ff"/><text x="874" y="320">⟦Paperwork (lots)|書類整理（大量）⟧</text>
+      <rect x="320" y="398" width="580" height="60" rx="16" fill="#7c6cf0"/><text x="344" y="440">⟦Millennium · Game Dev playtest|ミレニアム · ゲーム開発部⟧</text>
+      <rect x="320" y="518" width="490" height="60" rx="16" fill="#f78fb3"/><text x="344" y="560">⟦Trinity · Tea Party|トリニティ · ティーパーティー⟧</text>
+      <rect x="850" y="518" width="300" height="60" rx="16" fill="#5aa6ff"/><text x="874" y="560">⟦Budget review|予算確認⟧</text>
+      <rect x="320" y="638" width="460" height="60" rx="16" fill="#e2574c"/><text x="344" y="680">⟦Gehenna · Prefect Team|ゲヘナ · 風紀委員会⟧</text>
+      <rect x="320" y="758" width="560" height="60" rx="16" fill="#e0a43a"/><text x="344" y="800">⟦Hyakkiyako · Festival prep|百鬼夜行 · 祭りの準備⟧</text>
+      <rect x="320" y="878" width="360" height="60" rx="16" fill="#3fbf8f"/><text x="344" y="920">⟦Ramen with Abydos|柴関ラーメン⟧</text>
+      <rect x="320" y="998" width="300" height="60" rx="16" fill="#9aa9c2"/><text x="344" y="1040">⟦Day off (?)|休み（？）⟧</text>
+    </g>
+  </g>
+</svg>

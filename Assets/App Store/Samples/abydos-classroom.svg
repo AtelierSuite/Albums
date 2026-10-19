@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e6cf"/>
+      <stop offset="1" stop-color="#e2cfae"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b98a5c"/>
+      <stop offset="1" stop-color="#8a5f3a"/>
+    </linearGradient>
+    <linearGradient id="board" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f5a46"/>
+      <stop offset="1" stop-color="#244a39"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb6e6"/>
+      <stop offset="1" stop-color="#f1d3a2"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff3d6" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#wall)"/>
+  <rect x="1180" y="140" width="320" height="520" fill="#c9b08a"/>
+  <rect x="1200" y="160" width="280" height="480" fill="url(#window)"/>
+  <path d="M1200 560 C 1280 520 1360 540 1480 500 V 640 H 1200 Z" fill="#e8bd86"/>
+  <path d="M1340 160 V 640 M1200 400 H 1480" stroke="#c9b08a" stroke-width="14"/>
+  <path d="M1200 160 L 1480 160 L 900 1200 L 500 1200 Z" fill="url(#beam)"/>
+  <rect x="160" y="150" width="880" height="440" rx="10" fill="#8a6a4e"/>
+  <rect x="180" y="170" width="840" height="400" fill="url(#board)"/>
+  <g font-family="Hiragino Sans" fill="#f4f1e6" opacity="0.92">
+    <text x="220" y="250" font-size="44" font-weight="700">⟦Abydos Revival Plan|アビドス復興計画⟧</text>
+    <text x="220" y="330" font-size="34">⟦Debt remaining:|残りの借金：⟧</text>
+    <text x="220" y="410" font-size="64" font-weight="700" fill="#ffd27a">¥962,358,000</text>
+    <text x="220" y="490" font-size="30">⟦1. Ramen budget  2. Bounties  3. ???|① ラーメン代　② 賞金稼ぎ　③ ？？？⟧</text>
+    <path d="M220 420 C 400 436 600 432 760 420" stroke="#ff8a8a" stroke-width="6" fill="none"/>
+  </g>
+  <g fill="#f4f1e6" opacity="0.8">
+    <circle cx="930" cy="250" r="34" fill="none" stroke="#f4f1e6" stroke-width="5"/>
+    <path d="M916 246 a 4 4 0 1 0 0.1 0 M944 246 a 4 4 0 1 0 0.1 0 M914 264 C 924 274 936 274 946 264" stroke="#f4f1e6" stroke-width="4" fill="none"/>
+    <ellipse cx="930" cy="206" rx="26" ry="7" fill="none" stroke="#9fe6ff" stroke-width="4"/>
+  </g>
+  <rect x="160" y="590" width="880" height="16" fill="#6f5139"/>
+  <g fill="#ffffff"><rect x="840" y="580" width="40" height="10" rx="3"/><rect x="900" y="580" width="24" height="10" rx="3" fill="#ff8fb1"/></g>
+  <rect x="0" y="760" width="1600" height="440" fill="url(#floor)"/>
+  <g stroke="#7a5232" stroke-width="3" opacity="0.5">
+    <path d="M0 840 H 1600 M0 940 H 1600 M0 1060 H 1600"/>
+  </g>
+  <g>
+    <g transform="translate(330 860)">
+      <rect x="-150" y="-70" width="300" height="24" rx="4" fill="#d9b88a"/>
+      <rect x="-140" y="-46" width="280" height="80" fill="#9a7a58"/>
+      <path d="M-130 34 V 160 M130 34 V 160" stroke="#5a5a62" stroke-width="10"/>
+      <rect x="-60" y="-96" width="120" height="26" rx="4" fill="#5aa6ff"/>
+    </g>
+    <g transform="translate(800 860)">
+      <rect x="-150" y="-70" width="300" height="24" rx="4" fill="#d9b88a"/>
+      <rect x="-140" y="-46" width="280" height="80" fill="#9a7a58"/>
+      <path d="M-130 34 V 160 M130 34 V 160" stroke="#5a5a62" stroke-width="10"/>
+      <g transform="translate(40 -96)"><rect x="-30" y="-6" width="60" height="30" rx="8" fill="#e85d5d"/><path d="M-30 4 H 30" stroke="#ffffff" stroke-width="4"/></g>
+    </g>
+    <g transform="translate(1270 860)">
+      <rect x="-150" y="-70" width="300" height="24" rx="4" fill="#d9b88a"/>
+      <rect x="-140" y="-46" width="280" height="80" fill="#9a7a58"/>
+      <path d="M-130 34 V 160 M130 34 V 160" stroke="#5a5a62" stroke-width="10"/>
+      <g transform="translate(-30 -100)"><path d="M-40 30 L 40 30 L 30 0 L -30 0 Z" fill="#ffd27a"/><circle cx="0" cy="-8" r="16" fill="#ffe8a8"/></g>
+    </g>
+  </g>
+  <g transform="translate(560 1080)">
+    <rect x="-120" y="-50" width="240" height="24" rx="4" fill="#d9b88a"/>
+    <rect x="-112" y="-26" width="224" height="70" fill="#9a7a58"/>
+  </g>
+  <g transform="translate(1060 1080)">
+    <rect x="-120" y="-50" width="240" height="24" rx="4" fill="#d9b88a"/>
+    <rect x="-112" y="-26" width="224" height="70" fill="#9a7a58"/>
+  </g>
+</svg>

@@ -49,6 +49,7 @@ struct DuplicateScanView: View {
                                 systemImage: "arrow.right"
                             )
                         }
+                        .accessibilityIdentifier("startDuplicateScan")
                     }
                 }
             }

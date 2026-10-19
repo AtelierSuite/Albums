@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 import TipKit
 
@@ -103,6 +104,7 @@ extension AlbumView {
                        systemImage: "photo.stack") {
                     isDuplicateCheckerPresented = true
                 }
+                .accessibilityIdentifier("findDuplicates")
                 Button(String(localized: "Sort.SortIntelligently", table: "Photos"),
                        systemImage: "wand.and.stars") {
                     isIntelligentSortPresented = true
@@ -149,6 +151,7 @@ extension AlbumView {
                    systemImage: "photo.stack") {
                 isDuplicateCheckerPresented = true
             }
+            .accessibilityIdentifier("findDuplicates")
             Button(String(localized: "Sort.SortIntelligently", table: "Photos"),
                    systemImage: "wand.and.stars") {
                 isIntelligentSortPresented = true
@@ -217,6 +220,7 @@ extension AlbumView {
         } label: {
             Label("Shared.Filter", systemImage: "line.3.horizontal.decrease")
         }
+        .accessibilityIdentifier("filterMenu")
         .menuActionDismissBehavior(.disabled)
         .menuOrder(.fixed)
     }

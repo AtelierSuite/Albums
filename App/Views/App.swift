@@ -1,5 +1,6 @@
 import BackgroundTasks
 import Combine
+import Engine
 import StoreKit
 import SwiftUI
 import TipKit
@@ -66,6 +67,7 @@ struct IllustMateApp: App {
         .environment(pipManager)
         .environment(webServer)
         .environment(imageMigration)
+        .preferredColorScheme(screenshotColorScheme)
         .overlay(alignment: .bottomLeading) {
             PictureInPictureLayerView(pipManager: pipManager)
                 .frame(width: 1, height: 1)
@@ -73,7 +75,9 @@ struct IllustMateApp: App {
         }
         .overlay(alignment: .top) {
             #if DEBUG
-            SyncDebugOverlay()
+            if !ScreenshotSeeder.isActive {
+                SyncDebugOverlay()
+            }
             #endif
         }
         .overlay(alignment: .top) {
@@ -86,7 +90,21 @@ struct IllustMateApp: App {
         }
         .task {
             UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+            #if DEBUG
+            var didSeed = false
+            if ScreenshotSeeder.isActive {
+                ScreenshotSeeder.resetNavigation()
+                ScreenshotSeeder.fixWindowSize()
+                didSeed = await ScreenshotSeeder.seedIfNeeded()
+                Tips.hideAllTipsForTesting()
+            }
+            #endif
             await libraryManager.loadLibraries()
+            #if DEBUG
+            if didSeed {
+                navigation.signalDataChanged()
+            }
+            #endif
             await imageMigration.runPendingMigrations()
             presentWelcomeIfNeeded()
             do {
@@ -355,7 +373,18 @@ struct IllustMateApp: App {
 
 extension IllustMateApp {
 
+    var screenshotColorScheme: ColorScheme? {
+        #if DEBUG
+        ScreenshotSeeder.isActive ? .dark : nil
+        #else
+        nil
+        #endif
+    }
+
     func presentWelcomeIfNeeded() {
+        #if DEBUG
+        guard !ScreenshotSeeder.isActive else { return }
+        #endif
         let currentVersion = Bundle.main.object(
             forInfoDictionaryKey: "CFBundleShortVersionString"
         ) as? String ?? ""

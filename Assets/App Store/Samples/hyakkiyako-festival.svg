@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#140c2e"/>
+      <stop offset="0.55" stop-color="#3b1f55"/>
+      <stop offset="1" stop-color="#8a3d55"/>
+    </linearGradient>
+    <radialGradient id="lantern" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0" stop-color="#fff2c2"/>
+      <stop offset="0.5" stop-color="#ff9a3c"/>
+      <stop offset="1" stop-color="#d4452a"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffb35c" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ff7a3c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a2a3a"/>
+      <stop offset="1" stop-color="#1c1020"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a2230"/>
+      <stop offset="1" stop-color="#241422"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <g fill="#ffffff" opacity="0.6">
+    <circle cx="140" cy="120" r="1.8"/><circle cx="420" cy="80" r="1.4"/><circle cx="760" cy="150" r="1.6"/><circle cx="1050" cy="90" r="1.8"/>
+  </g>
+  <g transform="translate(600 820)">
+    <rect x="-300" y="-430" width="40" height="560" fill="#d23a2e"/>
+    <rect x="260" y="-430" width="40" height="560" fill="#d23a2e"/>
+    <path d="M-390 -470 C -200 -500 200 -500 390 -470 L 380 -430 C 200 -455 -200 -455 -380 -430 Z" fill="#1c1018"/>
+    <rect x="-360" y="-420" width="720" height="34" fill="#d23a2e"/>
+    <rect x="-40" y="-420" width="80" height="80" fill="#1c1018"/>
+    <rect x="-28" y="-410" width="56" height="60" fill="#d8b04a"/>
+  </g>
+  <g fill="url(#wood)">
+    <path d="M0 700 L 300 760 V 1300 H 0 Z"/>
+    <path d="M1200 700 L 900 760 V 1300 H 1200 Z"/>
+  </g>
+  <g fill="#1a0e18">
+    <path d="M-20 690 L 330 750 L 320 780 L -20 720 Z"/>
+    <path d="M1220 690 L 870 750 L 880 780 L 1220 720 Z"/>
+  </g>
+  <g fill="#ffcf7a" opacity="0.85">
+    <rect x="60" y="860" width="80" height="120"/><rect x="180" y="880" width="70" height="110"/>
+    <rect x="960" y="880" width="70" height="110"/><rect x="1060" y="860" width="80" height="120"/>
+  </g>
+  <g stroke="#3a2230" stroke-width="5">
+    <path d="M100 860 V 980 M60 920 H 140 M215 880 V 990 M995 880 V 990 M1100 860 V 980 M1060 920 H 1140"/>
+  </g>
+  <path d="M0 1300 L 1200 1300 L 1200 1600 L 0 1600 Z" fill="url(#street)"/>
+  <path d="M420 1300 L 780 1300 L 1000 1600 L 200 1600 Z" fill="#5a3444" opacity="0.6"/>
+  <path d="M0 640 C 300 760 900 760 1200 640" fill="none" stroke="#1c1018" stroke-width="4"/>
+  <path d="M0 560 C 300 680 900 680 1200 560" fill="none" stroke="#1c1018" stroke-width="4"/>
+  <g>
+    <g transform="translate(110 668)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(330 712)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(600 730)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(870 712)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(1090 668)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(220 610) scale(0.8)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(480 645) scale(0.8)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(720 645) scale(0.8)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+    <g transform="translate(980 610) scale(0.8)"><circle r="80" fill="url(#halo)"/><rect x="-28" y="-46" width="56" height="92" rx="26" fill="url(#lantern)"/><rect x="-18" y="-54" width="36" height="10" fill="#2a1418"/><rect x="-18" y="44" width="36" height="10" fill="#2a1418"/></g>
+  </g>
+  <g fill="#ffcf7a" opacity="0.18">
+    <ellipse cx="600" cy="1420" rx="380" ry="60"/>
+  </g>
+  <g transform="translate(600 1180)">
+    <rect x="-140" y="-40" width="280" height="160" fill="#c4372c"/>
+    <path d="M-170 -40 L 170 -40 L 150 -90 L -150 -90 Z" fill="#f4ede0"/>
+    <path d="M-150 -90 L -120 -40 M -90 -90 L -60 -40 M -30 -90 L 0 -40 M 30 -90 L 60 -40 M 90 -90 L 120 -40" stroke="#c4372c" stroke-width="18"/>
+    <rect x="-120" y="-10" width="240" height="60" fill="#f4ede0"/>
+    <text x="0" y="36" font-family="Hiragino Mincho ProN" font-size="44" fill="#c4372c" text-anchor="middle" font-weight="700">⟦FESTIVAL|百鬼夜行祭⟧</text>
+  </g>
+</svg>

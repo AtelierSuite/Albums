@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbe6c8"/>
+      <stop offset="1" stop-color="#f2c79a"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.3" cy="0.2" r="0.8">
+      <stop offset="0" stop-color="#fff6e4" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff6e4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cushion" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7aa6d8"/>
+      <stop offset="1" stop-color="#4f7fb8"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4a95a"/>
+      <stop offset="1" stop-color="#d9823a"/>
+    </linearGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+  <rect width="1200" height="1200" fill="url(#sun)"/>
+  <g stroke="#e7b788" stroke-width="10" opacity="0.5">
+    <path d="M0 260 H 1200 M0 520 H1200"/>
+  </g>
+  <ellipse cx="600" cy="900" rx="470" ry="150" fill="#000" opacity="0.15" filter="url(#shadow)"/>
+  <ellipse cx="600" cy="830" rx="470" ry="170" fill="url(#cushion)"/>
+  <ellipse cx="600" cy="790" rx="420" ry="120" fill="#8fb6e2"/>
+  <g stroke="#4f7fb8" stroke-width="5" opacity="0.5" fill="none">
+    <path d="M260 800 C 400 840 800 840 940 800"/>
+  </g>
+  <g transform="translate(600 720)">
+    <path d="M240 40 C 340 40 380 -60 300 -90 C 260 -104 230 -70 250 -50" fill="none" stroke="url(#fur)" stroke-width="56" stroke-linecap="round"/>
+    <path d="M240 40 C 340 40 380 -60 300 -90" fill="none" stroke="#b9672a" stroke-width="10" stroke-dasharray="20 30" stroke-linecap="round"/>
+    <ellipse cx="20" cy="0" rx="300" ry="150" fill="url(#fur)"/>
+    <g stroke="#c26a2a" stroke-width="16" stroke-linecap="round" opacity="0.7">
+      <path d="M-40 -130 C -30 -90 -40 -60 -60 -40"/>
+      <path d="M40 -140 C 50 -100 40 -60 20 -40"/>
+      <path d="M120 -130 C 130 -90 120 -60 100 -40"/>
+      <path d="M190 -100 C 200 -70 190 -40 170 -20"/>
+    </g>
+    <g transform="translate(-230 -20)">
+      <path d="M-110 -60 L -90 -170 L -20 -110 Z" fill="#e8964a"/>
+      <path d="M-96 -80 L -86 -140 L -46 -104 Z" fill="#f7c6c0"/>
+      <path d="M40 -110 L 100 -160 L 110 -60 Z" fill="#e8964a"/>
+      <path d="M58 -108 L 92 -136 L 96 -80 Z" fill="#f7c6c0"/>
+      <ellipse cx="0" cy="0" rx="140" ry="120" fill="url(#fur)"/>
+      <ellipse cx="0" cy="56" rx="90" ry="56" fill="#fbe2c4"/>
+      <path d="M-74 -6 C -60 8 -40 8 -26 -6" stroke="#4a2c18" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M26 -6 C 40 8 60 8 74 -6" stroke="#4a2c18" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M-10 30 L 10 30 L 0 42 Z" fill="#e2726a"/>
+      <path d="M0 42 C -6 56 -20 58 -26 50 M0 42 C 6 56 20 58 26 50" stroke="#4a2c18" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.9">
+        <path d="M-60 40 L -150 26 M-60 52 L -150 56 M60 40 L 150 26 M60 52 L 150 56"/>
+      </g>
+      <ellipse cx="-50" cy="28" rx="18" ry="10" fill="#f6a2a2" opacity="0.6"/>
+      <ellipse cx="50" cy="28" rx="18" ry="10" fill="#f6a2a2" opacity="0.6"/>
+    </g>
+    <g fill="#fbe2c4">
+      <ellipse cx="-110" cy="120" rx="64" ry="34"/>
+      <ellipse cx="-10" cy="130" rx="64" ry="34"/>
+    </g>
+  </g>
+  <g font-family="Hiragino Sans" font-weight="700" fill="#7a5a3a" opacity="0.7">
+    <text x="300" y="440" font-size="64">z</text>
+    <text x="350" y="380" font-size="84">z</text>
+    <text x="420" y="300" font-size="110">Z</text>
+  </g>
+</svg>

@@ -1,3 +1,4 @@
+import Engine
 import Foundation
 
 extension IntelligentSortManager {

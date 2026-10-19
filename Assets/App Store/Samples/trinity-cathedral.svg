@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fb8e8"/>
+      <stop offset="0.6" stop-color="#d9e6f5"/>
+      <stop offset="1" stop-color="#f7e9e1"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e9e3d8"/>
+      <stop offset="0.5" stop-color="#fbf8f2"/>
+      <stop offset="1" stop-color="#dcd4c6"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6f9fd0"/>
+      <stop offset="1" stop-color="#4b79ad"/>
+    </linearGradient>
+    <radialGradient id="rose" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffe9a8"/>
+      <stop offset="0.35" stop-color="#f29ab0"/>
+      <stop offset="0.7" stop-color="#6aa3dc"/>
+      <stop offset="1" stop-color="#3d5f99"/>
+    </radialGradient>
+    <linearGradient id="lawn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ccc7a"/>
+      <stop offset="1" stop-color="#6aa654"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <g fill="#ffffff" opacity="0.8" filter="url(#soft)">
+    <ellipse cx="220" cy="300" rx="180" ry="40"/><ellipse cx="1000" cy="220" rx="160" ry="36"/>
+    <ellipse cx="900" cy="420" rx="120" ry="26"/>
+  </g>
+  <g transform="translate(600 0)">
+    <path d="M-330 1300 V 640 L -260 520 L -190 640 V 1300 Z" fill="url(#stone)"/>
+    <path d="M190 1300 V 640 L 260 520 L 330 640 V 1300 Z" fill="url(#stone)"/>
+    <path d="M-290 520 L -260 300 L -230 520 Z" fill="url(#roof)"/>
+    <path d="M230 520 L 260 300 L 290 520 Z" fill="url(#roof)"/>
+    <path d="M-262 300 V 250 M262 300 V 250" stroke="#c9a54a" stroke-width="6"/>
+    <path d="M-276 266 H -248 M248 266 H 276" stroke="#c9a54a" stroke-width="6"/>
+    <path d="M-190 1300 V 600 L 0 380 L 190 600 V 1300 Z" fill="url(#stone)"/>
+    <path d="M-210 610 L 0 360 L 210 610" fill="none" stroke="#b8ad98" stroke-width="10"/>
+    <circle cx="0" cy="640" r="120" fill="#cfc6b4"/>
+    <circle cx="0" cy="640" r="104" fill="url(#rose)"/>
+    <g stroke="#f8f4ea" stroke-width="6" fill="none">
+      <circle cx="0" cy="640" r="40"/>
+      <path d="M0 536 V 744 M-104 640 H 104 M-74 566 L 74 714 M74 566 L -74 714"/>
+    </g>
+    <g fill="#6aa3dc">
+      <path d="M-150 820 V 960 H -100 V 820 A 25 25 0 0 0 -150 820 Z"/>
+      <path d="M100 820 V 960 H 150 V 820 A 25 25 0 0 0 100 820 Z"/>
+      <path d="M-300 720 V 840 H -250 V 720 A 25 25 0 0 0 -300 720 Z"/>
+      <path d="M250 720 V 840 H 300 V 720 A 25 25 0 0 0 250 720 Z"/>
+      <path d="M-300 960 V 1080 H -250 V 960 A 25 25 0 0 0 -300 960 Z"/>
+      <path d="M250 960 V 1080 H 300 V 960 A 25 25 0 0 0 250 960 Z"/>
+    </g>
+    <path d="M-80 1300 V 1100 A 80 80 0 0 1 80 1100 V 1300 Z" fill="#6b4a32"/>
+    <path d="M0 1020 V 1300" stroke="#4e3524" stroke-width="6"/>
+    <path d="M-100 1100 A 100 100 0 0 1 100 1100" fill="none" stroke="#c9a54a" stroke-width="8"/>
+    <path d="M0 380 V 300 M-22 330 H 22" stroke="#c9a54a" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <path d="M0 1290 C 300 1270 900 1270 1200 1290 V 1600 H 0 Z" fill="url(#lawn)"/>
+  <path d="M520 1300 L 680 1300 L 820 1600 L 380 1600 Z" fill="#e8dcc6"/>
+  <g fill="#3f7a3a">
+    <ellipse cx="120" cy="1290" rx="90" ry="120"/><ellipse cx="1080" cy="1290" rx="90" ry="120"/>
+  </g>
+  <g fill="#f6b6c8">
+    <circle cx="80" cy="1240" r="10"/><circle cx="140" cy="1200" r="9"/><circle cx="110" cy="1300" r="10"/>
+    <circle cx="1060" cy="1220" r="10"/><circle cx="1110" cy="1280" r="9"/><circle cx="1040" cy="1320" r="10"/>
+  </g>
+  <g fill="#ffffff">
+    <path d="M300 200 c 10 -12 22 -12 30 0 c 8 -12 20 -12 30 0" stroke="#5a6f8a" stroke-width="4" fill="none"/>
+    <path d="M840 140 c 8 -10 18 -10 24 0 c 6 -10 16 -10 24 0" stroke="#5a6f8a" stroke-width="4" fill="none"/>
+  </g>
+</svg>

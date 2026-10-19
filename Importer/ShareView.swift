@@ -1,25 +1,17 @@
-import AVFoundation
+import Engine
 import SwiftUI
-import UniformTypeIdentifiers
 
-// swiftlint:disable:next type_body_length
 struct ShareView: View {
 
-    var itemsManager: SharedItemsManager
+    var session: SaveSession
 
     @State var viewPath: [ViewPath] = []
-    @State var progress: Float = 0
-    @State var total: Float = 0
-    @State var isImporting: Bool = false
-    @State var isCompleted: Bool = false
     @State var isSearching: Bool = false
+    @State var libraryName: String = ""
 
     @AppStorage(wrappedValue: false, "ShareSheetOpenSearch",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var openSearchWhenSharing: Bool
-    @AppStorage(wrappedValue: true, "ShareSheetShowAnimation",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var showAnimationWhenSaving: Bool
     @AppStorage(wrappedValue: false, "ShareSheetQuickImport",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var quickImport: Bool
@@ -31,243 +23,88 @@ struct ShareView: View {
         quickImport && !defaultAlbumID.isEmpty
     }
 
-    var resolvedDefaultAlbumID: String? {
-        defaultAlbumID == "__collection__" ? nil : defaultAlbumID
-    }
-
     var body: some View {
-        VStack(alignment: .center, spacing: 0.0) {
-            if isImporting || hasDefaultAlbum {
-                Group {
-                    if !isCompleted {
-                        VStack(alignment: .center, spacing: 16.0) {
-                            Text("Import.Importing", tableName: "Import")
-                            ProgressView(value: min(progress, total), total: total)
-                                .progressViewStyle(.linear)
-                        }
-                    } else {
-                        VStack(alignment: .center, spacing: 16.0) {
-                            if itemsManager.failedItemCount == 0 {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 64.0, height: 64.0)
-                                    .symbolRenderingMode(.multicolor)
-                                Text("Import.Completed.Text.\(Int(total))", tableName: "Import")
-                            } else {
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 64.0, height: 64.0)
-                                    .symbolRenderingMode(.multicolor)
-                                Text("Importer.DoneText.WithError.\(itemsManager.failedItemCount)", tableName: "Import")
-                            }
-                        }
-                    }
-                }
-                .padding(20.0)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                NavigationStack(path: $viewPath) {
-                    AlbumsScrollView(title: "ViewTitle.Importer",
-                                     isSearching: $isSearching,
-                                     focusSearchOnAppear: openSearchWhenSharing)
-                        .navigationDestination(for: ViewPath.self, destination: { viewPath in
-                            if case .album(let album) = viewPath {
-                                AlbumsScrollView(title: LocalizedStringKey(album.name),
-                                                 parentAlbum: album,
-                                                 isSearching: $isSearching)
-                            } else {
-                                Color.clear
-                            }
-                        })
-                }
-            }
-            if !isImporting || (isCompleted && itemsManager.failedItemCount > 0) {
-                if !hasDefaultAlbum || isCompleted {
-                    VStack(alignment: .center, spacing: 16.0) {
-                        HStack(alignment: .top, spacing: 4.0) {
-                            Group {
-                                Image(systemName: "info.circle")
-                                Text("Importer.Note", tableName: "Import")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                        }
-                        .padding(10.0)
-                        .background(.regularMaterial)
-                        .clipShape(.rect(cornerRadius: 16.0))
-
-                        Button {
-                            if isCompleted {
-                                close()
-                            } else {
-                                total = Float(itemsManager.items.count)
-                                withAnimation(.smooth.speed(2)) {
-                                    isImporting = true
-                                } completion: {
-                                    Task {
-                                        importItems()
-                                    }
+        ZStack {
+            if session.items.isEmpty {
+                NothingToSaveView(session: session)
+            } else if !hasDefaultAlbum {
+                VStack(spacing: 0.0) {
+                    NavigationStack(path: $viewPath) {
+                        AlbumsScrollView(title: "ViewTitle.Importer",
+                                         isSearching: $isSearching,
+                                         focusSearchOnAppear: openSearchWhenSharing)
+                            .navigationDestination(for: ViewPath.self) { viewPath in
+                                if case .album(let album) = viewPath {
+                                    AlbumsScrollView(title: LocalizedStringKey(album.name),
+                                                     parentAlbum: album,
+                                                     isSearching: $isSearching)
+                                } else {
+                                    Color.clear
                                 }
                             }
-                        } label: {
-                            if isCompleted {
-                                Text("Shared.OK")
-                                    .bold()
-                                    .padding(4.0)
-                                    .frame(maxWidth: .infinity)
-                            } else {
-                                Text("Import.ImportHere", tableName: "Import")
-                                    .bold()
-                                    .padding(4.0)
-                                    .frame(maxWidth: .infinity)
-                            }
-                        }
-                        .buttonStyle(.glassProminent)
-                        .buttonBorderShape(.capsule)
-                        .disabled(!itemsManager.isLoaded || itemsManager.items.isEmpty
-                                 || (isSearching && viewPath.isEmpty))
                     }
-                    .padding(20.0)
+                    importButton
                 }
             }
+            SaveSessionOverlay(session: session)
         }
         .background(Color(uiColor: .systemBackground))
-        .overlay {
-            if !itemsManager.isLoaded {
-                ZStack(alignment: .center) {
-                    Color(uiColor: .systemBackground)
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                }
+        .task {
+            libraryName = await LibrariesActor.shared.library(for: DataActor.shared.collectionID)?.name ?? ""
+            if hasDefaultAlbum, !session.items.isEmpty {
+                let albumID = defaultAlbumID == "__collection__" ? nil : defaultAlbumID
+                let album: Album? = if let albumID { await DataActor.shared.album(for: albumID) } else { nil }
+                await save(to: album)
             }
         }
         .onChange(of: viewPath) { _, newPath in
-            if quickImport,
-               let last = newPath.last,
-               case .album(let album) = last,
-               album.albumCount() == 0 {
-                startImport(to: album.id)
-            }
-        }
-        .onChange(of: itemsManager.isLoaded) { _, isLoaded in
-            if isLoaded, hasDefaultAlbum, !itemsManager.items.isEmpty {
-                startImport(to: resolvedDefaultAlbumID)
+            if quickImport, case .album(let album) = newPath.last, album.albumCount() == 0 {
+                Task { await save(to: album) }
             }
         }
     }
 
-    func close() {
-        NotificationCenter.default.post(name: NSNotification.Name("close"), object: nil)
+    private var importButton: some View {
+        VStack(alignment: .center, spacing: 16.0) {
+            HStack(alignment: .top, spacing: 4.0) {
+                Group {
+                    Image(systemName: "info.circle")
+                    Text("Importer.Note", tableName: "Import")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            }
+            .padding(10.0)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 16.0))
+
+            Button {
+                Task { await save(to: albumInViewPath()) }
+            } label: {
+                Text("Import.ImportHere", tableName: "Import")
+                    .bold()
+                    .padding(4.0)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.glassProminent)
+            .buttonBorderShape(.capsule)
+            .disabled(isSearching && viewPath.isEmpty)
+        }
+        .padding(20.0)
     }
 
     func albumInViewPath() -> Album? {
-        if let currentlyDisplayingViewPath = viewPath.last,
-           case .album(let album) = currentlyDisplayingViewPath {
+        if case .album(let album) = viewPath.last {
             return album
         }
         return nil
     }
 
-    func startImport(to albumID: String?) {
-        total = Float(itemsManager.items.count)
-        withAnimation(.smooth.speed(2)) {
-            isImporting = true
-        } completion: {
-            Task {
-                importItems(to: albumID)
-            }
-        }
-    }
-
-    func importItems() {
-        importItems(to: albumInViewPath()?.id)
-    }
-
-    private func importItems(to albumID: String?) {
-        Task {
-            for item in itemsManager.items {
-                await importItem(item, to: albumID, named: Pic.newFilename())
-                await MainActor.run {
-                    progress += 1.0
-                }
-            }
-            await MainActor.run {
-                if !showAnimationWhenSaving {
-                    if itemsManager.failedItemCount == 0 {
-                        UINotificationFeedbackGenerator().notificationOccurred(.success)
-                        close()
-                    } else {
-                        UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                        withAnimation(.smooth.speed(2)) {
-                            isCompleted = true
-                        }
-                    }
-                } else {
-                    withAnimation(.smooth.speed(2)) {
-                        isCompleted = true
-                    } completion: {
-                        if itemsManager.failedItemCount == 0 {
-                            UINotificationFeedbackGenerator().notificationOccurred(.success)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                close()
-                            }
-                        } else {
-                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    func importItem(_ file: Any?, to albumID: String?, named name: String) async {
-        if let url = file as? URL {
-            let uti = UTType(filenameExtension: url.pathExtension)
-            if uti?.conforms(to: .movie) == true || uti?.conforms(to: .video) == true {
-                await importVideo(url, to: albumID, named: url.lastPathComponent)
-                return
-            }
-            if let imageData = try? Data(contentsOf: url),
-               let image = UIImage(data: imageData) {
-                await importItem(image, to: albumID, named: url.lastPathComponent)
-                return
-            }
-        } else if let image = file as? UIImage {
-            if let pngData = image.pngData() {
-                await importPic(name, data: pngData, to: albumID)
-            } else if let jpgData = image.jpegData(compressionQuality: 1.0) {
-                await importPic(name, data: jpgData, to: albumID)
-            } else if let heicData = image.heicData() {
-                await importPic(name, data: heicData, to: albumID)
-            }
-            return
-        }
-        await MainActor.run {
-            itemsManager.failedItemCount += 1
-        }
-    }
-
-    func importPic(_ name: String, data: Data, to albumID: String?) async {
-        await DataActor.shared.createPic(name, data: data, inAlbumWithID: albumID)
-    }
-
-    func importVideo(_ url: URL, to albumID: String?, named name: String) async {
-        guard let videoData = try? Data(contentsOf: url) else {
-            await MainActor.run { itemsManager.failedItemCount += 1 }
-            return
-        }
-        let asset = AVURLAsset(url: url)
-        let duration = (try? await asset.load(.duration))?.seconds ?? 0
-        let ext = (name as NSString).pathExtension.lowercased()
-        await DataActor.shared.createVideo(
-            name,
-            data: videoData,
-            duration: duration,
-            fileExtension: ext.isEmpty ? "mov" : ext,
-            inAlbumWithID: albumID
-        )
+    func save(to album: Album?) async {
+        await session.save(to: .albums(libraryID: DataActor.shared.collectionID,
+                                       libraryName: libraryName,
+                                       albumID: album?.id,
+                                       albumName: album?.name))
     }
 }

@@ -1,4 +1,5 @@
 @preconcurrency import CloudKit
+import Engine
 import Foundation
 
 extension Notification.Name {
@@ -25,7 +26,7 @@ actor SyncMate {
     var isRunning: Bool { engine != nil }
 
     func start() {
-        guard engine == nil else { return }
+        guard engine == nil, !Self.isDisabledForScreenshots else { return }
         let configuration = CKSyncEngine.Configuration(
             database: container.privateCloudDatabase,
             stateSerialization: loadState(),
@@ -134,11 +135,21 @@ actor SyncMate {
         try? await engine.sendChanges()
     }
 
+    private static var isDisabledForScreenshots: Bool {
+        #if DEBUG
+        ScreenshotSeeder.isActive
+        #else
+        false
+        #endif
+    }
+
     func isAccountAvailable() async -> Bool {
-        (try? await container.accountStatus()) == .available
+        guard !Self.isDisabledForScreenshots else { return false }
+        return (try? await container.accountStatus()) == .available
     }
 
     func remoteZoneNames() async -> Set<String>? {
+        guard !Self.isDisabledForScreenshots else { return nil }
         guard let zones = try? await container.privateCloudDatabase.allRecordZones() else { return nil }
         return Set(zones.map { $0.zoneID.zoneName })
     }

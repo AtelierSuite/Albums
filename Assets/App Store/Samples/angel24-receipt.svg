@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1500" viewBox="0 0 900 1500">
+  <defs>
+    <linearGradient id="desk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cfd8e3"/>
+      <stop offset="1" stop-color="#a9b7c8"/>
+    </linearGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="900" height="1500" fill="url(#desk)"/>
+  <g transform="translate(450 750) rotate(-2)">
+    <path d="M-300 -660 H 300 V 640 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 Z" fill="#000" opacity="0.25" filter="url(#shadow)" transform="translate(8 12)"/>
+    <path d="M-300 -660 H 300 V 640 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 l -25 20 l -25 -20 Z" fill="#fdfcf8"/>
+    <g font-family="Hiragino Sans" fill="#2a2a2a">
+      <g transform="translate(0 -560)">
+        <circle cx="-150" cy="0" r="46" fill="#3d8bd9"/>
+        <ellipse cx="-150" cy="-30" rx="34" ry="10" fill="none" stroke="#ffd54a" stroke-width="6"/>
+        <text x="-150" y="16" font-size="44" font-weight="800" fill="#ffffff" text-anchor="middle">24</text>
+        <text x="-80" y="-6" font-size="52" font-weight="800" fill="#3d8bd9">ANGEL 24</text>
+        <text x="-80" y="34" font-size="22" fill="#666">⟦Kivotos Branch|キヴォトス店⟧</text>
+      </g>
+      <text x="0" y="-440" font-size="22" text-anchor="middle" fill="#666">⟦TEL 0120-024-024|電話 0120-024-024⟧</text>
+      <text x="0" y="-406" font-size="22" text-anchor="middle" fill="#666">2026/10/04 (⟦Sun|日⟧) 21:47</text>
+      <path d="M-250 -380 H 250" stroke="#2a2a2a" stroke-width="3" stroke-dasharray="10 8"/>
+      <g font-size="30">
+        <text x="-250" y="-320">⟦Momo Friends Cola|モモフレンズコーラ⟧</text><text x="250" y="-320" text-anchor="end">¥160</text>
+        <text x="-250" y="-260">⟦Tuna Mayo Onigiri|ツナマヨおにぎり⟧</text><text x="250" y="-260" text-anchor="end">¥140</text>
+        <text x="-250" y="-200">⟦Salmon Onigiri|鮭おにぎり⟧</text><text x="250" y="-200" text-anchor="end">¥150</text>
+        <text x="-250" y="-140">⟦Energy Drink ×3|エナジードリンク ×3⟧</text><text x="250" y="-140" text-anchor="end">¥630</text>
+        <text x="-250" y="-80">⟦Strawberry Milk|いちごミルク⟧</text><text x="250" y="-80" text-anchor="end">¥130</text>
+        <text x="-250" y="-20">⟦Pudding|プリン⟧</text><text x="250" y="-20" text-anchor="end">¥180</text>
+        <text x="-250" y="40">⟦Instant Ramen|カップラーメン⟧</text><text x="250" y="40" text-anchor="end">¥220</text>
+        <text x="-250" y="100">⟦Peroro Keychain|ペロロ キーホルダー⟧</text><text x="250" y="100" text-anchor="end">¥800</text>
+      </g>
+      <path d="M-250 140 H 250" stroke="#2a2a2a" stroke-width="3" stroke-dasharray="10 8"/>
+      <g font-size="28" fill="#555">
+        <text x="-250" y="196">⟦Subtotal|小計⟧</text><text x="250" y="196" text-anchor="end">¥2,410</text>
+        <text x="-250" y="244">⟦Tax (8%)|内消費税 (8%)⟧</text><text x="250" y="244" text-anchor="end">¥178</text>
+      </g>
+      <text x="-250" y="320" font-size="44" font-weight="800">⟦TOTAL|合計⟧</text>
+      <text x="250" y="320" font-size="44" font-weight="800" text-anchor="end">¥2,410</text>
+      <g font-size="28" fill="#555">
+        <text x="-250" y="380">⟦Paid (Schale card)|シャーレカード⟧</text><text x="250" y="380" text-anchor="end">¥2,410</text>
+      </g>
+      <path d="M-250 420 H 250" stroke="#2a2a2a" stroke-width="3" stroke-dasharray="10 8"/>
+      <text x="0" y="480" font-size="24" text-anchor="middle" fill="#666">⟦Thank you, Sensei!|いつもありがとうございます、先生⟧</text>
+      <g transform="translate(-200 520)" fill="#2a2a2a">
+        <rect x="0" y="0" width="6" height="70"/><rect x="12" y="0" width="3" height="70"/><rect x="20" y="0" width="8" height="70"/>
+        <rect x="34" y="0" width="3" height="70"/><rect x="42" y="0" width="5" height="70"/><rect x="54" y="0" width="9" height="70"/>
+        <rect x="68" y="0" width="3" height="70"/><rect x="76" y="0" width="6" height="70"/><rect x="88" y="0" width="3" height="70"/>
+        <rect x="96" y="0" width="8" height="70"/><rect x="110" y="0" width="4" height="70"/><rect x="120" y="0" width="7" height="70"/>
+        <rect x="132" y="0" width="3" height="70"/><rect x="140" y="0" width="9" height="70"/><rect x="154" y="0" width="4" height="70"/>
+        <rect x="164" y="0" width="6" height="70"/><rect x="176" y="0" width="3" height="70"/><rect x="184" y="0" width="8" height="70"/>
+        <rect x="198" y="0" width="5" height="70"/><rect x="208" y="0" width="3" height="70"/><rect x="216" y="0" width="9" height="70"/>
+        <rect x="230" y="0" width="4" height="70"/><rect x="240" y="0" width="6" height="70"/><rect x="252" y="0" width="3" height="70"/>
+        <rect x="260" y="0" width="8" height="70"/><rect x="274" y="0" width="5" height="70"/><rect x="284" y="0" width="3" height="70"/>
+        <rect x="292" y="0" width="9" height="70"/><rect x="306" y="0" width="4" height="70"/><rect x="316" y="0" width="7" height="70"/>
+        <rect x="328" y="0" width="3" height="70"/><rect x="336" y="0" width="8" height="70"/><rect x="350" y="0" width="4" height="70"/>
+        <rect x="360" y="0" width="6" height="70"/><rect x="372" y="0" width="3" height="70"/><rect x="380" y="0" width="8" height="70"/>
+        <rect x="394" y="0" width="6" height="70"/>
+      </g>
+    </g>
+  </g>
+</svg>

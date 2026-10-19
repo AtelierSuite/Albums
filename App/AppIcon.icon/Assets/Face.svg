@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <!-- Strokes are outlined into filled shapes because iOS 26 does not render SVG strokes in app icons. -->
-  <g fill="#7D7891">
+  <g fill="#FFFFFF" transform="translate(512 529.7) scale(0.9259) translate(-512 -512)">
     <rect x="-14" y="-14" width="127.6" height="28" rx="14" transform="translate(386.8 425.5) rotate(25.46)"/>
     <rect x="-14" y="-14" width="127.6" height="28" rx="14" transform="translate(476.7 468.3) rotate(154.49)"/>
     <rect x="-14" y="-14" width="127.6" height="28" rx="14" transform="translate(637.2 425.5) rotate(154.54)"/>
     <rect x="-14" y="-14" width="127.6" height="28" rx="14" transform="translate(547.3 468.3) rotate(25.51)"/>
     <path d="M424 564.9A51 51 0 0 0 526 564.9A14 14 0 0 0 498 564.9A23 23 0 0 1 452 564.9A14 14 0 0 0 424 564.9Z"/>
     <path d="M498 564.9A51 51 0 0 0 600 564.9A14 14 0 0 0 572 564.9A23 23 0 0 1 526 564.9A14 14 0 0 0 498 564.9Z"/>
-  </g>
+      </g>
 </svg>

@@ -1,3 +1,5 @@
+import Engine
+
 extension AlbumView {
 
     var preferencesAlbumID: String {

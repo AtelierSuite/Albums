@@ -7,37 +7,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sichern"
+            "value" : "In Albums sichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save Image"
+            "value" : "Save to Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "画像を保存"
+            "value" : "Albumsに保存"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이미지 저장"
+            "value" : "Albums에 저장"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存图片"
+            "value" : "存储到 Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "儲存影像"
+            "value" : "儲存到 Albums"
           }
         }
       }
@@ -49,37 +49,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sichern"
+            "value" : "In Albums sichern"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save Image"
+            "value" : "Save to Albums"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "画像を保存"
+            "value" : "Albumsに保存"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이미지 저장"
+            "value" : "Albums에 저장"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存图片"
+            "value" : "存储到 Albums"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "儲存影像"
+            "value" : "儲存到 Albums"
           }
         }
       }
