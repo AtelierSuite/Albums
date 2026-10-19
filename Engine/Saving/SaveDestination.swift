@@ -6,8 +6,8 @@ public enum SaveDestination: Codable, Sendable, Equatable {
 
     public var title: String {
         switch self {
-        case .albums(let libraryID, let libraryName, _, let albumName):
-            let library = libraryID == PicLibrary.defaultID || libraryName.isEmpty
+        case .albums(_, let libraryName, _, let albumName):
+            let library = libraryName.isEmpty
                 ? String(localized: "Destination.Collection", table: "Saving", bundle: .engine)
                 : libraryName
             return albumName ?? library

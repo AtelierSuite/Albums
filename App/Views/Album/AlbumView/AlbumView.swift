@@ -83,7 +83,7 @@ struct AlbumView: View {
     }
 
     var navigationSubtitleText: String {
-        if currentAlbum != nil && !libraryManager.currentLibrary.isDefault {
+        if currentAlbum != nil {
             return libraryManager.currentLibrary.name
         }
         return ""

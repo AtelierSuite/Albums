@@ -51,10 +51,7 @@ public actor LibrariesActor {
             if DatabaseMigrator.migrationNeeded() {
                 DatabaseMigrator.migrateLibrariesDatabase(database, librariesTable: librariesTable)
             }
-            let defaultExists = try database.scalar(
-                librariesTable.filter(libraryId == PicLibrary.defaultID).count
-            ) > 0
-            if !defaultExists {
+            if try database.scalar(librariesTable.count) == 0 {
                 _ = try database.run(librariesTable.insert(
                     libraryId <- PicLibrary.defaultID,
                     libraryName <- ""
@@ -145,33 +142,56 @@ public actor LibrariesActor {
     // MARK: - Delete
 
     public func deleteLibrary(withID id: String) {
-        guard id != PicLibrary.defaultID else { return }
-
-        _ = try? database.run(tombstonesTable.insert(or: .replace,
-            tombstoneId <- id,
-            tombstoneDeletedAt <- Date.now.timeIntervalSince1970
-        ))
+        if isSyncEnabled(id: id) {
+            _ = try? database.run(tombstonesTable.insert(or: .replace,
+                tombstoneId <- id,
+                tombstoneDeletedAt <- Date.now.timeIntervalSince1970
+            ))
+        }
         let query = librariesTable.filter(libraryId == id)
         _ = try? database.run(query.delete())
+        removeLibraryFiles(for: id)
+        ensureDefaultLibraryIfEmpty()
+    }
 
+    private func ensureDefaultLibraryIfEmpty() {
+        guard ((try? database.scalar(librariesTable.count)) ?? 0) == 0 else { return }
+        _ = try? database.run(librariesTable.insert(or: .ignore,
+            libraryId <- PicLibrary.defaultID,
+            libraryName <- ""
+        ))
+    }
+
+    private func removeLibraryFiles(for id: String) {
         let fileManager = FileManager.default
-        if let appGroupURL = fileManager.containerURL(
+        guard let appGroupURL = fileManager.containerURL(
             forSecurityApplicationGroupIdentifier: "group.com.tsubuzaki.IllustMate"
-        ) {
-            let folderURL = appGroupURL.appendingPathComponent(id)
-            try? fileManager.removeItem(at: folderURL)
+        ) else { return }
+        guard id == PicLibrary.defaultID else {
+            try? fileManager.removeItem(at: appGroupURL.appendingPathComponent(id))
+            return
+        }
+        let databaseFileNames = ["Collection.db", "Hashes.db", "PColors.db", "CoverCache.db",
+                                 "FeaturePrints.db", "AlbumModels.db"]
+        for fileName in databaseFileNames {
+            for suffix in ["", "-wal", "-shm", "-journal"] {
+                try? fileManager.removeItem(at: appGroupURL.appendingPathComponent(fileName + suffix))
+            }
+        }
+        for directoryName in [DataActor.imagesDirectoryName, DataActor.videosDirectoryName] {
+            try? fileManager.removeItem(at: appGroupURL.appendingPathComponent(directoryName))
         }
     }
 }
 
 extension LibrariesActor {
 
-    // MARK: - Sync bookkeeping (registry, excludes the default library)
+    // MARK: - Sync bookkeeping
 
     public func dirtyLibraryIDs() -> [String] {
         let query = librariesTable
             .filter(libraryDirty == true && librarySyncEnabled == true
-                    && libraryMigratedV2 == true && libraryId != PicLibrary.defaultID)
+                    && libraryMigratedV2 == true)
             .select(libraryId)
         return (try? database.safeRows(query).map { $0[libraryId] }) ?? []
     }
@@ -179,16 +199,15 @@ extension LibrariesActor {
     public func unsyncedLibraryIDs() -> [String] {
         let query = librariesTable
             .filter(libraryCKSystemFields == nil && librarySyncEnabled == true
-                    && libraryMigratedV2 == true && libraryId != PicLibrary.defaultID
-                    && libraryName != "")
+                    && libraryMigratedV2 == true
+                    && (libraryName != "" || libraryId == PicLibrary.defaultID))
             .select(libraryId)
         return (try? database.safeRows(query).map { $0[libraryId] }) ?? []
     }
 
     public func confirmedSyncedLibraryIDs() -> [String] {
         let query = librariesTable
-            .filter(librarySyncEnabled == true && libraryCKSystemFields != nil
-                    && libraryId != PicLibrary.defaultID)
+            .filter(librarySyncEnabled == true && libraryCKSystemFields != nil)
             .select(libraryId)
         return (try? database.safeRows(query).map { $0[libraryId] }) ?? []
     }
@@ -275,7 +294,6 @@ extension LibrariesActor {
     }
 
     public func insertRemoteLibraryStub(id: String) {
-        guard id != PicLibrary.defaultID else { return }
         ensureFolder(for: id)
         _ = try? database.run(librariesTable.insert(or: .ignore,
             libraryId <- id,
@@ -288,7 +306,6 @@ extension LibrariesActor {
     }
 
     public func applyRemoteLibrary(_ snapshot: LibrarySyncSnapshot) {
-        guard snapshot.id != PicLibrary.defaultID else { return }
         ensureFolder(for: snapshot.id)
         let exists = ((try? database.scalar(librariesTable.filter(libraryId == snapshot.id).count)) ?? 0) > 0
         if exists {
@@ -312,14 +329,9 @@ extension LibrariesActor {
     }
 
     public func removeLibraryForRemoteDelete(id: String) {
-        guard id != PicLibrary.defaultID else { return }
         _ = try? database.run(librariesTable.filter(libraryId == id).delete())
-        let fileManager = FileManager.default
-        if let appGroupURL = fileManager.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.com.tsubuzaki.IllustMate"
-        ) {
-            try? fileManager.removeItem(at: appGroupURL.appendingPathComponent(id))
-        }
+        removeLibraryFiles(for: id)
+        ensureDefaultLibraryIfEmpty()
     }
 
     private func ensureFolder(for id: String) {

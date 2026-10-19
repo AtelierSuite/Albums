@@ -44,6 +44,13 @@ final class SyncManager {
         await SyncMate.shared.sendChanges()
     }
 
+    func pushLibraryChanges() async {
+        guard await SyncMate.shared.isAccountAvailable() else { return }
+        await SyncMate.shared.start()
+        await SyncMate.shared.enqueueLibraryChanges()
+        await SyncMate.shared.sendChanges()
+    }
+
     func forcePush(forLibrary collectionID: String) async {
         guard await SyncMate.shared.isAccountAvailable() else { return }
         let enabledIDs = await LibrariesActor.shared.syncEnabledLibraryIDs()

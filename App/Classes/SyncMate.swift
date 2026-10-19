@@ -199,7 +199,8 @@ actor SyncMate {
 
     static func libraryCollectionIDs(fromZoneNames zoneNames: Set<String>) -> [String] {
         zoneNames.compactMap { name in
-            name.hasPrefix("Library-") ? String(name.dropFirst("Library-".count)) : nil
+            if name == "DefaultLibrary" { return PicLibrary.defaultID }
+            return name.hasPrefix("Library-") ? String(name.dropFirst("Library-".count)) : nil
         }
     }
 

@@ -54,13 +54,11 @@ struct EditLibrarySheet: View {
                         }
                     }
                 }
-                if !library.isDefault {
-                    Section {
-                        TextField(String(localized: "Libraries.New.Placeholder", table: "Libraries"),
-                                  text: $editedName)
-                    } header: {
-                        Text("Libraries.Edit.Name", tableName: "Libraries")
-                    }
+                Section {
+                    TextField(String(localized: "Libraries.New.Placeholder", table: "Libraries"),
+                              text: $editedName)
+                } header: {
+                    Text("Libraries.Edit.Name", tableName: "Libraries")
                 }
                 Section {
                     Toggle(isOn: Binding(
@@ -142,20 +140,18 @@ struct EditLibrarySheet: View {
                         .frame(maxWidth: .infinity)
                     }
                 }
-                if !library.isDefault {
-                    Section {
-                        Button(role: .destructive) {
-                            if UIDevice.current.userInterfaceIdiom != .phone,
-                               library.id == libraryManager.currentLibrary.id {
-                                isShowingActiveDeleteAlert = true
-                                return
-                            }
-                            expectedDeleteCode = String(format: "%06d", Int.random(in: 0...999_999))
-                            deleteConfirmationCode = ""
-                            libraryToDelete = library
-                        } label: {
-                            Text("Libraries.Delete.Title", tableName: "Libraries")
+                Section {
+                    Button(role: .destructive) {
+                        if UIDevice.current.userInterfaceIdiom != .phone,
+                           library.id == libraryManager.currentLibrary.id {
+                            isShowingActiveDeleteAlert = true
+                            return
                         }
+                        expectedDeleteCode = String(format: "%06d", Int.random(in: 0...999_999))
+                        deleteConfirmationCode = ""
+                        libraryToDelete = library
+                    } label: {
+                        Text("Libraries.Delete.Title", tableName: "Libraries")
                     }
                 }
             }
@@ -184,7 +180,7 @@ struct EditLibrarySheet: View {
         .phonePresentationDetents([.medium, .large])
         .interactiveDismissDisabled()
         .onAppear {
-            editedName = library.isDefault ? "" : library.name
+            editedName = library.name
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
@@ -244,9 +240,7 @@ struct EditLibrarySheet: View {
             if let backupFolderURL {
                 MoreBackupView(destinationURL: backupFolderURL,
                               collectionID: library.id,
-                              libraryName: library.isDefault
-                                  ? String(localized: "Collection.Default", table: "Libraries")
-                                  : library.name)
+                              libraryName: libraryManager.displayName(for: library))
             }
         }
         .sheet(isPresented: $isDuplicateCheckerPresented) {
@@ -277,7 +271,7 @@ struct EditLibrarySheet: View {
                       deleteConfirmationCode == expectedDeleteCode else { return }
                 let wasCurrentLibrary = library.id == libraryManager.currentLibrary.id
                 if wasCurrentLibrary {
-                    libraryManager.switchLibrary(to: PicLibrary())
+                    libraryManager.switchLibrary(to: libraryManager.fallbackLibrary(excluding: library.id))
                 }
                 Task {
                     await libraryManager.deleteLibrary(library)

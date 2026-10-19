@@ -18,9 +18,7 @@ class LibraryManager: ObservableObject {
 
     private func sortedByName(_ libraries: [PicLibrary]) -> [PicLibrary] {
         libraries.sorted { lhs, rhs in
-            if lhs.isDefault { return true }
-            if rhs.isDefault { return false }
-            return lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
+            displayName(for: lhs).localizedCaseInsensitiveCompare(displayName(for: rhs)) == .orderedAscending
         }
     }
 
@@ -33,8 +31,8 @@ class LibraryManager: ObservableObject {
         if let saved = allLibraries.first(where: { $0.id == currentLibraryID }) {
             currentLibrary = saved
         } else {
-            currentLibrary = allLibraries.first(where: { $0.isDefault }) ?? PicLibrary()
-            currentLibraryID = PicLibrary.defaultID
+            currentLibrary = libraries.first ?? PicLibrary()
+            currentLibraryID = currentLibrary.id
         }
         switchActors(to: currentLibrary.id)
         hasLoadedLibraries = true
@@ -45,9 +43,12 @@ class LibraryManager: ObservableObject {
         withAnimation(.smooth.speed(2.0)) {
             libraries = sortedByName(allLibraries)
         }
-        if !currentLibrary.isDefault,
-           !allLibraries.contains(where: { $0.id == currentLibrary.id }) {
-            switchLibrary(to: PicLibrary())
+        if let updated = allLibraries.first(where: { $0.id == currentLibrary.id }) {
+            if updated != currentLibrary {
+                currentLibrary = updated
+            }
+        } else {
+            switchLibrary(to: fallbackLibrary(excluding: currentLibrary.id))
         }
     }
 
@@ -72,7 +73,7 @@ class LibraryManager: ObservableObject {
         where !remoteZoneNames.contains(SyncMate.zoneName(for: id)) {
             await LibrariesActor.shared.removeLibraryForRemoteDelete(id: id)
             if currentLibrary.id == id {
-                switchLibrary(to: PicLibrary())
+                await reloadList()
             }
         }
 
@@ -109,16 +110,25 @@ class LibraryManager: ObservableObject {
         if currentLibrary.id == library.id {
             currentLibrary.name = newName.trimmingCharacters(in: .whitespaces)
         }
+        if await LibrariesActor.shared.isSyncEnabled(id: library.id) {
+            await SyncManager.shared.pushLibraryChanges()
+        }
+    }
+
+    func fallbackLibrary(excluding libraryID: String) -> PicLibrary {
+        libraries.first(where: { $0.id != libraryID }) ?? PicLibrary()
     }
 
     func deleteLibrary(_ library: PicLibrary) async {
-        guard !library.isDefault else { return }
         await OriginalsManager.shared.deleteAllOriginals(in: library.id)
+        let wasSyncEnabled = await LibrariesActor.shared.isSyncEnabled(id: library.id)
         await LibrariesActor.shared.deleteLibrary(withID: library.id)
-        await SyncManager.shared.deleteLibraryFromCloud(library.id)
+        if wasSyncEnabled {
+            await SyncManager.shared.deleteLibraryFromCloud(library.id)
+        }
         if currentLibrary.id == library.id {
-            let defaultLibrary = PicLibrary()
-            switchLibrary(to: defaultLibrary)
+            let remainingLibraries = sortedByName(await LibrariesActor.shared.allLibraries())
+            switchLibrary(to: remainingLibraries.first ?? PicLibrary())
         }
         await loadLibraries()
     }
@@ -133,7 +143,7 @@ class LibraryManager: ObservableObject {
     }
 
     func displayName(for library: PicLibrary) -> String {
-        if library.isDefault {
+        if library.isDefault && library.name.isEmpty {
             return String(localized: "Collection.Default", table: "Libraries")
         }
         return library.name
