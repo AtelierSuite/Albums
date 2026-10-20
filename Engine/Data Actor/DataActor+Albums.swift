@@ -122,6 +122,16 @@ extension DataActor {
         return try? database.pluck(query).map { albumFrom(row: $0, loadChildren: false) }
     }
 
+    public func albumNames() -> [(id: String, name: String)] {
+        let query = albumsTable.select(albumId, albumName).order(albumName.asc)
+        guard let rows = try? database.safeRows(query) else { return [] }
+        return rows.compactMap { row in
+            guard let id = try? row.get(albumId),
+                  let name = try? row.get(albumName) else { return nil }
+            return (id, name)
+        }
+    }
+
     public func createAlbum(_ name: String, parentAlbumID: String? = nil) -> Album {
         let id = UUID().uuidString
         let trimmedName = name.trimmingCharacters(in: .whitespaces)

@@ -50,13 +50,15 @@ enum PicExportError: Error {
 
 enum PicOriginalExporter {
 
-    static func imageFileURL(forPicID id: String, name: String) async -> URL? {
-        let collectionID = DataActor.shared.collectionID
-        var data = await DataActor.shared.imageData(forPicWithID: id)
-        if data == nil {
-            data = await OriginalsManager.shared.fetchOriginal(picID: id, in: collectionID)
+    static func imageData(forPicID id: String, in collectionID: String) async -> Data? {
+        if let data = await DataActor.instance(for: collectionID).imageData(forPicWithID: id) {
+            return data
         }
-        guard let data else { return nil }
+        return await OriginalsManager.shared.fetchOriginal(picID: id, in: collectionID)
+    }
+
+    static func imageFileURL(forPicID id: String, name: String) async -> URL? {
+        guard let data = await imageData(forPicID: id, in: DataActor.shared.collectionID) else { return nil }
         let url = temporaryURL(base: name, ext: imageFileExtension(for: data))
         do {
             try data.write(to: url)
@@ -123,14 +125,14 @@ enum PicOriginalExporter {
         return url
     }
 
-    private static func filenameStem(from name: String) -> String {
+    static func filenameStem(from name: String) -> String {
         let trimmed = (name as NSString).deletingPathExtension
         return (trimmed.isEmpty ? name : trimmed)
             .replacingOccurrences(of: "/", with: "-")
             .replacingOccurrences(of: ":", with: "-")
     }
 
-    private static func imageFileExtension(for data: Data) -> String {
+    static func imageFileExtension(for data: Data) -> String {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil),
               let uti = CGImageSourceGetType(source),
               let type = UTType(uti as String),

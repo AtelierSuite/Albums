@@ -1,24 +1,13 @@
 import AppIntents
 import WidgetKit
 
-struct AlbumEntity: AppEntity {
-    static var typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("Photostand.Entity.Album", table: "Widgets")
-    )
-    static var defaultQuery = AlbumEntityQuery()
-
-    var id: String
-    var libraryID: String
-    var name: String
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(name)")
-    }
+extension AlbumEntity {
+    static let defaultQuery = AlbumEntityQuery()
 }
 
 struct GridAlbumEntity: AppEntity {
     static var typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("Photostand.Entity.Album", table: "Widgets")
+        name: LocalizedStringResource("Entity.Album", table: "Intents")
     )
     static var defaultQuery = GridAlbumEntityQuery()
 

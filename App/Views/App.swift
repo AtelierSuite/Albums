@@ -100,6 +100,7 @@ struct IllustMateApp: App {
             }
             #endif
             await libraryManager.loadLibraries()
+            AlbumsShortcuts.updateAppShortcutParameters()
             #if DEBUG
             if didSeed {
                 navigation.signalDataChanged()
@@ -148,17 +149,7 @@ struct IllustMateApp: App {
             } else if url.scheme == "picmate", url.host == "album",
                       let albumID = url.pathComponents.dropFirst().first {
                 Task {
-                    if let album = await DataActor.shared.album(for: albumID) {
-                        navigation.popAll()
-                        if UIDevice.current.userInterfaceIdiom == .phone {
-                            if libraryManager.isPhotosModeEnabled {
-                                libraryManager.switchLibrary(to: libraryManager.currentLibrary)
-                            }
-                            navigation.collectionTabPath = [.library(id: libraryManager.currentLibrary.id)]
-                        }
-                        try? await Task.sleep(for: .milliseconds(250))
-                        navigation.push(.album(album: album), for: .collection)
-                    }
+                    await open(.album(id: albumID, libraryID: libraryManager.currentLibrary.id))
                 }
             }
             if url.scheme == "picmate", url.host == "internals" {
@@ -170,6 +161,12 @@ struct IllustMateApp: App {
             if url.scheme == "picmate", url.host == "reonboard" {
                 presentWelcome()
             }
+        }
+        .onChange(of: IntentNavigator.shared.pendingDestination, initial: true) { _, _ in
+            openPendingIntentDestination()
+        }
+        .onChange(of: libraryManager.hasLoadedLibraries) { _, _ in
+            openPendingIntentDestination()
         }
         .onChange(of: importedURL) { _, newValue in
             if newValue != nil {
@@ -289,6 +286,7 @@ struct IllustMateApp: App {
                     scheduleWidgetRefresh()
                     scheduleICloudSync()
                     webServer.stop()
+                    AlbumsShortcuts.updateAppShortcutParameters()
                 }
                 if newValue == .active {
                     Task { await SyncManager.shared.refresh() }
@@ -380,6 +378,40 @@ extension IllustMateApp {
         #else
         nil
         #endif
+    }
+
+    func openPendingIntentDestination() {
+        guard libraryManager.hasLoadedLibraries,
+              let destination = IntentNavigator.shared.pendingDestination else { return }
+        IntentNavigator.shared.pendingDestination = nil
+        Task {
+            await open(destination)
+        }
+    }
+
+    func open(_ destination: IntentNavigator.Destination) async {
+        switch destination {
+        case .library(let libraryID):
+            guard let library = await LibrariesActor.shared.library(for: libraryID) else { return }
+            showLibrary(library)
+        case .album(let albumID, let libraryID):
+            guard let library = await LibrariesActor.shared.library(for: libraryID),
+                  let album = await DataActor.instance(for: libraryID).album(for: albumID) else { return }
+            showLibrary(library)
+            try? await Task.sleep(for: .milliseconds(250))
+            navigation.push(.album(album: album), for: .collection)
+        }
+    }
+
+    func showLibrary(_ library: PicLibrary) {
+        if library.id != libraryManager.currentLibrary.id || libraryManager.isPhotosModeEnabled {
+            libraryManager.switchLibrary(to: library)
+            navigation.signalDataChanged()
+        }
+        navigation.popAll()
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            navigation.collectionTabPath = [.library(id: library.id)]
+        }
     }
 
     func presentWelcomeIfNeeded() {
