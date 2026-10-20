@@ -26,6 +26,22 @@ extension OriginalsManager {
         }
     }
 
+    func coordinatedWrite(_ data: Data, to destination: URL) async -> Bool {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let coordinator = NSFileCoordinator()
+                var coordinationError: NSError?
+                var success = false
+                coordinator.coordinate(
+                    writingItemAt: destination, options: .forReplacing, error: &coordinationError
+                ) { writeURL in
+                    success = (try? data.write(to: writeURL, options: .atomic)) != nil
+                }
+                continuation.resume(returning: success && coordinationError == nil)
+            }
+        }
+    }
+
     func coordinatedReadData(at url: URL) async -> Data? {
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {

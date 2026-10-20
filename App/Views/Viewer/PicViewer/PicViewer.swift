@@ -40,6 +40,7 @@ struct PicViewer: View {
     @State var isSwipeTracking: Bool = false
     @State var swipeContentWidth: CGFloat = 0.0
     @State var pendingSwipeTarget: Int?
+    @State var photoContainerSize: CGSize = .zero
 
     var isLandscape: Bool {
         verticalSizeClass == .compact
@@ -55,11 +56,7 @@ struct PicViewer: View {
     }
 
     var shareImage: Image {
-        if let image = currentImage, let cgImage = image.cgImage {
-            Image(cgImage, scale: image.scale, label: Text(""))
-        } else {
-            Image(uiImage: UIImage())
-        }
+        Image(uiImage: currentImage ?? UIImage())
     }
 
     var body: some View {
@@ -73,19 +70,24 @@ struct PicViewer: View {
             switch backgroundType {
             case .immersive:
                 if let backgroundImage = currentImage {
-                    Canvas { context, size in
+                    Canvas { [edit = displayedOrientationEdit.normalized] context, size in
                         context.addFilter(.blur(radius: 40))
                         context.addFilter(.brightness(colorScheme == .dark ? -0.5 : 0.1))
                         let image = Image(uiImage: backgroundImage)
                         let imageSize = backgroundImage.size
-                        let scaleX = size.width / imageSize.width
-                        let scaleY = size.height / imageSize.height
+                        let drawnSize = edit.swapsDimensions
+                            ? CGSize(width: imageSize.height, height: imageSize.width) : imageSize
+                        let scaleX = size.width / drawnSize.width
+                        let scaleY = size.height / drawnSize.height
                         let scale = max(scaleX, scaleY)
                         let drawWidth = imageSize.width * scale
                         let drawHeight = imageSize.height * scale
+                        context.translateBy(x: size.width / 2, y: size.height / 2)
+                        context.scaleBy(x: edit.isMirrored ? -1.0 : 1.0, y: 1.0)
+                        context.rotate(by: .degrees(Double(edit.quarterTurns) * -90.0))
                         let drawRect = CGRect(
-                            x: (size.width - drawWidth) / 2,
-                            y: (size.height - drawHeight) / 2,
+                            x: -drawWidth / 2,
+                            y: -drawHeight / 2,
                             width: drawWidth,
                             height: drawHeight
                         )
@@ -127,12 +129,6 @@ struct PicViewer: View {
             }
             Button("Shared.Cancel", role: .cancel) { }
         }
-        .alert("Shared.DeleteConfirmation.Pic", isPresented: $isConfirmingDeletePic) {
-            Button("Shared.Yes", role: .destructive) {
-                deleteDisplayedPic()
-            }
-            Button("Shared.No", role: .cancel) { }
-        }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack(spacing: 2.0) {
@@ -154,85 +150,38 @@ struct PicViewer: View {
                     }
                 }
             }
+            if pipManager.isPossible, viewer.displayedPic?.isVideo != true {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Shared.PictureInPicture",
+                           systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
+                        togglePictureInPicture()
+                    }
+                    .disabled(currentImage == nil || isEditingOrientation)
+                }
+            }
             if isLandscape {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    if viewer.displayedPic?.isVideo == true {
-                        if let videoURL = viewer.displayedVideoURL {
-                            ShareLink(
-                                "Shared.Share",
-                                item: videoURL,
-                                preview: SharePreview(displayedPicName)
-                            )
-                        }
-                    } else {
-                        if pipManager.isPossible {
-                            Button("Shared.PictureInPicture",
-                                   systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
-                                togglePictureInPicture()
-                            }
-                            .disabled(currentImage == nil)
-                        }
-                        Button("Shared.Copy", systemImage: "doc.on.doc") {
-                            if let image = currentImage {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                        .disabled(currentImage == nil)
-                        ShareLink(
-                            "Shared.Share",
-                            item: shareImage,
-                            preview: SharePreview(
-                                displayedPicName,
-                                image: shareImage
-                            )
-                        )
-                        .disabled(currentImage == nil)
+                    shareButton
+                    if viewer.displayedPic?.isVideo != true {
+                        rotateButton
+                        flipButton
                     }
+                    deleteButton
                 }
             } else {
-                if viewer.displayedPic?.isVideo == true {
-                    ToolbarSpacer(.flexible, placement: .bottomBar)
+                ToolbarItem(placement: .bottomBar) {
+                    shareButton
+                }
+                ToolbarSpacer(.flexible, placement: .bottomBar)
+                if viewer.displayedPic?.isVideo != true {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        if let videoURL = viewer.displayedVideoURL {
-                            ShareLink(
-                                "Shared.Share",
-                                item: videoURL,
-                                preview: SharePreview(displayedPicName)
-                            )
-                        }
-                    }
-                } else {
-                    if pipManager.isPossible {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Button("Shared.PictureInPicture",
-                                   systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
-                                togglePictureInPicture()
-                            }
-                            .disabled(currentImage == nil)
-                        }
+                        rotateButton
+                        flipButton
                     }
                     ToolbarSpacer(.flexible, placement: .bottomBar)
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Shared.Copy", systemImage: "doc.on.doc") {
-                            if let image = currentImage {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                        .disabled(currentImage == nil)
-                        ShareLink(
-                            "Shared.Share",
-                            item: shareImage,
-                            preview: SharePreview(
-                                displayedPicName,
-                                image: shareImage
-                            )
-                        )
-                        .disabled(currentImage == nil)
-                    }
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    deleteButton
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -246,14 +195,20 @@ struct PicViewer: View {
                         renamePicText = displayedPicName
                         isRenamePicPresented = true
                     }
+                    if viewer.displayedPic?.isVideo != true {
+                        Button("Shared.Copy", systemImage: "doc.on.doc") {
+                            if let image = currentImage {
+                                UIPasteboard.general.image = image
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                                CopiedToast.showCopied()
+                            }
+                        }
+                        .disabled(currentImage == nil || isEditingOrientation)
+                    }
                     if canShowInAlbum {
                         Button("Shared.ShowInAlbum", systemImage: "rectangle.stack") {
                             showInAlbum()
                         }
-                    }
-                    Divider()
-                    Button("Shared.Delete", systemImage: "trash", role: .destructive) {
-                        isConfirmingDeletePic = true
                     }
                 }
             }

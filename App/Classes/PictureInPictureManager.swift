@@ -122,7 +122,7 @@ class PictureInPictureManager: NSObject {
     // MARK: - Video Creation
 
     private nonisolated static func createVideo(from image: UIImage) -> URL? {
-        guard let cgImage = image.cgImage else { return nil }
+        guard let cgImage = uprightCGImage(from: image) else { return nil }
 
         let width = cgImage.width
         let height = cgImage.height
@@ -177,6 +177,15 @@ class PictureInPictureManager: NSObject {
         semaphore.wait()
 
         return writer.status == .completed ? outputURL : nil
+    }
+
+    private nonisolated static func uprightCGImage(from image: UIImage) -> CGImage? {
+        guard image.imageOrientation != .up else { return image.cgImage }
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = image.scale
+        return UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
+            image.draw(at: .zero)
+        }.cgImage
     }
 
     private nonisolated static func createPixelBuffer(

@@ -47,7 +47,10 @@ class ViewerManager {
         failedDownloadPicID != nil && failedDownloadPicID == displayedPicID
     }
 
+    var orientationEdits: [String: PicOrientationEdit] = [:]
+
     @ObservationIgnored var imageCache: [String: UIImage] = [:]
+    @ObservationIgnored var orientationSessions: [String: OrientationEditSession] = [:]
     @ObservationIgnored private var prefetchTasks: [String: Task<Void, Never>] = [:]
     @ObservationIgnored private let downloadMonitor = CloudDownloadMonitor()
 
@@ -74,7 +77,7 @@ class ViewerManager {
             task.cancel()
         }
         prefetchTasks.removeAll()
-        imageCache.removeAll()
+        imageCache = imageCache.filter { orientationSessions[$0.key] != nil }
     }
 
     func previewImage(at index: Int) -> UIImage? {
@@ -88,6 +91,7 @@ class ViewerManager {
     func removeDisplayedPicAndShowNeighbor() -> Bool {
         let removedID = displayedPicID
         let removedIndex = currentIndex
+        discardOrientationEdits(forPicIDs: [removedID])
         allPics.removeAll { $0.id == removedID }
         imageCache.removeValue(forKey: removedID)
         prefetchTasks.removeValue(forKey: removedID)?.cancel()
@@ -100,6 +104,7 @@ class ViewerManager {
     }
 
     func removePics(withIDs deletedIDs: Set<String>) {
+        discardOrientationEdits(forPicIDs: deletedIDs)
         if deletedIDs.contains(displayedPicID) {
             clearDisplay()
             return
@@ -338,7 +343,7 @@ class ViewerManager {
         let keepRange = max(0, currentIndex - cacheWindow)...min(allPics.count - 1, currentIndex + cacheWindow)
         let keepIDs = Set(allPics[keepRange].map(\.id))
 
-        for key in imageCache.keys where !keepIDs.contains(key) {
+        for key in imageCache.keys where !keepIDs.contains(key) && orientationSessions[key] == nil {
             imageCache.removeValue(forKey: key)
         }
     }
