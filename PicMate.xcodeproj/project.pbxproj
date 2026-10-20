@@ -210,6 +210,9 @@
 		E4C47BEF2F66BEB200BDF3F8 /* Exceptions for "Shared" folder in "Share with PicMate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Intents/AlbumEntity.swift,
+				Intents/LibraryEntity.swift,
+				Strings/Intents.xcstrings,
 				Strings/More.xcstrings,
 				Strings/Photos.xcstrings,
 				Strings/Tips.xcstrings,
@@ -272,6 +275,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				Intents/AlbumEntity.swift,
+				Intents/LibraryEntity.swift,
+				Strings/Intents.xcstrings,
 				Strings/Localizable.xcstrings,
 			);
 			target = E4E717BB2F5F09CA000C13CB /* Photostand */;

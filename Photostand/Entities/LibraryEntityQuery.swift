@@ -1,28 +1,11 @@
 import AppIntents
 import WidgetKit
 
-struct LibraryEntity: AppEntity {
-    static var typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("Photostand.Entity.Library", table: "Widgets")
-    )
-    static var defaultQuery = LibraryEntityQuery()
-
-    var id: String
-    var name: String
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(name)")
-    }
-
-    static func displayName(forID id: String, name: String) -> String {
-        if id == PhotostandDatabase.defaultLibraryID || name.isEmpty {
-            return String(localized: "Library.Default", table: "Widgets")
-        }
-        return name
-    }
+extension LibraryEntity {
+    static let defaultQuery = LibraryEntityQuery()
 
     static func entity(from record: PhotostandDatabase.LibraryRecord) -> LibraryEntity {
-        LibraryEntity(id: record.id, name: displayName(forID: record.id, name: record.name))
+        LibraryEntity(id: record.id, name: displayName(for: record.name))
     }
 }
 
