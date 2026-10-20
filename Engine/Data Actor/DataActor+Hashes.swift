@@ -9,6 +9,15 @@ extension DataActor {
         return rows.compactMap { try? $0.get(picId) }
     }
 
+    public func picAlbumIDs() -> [(picID: String, albumID: String?)] {
+        let query = picsTable.select(picId, picAlbumId)
+        guard let rows = try? database.safeRows(query) else { return [] }
+        return rows.compactMap { row in
+            guard let id = try? row.get(picId) else { return nil }
+            return (id, (try? row.get(picAlbumId)) ?? nil)
+        }
+    }
+
     public func picIDs(inAlbumWithID albumID: String) -> [String] {
         let query = picsTable.filter(picAlbumId == albumID).select(picId)
         guard let rows = try? database.safeRows(query) else { return [] }
