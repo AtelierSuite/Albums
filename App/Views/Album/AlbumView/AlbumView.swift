@@ -73,6 +73,7 @@ struct AlbumView: View {
     @State var isIntelligentSortPresented: Bool = false
     @State var hasCompletedInitialLoad: Bool = false
     @State var movePayload: LibraryMovePayload?
+    @State var highlightedPicID: String?
 
     var displayedAlbums: [Album] {
         searchResults ?? albums
@@ -110,8 +111,20 @@ struct AlbumView: View {
             )))
     }
 
+    var contentWithReveal: some View {
+        ScrollViewReader { proxy in
+            mainContent
+                .onChange(of: hasFetchedPics) { _, _ in
+                    revealPicIfNeeded(with: proxy)
+                }
+                .onChange(of: navigation.picRevealRequest) { _, _ in
+                    revealPicIfNeeded(with: proxy)
+                }
+        }
+    }
+
     var contentWithSheets: some View {
-        mainContent
+        contentWithReveal
             .toolbar {
                 toolbarContent
             }

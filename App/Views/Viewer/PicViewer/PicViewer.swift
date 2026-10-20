@@ -9,6 +9,7 @@ struct PicViewer: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ViewerManager.self) var viewer
     @EnvironmentObject var navigation: NavigationManager
+    @EnvironmentObject var libraryManager: LibraryManager
     @Environment(PictureInPictureManager.self) var pipManager
 
     @AppStorage(viewerFitToScreenKey,
@@ -41,6 +42,11 @@ struct PicViewer: View {
 
     var isLandscape: Bool {
         verticalSizeClass == .compact
+    }
+
+    var canShowInAlbum: Bool {
+        guard viewer.allowsShowInAlbum, let displayedPic = viewer.displayedPic else { return false }
+        return viewer.origin != .album(id: displayedPic.containingAlbumID)
     }
 
     var currentImage: UIImage? {
@@ -233,6 +239,11 @@ struct PicViewer: View {
                     Button("Shared.Rename", systemImage: "pencil") {
                         renamePicText = displayedPicName
                         isRenamePicPresented = true
+                    }
+                    if canShowInAlbum {
+                        Button("Shared.ShowInAlbum", systemImage: "rectangle.stack") {
+                            showInAlbum()
+                        }
                     }
                     Divider()
                     Button("Shared.Delete", systemImage: "trash", role: .destructive) {

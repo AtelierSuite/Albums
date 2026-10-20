@@ -336,4 +336,14 @@ extension PicViewer {
             }
         }
     }
+
+    func showInAlbum() {
+        guard let pic = viewer.displayedPic else { return }
+        let albumID = pic.containingAlbumID
+        let libraryID = libraryManager.currentLibrary.id
+        viewer.origin = .album(id: albumID)
+        Task {
+            await navigation.showInAlbum(picID: pic.id, albumID: albumID, libraryID: libraryID)
+        }
+    }
 }

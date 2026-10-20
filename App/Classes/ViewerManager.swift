@@ -4,8 +4,19 @@ import Foundation
 import StoreKit
 import SwiftUI
 
+enum ViewerOrigin: Equatable, Sendable {
+    case album(id: String?)
+    case elsewhere
+}
+
 @MainActor @Observable
 class ViewerManager {
+
+    let allowsShowInAlbum: Bool
+
+    init(allowsShowInAlbum: Bool = true) {
+        self.allowsShowInAlbum = allowsShowInAlbum
+    }
 
     static let picOpenCountKey = "PicOpenCount"
 
@@ -22,6 +33,7 @@ class ViewerManager {
 
     var allPics: [Pic] = []
     var currentIndex: Int = 0
+    var origin: ViewerOrigin = .elsewhere
 
     var hasNext: Bool { currentIndex < allPics.count - 1 }
     var hasPrevious: Bool { currentIndex > 0 }
@@ -56,6 +68,7 @@ class ViewerManager {
         displayedVideoURL = nil
         allPics = []
         currentIndex = 0
+        origin = .elsewhere
         for task in prefetchTasks.values {
             task.cancel()
         }
@@ -135,7 +148,9 @@ class ViewerManager {
         }
     }
 
-    func setDisplay(_ pic: Pic, in pics: [Pic], completion: @escaping @MainActor @Sendable () -> Void) {
+    func setDisplay(_ pic: Pic, in pics: [Pic], origin: ViewerOrigin = .elsewhere,
+                    completion: @escaping @MainActor @Sendable () -> Void) {
+        self.origin = origin
         allPics = pics
         currentIndex = pics.firstIndex(where: { $0.id == pic.id }) ?? 0
         setDisplay(pic, completion: completion)

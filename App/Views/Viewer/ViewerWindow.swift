@@ -13,7 +13,7 @@ struct ViewerWindowContent: View {
 
     let value: ViewerWindowValue
 
-    @State private var viewer = ViewerManager()
+    @State private var viewer = ViewerManager(allowsShowInAlbum: false)
     @State private var photosViewer = PhotosViewerManager()
     @State private var hasLoaded: Bool = false
 

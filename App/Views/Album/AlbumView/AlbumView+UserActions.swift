@@ -177,7 +177,7 @@ extension AlbumView {
         } else {
             let picCopy = pic
             if UIDevice.current.userInterfaceIdiom == .phone {
-                viewer.setDisplay(picCopy, in: pics) { [navigation] in
+                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { [navigation] in
                     navigation.push(.picViewer(namespace: namespace), for: .collection)
                 }
             } else {
@@ -186,10 +186,10 @@ extension AlbumView {
                     openWindow(value: ViewerWindowValue.pic(
                         selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
                 } else {
-                    viewer.setDisplay(picCopy, in: pics) { }
+                    viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
                 }
 #else
-                viewer.setDisplay(picCopy, in: pics) { }
+                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
 #endif
             }
         }

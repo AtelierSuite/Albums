@@ -13,6 +13,7 @@ struct PicsGrid<Content: View>: View {
     @State var enableSelection: Bool = true
     var columnCount: Int = 4
     var style: ViewStyle = .grid
+    var highlightedPicID: String?
     var isSelected: ((Pic) -> Bool)?
     var onSelect: (Pic) -> Void
     var selectedCount: () -> Int
@@ -123,6 +124,13 @@ struct PicsGrid<Content: View>: View {
                          aspectRatios[pic.id] = ratio
                      }
                  } : nil)
+            .overlay {
+                if highlightedPicID == pic.id {
+                    RoundedRectangle(cornerRadius: 4.0)
+                        .strokeBorder(.tint, lineWidth: 3.0)
+                        .transition(.opacity)
+                }
+            }
             .overlay {
                 if isSelecting {
                     if let isSelected {

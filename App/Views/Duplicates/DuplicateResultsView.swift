@@ -99,7 +99,7 @@ struct DuplicateGroupSection: View {
     @Binding var selectedForDeletion: Set<String>
     var onDelete: (Set<String>) -> Void
 
-    @State var comparisonViewerManager = ViewerManager()
+    @State var comparisonViewerManager = ViewerManager(allowsShowInAlbum: false)
     @State var isShowingComparison: Bool = false
     @State var isConfirmingDelete: Bool = false
 
