@@ -9,7 +9,7 @@ struct RecentlyDeletedAlbumGridLabel: View {
             RecentlyDeletedAlbumCover(length: length)
             Text("RecentlyDeleted.Title", tableName: "Albums")
                 .font(.caption2.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .padding(.horizontal, 1.0)
@@ -29,11 +29,11 @@ struct RecentlyDeletedAlbumListRow: View {
             RecentlyDeletedAlbumCover(length: 48.0)
             VStack(alignment: .leading, spacing: 2.0) {
                 Text("RecentlyDeleted.Title", tableName: "Albums")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
                     .lineLimit(1)
                 Text("RecentlyDeleted.Count.\(count)", tableName: "Albums")
                     .font(.caption)
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
             Spacer(minLength: 0)
@@ -65,7 +65,7 @@ struct RecentlyDeletedAlbumCover: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: side * 0.32, height: side * 0.32)
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
