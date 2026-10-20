@@ -12,7 +12,6 @@ struct AlbumCover: View {
     var secondaryImage: Image?
     var tertiaryImage: Image?
     var isDownloading: Bool = false
-    var symbol: String?
 
     init(
         name: String,
@@ -22,8 +21,7 @@ struct AlbumCover: View {
         primaryImage: Image? = nil,
         secondaryImage: Image? = nil,
         tertiaryImage: Image? = nil,
-        isDownloading: Bool = false,
-        symbol: String? = nil
+        isDownloading: Bool = false
     ) {
         self.name = name
         self.length = length
@@ -33,13 +31,11 @@ struct AlbumCover: View {
         self.secondaryImage = secondaryImage
         self.tertiaryImage = tertiaryImage
         self.isDownloading = isDownloading
-        self.symbol = symbol
     }
 
     var body: some View {
         Canvas { context, size in
             let itemCountTag = "itemCount"
-            let symbolTag = "symbol"
             // The canvas is physically larger than the layout size (via frame/padding)
             // to prevent clipping of rotated cards and shadows. Scale factor undoes
             // the oversizing so cards appear at the intended 92% of layout size.
@@ -121,8 +117,7 @@ struct AlbumCover: View {
                     ctx.stroke(cardPath, with: .color(.primary.opacity(0.15)), lineWidth: 0.5)
                 }
             } else {
-                let gradColors = symbol == nil ? Color.gradient(from: name)
-                    : (primary: Color(uiColor: .systemGray2), secondary: Color(uiColor: .systemGray))
+                let gradColors = Color.gradient(from: name)
                 var front = context
                 front.addFilter(.shadow(
                     color: .black.opacity(0.25), radius: 2, x: 0, y: logicalH * 0.015
@@ -135,15 +130,6 @@ struct AlbumCover: View {
                         endPoint: CGPoint(x: cardRect.maxX, y: cardRect.maxY)
                     )
                 )
-            }
-
-            if primaryImage == nil, let resolved = context.resolveSymbol(id: symbolTag) {
-                let symbolScale = cardH * 0.4 / max(resolved.size.width, resolved.size.height)
-                let symbolW = resolved.size.width * symbolScale
-                let symbolH = resolved.size.height * symbolScale
-                let symbolY = logicalW >= 80 ? cardRect.midY - cardH * 0.06 : cardRect.midY
-                context.draw(resolved, in: CGRect(x: cardRect.midX - symbolW / 2, y: symbolY - symbolH / 2,
-                                                  width: symbolW, height: symbolH))
             }
 
             if isDownloading {
@@ -159,16 +145,10 @@ struct AlbumCover: View {
                 context.draw(resolved, at: countOrigin, anchor: .center)
             }
         } symbols: {
-            AlbumItemCount(picCount: picCount, albumCount: albumCount, includesAlbums: symbol == nil)
+            AlbumItemCount(picCount: picCount, albumCount: albumCount)
                 .foregroundStyle(.white)
                 .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
                 .tag("itemCount")
-            if let symbol {
-                Image(systemName: symbol)
-                    .font(.system(size: 100.0, weight: .medium))
-                    .foregroundStyle(.white)
-                    .tag("symbol")
-            }
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(width: length.map { $0 * 1.16 }, height: length.map { $0 * 1.16 })

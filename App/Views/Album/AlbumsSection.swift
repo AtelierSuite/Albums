@@ -46,7 +46,7 @@ struct AlbumsSection<Content: View>: View {
                     }
                     if let recentlyDeletedCount {
                         NavigationLink(value: ViewPath.recentlyDeleted) {
-                            RecentlyDeletedAlbumGridLabel(count: recentlyDeletedCount)
+                            RecentlyDeletedAlbumGridLabel()
                         }
                         .buttonStyleAdaptive()
                     }
@@ -96,7 +96,7 @@ struct AlbumsSection<Content: View>: View {
                         }
                         if let recentlyDeletedCount {
                             NavigationLink(value: ViewPath.recentlyDeleted) {
-                                RecentlyDeletedAlbumGridLabel(count: recentlyDeletedCount, length: 80.0)
+                                RecentlyDeletedAlbumGridLabel(length: 80.0)
                             }
                             .buttonStyleAdaptive()
                         }

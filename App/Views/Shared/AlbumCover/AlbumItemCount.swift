@@ -5,12 +5,10 @@ struct AlbumItemCount: View {
 
     let picCount: Int
     let albumCount: Int
-    var includesAlbums: Bool = true
 
-    init(picCount: Int, albumCount: Int, includesAlbums: Bool = true) {
+    init(picCount: Int, albumCount: Int) {
         self.picCount = picCount
         self.albumCount = albumCount
-        self.includesAlbums = includesAlbums
     }
 
     init(of album: Album) {
@@ -29,9 +27,7 @@ struct AlbumItemCount: View {
                 }
             } else {
                 iconAndLabel(0, systemImage: "photo.fill")
-                if includesAlbums {
-                    iconAndLabel(0, systemImage: "rectangle.stack.fill")
-                }
+                iconAndLabel(0, systemImage: "rectangle.stack.fill")
             }
         }
         .font(.system(size: 10.0, weight: .semibold, design: .rounded))
