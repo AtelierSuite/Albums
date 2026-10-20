@@ -533,47 +533,6 @@
         }
       }
     },
-    "Albums.NoSearchResults" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keine Alben gefunden."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No albums found."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アルバムが見つかりません。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "앨범을 찾을 수 없습니다."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未找到相册。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "找不到相簿。"
-          }
-        }
-      }
-    },
     "Albums.Pics" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -703,37 +662,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alben und Bilder durchsuchen"
+            "value" : "Suchen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Search Albums and Pics"
+            "value" : "Search Library"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アルバムと画像を検索"
+            "value" : "ライブラリを検索"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "앨범 및 사진 검색"
+            "value" : "라이브러리 검색"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "搜索相册和图片"
+            "value" : "搜索资料库"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "搜尋相簿和圖片"
+            "value" : "搜尋資料庫"
           }
         }
       }
