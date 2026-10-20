@@ -975,6 +975,47 @@
         }
       }
     },
+    "Saving.Failed.MissingLibrary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Bibliothek existiert nicht mehr. Wähle mit „In Albums sichern“ oder „In Fotos sichern“ ein neues Ziel aus."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The library no longer exists. Pick a new destination with Save to Albums or Save to Photos."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライブラリが見つかりません。「Albumsに保存」または「写真に保存」で保存先を選び直してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라이브러리가 더 이상 존재하지 않습니다. ‘Albums에 저장’ 또는 ‘사진에 저장’에서 다시 선택하십시오."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该资料库已不存在。请通过“存储到 Albums”或“存储到照片”重新选择。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "該資料庫已不存在。請透過「儲存到 Albums」或「儲存到照片」重新選擇。"
+          }
+        }
+      }
+    },
     "Saving.Failed.NoPhotosAccess" : {
       "extractionState" : "manual",
       "localizations" : {
