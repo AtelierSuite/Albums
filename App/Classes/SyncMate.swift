@@ -80,6 +80,9 @@ actor SyncMate {
         for id in tombstones {
             pending.append(.deleteRecord(CKRecord.ID(recordName: id, zoneID: Self.librariesZoneID)))
         }
+        if !tombstones.isEmpty {
+            engine.state.add(pendingDatabaseChanges: tombstones.map { .deleteZone(Self.zoneID(for: $0)) })
+        }
         await debugLog("lib scan \(libraryIDs.count) \(tombstones.count)del")
         guard !pending.isEmpty else { return }
         engine.state.add(pendingRecordZoneChanges: pending)

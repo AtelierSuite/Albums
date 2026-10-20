@@ -55,7 +55,8 @@ class LibraryManager: ObservableObject {
     func reconcileWithICloud() async {
         guard let remoteZoneNames = await SyncMate.shared.remoteZoneNames() else { return }
 
-        if remoteZoneNames.contains(SyncMate.zoneName(for: PicLibrary.defaultID)) {
+        if remoteZoneNames.contains(SyncMate.zoneName(for: PicLibrary.defaultID)),
+           await !LibrariesActor.shared.hasLibraryTombstone(id: PicLibrary.defaultID) {
             await LibrariesActor.shared.setSyncEnabled(true, forID: PicLibrary.defaultID)
         }
 
@@ -64,8 +65,9 @@ class LibraryManager: ObservableObject {
         }
 
         let localIDs = Set(await LibrariesActor.shared.allLibraryIDs())
+        let tombstonedIDs = Set(await LibrariesActor.shared.pendingLibraryTombstones())
         for id in SyncMate.libraryCollectionIDs(fromZoneNames: remoteZoneNames)
-        where !localIDs.contains(id) {
+        where !localIDs.contains(id) && !tombstonedIDs.contains(id) {
             await LibrariesActor.shared.insertRemoteLibraryStub(id: id)
         }
 
