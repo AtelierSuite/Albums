@@ -317,6 +317,17 @@ extension PicViewer {
         }
     }
 
+    func toggleDisplayedPicPin() {
+        guard let pic = viewer.displayedPic else { return }
+        let isPinning = !pic.isPinned
+        Task {
+            await DataActor.shared.setPinned(isPinning, forPicsWithIDs: [pic.id])
+            pic.pinnedAt = isPinning ? .now : nil
+            isDisplayedPicPinned = isPinning
+            navigation.signalDataChanged()
+        }
+    }
+
     func togglePictureInPicture() {
         guard !pipManager.isActive else {
             pipManager.stop()

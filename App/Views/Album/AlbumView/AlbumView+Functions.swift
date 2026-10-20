@@ -81,6 +81,11 @@ extension AlbumView {
     }
 
     func fetchPics() async -> [Pic] {
+        let pics = await fetchSortedPics()
+        return pics.filter(\.isPinned) + pics.filter { !$0.isPinned }
+    }
+
+    func fetchSortedPics() async -> [Pic] {
         do {
             switch picSortType {
             case .dateAddedAscending:

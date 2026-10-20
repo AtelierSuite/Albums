@@ -159,6 +159,8 @@ extension AlbumView {
                     selectOrDeselectPic(pic)
                 } selectedCount: {
                     selectedPics.count
+                } onTogglePin: { pic in
+                    togglePin(for: [pic])
                 } onDelete: { pic in
                     deletePic(pic)
                 } moveMenu: { pic in

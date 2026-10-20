@@ -4,11 +4,11 @@ import Foundation
 extension DataActor {
     private var picListColumns: [Expressible] {
         [picId, picName, picAlbumId, picDateAdded, picThumbnailData,
-         picMediaType, picDuration, picFilePath]
+         picMediaType, picDuration, picFilePath, picPinnedAt]
     }
 
     private var picSkeletonColumns: [Expressible] {
-        [picId, picName, picAlbumId, picDateAdded, picMediaType, picDuration, picFilePath]
+        [picId, picName, picAlbumId, picDateAdded, picMediaType, picDuration, picFilePath, picPinnedAt]
     }
 
     public func pics() throws -> [Pic] {
@@ -209,7 +209,8 @@ extension DataActor {
         guard !picIDs.isEmpty else { return }
         let query = picsTable.filter(picIDs.contains(picId))
         _ = try? database.run(query.update(
-            picAlbumId <- albumID, syncDirty <- true, syncLastModified <- syncTimestamp
+            picAlbumId <- albumID, picPinnedAt <- nil,
+            syncDirty <- true, syncLastModified <- syncTimestamp
         ))
         notifyLocalMutation()
     }
@@ -217,7 +218,8 @@ extension DataActor {
     public func addPic(withID picID: String, toAlbumWithID albumID: String) {
         let query = picsTable.filter(picId == picID)
         _ = try? database.run(query.update(
-            picAlbumId <- albumID, syncDirty <- true, syncLastModified <- syncTimestamp
+            picAlbumId <- albumID, picPinnedAt <- nil,
+            syncDirty <- true, syncLastModified <- syncTimestamp
         ))
         notifyLocalMutation()
     }
@@ -226,7 +228,20 @@ extension DataActor {
         guard !picIDs.isEmpty else { return }
         let query = picsTable.filter(picIDs.contains(picId))
         _ = try? database.run(query.update(
-            picAlbumId <- nil, syncDirty <- true, syncLastModified <- syncTimestamp
+            picAlbumId <- nil, picPinnedAt <- nil,
+            syncDirty <- true, syncLastModified <- syncTimestamp
+        ))
+        notifyLocalMutation()
+    }
+
+    public func setPinned(_ isPinned: Bool, forPicsWithIDs picIDs: [String]) {
+        guard !picIDs.isEmpty else { return }
+        let query = isPinned
+            ? picsTable.filter(picIDs.contains(picId) && picPinnedAt == nil)
+            : picsTable.filter(picIDs.contains(picId) && picPinnedAt != nil)
+        _ = try? database.run(query.update(
+            picPinnedAt <- (isPinned ? syncTimestamp : nil),
+            syncDirty <- true, syncLastModified <- syncTimestamp
         ))
         notifyLocalMutation()
     }

@@ -17,6 +17,7 @@ struct PicsGrid<Content: View>: View {
     var onSelect: (Pic) -> Void
     var selectedCount: () -> Int
     var onRename: ((Pic) -> Void)?
+    var onTogglePin: ((Pic) -> Void)?
     var onDelete: ((Pic) -> Void)?
     @ViewBuilder var moveMenu: (Pic) -> Content
 
@@ -118,6 +119,7 @@ struct PicsGrid<Content: View>: View {
     private func picCell(for pic: Pic, maintainsAspectRatio: Bool) -> some View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
+                 showsPinBadge: onTogglePin != nil && pic.isPinned,
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if aspectRatios[pic.id] != ratio {
                          aspectRatios[pic.id] = ratio
@@ -167,6 +169,7 @@ struct PicsGrid<Content: View>: View {
                                                     image: PicShareable(picID: pic.id))) {
                         Label("Shared.Share", systemImage: "square.and.arrow.up")
                     }
+                    pinMenuItem(for: pic)
                     if let onRename {
                         Divider()
                         Button("Shared.Rename", systemImage: "pencil") {
@@ -256,6 +259,18 @@ struct PicsGrid<Content: View>: View {
         }
         paintedRange = newRange
         UISelectionFeedbackGenerator().selectionChanged()
+    }
+}
+
+extension PicsGrid {
+    @ViewBuilder
+    func pinMenuItem(for pic: Pic) -> some View {
+        if let onTogglePin {
+            Divider()
+            PinButton(isPinned: pic.isPinned) {
+                onTogglePin(pic)
+            }
+        }
     }
 }
 

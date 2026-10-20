@@ -13,8 +13,10 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
     public var mediaType: MediaType
     public var duration: TimeInterval?
     public var filePath: String?
+    public var pinnedAt: Date?
 
     public var isVideo: Bool { mediaType == .video }
+    public var isPinned: Bool { pinnedAt != nil }
 
     public init(id: String = UUID().uuidString, name: String, containingAlbumID: String? = nil,
                 dateAdded: Date = Date.now, mediaType: MediaType = .pic,

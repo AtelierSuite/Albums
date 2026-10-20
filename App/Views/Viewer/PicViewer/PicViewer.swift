@@ -32,6 +32,7 @@ struct PicViewer: View {
     @State var isConfirmingDeletePic: Bool = false
     @State var renamePicText: String = ""
     @State var displayedPicName: String = ""
+    @State var isDisplayedPicPinned: Bool = false
     @State var videoResolution: CGSize?
     @State var swipeOffset: CGFloat = 0.0
     @State var swipeBase: CGFloat = 0.0
@@ -230,6 +231,9 @@ struct PicViewer: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Shared.More", systemImage: "ellipsis") {
+                    PinButton(isPinned: isDisplayedPicPinned) {
+                        toggleDisplayedPicPin()
+                    }
                     Button("Shared.Rename", systemImage: "pencil") {
                         renamePicText = displayedPicName
                         isRenamePicPresented = true
@@ -247,6 +251,7 @@ struct PicViewer: View {
         }
         .task(id: viewer.displayedPicID) {
             displayedPicName = viewer.displayedPic?.name ?? pic.name
+            isDisplayedPicPinned = viewer.displayedPic?.isPinned ?? pic.isPinned
             containingAlbumName = nil
             videoResolution = nil
             if let albumID = viewer.displayedPic?.containingAlbumID ?? pic.containingAlbumID {

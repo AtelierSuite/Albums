@@ -24,6 +24,7 @@ struct PicLabel: View {
 
     var pic: Pic
     var maintainsAspectRatio: Bool = false
+    var showsPinBadge: Bool = false
     var onAspectRatio: ((CGFloat) -> Void)?
 
     @State var isThumbnailReadyToPresent: Bool = false
@@ -100,6 +101,18 @@ struct PicLabel: View {
                         .padding(.vertical, 2)
                         .background(.black.opacity(0.6), in: .capsule)
                         .padding(4)
+                }
+            }
+            .overlay(alignment: .topTrailing) {
+                if showsPinBadge {
+                    Image(systemName: "pin.fill")
+                        .font(.caption2)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white)
+                        .padding(4)
+                        .background(.black.opacity(0.6), in: .circle)
+                        .padding(4)
+                        .accessibilityLabel(Text("Shared.Pinned"))
                 }
             }
     }
