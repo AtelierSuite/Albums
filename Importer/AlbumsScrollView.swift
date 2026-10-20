@@ -4,6 +4,7 @@ import SwiftUI
 struct AlbumsScrollView: View {
 
     var title: LocalizedStringKey
+    var session: SaveSession
     var parentAlbum: Album?
     @Binding var isSearching: Bool
     var focusSearchOnAppear: Bool = false
@@ -88,7 +89,7 @@ struct AlbumsScrollView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(role: .close) {
-                    close()
+                    session.cancel()
                 }
             }
         }
@@ -96,9 +97,5 @@ struct AlbumsScrollView: View {
         .searchable(text: $searchText, isPresented: $isSearchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
-    }
-
-    func close() {
-        NotificationCenter.default.post(name: NSNotification.Name("close"), object: nil)
     }
 }
