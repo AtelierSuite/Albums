@@ -1,5 +1,12 @@
 import Engine
 import Foundation
+import UIKit
+
+struct PicRevealRequest: Equatable, Sendable {
+    let id = UUID()
+    let picID: String
+    let albumID: String?
+}
 
 @MainActor
 class NavigationManager: ObservableObject {
@@ -9,6 +16,7 @@ class NavigationManager: ObservableObject {
     @Published var picsTabPath: [ViewPath] = []
     @Published var moreTabPath: [ViewPath] = []
     @Published var dataVersion: Int = 0
+    @Published var picRevealRequest: PicRevealRequest?
 
     private let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
     private let lastLocationKey = "LastLibraryLocation"
@@ -41,6 +49,20 @@ class NavigationManager: ObservableObject {
         case .more:
             moreTabPath.append(viewPath)
         }
+    }
+
+    func showInAlbum(picID: String, albumID: String?, libraryID: String) async {
+        var albumPath: [ViewPath] = []
+        if let albumID {
+            let albums = await DataActor.shared.albumPath(forAlbumWithID: albumID)
+            albumPath = albums.map { .album(album: $0) }
+        }
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            collectionTabPath = [.library(id: libraryID)] + albumPath
+        } else {
+            collectionTabPath = albumPath
+        }
+        picRevealRequest = PicRevealRequest(picID: picID, albumID: albumID)
     }
 
     func saveLibraryLocation() {

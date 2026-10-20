@@ -57,6 +57,27 @@ extension AlbumView {
         }
     }
 
+    func revealPicIfNeeded(with proxy: ScrollViewProxy) {
+        guard let request = navigation.picRevealRequest,
+              request.albumID == currentAlbum?.id,
+              hasFetchedPics,
+              pics.contains(where: { $0.id == request.picID }) else { return }
+        navigation.picRevealRequest = nil
+        Task {
+            try? await Task.sleep(for: .milliseconds(350))
+            withAnimation(.smooth) {
+                proxy.scrollTo(request.picID, anchor: .center)
+            }
+            withAnimation(.smooth.speed(2.0)) {
+                highlightedPicID = request.picID
+            }
+            try? await Task.sleep(for: .seconds(1.5))
+            withAnimation(.smooth) {
+                highlightedPicID = nil
+            }
+        }
+    }
+
     func fetchAlbums() async -> [Album] {
         do {
             return try await DataActor.shared.albumsWithCounts(in: currentAlbum, sortedBy: albumSort)

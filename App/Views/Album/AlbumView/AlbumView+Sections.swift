@@ -153,7 +153,8 @@ extension AlbumView {
                          placeholderCount: max(picCount - pics.count, 0),
                          isSelecting: $isSelectingPics,
                          columnCount: columnCount,
-                         style: picViewStyle) { pic in
+                         style: picViewStyle,
+                         highlightedPicID: highlightedPicID) { pic in
                     selectedPics.contains(pic)
                 } onSelect: { pic in
                     selectOrDeselectPic(pic)

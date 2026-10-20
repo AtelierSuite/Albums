@@ -75,6 +75,11 @@ struct MainSplitView: View {
                 }
             }
         }
+        .onChange(of: navigation.picRevealRequest) { _, request in
+            if request != nil {
+                selectedView = .collection
+            }
+        }
         .sheet(isPresented: $isMoreViewPresenting) {
             MoreView()
         }
