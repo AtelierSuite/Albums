@@ -13,6 +13,7 @@ struct LibrariesView: View {
     @Environment(ConcurrencyManager.self) var concurrency
     @Environment(ImageMigrationManager.self) var imageMigration
     @Environment(PhotosManager.self) var photosManager
+    @Environment(\.scenePhase) var scenePhase
 
     @AppStorage("PhotosModeEnabled", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isPhotosModeEnabled: Bool = false
@@ -22,6 +23,8 @@ struct LibrariesView: View {
     var isICloudExpanded: Bool = true
     @AppStorage("Libraries.Expanded.Photos", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isPhotosExpanded: Bool = true
+    @AppStorage("Libraries.iCloudAvailable", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var isICloudAvailable: Bool = true
 
     @State var isSettingsPresented: Bool = false
     @State var newLibraryLocation: Location?
@@ -52,13 +55,15 @@ struct LibrariesView: View {
             } header: {
                 Text("Libraries.Section.OnMyDevice", tableName: "Libraries")
             }
-            Section(isExpanded: $isICloudExpanded) {
-                ForEach(iCloudLibraries) { library in
-                    libraryRow(for: library)
+            if isICloudAvailable {
+                Section(isExpanded: $isICloudExpanded) {
+                    ForEach(iCloudLibraries) { library in
+                        libraryRow(for: library)
+                    }
+                    addLibraryRow(in: .iCloud)
+                } header: {
+                    Text("Libraries.Section.iCloud", tableName: "Libraries")
                 }
-                addLibraryRow(in: .iCloud)
-            } header: {
-                Text("Libraries.Section.iCloud", tableName: "Libraries")
             }
             Section(isExpanded: $isPhotosExpanded) {
                 photosRow
@@ -111,6 +116,13 @@ struct LibrariesView: View {
                isPresented: $isShowingICloudAlert) {
         } message: {
             Text("Sync.iCloudRequired.Message", tableName: "More")
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await refreshICloudAvailability()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSUbiquityIdentityDidChange)) { _ in
+            Task { await refreshICloudAvailability() }
         }
         .task(id: libraryManager.libraries) {
             await LibraryCoverCache.shared.reload(libraryManager.libraries)
@@ -246,6 +258,13 @@ struct LibrariesView: View {
             }
         }
         Button("Shared.Cancel", role: .cancel) { }
+    }
+}
+
+extension LibrariesView {
+
+    private func refreshICloudAvailability() async {
+        isICloudAvailable = await SyncManager.shared.canEnableSync()
     }
 
     private func open(_ library: PicLibrary) {
