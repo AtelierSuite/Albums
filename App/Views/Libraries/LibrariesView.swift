@@ -13,6 +13,7 @@ struct LibrariesView: View {
     @Environment(ConcurrencyManager.self) var concurrency
     @Environment(ImageMigrationManager.self) var imageMigration
     @Environment(PhotosManager.self) var photosManager
+    @Environment(\.scenePhase) var scenePhase
 
     @AppStorage("PhotosModeEnabled", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isPhotosModeEnabled: Bool = false
@@ -30,6 +31,7 @@ struct LibrariesView: View {
     @State var libraryForCoverPicker: PicLibrary?
     @State var isEditingPhotos: Bool = false
     @State var isShowingICloudAlert: Bool = false
+    @State var isICloudAvailable: Bool = false
     @Namespace var sheetNamespace
 
     private let coverLength: CGFloat = 44.0
@@ -52,13 +54,17 @@ struct LibrariesView: View {
             } header: {
                 Text("Libraries.Section.OnMyDevice", tableName: "Libraries")
             }
-            Section(isExpanded: $isICloudExpanded) {
-                ForEach(iCloudLibraries) { library in
-                    libraryRow(for: library)
+            if isICloudAvailable || !iCloudLibraries.isEmpty {
+                Section(isExpanded: $isICloudExpanded) {
+                    ForEach(iCloudLibraries) { library in
+                        libraryRow(for: library)
+                    }
+                    if isICloudAvailable {
+                        addLibraryRow(in: .iCloud)
+                    }
+                } header: {
+                    Text("Libraries.Section.iCloud", tableName: "Libraries")
                 }
-                addLibraryRow(in: .iCloud)
-            } header: {
-                Text("Libraries.Section.iCloud", tableName: "Libraries")
             }
             Section(isExpanded: $isPhotosExpanded) {
                 photosRow
@@ -111,6 +117,13 @@ struct LibrariesView: View {
                isPresented: $isShowingICloudAlert) {
         } message: {
             Text("Sync.iCloudRequired.Message", tableName: "More")
+        }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            await refreshICloudAvailability()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSUbiquityIdentityDidChange)) { _ in
+            Task { await refreshICloudAvailability() }
         }
         .task(id: libraryManager.libraries) {
             await LibraryCoverCache.shared.reload(libraryManager.libraries)
@@ -246,6 +259,13 @@ struct LibrariesView: View {
             }
         }
         Button("Shared.Cancel", role: .cancel) { }
+    }
+}
+
+extension LibrariesView {
+
+    private func refreshICloudAvailability() async {
+        isICloudAvailable = await SyncManager.shared.canEnableSync()
     }
 
     private func open(_ library: PicLibrary) {
