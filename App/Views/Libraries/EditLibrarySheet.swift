@@ -250,9 +250,9 @@ struct EditLibrarySheet: View {
                isPresented: $isConfirmingClearCache) {
             Button("Shared.Yes", role: .destructive) {
                 Task {
-                    await HashActor.shared.deleteAllHashes()
-                    await PColorActor.shared.deleteAllColors()
-                    await CoverCacheActor.shared.deleteAllCovers()
+                    await HashActor.instance(for: library.id).deleteAllHashes()
+                    await PColorActor.instance(for: library.id).deleteAllColors()
+                    await CoverCacheActor.instance(for: library.id).deleteAllCovers()
                 }
             }
             Button("Shared.No", role: .cancel) { }

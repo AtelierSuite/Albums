@@ -10,6 +10,15 @@ public actor CoverCacheActor {
         _shared = CoverCacheActor(collectionID: collectionID)
     }
 
+    public static func instance(for collectionID: String) -> CoverCacheActor {
+        if collectionID == _shared.collectionID {
+            return _shared
+        }
+        return CoverCacheActor(collectionID: collectionID)
+    }
+
+    public nonisolated let collectionID: String
+
     public let database: Connection
 
     public let coverCacheTable = Table("cover_cache")
@@ -21,6 +30,7 @@ public actor CoverCacheActor {
     public let cacheTertiary = Expression<Data?>("tertiary_data")
 
     public init(collectionID: String) {
+        self.collectionID = collectionID
         let databaseFileName = "CoverCache.db"
         let fileManager = FileManager.default
 
