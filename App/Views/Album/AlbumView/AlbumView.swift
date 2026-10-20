@@ -321,13 +321,9 @@ struct AlbumView: View {
                                             .foregroundStyle(.secondary)
                                             .padding(20.0)
                                     }
-                                } else if !hideSectionHeaders || !displayedAlbums.isEmpty {
+                                } else if !hideSectionHeaders || hasAlbumItems {
                                     Spacer()
                                         .frame(height: 20.0)
-                                }
-                                if currentAlbum == nil && searchText.isEmpty
-                                    && (!hideSectionHeaders || recentlyDeletedCount > 0) {
-                                    recentlyDeletedRow
                                 }
                             }
                             .transition(.opacity.animation(.smooth.speed(2.0)))
@@ -336,7 +332,7 @@ struct AlbumView: View {
                             picsSection
                         }
                     }
-                    .padding(.top, (hideSectionHeaders && displayedAlbums.isEmpty) ? 0.0 : 20.0)
+                    .padding(.top, (hideSectionHeaders && !hasAlbumItems) ? 0.0 : 20.0)
                     .animation(.smooth.speed(2.0), value: hideSectionHeaders)
                 }
                 .scrollEdgeEffectStyle(.soft, for: .all)

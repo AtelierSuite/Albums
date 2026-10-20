@@ -1,0 +1,65 @@
+import SwiftUI
+
+struct RecentlyDeletedAlbumGridLabel: View {
+
+    var count: Int
+    var length: CGFloat?
+
+    var body: some View {
+        VStack(alignment: .center, spacing: length == nil ? 2.0 : 6.0) {
+            RecentlyDeletedAlbumCover(count: count, length: length)
+            Text("RecentlyDeleted.Title", tableName: "Albums")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .padding(.horizontal, 1.0)
+                .padding(.bottom, 1.0)
+        }
+        .contentShape(.rect)
+        .frame(width: length)
+    }
+}
+
+struct RecentlyDeletedAlbumListRow: View {
+
+    var count: Int
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 16.0) {
+            RecentlyDeletedAlbumCover(count: count, length: 48.0)
+            VStack(alignment: .leading, spacing: 2.0) {
+                Text("RecentlyDeleted.Title", tableName: "Albums")
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                Text("RecentlyDeleted.Count.\(count)", tableName: "Albums")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 11.0, height: 11.0)
+                .foregroundStyle(.primary.opacity(0.25))
+                .fontWeight(.bold)
+        }
+        .contentShape(.rect)
+        .padding([.leading, .trailing], 20.0)
+        .padding([.top, .bottom], 8.0)
+    }
+}
+
+struct RecentlyDeletedAlbumCover: View {
+
+    var count: Int
+    var length: CGFloat?
+
+    var body: some View {
+        AlbumCover(name: String(localized: "RecentlyDeleted.Title", table: "Albums"),
+                   length: length,
+                   picCount: count,
+                   symbol: "trash")
+    }
+}

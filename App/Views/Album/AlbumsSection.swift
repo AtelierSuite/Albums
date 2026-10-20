@@ -12,6 +12,7 @@ struct AlbumsSection<Content: View>: View {
     var enablesContextMenu: Bool = true
     var columnCount: Int = 3
     var hideSectionHeaders: Bool = false
+    var recentlyDeletedCount: Int?
     var isKeptOffline: ((Album) -> Bool)?
     var onToggleOffline: ((Album) -> Void)?
     var onRename: ((Album) -> Void)?
@@ -43,6 +44,12 @@ struct AlbumsSection<Content: View>: View {
                         }
                         .buttonStyleAdaptive()
                     }
+                    if let recentlyDeletedCount {
+                        NavigationLink(value: ViewPath.recentlyDeleted) {
+                            RecentlyDeletedAlbumGridLabel(count: recentlyDeletedCount)
+                        }
+                        .buttonStyleAdaptive()
+                    }
                 }
                 .padding(.horizontal, 14.0)
                 .padding(.top, hideSectionHeaders ? 0.0 : 10.0)
@@ -60,10 +67,16 @@ struct AlbumsSection<Content: View>: View {
                             contextMenu(album)
                         }
                         .buttonStyleAdaptive()
-                        if album != albums.last {
+                        if album != albums.last || recentlyDeletedCount != nil {
                             Divider()
                                 .padding([.leading], 84.0)
                         }
+                    }
+                    if let recentlyDeletedCount {
+                        NavigationLink(value: ViewPath.recentlyDeleted) {
+                            RecentlyDeletedAlbumListRow(count: recentlyDeletedCount)
+                        }
+                        .buttonStyleAdaptive()
                     }
                 }
             case .carousel:
@@ -78,6 +91,12 @@ struct AlbumsSection<Content: View>: View {
                             .id("\(album.identifiableString())")
                             .contextMenu {
                                 contextMenu(album)
+                            }
+                            .buttonStyleAdaptive()
+                        }
+                        if let recentlyDeletedCount {
+                            NavigationLink(value: ViewPath.recentlyDeleted) {
+                                RecentlyDeletedAlbumGridLabel(count: recentlyDeletedCount, length: 80.0)
                             }
                             .buttonStyleAdaptive()
                         }
