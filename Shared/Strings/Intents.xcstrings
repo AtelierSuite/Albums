@@ -1640,13 +1640,57 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld Objekte in %2$@ gesichert"
+            "value" : "%#@count@ in %2$@ gesichert"
+          },
+          "substitutions" : {
+            "count" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Objekt"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Objekte"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saved %1$lld items to %2$@"
+            "value" : "Saved %#@count@ to %2$@"
+          },
+          "substitutions" : {
+            "count" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg item"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg items"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "ja" : {
