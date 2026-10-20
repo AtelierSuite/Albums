@@ -149,6 +149,7 @@ public actor DataActor {
                 _ = try? database.run(table.addColumn(syncCKSystemFields))
             }
             _ = try? database.run(picsTable.addColumn(syncOriginalSynced, defaultValue: false))
+            DatabaseMigrator.migrateRecentlyDeleted(database, picsTable: picsTable)
             try database.run(tombstonesTable.create(ifNotExists: true) { table in
                 table.column(tombstoneId, primaryKey: true)
                 table.column(tombstoneRecordType)
@@ -284,6 +285,7 @@ public actor DataActor {
         let mediaTypeRaw = (try? row.get(picMediaType)) ?? 0
         let duration = try? row.get(picDuration)
         let filePath = try? row.get(picFilePath)
+        let dateDeleted = (try? row.get(picDateDeleted)) ?? nil
         let pic = Pic(id: id, name: name,
                        containingAlbumID: albumId ?? nil,
                        dateAdded: dateAdded,
@@ -291,6 +293,7 @@ public actor DataActor {
                        duration: duration,
                        filePath: filePath)
         pic.thumbnailData = thumbData ?? nil
+        pic.dateDeleted = dateDeleted.map { Date(timeIntervalSince1970: $0) }
         return pic
     }
 
@@ -301,7 +304,7 @@ public actor DataActor {
 
     public func fetchChildPics(forAlbumID id: String) -> [Pic] {
         let query = picsTable
-            .filter(picAlbumId == id)
+            .filter(picAlbumId == id && picDateDeleted == nil)
             .select(picId, picName, picAlbumId,
                     picDateAdded, picThumbnailData,
                     picMediaType, picDuration, picFilePath)

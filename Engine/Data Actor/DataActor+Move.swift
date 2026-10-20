@@ -89,7 +89,7 @@ extension DataActor {
             }
         }
         var picIDs: [String] = []
-        let picsQuery = picsTable.filter(albumIDs.contains(picAlbumId)).select(picId)
+        let picsQuery = picsTable.filter(albumIDs.contains(picAlbumId) && picDateDeleted == nil).select(picId)
         if let rows = try? database.safeRows(picsQuery) {
             for row in rows {
                 if let id = try? row.get(picId) { picIDs.append(id) }

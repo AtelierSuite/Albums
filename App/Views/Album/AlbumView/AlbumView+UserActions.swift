@@ -20,18 +20,11 @@ extension AlbumView {
         if let albumPendingDeletion {
             Task {
                 if deletingContents {
-                    let deletedPicIDs = await DataActor.shared.deleteAlbumAndContents(
+                    let deletedPicIDs = await DataActor.shared.moveAlbumAndContentsToRecentlyDeleted(
                         withID: albumPendingDeletion.id
                     )
-                    await PColorActor.shared.deleteColors(forPicIDs: deletedPicIDs)
                     AlbumCoverCache.shared.removeImages(forAlbumID: albumPendingDeletion.id)
                     viewer.removePics(withIDs: Set(deletedPicIDs))
-                    let collectionID = DataActor.shared.collectionID
-                    Task.detached {
-                        await OriginalsManager.shared.deleteCloudOriginals(
-                            picIDs: deletedPicIDs, in: collectionID
-                        )
-                    }
                 } else {
                     await DataActor.shared.deleteAlbum(withID: albumPendingDeletion.id)
                 }
@@ -57,26 +50,16 @@ extension AlbumView {
         Task { [isSelectingPics, selectedPics] in
             var deletedIDs = Set<String>()
             if isSelectingPics {
-                let picIDs = selectedPics.map(\.id)
-                deletedIDs = Set(picIDs)
-                await DataActor.shared.deletePics(withIDs: picIDs)
-                await PColorActor.shared.deleteColors(forPicIDs: picIDs)
-            } else {
-                if let picPendingDeletion = picPendingDeletion {
-                    await DataActor.shared.deletePic(withID: picPendingDeletion.id)
-                    await PColorActor.shared.deleteColor(forPicWithID: picPendingDeletion.id)
-                    deletedIDs.insert(picPendingDeletion.id)
-                }
+                deletedIDs = Set(selectedPics.map(\.id))
+            } else if let picPendingDeletion {
+                deletedIDs.insert(picPendingDeletion.id)
             }
+            await DataActor.shared.moveToRecentlyDeleted(picIDs: Array(deletedIDs))
             if let currentAlbum {
                 AlbumCoverCache.shared.removeImages(forAlbumID: currentAlbum.id)
             }
             viewer.removePics(withIDs: deletedIDs)
-            let collectionID = DataActor.shared.collectionID
-            let idsForCleanup = Array(deletedIDs)
-            Task.detached {
-                await OriginalsManager.shared.deleteCloudOriginals(picIDs: idsForCleanup, in: collectionID)
-            }
+            await refreshRecentlyDeletedCount()
             self.selectedPics.removeAll()
             refreshPicsAndSet()
         }

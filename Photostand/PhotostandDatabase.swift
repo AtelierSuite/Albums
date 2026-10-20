@@ -21,6 +21,7 @@ struct PhotostandDatabase {
     static let picMediaType = Expression<Int>("media_type")
     static let picFilePath = Expression<String?>("file_path")
     static let picThumbnailData = Expression<Data?>("thumbnail_data")
+    static let picDateDeleted = Expression<Double?>("date_deleted")
 
     static let maxBlobSize = 25 * 1024 * 1024 // 25 MB
 
@@ -55,6 +56,12 @@ struct PhotostandDatabase {
     private static func openLibrariesDatabase() -> Connection? {
         guard let url = appGroupURL()?.appendingPathComponent("Libraries.db") else { return nil }
         return try? Connection(url.path, readonly: true)
+    }
+
+    private static func livePicsTable(in database: Connection) -> Table {
+        let columns = (try? database.prepare("PRAGMA table_info(\"pics\")"))?
+            .compactMap { $0[1] as? String } ?? []
+        return columns.contains("date_deleted") ? picsTable.filter(picDateDeleted == nil) : picsTable
     }
 
     static func fetchAllLibraries() -> [LibraryRecord] {
@@ -110,7 +117,7 @@ struct PhotostandDatabase {
         libraryID: String = defaultLibraryID,
         maxDimension: CGFloat = 800
     ) -> Data? {
-        let idQuery = picsTable
+        let idQuery = livePicsTable(in: database)
             .filter(picAlbumId == albumID)
             .filter(picMediaType == 0)
             .select(picId)
@@ -129,7 +136,7 @@ struct PhotostandDatabase {
         maxDimension: CGFloat = 800
     ) -> [Data] {
         guard let database = openDatabase(forLibraryID: libraryID) else { return [] }
-        let idQuery = picsTable
+        let idQuery = livePicsTable(in: database)
             .filter(picAlbumId == albumID)
             .filter(picMediaType == 0)
             .select(picId)
@@ -196,7 +203,7 @@ struct PhotostandDatabase {
     static func fetchPicCount(inAlbumWithID albumID: String,
                               inLibraryWithID libraryID: String = defaultLibraryID) -> Int {
         guard let database = openDatabase(forLibraryID: libraryID) else { return 0 }
-        let query = picsTable.filter(picAlbumId == albumID).filter(picMediaType == 0)
+        let query = livePicsTable(in: database).filter(picAlbumId == albumID).filter(picMediaType == 0)
         return (try? database.scalar(query.count)) ?? 0
     }
 }

@@ -83,6 +83,29 @@ extension AlbumView {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    var recentlyDeletedRow: some View {
+        NavigationLink(value: ViewPath.recentlyDeleted) {
+            HStack(alignment: .center, spacing: 12.0) {
+                Label(String(localized: "RecentlyDeleted.Title", table: "Albums"), systemImage: "trash")
+                    .foregroundStyle(.primary)
+                Spacer(minLength: 0)
+                if recentlyDeletedCount > 0 {
+                    Text("\(recentlyDeletedCount)")
+                        .foregroundStyle(.secondary)
+                }
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.horizontal, 16.0)
+            .padding(.vertical, 12.0)
+            .background(.primary.opacity(0.05), in: .rect(cornerRadius: 12.0))
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 20.0, trailing: 20.0))
+    }
+
     var picsSection: some View {
         Group {
             if !hideSectionHeaders {

@@ -13,6 +13,7 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
     public var mediaType: MediaType
     public var duration: TimeInterval?
     public var filePath: String?
+    public var dateDeleted: Date?
 
     public var isVideo: Bool { mediaType == .video }
 

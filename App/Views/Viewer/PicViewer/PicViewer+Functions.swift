@@ -302,14 +302,9 @@ extension PicViewer {
     func deleteDisplayedPic() {
         guard let pic = viewer.displayedPic else { return }
         Task {
-            await DataActor.shared.deletePic(withID: pic.id)
-            await PColorActor.shared.deleteColor(forPicWithID: pic.id)
+            await DataActor.shared.moveToRecentlyDeleted(picIDs: [pic.id])
             if let albumID = pic.containingAlbumID {
                 AlbumCoverCache.shared.removeImages(forAlbumID: albumID)
-            }
-            let collectionID = DataActor.shared.collectionID
-            Task.detached {
-                await OriginalsManager.shared.deleteCloudOriginals(picIDs: [pic.id], in: collectionID)
             }
             if !viewer.removeDisplayedPicAndShowNeighbor() {
                 dismiss()

@@ -39,6 +39,9 @@ extension AlbumView {
                 await AlbumCoverCache.shared.loadCovers(for: albums)
             }
             group.addTask {
+                await self.refreshRecentlyDeletedCount()
+            }
+            group.addTask {
                 // Fetch count first for immediate placeholder layout
                 let count = await DataActor.shared.picCount(in: self.currentAlbum)
                 await MainActor.run {
@@ -54,6 +57,14 @@ extension AlbumView {
                     self.hasFetchedPics = true
                 }
             }
+        }
+    }
+
+    func refreshRecentlyDeletedCount() async {
+        guard currentAlbum == nil else { return }
+        let count = await DataActor.shared.recentlyDeletedCount()
+        await MainActor.run {
+            recentlyDeletedCount = count
         }
     }
 

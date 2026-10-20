@@ -165,7 +165,9 @@ extension DataActor {
     }
 
     private func folderBackupPics() -> [FolderBackupPic] {
-        let query = picsTable.select(picId, picName, picAlbumId, picMediaType, picFilePath, picDateAdded)
+        let query = picsTable
+            .filter(picDateDeleted == nil)
+            .select(picId, picName, picAlbumId, picMediaType, picFilePath, picDateAdded)
         return ((try? database.safeRows(query)) ?? []).map { row in
             FolderBackupPic(id: (try? row.get(picId)) ?? "",
                             name: (try? row.get(picName)) ?? "",

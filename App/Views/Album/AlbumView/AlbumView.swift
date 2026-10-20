@@ -64,6 +64,7 @@ struct AlbumView: View {
     @State var hideSectionHeaders: Bool = false
 
     @State var totalAlbumCount: Int = 0
+    @State var recentlyDeletedCount: Int = 0
     @State var backgroundImage: UIImage?
     @State var lastRefreshTime: Date = .distantPast
     @State var searchText: String = ""
@@ -214,6 +215,11 @@ struct AlbumView: View {
                 await refreshData()
                 hasCompletedInitialLoad = true
             }
+            .onAppear {
+                Task {
+                    await refreshRecentlyDeletedCount()
+                }
+            }
             .task(id: currentAlbum.map { "\($0.id)-\($0.hasCoverPhoto)-\($0.coverPhoto != nil)" }) {
                 await updateBackgroundImage()
             }
@@ -297,7 +303,8 @@ struct AlbumView: View {
 
             if hideSectionHeaders && searchText.isEmpty
                 && hasFetchedAlbums && displayedAlbums.isEmpty
-                && hasFetchedPicCount && picCount == 0 {
+                && hasFetchedPicCount && picCount == 0
+                && (currentAlbum != nil || recentlyDeletedCount == 0) {
                 ContentUnavailableView(
                     String(localized: "Albums.Empty", table: "Albums"),
                     systemImage: "photo.on.rectangle.angled"
@@ -317,6 +324,10 @@ struct AlbumView: View {
                                 } else if !hideSectionHeaders || !displayedAlbums.isEmpty {
                                     Spacer()
                                         .frame(height: 20.0)
+                                }
+                                if currentAlbum == nil && searchText.isEmpty
+                                    && (!hideSectionHeaders || recentlyDeletedCount > 0) {
+                                    recentlyDeletedRow
                                 }
                             }
                             .transition(.opacity.animation(.smooth.speed(2.0)))
