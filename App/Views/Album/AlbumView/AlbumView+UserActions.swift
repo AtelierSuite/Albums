@@ -186,23 +186,27 @@ extension AlbumView {
                 selectedPics.append(pic)
             }
         } else {
-            let picCopy = pic
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { [navigation] in
-                    navigation.push(.picViewer(namespace: namespace), for: .collection)
-                }
-            } else {
-#if targetEnvironment(macCatalyst)
-                if openPicsInNewWindow {
-                    openWindow(value: ViewerWindowValue.pic(
-                        selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
-                } else {
-                    viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
-                }
-#else
-                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
-#endif
+            openPic(pic, in: pics)
+        }
+    }
+
+    func openPic(_ pic: Pic, in pics: [Pic]) {
+        let picCopy = pic
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { [navigation] in
+                navigation.push(.picViewer(namespace: namespace), for: .collection)
             }
+        } else {
+#if targetEnvironment(macCatalyst)
+            if openPicsInNewWindow {
+                openWindow(value: ViewerWindowValue.pic(
+                    selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
+            } else {
+                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
+            }
+#else
+            viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
+#endif
         }
     }
 }

@@ -206,16 +206,19 @@ extension AlbumView {
         }
     }
 
-    func searchAlbums(matching searchText: String) async {
+    func searchLibrary(matching searchText: String) async {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else {
+            searchResults = nil
+            return
+        }
         do {
-            let results = try await DataActor.shared.searchAlbums(
-                matching: searchText, in: currentAlbum, sortedBy: albumSort
-            )
-            await MainActor.run {
-                withAnimation {
-                    self.searchResults = results
-                }
-            }
+            try await Task.sleep(for: .milliseconds(250))
+            let results = try await DataActor.shared.searchLibrary(matching: query)
+            try Task.checkCancellation()
+            searchResults = results
+        } catch is CancellationError {
+            return
         } catch {
             debugPrint(error.localizedDescription)
         }

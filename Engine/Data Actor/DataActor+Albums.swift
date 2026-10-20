@@ -37,7 +37,7 @@ extension DataActor {
         return sortAlbum(albums, sortedBy: sortType)
     }
 
-    private func populateCounts(for albums: [Album]) {
+    func populateCounts(for albums: [Album]) {
         let ids = albums.map { $0.id }
         guard !ids.isEmpty else { return }
 
