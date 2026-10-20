@@ -4,7 +4,7 @@ import SwiftUI
 
 public actor DataActor {
 
-    nonisolated(unsafe) private static var _shared = DataActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = DataActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: DataActor { _shared }
 
     nonisolated(unsafe) private static var instances: [String: DataActor] = [:]

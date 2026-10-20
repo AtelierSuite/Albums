@@ -3,7 +3,7 @@ import Foundation
 
 public actor PColorActor {
 
-    nonisolated(unsafe) private static var _shared = PColorActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = PColorActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: PColorActor { _shared }
 
     public static func switchLibrary(to collectionID: String) {

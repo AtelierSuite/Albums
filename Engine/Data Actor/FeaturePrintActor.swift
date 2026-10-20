@@ -15,7 +15,7 @@ public struct StoredFeaturePrint: Sendable {
 
 public actor FeaturePrintActor {
 
-    nonisolated(unsafe) private static var _shared = FeaturePrintActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = FeaturePrintActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: FeaturePrintActor { _shared }
 
     public static let currentPrintVersion = 1

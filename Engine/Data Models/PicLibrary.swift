@@ -3,6 +3,11 @@ import Foundation
 public final class PicLibrary: Identifiable, Hashable, @unchecked Sendable {
     public static let defaultID = "__default__"
 
+    public static var persistedCurrentID: String {
+        UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")?
+            .string(forKey: "CurrentCollectionID") ?? defaultID
+    }
+
     public var id: String
     public var name: String
     public var syncEnabled: Bool
