@@ -17,9 +17,9 @@ struct CreateAlbumIntent: AppIntent {
 
     static var parameterSummary: some ParameterSummary {
         When(\.$parentAlbum, .hasAnyValue) {
-            Summary("Create ${name} in ${parentAlbum}", table: "Intents")
+            Summary("Create \(\.$name) in \(\.$parentAlbum)", table: "Intents")
         } otherwise: {
-            Summary("Create ${name} in ${library}", table: "Intents") {
+            Summary("Create \(\.$name) in \(\.$library)", table: "Intents") {
                 \.$parentAlbum
             }
         }

@@ -10,7 +10,7 @@ struct OpenLibraryIntent: AppIntent {
     var library: LibraryEntity
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Open ${library}", table: "Intents")
+        Summary("Open \(\.$library)", table: "Intents")
     }
 
     init() {}

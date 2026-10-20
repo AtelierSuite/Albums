@@ -9,7 +9,7 @@ struct GetRandomPicIntent: AppIntent {
     var album: AlbumEntity
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Get a random pic from ${album}", table: "Intents")
+        Summary("Get a random pic from \(\.$album)", table: "Intents")
     }
 
     func perform() async throws -> some IntentResult & ReturnsValue<IntentFile> {

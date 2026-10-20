@@ -16,7 +16,7 @@ struct GetPicsIntent: AppIntent {
     var order: PicOrder
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Get ${limit} pics from ${album}", table: "Intents") {
+        Summary("Get \(\.$limit) pics from \(\.$album)", table: "Intents") {
             \.$order
         }
     }

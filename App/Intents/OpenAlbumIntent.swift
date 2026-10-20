@@ -10,7 +10,7 @@ struct OpenAlbumIntent: AppIntent {
     var album: AlbumEntity
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Open ${album}", table: "Intents")
+        Summary("Open \(\.$album)", table: "Intents")
     }
 
     init() {}

@@ -20,7 +20,7 @@ struct SaveImagesIntent: AppIntent {
     var skipDuplicates: Bool
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Save ${files} to ${album}", table: "Intents") {
+        Summary("Save \(\.$files) to \(\.$album)", table: "Intents") {
             \.$skipDuplicates
         }
     }
