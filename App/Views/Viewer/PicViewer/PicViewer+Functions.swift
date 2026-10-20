@@ -43,12 +43,12 @@ extension PicViewer {
         ZStack {
             if swipeOffset > 0.0,
                let previousImage = viewer.previewImage(at: viewer.currentIndex - 1) {
-                neighborPreview(previousImage)
+                neighborPreview(previousImage, at: viewer.currentIndex - 1)
                     .offset(x: swipeOffset - swipeSlideDistance)
             }
             if swipeOffset < 0.0,
                let nextImage = viewer.previewImage(at: viewer.currentIndex + 1) {
-                neighborPreview(nextImage)
+                neighborPreview(nextImage, at: viewer.currentIndex + 1)
                     .offset(x: swipeOffset + swipeSlideDistance)
             }
             currentContent
@@ -73,11 +73,12 @@ extension PicViewer {
         }
     }
 
-    func neighborPreview(_ image: UIImage) -> some View {
+    func neighborPreview(_ image: UIImage, at index: Int) -> some View {
         Image(uiImage: image)
             .resizable()
             .scaledToFit()
             .clipShape(.rect(cornerRadius: imageCornerRadius))
+            .orientationEdit(viewer.orientationEdit(for: viewer.allPics[index].id), in: photoContainerSize)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
             .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
@@ -269,8 +270,10 @@ extension PicViewer {
             .overlay(alignment: .bottomTrailing) {
                 downloadStatusOverlay
             }
+            .orientationEdit(displayedOrientationEdit, in: photoContainerSize)
 
-            if showImageSize, let displayedImage = viewer.displayedImage {
+            if showImageSize, displayedOrientationEdit == .identity,
+               let displayedImage = viewer.displayedImage {
                 HStack(alignment: .center, spacing: 2.0) {
                     Text(verbatim: "\(Int(displayedImage.size.width * displayedImage.scale))")
                     Text(verbatim: "×")
@@ -285,6 +288,11 @@ extension PicViewer {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: { newSize in
+            photoContainerSize = newSize
+        }
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
@@ -301,6 +309,7 @@ extension PicViewer {
 
     func deleteDisplayedPic() {
         guard let pic = viewer.displayedPic else { return }
+        viewer.discardOrientationEdits(forPicIDs: [pic.id])
         Task {
             await DataActor.shared.deletePic(withID: pic.id)
             await PColorActor.shared.deleteColor(forPicWithID: pic.id)

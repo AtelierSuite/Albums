@@ -48,5 +48,10 @@ struct CarouselThumbnail: View {
                     thumbnail = prepared
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: .picThumbnailDidChange)) { notification in
+                guard notification.object as? String == pic.id,
+                      let cached = ThumbnailCache.shared.image(forKey: pic.id) else { return }
+                thumbnail = cached
+            }
     }
 }

@@ -56,6 +56,13 @@ struct PicLabel: View {
                 }
                 isThumbnailReadyToPresent = true
             }
+            .onReceive(NotificationCenter.default.publisher(for: .picThumbnailDidChange)) { notification in
+                guard notification.object as? String == pic.id,
+                      let cached = ThumbnailCache.shared.image(forKey: pic.id) else { return }
+                reportAspectRatio(for: cached)
+                thumbnail = Image(uiImage: cached)
+                isThumbnailReadyToPresent = true
+            }
     }
 
     @ViewBuilder
