@@ -231,8 +231,10 @@ struct PicViewer: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Shared.More", systemImage: "ellipsis") {
-                    PinButton(isPinned: isDisplayedPicPinned) {
-                        toggleDisplayedPicPin()
+                    if viewer.allowsPinning {
+                        PinButton(isPinned: isDisplayedPicPinned) {
+                            toggleDisplayedPicPin()
+                        }
                     }
                     Button("Shared.Rename", systemImage: "pencil") {
                         renamePicText = displayedPicName

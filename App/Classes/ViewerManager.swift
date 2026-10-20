@@ -22,6 +22,7 @@ class ViewerManager {
 
     var allPics: [Pic] = []
     var currentIndex: Int = 0
+    var allowsPinning: Bool = true
 
     var hasNext: Bool { currentIndex < allPics.count - 1 }
     var hasPrevious: Bool { currentIndex > 0 }
@@ -135,8 +136,10 @@ class ViewerManager {
         }
     }
 
-    func setDisplay(_ pic: Pic, in pics: [Pic], completion: @escaping @MainActor @Sendable () -> Void) {
+    func setDisplay(_ pic: Pic, in pics: [Pic], allowsPinning: Bool = true,
+                    completion: @escaping @MainActor @Sendable () -> Void) {
         allPics = pics
+        self.allowsPinning = allowsPinning
         currentIndex = pics.firstIndex(where: { $0.id == pic.id }) ?? 0
         setDisplay(pic, completion: completion)
     }
