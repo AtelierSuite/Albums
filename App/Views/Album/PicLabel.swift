@@ -25,6 +25,7 @@ struct PicLabel: View {
     var pic: Pic
     var maintainsAspectRatio: Bool = false
     var showsPinBadge: Bool = false
+    var usesCompactBadges: Bool = false
     var onAspectRatio: ((CGFloat) -> Void)?
 
     @State var isThumbnailReadyToPresent: Bool = false
@@ -94,24 +95,24 @@ struct PicLabel: View {
             .overlay(alignment: .bottomTrailing) {
                 if pic.isVideo, let duration = pic.duration {
                     Text(formatDuration(duration))
-                        .font(.caption2)
+                        .font(usesCompactBadges ? .system(size: 7.0) : .caption2)
                         .fontWeight(.medium)
                         .foregroundStyle(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
+                        .padding(.horizontal, usesCompactBadges ? 3.0 : 6.0)
+                        .padding(.vertical, usesCompactBadges ? 1.0 : 2.0)
                         .background(.black.opacity(0.6), in: .capsule)
-                        .padding(4)
+                        .padding(usesCompactBadges ? 2.0 : 4.0)
                 }
             }
             .overlay(alignment: .topTrailing) {
                 if showsPinBadge {
                     Image(systemName: "pin.fill")
-                        .font(.caption2)
+                        .font(usesCompactBadges ? .system(size: 7.0) : .caption2)
                         .fontWeight(.medium)
                         .foregroundStyle(.white)
-                        .padding(4)
+                        .padding(usesCompactBadges ? 2.5 : 4.0)
                         .background(.black.opacity(0.6), in: .circle)
-                        .padding(4)
+                        .padding(usesCompactBadges ? 2.0 : 4.0)
                         .accessibilityLabel(Text("Shared.Pinned"))
                 }
             }

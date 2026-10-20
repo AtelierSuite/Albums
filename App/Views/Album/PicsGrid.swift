@@ -120,6 +120,7 @@ struct PicsGrid<Content: View>: View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
+                 usesCompactBadges: usesCompactBadges,
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if aspectRatios[pic.id] != ratio {
                          aspectRatios[pic.id] = ratio
@@ -263,6 +264,12 @@ struct PicsGrid<Content: View>: View {
 }
 
 extension PicsGrid {
+    var usesCompactBadges: Bool {
+        guard gridWidth > 0.0, columnCount > 0 else { return false }
+        let itemWidth = (gridWidth - 2.0 * Double(columnCount - 1)) / Double(columnCount)
+        return itemWidth < 60.0
+    }
+
     @ViewBuilder
     func pinMenuItem(for pic: Pic) -> some View {
         if let onTogglePin {
