@@ -15,7 +15,7 @@ public enum LibrarySaver {
             case .image(let data):
                 await dataActor.createPic(Pic.newFilename(), data: data, inAlbumWithID: albumID)
             case .video(let url):
-                guard let data = try? Data(contentsOf: url) else { continue }
+                guard let data = try? Data(contentsOf: url, options: .alwaysMapped) else { continue }
                 let duration = (try? await AVURLAsset(url: url).load(.duration))?.seconds ?? 0
                 let fileExtension = url.pathExtension.lowercased()
                 await dataActor.createVideo(
