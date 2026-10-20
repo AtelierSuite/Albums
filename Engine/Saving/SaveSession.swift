@@ -68,6 +68,8 @@ public final class SaveSession {
             }
             LastUsedDestination.current = destination
             finish()
+        } catch is LibrarySaver.MissingLibrary {
+            fail(String(localized: "Saving.Failed.MissingLibrary", table: "Saving", bundle: .engine))
         } catch is LibrarySaver.MissingAlbum {
             fail(String(localized: "Saving.Failed.MissingAlbum", table: "Saving", bundle: .engine))
         } catch is PhotosSaver.MissingAlbums {

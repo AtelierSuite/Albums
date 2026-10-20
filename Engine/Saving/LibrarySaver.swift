@@ -3,9 +3,13 @@ import Foundation
 
 public enum LibrarySaver {
 
+    public struct MissingLibrary: Error {}
     public struct MissingAlbum: Error {}
 
     public static func save(_ items: [SharedItem], toLibrary libraryID: String, albumID: String?) async throws {
+        guard await LibrariesActor.shared.library(for: libraryID) != nil else {
+            throw MissingLibrary()
+        }
         let dataActor = DataActor.instance(for: libraryID)
         if let albumID, await dataActor.album(for: albumID) == nil {
             throw MissingAlbum()

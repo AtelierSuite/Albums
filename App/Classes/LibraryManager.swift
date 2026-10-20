@@ -126,6 +126,9 @@ class LibraryManager: ObservableObject {
         if wasSyncEnabled {
             await SyncManager.shared.deleteLibraryFromCloud(library.id)
         }
+        if case .albums(let libraryID, _, _, _) = LastUsedDestination.current, libraryID == library.id {
+            LastUsedDestination.current = nil
+        }
         if currentLibrary.id == library.id {
             let remainingLibraries = sortedByName(await LibrariesActor.shared.allLibraries())
             switchLibrary(to: remainingLibraries.first ?? PicLibrary())

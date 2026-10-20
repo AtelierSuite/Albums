@@ -62,6 +62,7 @@ public enum DuplicateChecker {
     }
 
     private static func libraryCandidates(libraryID: String, deadline: ContinuousClock.Instant) async -> [Candidate] {
+        guard await LibrariesActor.shared.library(for: libraryID) != nil else { return [] }
         let dataActor = DataActor.instance(for: libraryID)
         let hashActor = HashActor.instance(for: libraryID)
         var hashes = Dictionary(await hashActor.allCachedHashes(), uniquingKeysWith: { first, _ in first })
