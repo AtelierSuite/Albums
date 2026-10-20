@@ -4,8 +4,7 @@ import SwiftUI
 final class ShareViewController: SaveExtensionViewController {
 
     override func viewDidLoad() {
-        let store = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
-        let libraryID = store?.string(forKey: "CurrentCollectionID") ?? PicLibrary.defaultID
+        let libraryID = PicLibrary.persistedCurrentID
         DataActor.switchLibrary(to: libraryID)
         CoverCacheActor.switchLibrary(to: libraryID)
         super.viewDidLoad()

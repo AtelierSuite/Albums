@@ -3,7 +3,7 @@ import Foundation
 
 public actor HashActor {
 
-    nonisolated(unsafe) private static var _shared = HashActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = HashActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: HashActor { _shared }
 
     /// Bumped to 2 when scanning switched from hashing originals to hashing thumbnails; older

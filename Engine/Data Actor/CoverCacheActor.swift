@@ -3,7 +3,7 @@ import Foundation
 
 public actor CoverCacheActor {
 
-    nonisolated(unsafe) private static var _shared = CoverCacheActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = CoverCacheActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: CoverCacheActor { _shared }
 
     public static func switchLibrary(to collectionID: String) {

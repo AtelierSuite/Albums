@@ -29,7 +29,7 @@ public struct AlbumModel: Codable, Sendable {
 
 public actor AlbumModelActor {
 
-    nonisolated(unsafe) private static var _shared = AlbumModelActor(collectionID: PicLibrary.defaultID)
+    nonisolated(unsafe) private static var _shared = AlbumModelActor(collectionID: PicLibrary.persistedCurrentID)
     public static var shared: AlbumModelActor { _shared }
 
     public static let currentPrintVersion = FeaturePrintActor.currentPrintVersion
