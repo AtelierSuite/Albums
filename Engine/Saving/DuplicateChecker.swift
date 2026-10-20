@@ -65,7 +65,8 @@ public enum DuplicateChecker {
         let dataActor = DataActor.instance(for: libraryID)
         let hashActor = HashActor.instance(for: libraryID)
         var hashes = Dictionary(await hashActor.allCachedHashes(), uniquingKeysWith: { first, _ in first })
-        for picID in await dataActor.allPicIDs() where hashes[picID] == nil {
+        let picAlbumIDs = await dataActor.picAlbumIDs()
+        for (picID, _) in picAlbumIDs where hashes[picID] == nil {
             guard ContinuousClock.now < deadline else { break }
             if let data = await dataActor.thumbnailData(forPicWithID: picID),
                let image = UIImage(data: data),
@@ -74,19 +75,17 @@ public enum DuplicateChecker {
                 await hashActor.storeHash(hash, forPicWithID: picID)
             }
         }
-        let pics = (try? await dataActor.pics(withIDs: Array(hashes.keys))) ?? []
         var albumNames: [String: String] = [:]
         var candidates: [Candidate] = []
-        for pic in pics {
-            guard let hash = hashes[pic.id] else { continue }
+        for (picID, albumID) in picAlbumIDs {
+            guard let hash = hashes[picID] else { continue }
             var location = String(localized: "Destination.Collection", table: "Saving", bundle: .engine)
-            if let albumID = pic.containingAlbumID {
+            if let albumID {
                 if albumNames[albumID] == nil {
                     albumNames[albumID] = await dataActor.album(for: albumID)?.name
                 }
                 location = albumNames[albumID] ?? location
             }
-            let picID = pic.id
             candidates.append(Candidate(hash: hash, location: location) {
                 await dataActor.thumbnailData(forPicWithID: picID)
             })
