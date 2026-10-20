@@ -72,6 +72,13 @@ public struct DatabaseMigrator: Sendable {
         _ = try? database.run(preferencesTable.addColumn(prefHideSectionHeaders, defaultValue: false))
     }
 
+    public static func migrateRecentlyDeleted(_ database: Connection, picsTable: Table) {
+        let existingColumns = (try? database.safeRows("PRAGMA table_info(\"pics\")"))?
+            .compactMap { $0[1] as? String } ?? []
+        guard !existingColumns.contains("date_deleted") else { return }
+        _ = try? database.run(picsTable.addColumn(Expression<Double?>("date_deleted")))
+    }
+
     public static func stampSchemaVersionIfMigrated(_ database: Connection) {
         let hasDataColumn = ((try? database.safeRows("PRAGMA table_info(\"pics\")"))?
             .contains { ($0[1] as? String) == "data" }) ?? false

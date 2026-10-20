@@ -13,6 +13,7 @@ extension DataActor {
 
     public func pics() throws -> [Pic] {
         let query = picsTable
+            .filter(picDateDeleted == nil)
             .select(picListColumns)
             .order(picDateAdded.desc)
         return try database.safeRows(query).map { picFrom(row: $0) }
@@ -21,9 +22,9 @@ extension DataActor {
     public func pics(in album: Album?, order: SortOrder) throws -> [Pic] {
         let baseQuery: SQLite.Table
         if let albumID = album?.id {
-            baseQuery = picsTable.filter(picAlbumId == albumID)
+            baseQuery = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil)
         } else {
-            baseQuery = picsTable.filter(picAlbumId == nil)
+            baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
         let orderedQuery = (order == .reverse ? baseQuery.order(picDateAdded.desc) :
                                                 baseQuery.order(picDateAdded.asc))
@@ -34,7 +35,7 @@ extension DataActor {
     public func pics(withIDs ids: [String]) throws -> [Pic] {
         guard !ids.isEmpty else { return [] }
         let query = picsTable
-            .filter(ids.contains(picId))
+            .filter(ids.contains(picId) && picDateDeleted == nil)
             .select(picListColumns)
         let fetched = try database.safeRows(query).map { picFrom(row: $0) }
         let byID = Dictionary(fetched.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
@@ -44,9 +45,9 @@ extension DataActor {
     public func picSkeletons(in album: Album?, order: SortOrder) throws -> [Pic] {
         let baseQuery: SQLite.Table
         if let albumID = album?.id {
-            baseQuery = picsTable.filter(picAlbumId == albumID)
+            baseQuery = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil)
         } else {
-            baseQuery = picsTable.filter(picAlbumId == nil)
+            baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
         let orderedQuery = (order == .reverse ? baseQuery.order(picDateAdded.desc) :
                                                 baseQuery.order(picDateAdded.asc))
@@ -57,9 +58,9 @@ extension DataActor {
     public func picSkeletons(in album: Album?, order: SortOrder, limit: Int, offset: Int) throws -> [Pic] {
         let baseQuery: SQLite.Table
         if let albumID = album?.id {
-            baseQuery = picsTable.filter(picAlbumId == albumID)
+            baseQuery = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil)
         } else {
-            baseQuery = picsTable.filter(picAlbumId == nil)
+            baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
         let orderedQuery = (order == .reverse ? baseQuery.order(picDateAdded.desc) :
                                                 baseQuery.order(picDateAdded.asc))
@@ -71,9 +72,9 @@ extension DataActor {
     public func picSkeletonsByName(in album: Album?, order: SortOrder) throws -> [Pic] {
         let baseQuery: SQLite.Table
         if let albumID = album?.id {
-            baseQuery = picsTable.filter(picAlbumId == albumID)
+            baseQuery = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil)
         } else {
-            baseQuery = picsTable.filter(picAlbumId == nil)
+            baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
         let query = baseQuery.select(picSkeletonColumns)
         let pics = try database.safeRows(query).map { picFrom(row: $0) }
@@ -86,15 +87,16 @@ extension DataActor {
     public func picCount(in album: Album?) -> Int {
         let query: SQLite.Table
         if let albumID = album?.id {
-            query = picsTable.filter(picAlbumId == albumID)
+            query = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil)
         } else {
-            query = picsTable.filter(picAlbumId == nil)
+            query = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
         return (try? database.scalar(query.count)) ?? 0
     }
 
     public func allPicSkeletons() throws -> [Pic] {
         let query = picsTable
+            .filter(picDateDeleted == nil)
             .select(picSkeletonColumns)
             .order(picDateAdded.desc)
         return try database.safeRows(query).map { picFrom(row: $0) }
@@ -102,7 +104,7 @@ extension DataActor {
 
     public func recentThumbnails(limit: Int) -> [Data] {
         let query = picsTable
-            .filter(picThumbnailData != nil)
+            .filter(picThumbnailData != nil && picDateDeleted == nil)
             .select(picThumbnailData)
             .order(picDateAdded.desc)
             .limit(limit)
@@ -112,7 +114,7 @@ extension DataActor {
     public func thumbnails(forPicIDs ids: [String]) -> [Data] {
         guard !ids.isEmpty else { return [] }
         let query = picsTable
-            .filter(ids.contains(picId))
+            .filter(ids.contains(picId) && picDateDeleted == nil)
             .select(picId, picThumbnailData)
         var byID: [String: Data] = [:]
         for row in (try? database.safeRows(query)) ?? [] {

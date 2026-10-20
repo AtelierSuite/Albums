@@ -58,7 +58,7 @@ extension DataActor {
 
         var picCounts: [String: Int] = [:]
         // swiftlint:disable:next line_length
-        let picCountSQL = "SELECT containing_album_id, COUNT(*) FROM pics WHERE containing_album_id IN (\(placeholders)) GROUP BY containing_album_id"
+        let picCountSQL = "SELECT containing_album_id, COUNT(*) FROM pics WHERE containing_album_id IN (\(placeholders)) AND date_deleted IS NULL GROUP BY containing_album_id"
         if let stmt = try? database.safeRows(picCountSQL, bindings) {
             for row in stmt {
                 if let albumId = row[0] as? String,
@@ -76,7 +76,7 @@ extension DataActor {
 
     public func representativeThumbnails(forAlbumWithID albumID: String, limit: Int = 3) -> [Data] {
         let query = picsTable
-            .filter(picAlbumId == albumID)
+            .filter(picAlbumId == albumID && picDateDeleted == nil)
             .select(picThumbnailData)
             .order(picDateAdded.desc)
             .limit(limit)
@@ -86,7 +86,7 @@ extension DataActor {
 
     public func representativeThumbnail(forAlbumWithID albumID: String, at offset: Int) -> Data? {
         let query = picsTable
-            .filter(picAlbumId == albumID)
+            .filter(picAlbumId == albumID && picDateDeleted == nil)
             .select(picThumbnailData)
             .order(picDateAdded.desc)
             .limit(1, offset: offset)
@@ -104,7 +104,7 @@ extension DataActor {
         var result: [String: [Data]] = [:]
         for albumID in albumIDs {
             let query = picsTable
-                .filter(picAlbumId == albumID)
+                .filter(picAlbumId == albumID && picDateDeleted == nil)
                 .select(picThumbnailData)
                 .order(picDateAdded.desc)
                 .limit(limit)
@@ -179,11 +179,11 @@ extension DataActor {
     }
 
     public func picCount() -> Int {
-        return (try? database.scalar(picsTable.count)) ?? 0
+        return (try? database.scalar(picsTable.filter(picDateDeleted == nil).count)) ?? 0
     }
 
     public func picCount(forAlbumWithID id: String) -> Int {
-        let query = picsTable.filter(picAlbumId == id)
+        let query = picsTable.filter(picAlbumId == id && picDateDeleted == nil)
         return (try? database.scalar(query.count)) ?? 0
     }
 
@@ -252,7 +252,7 @@ extension DataActor {
             }
         }
 
-        let picsQuery = picsTable.filter(albumIDs.contains(picAlbumId)).select(picId)
+        let picsQuery = picsTable.filter(albumIDs.contains(picAlbumId) && picDateDeleted == nil).select(picId)
         var deletedPicIDs: [String] = []
         if let rows = try? database.safeRows(picsQuery) {
             for row in rows {

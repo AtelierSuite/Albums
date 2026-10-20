@@ -75,6 +75,8 @@ struct CollectionView: View {
                       .id(libraryManager.currentLibrary.id)
               case .photosLibrary:
                   PhotosCollectionView()
+              case .recentlyDeleted:
+                  RecentlyDeletedView()
               case .album(let album):
                   AlbumView(currentAlbum: album)
               case .picViewer(let namespace):

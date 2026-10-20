@@ -34,6 +34,7 @@ public struct PicSyncSnapshot: Sendable {
     public let duration: Double?
     public let thumbnail: Data?
     public let pinnedAt: Double?
+    public let dateDeleted: Double?
     public let systemFields: Data?
     public let lastModified: Double
 
@@ -46,6 +47,7 @@ public struct PicSyncSnapshot: Sendable {
         duration: Double? = nil,
         thumbnail: Data? = nil,
         pinnedAt: Double? = nil,
+        dateDeleted: Double? = nil,
         systemFields: Data? = nil,
         lastModified: Double
     ) {
@@ -57,6 +59,7 @@ public struct PicSyncSnapshot: Sendable {
         self.duration = duration
         self.thumbnail = thumbnail
         self.pinnedAt = pinnedAt
+        self.dateDeleted = dateDeleted
         self.systemFields = systemFields
         self.lastModified = lastModified
     }
@@ -195,6 +198,7 @@ extension DataActor {
             duration: try? row.get(picDuration),
             thumbnail: try? row.get(picThumbnailData),
             pinnedAt: (try? row.get(picPinnedAt)) ?? nil,
+            dateDeleted: (try? row.get(picDateDeleted)) ?? nil,
             systemFields: try? row.get(syncCKSystemFields),
             lastModified: (try? row.get(syncLastModified)) ?? 0
         )
@@ -245,7 +249,7 @@ extension DataActor {
 
     public func localOriginalPicIDs(inAlbum albumID: String) -> [String] {
         let query = picsTable
-            .filter(picAlbumId == albumID && picFilePath != nil)
+            .filter(picAlbumId == albumID && picFilePath != nil && picDateDeleted == nil)
             .select(picId)
         return (try? database.safeRows(query).map { $0[picId] }) ?? []
     }
@@ -260,7 +264,7 @@ extension DataActor {
     }
 
     public func allOriginalPicIDs(inAlbum albumID: String) -> [String] {
-        let query = picsTable.filter(picAlbumId == albumID).select(picId)
+        let query = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil).select(picId)
         return (try? database.safeRows(query).map { $0[picId] }) ?? []
     }
 
@@ -316,6 +320,7 @@ extension DataActor {
                 picDuration <- snapshot.duration,
                 picThumbnailData <- snapshot.thumbnail,
                 picPinnedAt <- snapshot.pinnedAt,
+                picDateDeleted <- snapshot.dateDeleted,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified
@@ -330,6 +335,7 @@ extension DataActor {
                 picMediaType <- snapshot.mediaType,
                 picDuration <- snapshot.duration,
                 picPinnedAt <- snapshot.pinnedAt,
+                picDateDeleted <- snapshot.dateDeleted,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified

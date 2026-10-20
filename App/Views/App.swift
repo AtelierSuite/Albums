@@ -121,11 +121,13 @@ struct IllustMateApp: App {
             await migratePreferencesFromUserDefaults()
             DatabaseMigrator.markMigrationComplete()
             await libraryManager.reconcileWithICloud()
+            await RecentlyDeleted.purgeExpired(in: libraryManager.currentLibrary.id)
             await SyncManager.shared.refresh()
         }
         .onChange(of: libraryManager.currentLibrary.id) { _, newID in
             Task {
                 await imageMigration.runIfNeeded(for: newID)
+                await RecentlyDeleted.purgeExpired(in: newID)
                 await SyncManager.shared.refresh()
             }
         }

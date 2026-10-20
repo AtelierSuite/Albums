@@ -90,6 +90,7 @@ extension SyncMate: CKSyncEngineDelegate {
         record["duration"] = snapshot.duration
         record["thumbnail"] = snapshot.thumbnail
         record["pinnedDate"] = snapshot.pinnedAt.map { Date(timeIntervalSince1970: $0) }
+        record["dateDeleted"] = snapshot.dateDeleted.map { Date(timeIntervalSince1970: $0) }
         return record
     }
 
@@ -182,6 +183,7 @@ extension SyncMate: CKSyncEngineDelegate {
                 duration: record["duration"] as? Double,
                 thumbnail: record["thumbnail"] as? Data,
                 pinnedAt: (record["pinnedDate"] as? Date)?.timeIntervalSince1970,
+                dateDeleted: (record["dateDeleted"] as? Date)?.timeIntervalSince1970,
                 systemFields: systemFields,
                 lastModified: modified
             ))

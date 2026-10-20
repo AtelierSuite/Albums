@@ -64,6 +64,7 @@ struct AlbumView: View {
     @State var hideSectionHeaders: Bool = false
 
     @State var totalAlbumCount: Int = 0
+    @State var recentlyDeletedCount: Int = 0
     @State var backgroundImage: UIImage?
     @State var lastRefreshTime: Date = .distantPast
     @State var searchText: String = ""
@@ -226,6 +227,11 @@ struct AlbumView: View {
                 await refreshData()
                 hasCompletedInitialLoad = true
             }
+            .onAppear {
+                Task {
+                    await refreshRecentlyDeletedCount()
+                }
+            }
             .task(id: currentAlbum.map { "\($0.id)-\($0.hasCoverPhoto)-\($0.coverPhoto != nil)" }) {
                 await updateBackgroundImage()
             }
@@ -300,7 +306,8 @@ struct AlbumView: View {
 
             if hideSectionHeaders && !isSearching
                 && hasFetchedAlbums && albums.isEmpty
-                && hasFetchedPicCount && picCount == 0 {
+                && hasFetchedPicCount && picCount == 0
+                && (currentAlbum != nil || recentlyDeletedCount == 0) {
                 ContentUnavailableView(
                     String(localized: "Albums.Empty", table: "Albums"),
                     systemImage: "photo.on.rectangle.angled"
@@ -312,7 +319,7 @@ struct AlbumView: View {
                             if !isSelectingPics {
                                 VStack(alignment: .leading, spacing: 0.0) {
                                     albumSection
-                                    if !hideSectionHeaders || !albums.isEmpty {
+                                    if !hideSectionHeaders || hasAlbumItems {
                                         Spacer()
                                             .frame(height: 20.0)
                                     }
@@ -321,7 +328,7 @@ struct AlbumView: View {
                             }
                             picsSection
                         }
-                        .padding(.top, (hideSectionHeaders && albums.isEmpty) ? 0.0 : 20.0)
+                        .padding(.top, (hideSectionHeaders && !hasAlbumItems) ? 0.0 : 20.0)
                         .animation(.smooth.speed(2.0), value: hideSectionHeaders)
                     } else {
                         LibrarySearchResultsView(

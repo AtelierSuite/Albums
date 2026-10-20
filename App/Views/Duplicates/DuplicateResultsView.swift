@@ -65,17 +65,7 @@ struct DuplicateResultsView: View {
                 Button("Shared.Yes", role: .destructive) {
                     Task {
                         let idsToDelete = allSelectedIDs
-                        let dataActor = scanManager.dataActor
-                        for picID in idsToDelete {
-                            await dataActor.deletePic(withID: picID)
-                            await HashActor.shared.deleteHash(forPicWithID: picID)
-                        }
-                        let collectionID = dataActor.collectionID
-                        Task.detached {
-                            await OriginalsManager.shared.deleteCloudOriginals(
-                                picIDs: Array(idsToDelete), in: collectionID
-                            )
-                        }
+                        await scanManager.dataActor.moveToRecentlyDeleted(picIDs: Array(idsToDelete))
                         await MainActor.run {
                             withAnimation(.smooth.speed(2.0)) {
                                 scanManager.removePics(withIDs: idsToDelete)
@@ -151,17 +141,7 @@ struct DuplicateGroupSection: View {
         ) {
             Button("Shared.Yes", role: .destructive) {
                 Task {
-                    for picID in selectedForDeletion {
-                        await dataActor.deletePic(withID: picID)
-                        await HashActor.shared.deleteHash(forPicWithID: picID)
-                    }
-                    let collectionID = dataActor.collectionID
-                    let idsForCleanup = Array(selectedForDeletion)
-                    Task.detached {
-                        await OriginalsManager.shared.deleteCloudOriginals(
-                            picIDs: idsForCleanup, in: collectionID
-                        )
-                    }
+                    await dataActor.moveToRecentlyDeleted(picIDs: Array(selectedForDeletion))
                     await MainActor.run {
                         withAnimation(.smooth.speed(2.0)) {
                             onDelete(selectedForDeletion)

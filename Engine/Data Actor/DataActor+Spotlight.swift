@@ -26,7 +26,7 @@ extension DataActor {
         let statement = """
             SELECT id, name, parent_album_id, date_created, IFNULL(length(cover_photo), 0),
                    (SELECT pics.id FROM pics WHERE pics.containing_album_id = albums.id
-                    ORDER BY pics.date_added DESC LIMIT 1)
+                    AND pics.date_deleted IS NULL ORDER BY pics.date_added DESC LIMIT 1)
             FROM albums
             """
         guard let rows = try? database.safeRows(statement) else { return [] }
@@ -46,7 +46,7 @@ extension DataActor {
     public func spotlightPicRows() -> [SpotlightPicRow] {
         let statement = """
             SELECT id, name, containing_album_id, date_added, media_type, duration,
-                   IFNULL(length(thumbnail_data), 0) FROM pics
+                   IFNULL(length(thumbnail_data), 0) FROM pics WHERE date_deleted IS NULL
             """
         guard let rows = try? database.safeRows(statement) else { return [] }
         return rows.compactMap { row in

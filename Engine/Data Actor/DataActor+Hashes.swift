@@ -4,13 +4,13 @@ import Foundation
 extension DataActor {
 
     public func allPicIDs() -> [String] {
-        let query = picsTable.select(picId)
+        let query = picsTable.filter(picDateDeleted == nil).select(picId)
         guard let rows = try? database.safeRows(query) else { return [] }
         return rows.compactMap { try? $0.get(picId) }
     }
 
     public func picAlbumIDs() -> [(picID: String, albumID: String?)] {
-        let query = picsTable.select(picId, picAlbumId)
+        let query = picsTable.filter(picDateDeleted == nil).select(picId, picAlbumId)
         guard let rows = try? database.safeRows(query) else { return [] }
         return rows.compactMap { row in
             guard let id = try? row.get(picId) else { return nil }
@@ -19,13 +19,13 @@ extension DataActor {
     }
 
     public func picIDs(inAlbumWithID albumID: String) -> [String] {
-        let query = picsTable.filter(picAlbumId == albumID).select(picId)
+        let query = picsTable.filter(picAlbumId == albumID && picDateDeleted == nil).select(picId)
         guard let rows = try? database.safeRows(query) else { return [] }
         return rows.compactMap { try? $0.get(picId) }
     }
 
     public func picIDsNotInAnyAlbum() -> [String] {
-        let query = picsTable.filter(picAlbumId == nil).select(picId)
+        let query = picsTable.filter(picAlbumId == nil && picDateDeleted == nil).select(picId)
         guard let rows = try? database.safeRows(query) else { return [] }
         return rows.compactMap { try? $0.get(picId) }
     }

@@ -49,10 +49,11 @@ extension AlbumView {
                 .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            if !albums.isEmpty {
+            if hasAlbumItems {
                 AlbumsSection(albums: albums, style: $albumStyleState,
                              columnCount: albumColumnCount,
                              hideSectionHeaders: hideSectionHeaders,
+                             recentlyDeletedCount: showsRecentlyDeletedAlbum ? recentlyDeletedCount : nil,
                              isKeptOffline: { OfflineAlbums.contains($0.id) },
                              onToggleOffline: {
                                  OfflineAlbums.toggle($0.id, in: DataActor.shared.collectionID)
@@ -81,6 +82,14 @@ extension AlbumView {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    var showsRecentlyDeletedAlbum: Bool {
+        currentAlbum == nil && !isSearching && hasFetchedAlbums
+    }
+
+    var hasAlbumItems: Bool {
+        !albums.isEmpty || showsRecentlyDeletedAlbum
     }
 
     var picsSection: some View {

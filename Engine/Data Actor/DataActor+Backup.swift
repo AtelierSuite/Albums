@@ -115,6 +115,9 @@ extension DataActor {
                                  progress: (@MainActor (Int, Int) -> Void)?) async throws {
         let backupDB = try Connection(url.path)
         _ = try? backupDB.execute("ALTER TABLE \"pics\" ADD COLUMN \"data\" BLOB")
+        if try backupDB.run(picsTable.filter(picDateDeleted != nil).delete()) > 0 {
+            try backupDB.vacuum()
+        }
         let query = picsTable
             .filter(picData == nil)
             .select(picId, picMediaType, picFilePath)
@@ -176,7 +179,8 @@ extension DataActor {
         var bytes = fileSize(at: databaseURL)
         var unavailable: [String] = []
         var rows: [(id: String, mediaType: Int, path: String?)] = []
-        if let prepared = try? database.safeRows(picsTable.select(picId, picMediaType, picFilePath)) {
+        let livePics = picsTable.filter(picDateDeleted == nil).select(picId, picMediaType, picFilePath)
+        if let prepared = try? database.safeRows(livePics) {
             for row in prepared {
                 rows.append((row[picId], (try? row.get(picMediaType)) ?? 0,
                              (try? row.get(picFilePath)) ?? nil))

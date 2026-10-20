@@ -23,6 +23,7 @@ enum ViewPath: Hashable {
     case photosAssetViewerRestore
     case library(id: String)
     case photosLibrary
+    case recentlyDeleted
 
     var isLibraryRoot: Bool {
         switch self {

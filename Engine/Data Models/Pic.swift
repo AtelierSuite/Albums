@@ -14,6 +14,7 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
     public var duration: TimeInterval?
     public var filePath: String?
     public var pinnedAt: Date?
+    public var dateDeleted: Date?
 
     public var isVideo: Bool { mediaType == .video }
     public var isPinned: Bool { pinnedAt != nil }

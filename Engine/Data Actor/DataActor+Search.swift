@@ -24,7 +24,7 @@ extension DataActor {
             """
         let picSQL = """
             SELECT p.id, p.name, p.containing_album_id, p.date_added, p.media_type, p.duration, p.file_path, a.name
-            FROM (SELECT rowid AS rid FROM pics WHERE name LIKE ? ESCAPE '\\' ORDER BY name COLLATE NOCASE LIMIT ?) matches
+            FROM (SELECT rowid AS rid FROM pics WHERE name LIKE ? ESCAPE '\\' AND date_deleted IS NULL ORDER BY name COLLATE NOCASE LIMIT ?) matches
             JOIN pics p ON p.rowid = matches.rid
             LEFT JOIN albums a ON a.id = p.containing_album_id
             ORDER BY p.name COLLATE NOCASE
