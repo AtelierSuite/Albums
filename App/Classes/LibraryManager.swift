@@ -36,6 +36,7 @@ class LibraryManager: ObservableObject {
         }
         switchActors(to: currentLibrary.id)
         hasLoadedLibraries = true
+        await SpotlightIndexer.shared.scheduleReconcile()
     }
 
     func reloadList(removedLibraryIDs: [String] = []) async {
@@ -53,6 +54,7 @@ class LibraryManager: ObservableObject {
         } else {
             switchLibrary(to: fallbackLibrary(excluding: currentLibrary.id))
         }
+        await SpotlightIndexer.shared.scheduleReconcile()
     }
 
     func reconcileWithICloud() async {
