@@ -81,6 +81,15 @@ public struct DatabaseMigrator: Sendable {
         _ = try? database.execute("PRAGMA user_version = \(DataActor.schemaVersion);")
     }
 
+    // MARK: - Pins
+
+    public static func migratePinsColumn(_ database: Connection, picsTable: Table) {
+        let existingColumns = (try? database.safeRows("PRAGMA table_info(\"pics\")"))?
+            .compactMap { $0[1] as? String } ?? []
+        guard !existingColumns.contains("pinned_at") else { return }
+        _ = try? database.run(picsTable.addColumn(Expression<Double?>("pinned_at")))
+    }
+
     // MARK: - Hashes DB
 
     public static func migrateHashDatabase(_ database: Connection, picHashesTable: Table) {

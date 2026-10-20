@@ -160,6 +160,17 @@ extension AlbumView {
         }
     }
 
+    func togglePin(for pics: [Pic]) {
+        guard !pics.isEmpty else { return }
+        let isPinning = pics.contains { !$0.isPinned }
+        let picIDs = pics.map(\.id)
+        Task {
+            await DataActor.shared.setPinned(isPinning, forPicsWithIDs: picIDs)
+            selectedPics.removeAll()
+            refreshPicsAndSet()
+        }
+    }
+
     func refreshDataAfterPicMoved() {
         selectedPics.removeAll()
         Task {

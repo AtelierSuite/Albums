@@ -29,7 +29,7 @@ struct PicsView: View {
                              enableSelection: false,
                              style: picViewStyle) { pic in
                         if UIDevice.current.userInterfaceIdiom == .phone {
-                            viewer.setDisplay(pic, in: pics) { [navigation] in
+                            viewer.setDisplay(pic, in: pics, allowsPinning: false) { [navigation] in
                                 navigation.push(.picViewer(namespace: namespace), for: .pics)
                             }
                         } else {
@@ -38,10 +38,10 @@ struct PicsView: View {
                                 openWindow(value: ViewerWindowValue.pic(
                                     selectedID: pic.id, siblingIDs: pics.map(\.id)))
                             } else {
-                                viewer.setDisplay(pic, in: pics) { }
+                                viewer.setDisplay(pic, in: pics, allowsPinning: false) { }
                             }
 #else
-                            viewer.setDisplay(pic, in: pics) { }
+                            viewer.setDisplay(pic, in: pics, allowsPinning: false) { }
 #endif
                         }
                     } selectedCount: {

@@ -89,6 +89,7 @@ extension SyncMate: CKSyncEngineDelegate {
         record["mediaType"] = snapshot.mediaType
         record["duration"] = snapshot.duration
         record["thumbnail"] = snapshot.thumbnail
+        record["pinnedDate"] = snapshot.pinnedAt.map { Date(timeIntervalSince1970: $0) }
         return record
     }
 
@@ -180,6 +181,7 @@ extension SyncMate: CKSyncEngineDelegate {
                 mediaType: record["mediaType"] as? Int ?? 0,
                 duration: record["duration"] as? Double,
                 thumbnail: record["thumbnail"] as? Data,
+                pinnedAt: (record["pinnedDate"] as? Date)?.timeIntervalSince1970,
                 systemFields: systemFields,
                 lastModified: modified
             ))

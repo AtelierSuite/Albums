@@ -33,6 +33,7 @@ public struct PicSyncSnapshot: Sendable {
     public let mediaType: Int
     public let duration: Double?
     public let thumbnail: Data?
+    public let pinnedAt: Double?
     public let systemFields: Data?
     public let lastModified: Double
 
@@ -44,6 +45,7 @@ public struct PicSyncSnapshot: Sendable {
         mediaType: Int,
         duration: Double? = nil,
         thumbnail: Data? = nil,
+        pinnedAt: Double? = nil,
         systemFields: Data? = nil,
         lastModified: Double
     ) {
@@ -54,6 +56,7 @@ public struct PicSyncSnapshot: Sendable {
         self.mediaType = mediaType
         self.duration = duration
         self.thumbnail = thumbnail
+        self.pinnedAt = pinnedAt
         self.systemFields = systemFields
         self.lastModified = lastModified
     }
@@ -191,6 +194,7 @@ extension DataActor {
             mediaType: (try? row.get(picMediaType)) ?? 0,
             duration: try? row.get(picDuration),
             thumbnail: try? row.get(picThumbnailData),
+            pinnedAt: (try? row.get(picPinnedAt)) ?? nil,
             systemFields: try? row.get(syncCKSystemFields),
             lastModified: (try? row.get(syncLastModified)) ?? 0
         )
@@ -311,6 +315,7 @@ extension DataActor {
                 picMediaType <- snapshot.mediaType,
                 picDuration <- snapshot.duration,
                 picThumbnailData <- snapshot.thumbnail,
+                picPinnedAt <- snapshot.pinnedAt,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified
@@ -324,6 +329,7 @@ extension DataActor {
                 picThumbnailData <- snapshot.thumbnail,
                 picMediaType <- snapshot.mediaType,
                 picDuration <- snapshot.duration,
+                picPinnedAt <- snapshot.pinnedAt,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified

@@ -217,7 +217,7 @@ extension DataActor {
 
         let picsQuery = picsTable.filter(picAlbumId == albumID)
         _ = try? database.run(picsQuery.update(
-            picAlbumId <- parentID, syncDirty <- true, syncLastModified <- now
+            picAlbumId <- parentID, picPinnedAt <- nil, syncDirty <- true, syncLastModified <- now
         ))
 
         let childAlbumsQuery = albumsTable.filter(albumParentId == albumID)

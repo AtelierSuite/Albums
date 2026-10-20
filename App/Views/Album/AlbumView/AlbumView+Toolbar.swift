@@ -25,6 +25,7 @@ extension AlbumView {
                     movePayload = .pics(selectedPics)
                 }
                 .disabled(selectedPics.isEmpty)
+                pinSelectedPicsButton
                 Text("Shared.Selected.\(selectedPics.count)")
                     .foregroundStyle(.secondary)
                     .font(.caption)
@@ -65,6 +66,7 @@ extension AlbumView {
                     movePayload = .pics(selectedPics)
                 }
                 .disabled(selectedPics.isEmpty)
+                pinSelectedPicsButton
                 Text("Shared.Selected.\(selectedPics.count)")
                     .foregroundStyle(.secondary)
                     .font(.caption)
@@ -142,6 +144,14 @@ extension AlbumView {
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    var pinSelectedPicsButton: some View {
+        PinButton(isPinned: !selectedPics.isEmpty && selectedPics.allSatisfy(\.isPinned)) {
+            togglePin(for: selectedPics)
+        }
+        .disabled(selectedPics.isEmpty)
     }
 
     @ViewBuilder
