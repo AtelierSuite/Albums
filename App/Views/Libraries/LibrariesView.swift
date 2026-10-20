@@ -23,6 +23,8 @@ struct LibrariesView: View {
     var isICloudExpanded: Bool = true
     @AppStorage("Libraries.Expanded.Photos", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isPhotosExpanded: Bool = true
+    @AppStorage("Libraries.iCloudAvailable", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var isICloudAvailable: Bool = true
 
     @State var isSettingsPresented: Bool = false
     @State var newLibraryLocation: Location?
@@ -31,7 +33,6 @@ struct LibrariesView: View {
     @State var libraryForCoverPicker: PicLibrary?
     @State var isEditingPhotos: Bool = false
     @State var isShowingICloudAlert: Bool = false
-    @State var isICloudAvailable: Bool = false
     @Namespace var sheetNamespace
 
     private let coverLength: CGFloat = 44.0
@@ -54,14 +55,12 @@ struct LibrariesView: View {
             } header: {
                 Text("Libraries.Section.OnMyDevice", tableName: "Libraries")
             }
-            if isICloudAvailable || !iCloudLibraries.isEmpty {
+            if isICloudAvailable {
                 Section(isExpanded: $isICloudExpanded) {
                     ForEach(iCloudLibraries) { library in
                         libraryRow(for: library)
                     }
-                    if isICloudAvailable {
-                        addLibraryRow(in: .iCloud)
-                    }
+                    addLibraryRow(in: .iCloud)
                 } header: {
                     Text("Libraries.Section.iCloud", tableName: "Libraries")
                 }
