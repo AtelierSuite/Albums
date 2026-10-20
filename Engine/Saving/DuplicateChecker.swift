@@ -116,7 +116,8 @@ public enum DuplicateChecker {
             for identifier in identifiers where !seen.contains(identifier) {
                 guard ContinuousClock.now < deadline else { return candidates }
                 seen.insert(identifier)
-                guard let thumbnail = await PhotosSaver.thumbnailData(forAssetWithIdentifier: identifier, length: 120),
+                guard let thumbnail = await PhotosSaver.localThumbnailData(forAssetWithIdentifier: identifier,
+                                                                           length: 120),
                       let image = UIImage(data: thumbnail),
                       let hash = DHash.compute(from: image) else { continue }
                 candidates.append(Candidate(hash: hash, location: title) { thumbnail })

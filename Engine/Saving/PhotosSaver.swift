@@ -97,8 +97,9 @@ public enum PhotosSaver {
         }
     }
 
-    public static func thumbnailData(forAssetWithIdentifier identifier: String, length: CGFloat) async -> Data? {
-        await thumbnail(forAssetWithIdentifier: identifier, length: length)?.jpegData(compressionQuality: 0.8)
+    public static func localThumbnailData(forAssetWithIdentifier identifier: String, length: CGFloat) async -> Data? {
+        await thumbnail(forAssetWithIdentifier: identifier, length: length, localOnly: true)?
+            .jpegData(compressionQuality: 0.8)
     }
 
     public static func coverAssetIdentifier(for collection: PhotosCollection) -> String? {
@@ -109,14 +110,15 @@ public enum PhotosSaver {
         return PHAsset.fetchAssets(in: album, options: options).firstObject?.localIdentifier
     }
 
-    public static func thumbnail(forAssetWithIdentifier identifier: String, length: CGFloat) async -> UIImage? {
+    public static func thumbnail(forAssetWithIdentifier identifier: String, length: CGFloat,
+                                 localOnly: Bool = false) async -> UIImage? {
         guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil).firstObject else {
             return nil
         }
         let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
+        options.deliveryMode = localOnly ? .fastFormat : .highQualityFormat
         options.resizeMode = .fast
-        options.isNetworkAccessAllowed = true
+        options.isNetworkAccessAllowed = !localOnly
         return await withCheckedContinuation { continuation in
             PHImageManager.default().requestImage(
                 for: asset, targetSize: CGSize(width: length, height: length),
