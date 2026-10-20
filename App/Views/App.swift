@@ -138,8 +138,9 @@ struct IllustMateApp: App {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .syncDidApplyLibraryChanges)) { _ in
-            Task { await libraryManager.reloadList() }
+        .onReceive(NotificationCenter.default.publisher(for: .syncDidApplyLibraryChanges)) { note in
+            let removedLibraryIDs = note.object as? [String] ?? []
+            Task { await libraryManager.reloadList(removedLibraryIDs: removedLibraryIDs) }
         }
         .onOpenURL { url in
             if url.pathExtension == "pics" {

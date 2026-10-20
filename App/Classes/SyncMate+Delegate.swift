@@ -105,6 +105,7 @@ extension SyncMate: CKSyncEngineDelegate {
         _ changes: CKSyncEngine.Event.FetchedRecordZoneChanges
     ) async {
         var libraryChanged = false
+        var removedLibraryIDs: [String] = []
         for modification in changes.modifications {
             if modification.record.recordID.zoneID.zoneName == Self.librariesZoneName {
                 libraryChanged = true
@@ -115,6 +116,7 @@ extension SyncMate: CKSyncEngineDelegate {
         for deletion in changes.deletions {
             if deletion.recordID.zoneID.zoneName == Self.librariesZoneName {
                 libraryChanged = true
+                removedLibraryIDs.append(deletion.recordID.recordName)
                 await LibrariesActor.shared.removeLibraryForRemoteDelete(id: deletion.recordID.recordName)
                 continue
             }
@@ -136,10 +138,12 @@ extension SyncMate: CKSyncEngineDelegate {
             await PColorActor.instance(for: collectionID).deleteColors(forPicIDs: picIDs)
         }
         if !changes.modifications.isEmpty || !changes.deletions.isEmpty {
+            let removedLibraryIDs = removedLibraryIDs
             await MainActor.run {
                 NotificationCenter.default.post(name: .syncDidApplyRemoteChanges, object: nil)
                 if libraryChanged {
-                    NotificationCenter.default.post(name: .syncDidApplyLibraryChanges, object: nil)
+                    NotificationCenter.default.post(name: .syncDidApplyLibraryChanges,
+                                                    object: removedLibraryIDs)
                 }
             }
         }
