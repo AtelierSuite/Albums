@@ -16,9 +16,6 @@ struct AlbumView: View {
 
     @AppStorage(openPicsInNewWindowKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
-    @AppStorage(importShowNotificationKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var showImportNotification: Bool = true
     @AppStorage(picViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var picViewStyle: ViewStyle = .grid
 
@@ -56,8 +53,6 @@ struct AlbumView: View {
     @State var selectedPhotoItems: [PhotosPickerItem] = []
     @State var selectedVideoItems: [PhotosPickerItem] = []
     @State var isImportingPhotos: Bool = false
-    @State var importCurrentCount: Int = 0
-    @State var importTotalCount: Int = 0
     @State var picSortType: PicSortType = .dateAddedDescending
     @State var columnCount: Int = 4
     @State var albumColumnCount: Int = 4
@@ -136,8 +131,6 @@ struct AlbumView: View {
                 isBrowsingAlbums: $isBrowsingAlbums,
                 isBrowsingFolders: $isBrowsingFolders,
                 isImportingPhotos: $isImportingPhotos,
-                importCurrentCount: importCurrentCount,
-                importTotalCount: importTotalCount,
                 currentAlbum: currentAlbum,
                 onAlbumDismiss: { refreshAlbumsAndSet() },
                 onBrowseAlbumsDismiss: {
@@ -146,8 +139,6 @@ struct AlbumView: View {
                     }
                 },
                 onImportDismiss: {
-                    importCurrentCount = 0
-                    importTotalCount = 0
                     Task.detached(priority: .userInitiated) {
                         await refreshData()
                     }

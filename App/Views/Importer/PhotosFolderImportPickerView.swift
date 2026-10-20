@@ -14,8 +14,6 @@ struct PhotosFolderImportPickerView: View {
 
     @State var isImporting: Bool = false
     @State var isImportCompleted: Bool = false
-    @State var importCurrentCount: Int = 0
-    @State var importTotalCount: Int = 0
     @State var importCompletedCount: Int = 0
 
     var body: some View {
@@ -36,8 +34,10 @@ struct PhotosFolderImportPickerView: View {
                     .padding(20.0)
                 }
             } else if isImporting {
-                StatusView(type: .inProgress, title: .importImporting,
-                           currentCount: importCurrentCount, totalCount: importTotalCount)
+                VStack(spacing: 0.0) {
+                    ImportStatusView()
+                    ImportCancelButton()
+                }
             } else if folder != nil {
                 folderListView
             } else {

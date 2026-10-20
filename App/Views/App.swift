@@ -23,6 +23,7 @@ struct IllustMateApp: App {
     @State var pipManager = PictureInPictureManager()
     @State var webServer = WebServerManager()
     @State var imageMigration = ImageMigrationManager()
+    @State var importManager = ImportManager.shared
     @State var isImportingBackup: Bool = false
     @State var importedURL: URL?
     @State var showLockCover: Bool = false
@@ -58,6 +59,8 @@ struct IllustMateApp: App {
             }
         }
         .modifier(SpotlightModifier())
+        .modifier(ImportRecoveryModifier())
+        .environment(importManager)
         .environmentObject(navigation)
         .environmentObject(libraryManager)
         .environment(viewer)
@@ -109,6 +112,9 @@ struct IllustMateApp: App {
             #endif
             await imageMigration.runPendingMigrations()
             presentWelcomeIfNeeded()
+            if !isShowingWelcome {
+                importManager.loadInterruptedJobs()
+            }
             do {
                 // TODO: Tips are broken in iOS 26 thanks to SwiftUI bug
                 //       Will include everything for now until Apple fixes it
@@ -214,6 +220,8 @@ struct IllustMateApp: App {
             ImageMigrationView(manager: imageMigration)
         }
         .sheet(isPresented: $isShowingWelcome) {
+            importManager.loadInterruptedJobs()
+        } content: {
             WelcomeView {
                 lastWelcomedVersion = welcomeVersion
                 isShowingWelcome = false
@@ -257,18 +265,6 @@ struct IllustMateApp: App {
             isSeedingData = false
             navigation.signalDataDeleted()
         }
-    }
-
-    nonisolated func scheduleWidgetRefresh() {
-        let request = BGAppRefreshTaskRequest(identifier: IllustMateApp.widgetRefreshTaskID)
-        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 24, to: .now)
-        try? BGTaskScheduler.shared.submit(request)
-    }
-
-    nonisolated func scheduleICloudSync() {
-        let request = BGAppRefreshTaskRequest(identifier: IllustMateApp.iCloudSyncTaskID)
-        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
-        try? BGTaskScheduler.shared.submit(request)
     }
 
     var body: some Scene {
@@ -374,6 +370,18 @@ struct IllustMateApp: App {
 }
 
 extension IllustMateApp {
+
+    nonisolated func scheduleWidgetRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: IllustMateApp.widgetRefreshTaskID)
+        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 24, to: .now)
+        try? BGTaskScheduler.shared.submit(request)
+    }
+
+    nonisolated func scheduleICloudSync() {
+        let request = BGAppRefreshTaskRequest(identifier: IllustMateApp.iCloudSyncTaskID)
+        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
+        try? BGTaskScheduler.shared.submit(request)
+    }
 
     var screenshotColorScheme: ColorScheme? {
         #if DEBUG
