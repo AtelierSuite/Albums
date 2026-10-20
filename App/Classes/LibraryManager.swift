@@ -120,8 +120,10 @@ class LibraryManager: ObservableObject {
     }
 
     func deleteLibrary(_ library: PicLibrary) async {
-        await OriginalsManager.shared.deleteAllOriginals(in: library.id)
         let wasSyncEnabled = await LibrariesActor.shared.isSyncEnabled(id: library.id)
+        if wasSyncEnabled {
+            await OriginalsManager.shared.deleteAllOriginals(in: library.id)
+        }
         await LibrariesActor.shared.deleteLibrary(withID: library.id)
         if wasSyncEnabled {
             await SyncManager.shared.deleteLibraryFromCloud(library.id)
