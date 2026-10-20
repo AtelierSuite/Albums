@@ -171,6 +171,7 @@ actor LibraryMoveManager {
         }
 
         await sourceCleanup()
+        await SpotlightIndexer.shared.scheduleReconcile(libraryIDs: [sourceID, destinationID])
         if sourceIsICloud && !destIsICloud {
             await OriginalsManager.shared.deleteCloudOriginals(picIDs: picIDs, in: sourceID)
         }

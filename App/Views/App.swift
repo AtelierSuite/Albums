@@ -57,6 +57,7 @@ struct IllustMateApp: App {
                 MainSplitView()
             }
         }
+        .modifier(SpotlightModifier())
         .environmentObject(navigation)
         .environmentObject(libraryManager)
         .environment(viewer)
