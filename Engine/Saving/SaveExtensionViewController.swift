@@ -21,8 +21,10 @@ open class SaveExtensionViewController: UIViewController {
         ])
         Task { [weak self] in
             guard let self else { return }
+            SharedItem.removeTemporaryCopies()
             let loaded = await SharedItem.load(from: extensionContext)
             let session = SaveSession(items: loaded.items, failedItemCount: loaded.failedCount) { [weak self] in
+                SharedItem.removeTemporaryCopies()
                 self?.extensionContext?.completeRequest(returningItems: nil)
             }
             spinner.removeFromSuperview()

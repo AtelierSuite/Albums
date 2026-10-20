@@ -10,6 +10,14 @@ public enum SharedItem: Sendable {
         return nil
     }
 
+    private static var temporaryCopiesDirectory: URL {
+        FileManager.default.temporaryDirectory.appendingPathComponent("SharedItems", isDirectory: true)
+    }
+
+    public static func removeTemporaryCopies() {
+        try? FileManager.default.removeItem(at: temporaryCopiesDirectory)
+    }
+
     @MainActor
     public static func load(from context: NSExtensionContext?) async -> (items: [SharedItem], failedCount: Int) {
         let providers = (context?.inputItems ?? [])
@@ -65,16 +73,17 @@ public enum SharedItem: Sendable {
     // The URL handed to the completion handler is deleted as soon as it returns.
     @MainActor
     private static func fileCopy(from provider: NSItemProvider, type: UTType) async -> URL? {
-        await withCheckedContinuation { continuation in
+        let copiesDirectory = temporaryCopiesDirectory
+        return await withCheckedContinuation { continuation in
             _ = provider.loadFileRepresentation(forTypeIdentifier: type.identifier) { url, _ in
                 guard let url else {
                     continuation.resume(returning: nil)
                     return
                 }
-                let copy = FileManager.default.temporaryDirectory
-                    .appendingPathComponent(UUID().uuidString)
-                    .appendingPathExtension(url.pathExtension)
+                let directory = copiesDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+                let copy = directory.appendingPathComponent(url.lastPathComponent)
                 do {
+                    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
                     try FileManager.default.copyItem(at: url, to: copy)
                     continuation.resume(returning: copy)
                 } catch {
