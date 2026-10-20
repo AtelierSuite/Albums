@@ -7,6 +7,7 @@ public struct SpotlightAlbumRow: Sendable {
     public let parentAlbumID: String?
     public let dateCreated: Date
     public let coverSize: Int
+    public let newestPicID: String?
 }
 
 public struct SpotlightPicRow: Sendable {
@@ -22,16 +23,22 @@ public struct SpotlightPicRow: Sendable {
 extension DataActor {
 
     public func spotlightAlbumRows() -> [SpotlightAlbumRow] {
-        let statement = "SELECT id, name, parent_album_id, date_created, IFNULL(length(cover_photo), 0) FROM albums"
+        let statement = """
+            SELECT id, name, parent_album_id, date_created, IFNULL(length(cover_photo), 0),
+                   (SELECT pics.id FROM pics WHERE pics.containing_album_id = albums.id
+                    ORDER BY pics.date_added DESC LIMIT 1)
+            FROM albums
+            """
         guard let rows = try? database.safeRows(statement) else { return [] }
         return rows.compactMap { row in
-            guard row.count == 5, let id = row[0] as? String else { return nil }
+            guard row.count == 6, let id = row[0] as? String else { return nil }
             return SpotlightAlbumRow(
                 id: id,
                 name: row[1] as? String ?? "",
                 parentAlbumID: row[2] as? String,
                 dateCreated: Date(timeIntervalSince1970: Self.spotlightDouble(row[3]) ?? 0),
-                coverSize: Int(row[4] as? Int64 ?? 0)
+                coverSize: Int(row[4] as? Int64 ?? 0),
+                newestPicID: row[5] as? String
             )
         }
     }

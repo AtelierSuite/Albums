@@ -41,6 +41,7 @@ private struct SpotlightEntry: Sendable {
     let contentType: UTType
     let date: Date
     let duration: Double?
+    var coverPicID: String?
 }
 
 actor SpotlightIndexer {
@@ -169,11 +170,12 @@ actor SpotlightIndexer {
 
         let albumEntries = albums.map { album in
             let itemContext = context(albumID: album.parentAlbumID)
+            let coverPicID = album.coverSize == 0 ? album.newestPicID : nil
             return SpotlightEntry(
                 id: SpotlightItemID(kind: .album, libraryID: library.id, itemID: album.id),
-                signature: signature([album.name, itemContext, String(album.coverSize)]),
+                signature: signature([album.name, itemContext, String(album.coverSize), coverPicID ?? ""]),
                 name: album.name, context: itemContext, contentType: .folder,
-                date: album.dateCreated, duration: nil
+                date: album.dateCreated, duration: nil, coverPicID: coverPicID
             )
         }
         let picEntries = pics.map { pic in
@@ -192,10 +194,14 @@ actor SpotlightIndexer {
 
     private func thumbnails(for batch: [SpotlightEntry], in dataActor: DataActor) async -> [String: Data] {
         let picIDs = batch.filter { $0.id.kind == .pic }.map(\.id.itemID)
-        let albumIDs = batch.filter { $0.id.kind == .album }.map(\.id.itemID)
-        var result = await dataActor.spotlightThumbnails(forPicIDs: picIDs)
-        if !albumIDs.isEmpty {
-            result.merge(await dataActor.batchAlbumCoverData(forAlbumIDs: albumIDs)) { current, _ in current }
+        let albums = batch.filter { $0.id.kind == .album }
+        let picThumbnails = await dataActor.spotlightThumbnails(forPicIDs: picIDs + albums.compactMap(\.coverPicID))
+        var result = picThumbnails
+        if !albums.isEmpty {
+            let covers = await dataActor.batchAlbumCoverData(forAlbumIDs: albums.map(\.id.itemID))
+            for album in albums {
+                result[album.id.itemID] = covers[album.id.itemID] ?? album.coverPicID.flatMap { picThumbnails[$0] }
+            }
         }
         return result
     }
