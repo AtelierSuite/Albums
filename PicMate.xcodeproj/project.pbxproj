@@ -999,7 +999,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Photos/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
@@ -1204,7 +1204,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Shared/Entitlements.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_PICTURE_FOLDER = readwrite;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -1258,7 +1258,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Shared/Entitlements.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_PICTURE_FOLDER = readwrite;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -1309,7 +1309,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1342,7 +1342,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1376,7 +1376,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
@@ -1410,7 +1410,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
@@ -1445,7 +1445,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Photostand/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Photostand;
@@ -1476,7 +1476,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Photostand/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Photostand;
@@ -1506,7 +1506,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Last Used/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
@@ -1541,7 +1541,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Last Used/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
@@ -1576,7 +1576,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 100;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Photos/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
