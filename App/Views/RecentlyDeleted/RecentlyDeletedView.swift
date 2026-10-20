@@ -107,6 +107,7 @@ struct RecentlyDeletedView: View {
                 }
             }
             .contentShape(.rect)
+            .accessibilityIdentifier("pic:\(pic.name)")
             .onTapGesture {
                 guard isSelecting else { return }
                 if selectedIDs.contains(pic.id) {
@@ -195,7 +196,8 @@ struct RecentlyDeletedView: View {
 
     func refresh() async {
         let fetched = (try? await DataActor.shared.recentlyDeletedPics()) ?? []
-        withAnimation(.smooth.speed(2.0)) {
+        // Animating into the empty state leaves the navigation bar's large title hidden.
+        withAnimation(fetched.isEmpty ? nil : .smooth.speed(2.0)) {
             pics = fetched
             selectedIDs.formIntersection(fetched.map(\.id))
         }
