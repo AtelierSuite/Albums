@@ -8,14 +8,14 @@ extension AlbumView {
                 Group {
 #if targetEnvironment(macCatalyst)
                     SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
-                                  count: displayedAlbums.count)
+                                  count: albums.count)
 #else
                     if UIDevice.current.userInterfaceIdiom == .phone {
                         SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
-                                      count: displayedAlbums.count)
+                                      count: albums.count)
                     } else {
                         SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
-                                      count: displayedAlbums.count) {
+                                      count: albums.count) {
                             Picker(String(localized: "Albums.Style", table: "Albums"),
                                    selection: ($albumStyleState.animation(.smooth.speed(2.0)))) {
                                 Label(String(localized: "Albums.Style.Grid", table: "Albums"),
@@ -49,8 +49,8 @@ extension AlbumView {
                 .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            if !displayedAlbums.isEmpty {
-                AlbumsSection(albums: displayedAlbums, style: $albumStyleState,
+            if !albums.isEmpty {
+                AlbumsSection(albums: albums, style: $albumStyleState,
                              columnCount: albumColumnCount,
                              hideSectionHeaders: hideSectionHeaders,
                              isKeptOffline: { OfflineAlbums.contains($0.id) },
@@ -72,7 +72,7 @@ extension AlbumView {
                         movePayload = .album(album)
                     }
                 }
-            } else if searchText.isEmpty && !hideSectionHeaders {
+            } else if !hideSectionHeaders {
                 Text("Albums.NoAlbums", tableName: "Albums")
                     .foregroundStyle(.secondary)
                     .padding(20.0)

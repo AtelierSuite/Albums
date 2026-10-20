@@ -67,15 +67,14 @@ struct AlbumView: View {
     @State var backgroundImage: UIImage?
     @State var lastRefreshTime: Date = .distantPast
     @State var searchText: String = ""
-    @State var searchResults: [Album]?
-    @State var searchTask: Task<Void, Never>?
+    @State var searchResults: LibrarySearchResults?
     @State var isDuplicateCheckerPresented: Bool = false
     @State var isIntelligentSortPresented: Bool = false
     @State var hasCompletedInitialLoad: Bool = false
     @State var movePayload: LibraryMovePayload?
 
-    var displayedAlbums: [Album] {
-        searchResults ?? albums
+    var isSearching: Bool {
+        !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     var navigationTitleText: String {
@@ -98,7 +97,7 @@ struct AlbumView: View {
             }
             .navigationTitle(navigationTitleText)
             .navigationSubtitle(Text(verbatim: navigationSubtitleText))
-            .searchable(text: $searchText, prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
+            .searchable(text: $searchText, prompt: Text("Albums.Search.Library.Prompt", tableName: "Albums"))
             .modifier(AlbumViewOptionsFocusModifier(options: AlbumViewOptions(
                 albumStyle: $albumStyleState,
                 albumSort: $albumSortState,
@@ -262,17 +261,8 @@ struct AlbumView: View {
                     await reloadPreferencesAndRefreshData()
                 }
             }
-            .onChange(of: searchText) { _, newValue in
-                searchTask?.cancel()
-                if newValue.isEmpty {
-                    searchResults = nil
-                } else {
-                    searchTask = Task.detached(priority: .userInitiated) {
-                        try? await Task.sleep(for: .milliseconds(300))
-                        guard !Task.isCancelled else { return }
-                        await searchAlbums(matching: newValue)
-                    }
-                }
+            .task(id: [searchText, String(navigation.dataVersion)]) {
+                await searchLibrary(matching: searchText)
             }
     }
 
@@ -295,8 +285,8 @@ struct AlbumView: View {
                 .transition(.opacity.animation(.smooth.speed(2.0)))
             }
 
-            if hideSectionHeaders && searchText.isEmpty
-                && hasFetchedAlbums && displayedAlbums.isEmpty
+            if hideSectionHeaders && !isSearching
+                && hasFetchedAlbums && albums.isEmpty
                 && hasFetchedPicCount && picCount == 0 {
                 ContentUnavailableView(
                     String(localized: "Albums.Empty", table: "Albums"),
@@ -304,29 +294,32 @@ struct AlbumView: View {
                 )
             } else {
                 ScrollView(.vertical) {
-                    VStack(alignment: .leading, spacing: 0.0) {
-                        if !isSelectingPics {
-                            VStack(alignment: .leading, spacing: 0.0) {
-                                albumSection
-                                if !searchText.isEmpty {
-                                    if displayedAlbums.isEmpty {
-                                        Text("Albums.NoSearchResults", tableName: "Albums")
-                                            .foregroundStyle(.secondary)
-                                            .padding(20.0)
+                    if !isSearching {
+                        VStack(alignment: .leading, spacing: 0.0) {
+                            if !isSelectingPics {
+                                VStack(alignment: .leading, spacing: 0.0) {
+                                    albumSection
+                                    if !hideSectionHeaders || !albums.isEmpty {
+                                        Spacer()
+                                            .frame(height: 20.0)
                                     }
-                                } else if !hideSectionHeaders || !displayedAlbums.isEmpty {
-                                    Spacer()
-                                        .frame(height: 20.0)
                                 }
+                                .transition(.opacity.animation(.smooth.speed(2.0)))
                             }
-                            .transition(.opacity.animation(.smooth.speed(2.0)))
-                        }
-                        if searchText.isEmpty {
                             picsSection
                         }
+                        .padding(.top, (hideSectionHeaders && albums.isEmpty) ? 0.0 : 20.0)
+                        .animation(.smooth.speed(2.0), value: hideSectionHeaders)
+                    } else {
+                        LibrarySearchResultsView(
+                            namespace: namespace,
+                            results: searchResults,
+                            libraryName: libraryManager.displayName(for: libraryManager.currentLibrary)
+                        ) { pic, pics in
+                            openPic(pic, in: pics)
+                        }
+                        .padding(.top, 20.0)
                     }
-                    .padding(.top, (hideSectionHeaders && displayedAlbums.isEmpty) ? 0.0 : 20.0)
-                    .animation(.smooth.speed(2.0), value: hideSectionHeaders)
                 }
                 .scrollEdgeEffectStyle(.soft, for: .all)
             }

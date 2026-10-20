@@ -81,6 +81,15 @@ public struct DatabaseMigrator: Sendable {
         _ = try? database.execute("PRAGMA user_version = \(DataActor.schemaVersion);")
     }
 
+    // MARK: - Search Indexes
+
+    public static func createSearchIndexes(_ database: Connection) {
+        _ = try? database.execute("""
+            CREATE INDEX IF NOT EXISTS pics_name_nocase ON pics(name COLLATE NOCASE);
+            CREATE INDEX IF NOT EXISTS albums_name_nocase ON albums(name COLLATE NOCASE);
+            """)
+    }
+
     // MARK: - Hashes DB
 
     public static func migrateHashDatabase(_ database: Connection, picHashesTable: Table) {
