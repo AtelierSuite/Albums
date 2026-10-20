@@ -282,6 +282,20 @@
 			);
 			target = E4E717BB2F5F09CA000C13CB /* Photostand */;
 		};
+		E4F1A0012F9A000000000001 /* Exceptions for "Shared" folder in "Save to Last Used" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
+		};
+		E4F1A0022F9A000000000002 /* Exceptions for "Shared" folder in "Save to Photos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = 68BDC48DEF3253812332CF54 /* Save to Photos */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -317,6 +331,8 @@
 				E4C47BEF2F66BEB200BDF3F8 /* Exceptions for "Shared" folder in "Share with PicMate" target */,
 				E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to Albums" target */,
 				E4E717D42F5F0EA6000C13CB /* Exceptions for "Shared" folder in "Photostand" target */,
+				E4F1A0012F9A000000000001 /* Exceptions for "Shared" folder in "Save to Last Used" target */,
+				E4F1A0022F9A000000000002 /* Exceptions for "Shared" folder in "Save to Photos" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
