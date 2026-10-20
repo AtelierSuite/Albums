@@ -38,12 +38,15 @@ class LibraryManager: ObservableObject {
         hasLoadedLibraries = true
     }
 
-    func reloadList() async {
+    func reloadList(removedLibraryIDs: [String] = []) async {
         let allLibraries = await LibrariesActor.shared.allLibraries()
         withAnimation(.smooth.speed(2.0)) {
             libraries = sortedByName(allLibraries)
         }
-        if let updated = allLibraries.first(where: { $0.id == currentLibrary.id }) {
+        if removedLibraryIDs.contains(currentLibrary.id) {
+            switchLibrary(to: allLibraries.first(where: { $0.id == currentLibrary.id })
+                          ?? fallbackLibrary(excluding: currentLibrary.id))
+        } else if let updated = allLibraries.first(where: { $0.id == currentLibrary.id }) {
             if updated != currentLibrary {
                 currentLibrary = updated
             }
