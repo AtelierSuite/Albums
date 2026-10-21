@@ -42,7 +42,6 @@ struct DuplicateWarningView: View {
                         } label: {
                             Text("Duplicates.SkipDuplicates", tableName: "Saving", bundle: .engine)
                                 .bold()
-                                .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.glassProminent)
                     }
@@ -54,7 +53,8 @@ struct DuplicateWarningView: View {
                             .buttonStyle(.glassProminent)
                     }
                 }
-                .controlSize(.large)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 .buttonBorderShape(.capsule)
                 .padding(20.0)
             }
@@ -67,7 +67,6 @@ struct DuplicateWarningView: View {
         } label: {
             Text("Duplicates.SaveAnyway", tableName: "Saving", bundle: .engine)
                 .bold()
-                .frame(maxWidth: .infinity)
         }
     }
 

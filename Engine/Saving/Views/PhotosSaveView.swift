@@ -71,11 +71,11 @@ public struct PhotosSaveView: View {
                     }
                 }
                 .bold()
-                .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glassProminent)
             .buttonBorderShape(.capsule)
-            .controlSize(.large)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
             .padding(.horizontal, 20.0)
         }
         .padding(.vertical, 12.0)

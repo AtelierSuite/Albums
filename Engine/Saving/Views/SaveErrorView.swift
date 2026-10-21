@@ -27,11 +27,11 @@ public struct SaveErrorView: View {
             } label: {
                 Text("Shared.Close", tableName: "Saving", bundle: .engine)
                     .bold()
-                    .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glass)
             .buttonBorderShape(.capsule)
-            .controlSize(.large)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
             .padding(20.0)
         }
         .background(Color(uiColor: .systemBackground))
