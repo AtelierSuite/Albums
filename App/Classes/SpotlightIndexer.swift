@@ -3,8 +3,6 @@ import Engine
 import Foundation
 import UniformTypeIdentifiers
 
-let spotlightIndexingEnabledKey = "SpotlightIndexingEnabled"
-
 struct SpotlightItemID: Hashable, Sendable {
 
     enum Kind: String, Sendable {
@@ -59,10 +57,7 @@ actor SpotlightIndexer {
     private var debounceTask: Task<Void, Never>?
 
     static var isIndexingAllowed: Bool {
-        let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
-        let isEnabled = defaults?.object(forKey: spotlightIndexingEnabledKey) as? Bool ?? true
-        let isAppLocked = defaults?.bool(forKey: "AppLockEnabled") ?? false
-        return isEnabled && !isAppLocked
+        !(UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")?.bool(forKey: "AppLockEnabled") ?? false)
     }
 
     func scheduleReconcile(libraryIDs: [String]? = nil, after delay: Duration = .seconds(2)) {

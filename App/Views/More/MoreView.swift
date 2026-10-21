@@ -11,8 +11,6 @@ struct MoreView: View {
 
     @AppStorage("AppLockEnabled", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isAppLockEnabled: Bool = false
-    @AppStorage(spotlightIndexingEnabledKey, store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var isSpotlightIndexingEnabled: Bool = true
     @AppStorage("ShareSheetOpenSearch", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var openSearchWhenSharing: Bool = false
     @AppStorage("ShareSheetShowAnimation", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
@@ -46,11 +44,6 @@ struct MoreView: View {
                 Text("Security", tableName: "More")
             } footer: {
                 Text("AppLock.Description", tableName: "More")
-            }
-            Section {
-                Toggle(String(localized: "Spotlight", table: "More"), isOn: $isSpotlightIndexingEnabled)
-            } footer: {
-                Text("Spotlight.Description", tableName: "More")
             }
             Section {
                 Toggle(String(localized: "Viewer.FitToScreen", table: "More"), isOn: $fitToScreen)

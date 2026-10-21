@@ -47,7 +47,7 @@ struct LibrariesView: View {
 
     var body: some View {
         List {
-            Section(isExpanded: $isOnMyDeviceExpanded) {
+            Section(isExpanded: $isOnMyDeviceExpanded.animation()) {
                 ForEach(onMyDeviceLibraries) { library in
                     libraryRow(for: library)
                 }
@@ -56,7 +56,7 @@ struct LibrariesView: View {
                 Text("Libraries.Section.OnMyDevice", tableName: "Libraries")
             }
             if isICloudAvailable {
-                Section(isExpanded: $isICloudExpanded) {
+                Section(isExpanded: $isICloudExpanded.animation()) {
                     ForEach(iCloudLibraries) { library in
                         libraryRow(for: library)
                     }
@@ -65,7 +65,7 @@ struct LibrariesView: View {
                     Text("Libraries.Section.iCloud", tableName: "Libraries")
                 }
             }
-            Section(isExpanded: $isPhotosExpanded) {
+            Section(isExpanded: $isPhotosExpanded.animation()) {
                 photosRow
             } header: {
                 Text("Libraries.Section.Photos", tableName: "Libraries")
@@ -85,7 +85,8 @@ struct LibrariesView: View {
         }
         .sheet(isPresented: $isSettingsPresented) {
             MoreView()
-                .phonePresentationDetents([.medium, .large])
+                .phonePresentationDetents([.large])
+                .presentationDragIndicator(.hidden)
                 .navigationTransition(.zoom(sourceID: "settings", in: sheetNamespace))
         }
         .sheet(item: $libraryToEdit) { library in

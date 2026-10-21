@@ -11,8 +11,6 @@ struct SpotlightModifier: ViewModifier {
 
     @AppStorage("AppLockEnabled", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isAppLockEnabled: Bool = false
-    @AppStorage(spotlightIndexingEnabledKey, store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var isSpotlightIndexingEnabled: Bool = true
 
     func body(content: Content) -> some View {
         content
@@ -22,9 +20,6 @@ struct SpotlightModifier: ViewModifier {
                 }
             }
             .onChange(of: isAppLockEnabled) { _, _ in
-                Task { await SpotlightIndexer.shared.scheduleReconcile(after: .zero) }
-            }
-            .onChange(of: isSpotlightIndexingEnabled) { _, _ in
                 Task { await SpotlightIndexer.shared.scheduleReconcile(after: .zero) }
             }
             .onReceive(NotificationCenter.default.publisher(for: .dataActorDidMutateLocally)) { note in
