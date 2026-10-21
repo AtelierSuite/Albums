@@ -56,11 +56,11 @@ extension PhotosFolderView {
                 } label: {
                     Text("Shared.Rename")
                         .bold()
-                        .padding(4.0)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
                 .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 .disabled(renameText.trimmingCharacters(in: .whitespaces).isEmpty)
                 .frame(maxWidth: .infinity)
                 .padding(20.0)

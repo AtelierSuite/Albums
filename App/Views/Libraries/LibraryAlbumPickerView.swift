@@ -52,12 +52,12 @@ struct LibraryAlbumPickerView: View {
             } label: {
                 Text("Move.MoveHere")
                     .bold()
-                    .padding(4.0)
-                    .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glassProminent)
             .tint(.accent)
             .buttonBorderShape(.capsule)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
             .padding(20.0)
         }
         .navigationBarTitleDisplayMode(.inline)

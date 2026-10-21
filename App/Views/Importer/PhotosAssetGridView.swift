@@ -24,11 +24,11 @@ struct PhotosAssetGridView: View {
                 } label: {
                     Text("Shared.OK")
                         .bold()
-                        .padding(4.0)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
                 .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 .padding(20.0)
             } else if isImporting {
                 ImportStatusView()
@@ -57,12 +57,12 @@ struct PhotosAssetGridView: View {
                     } label: {
                         Text("Import.StartImport", tableName: "Import")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .tint(.accent)
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
                     .disabled(selectedAssets.isEmpty)
                 }
                 .frame(maxWidth: .infinity)

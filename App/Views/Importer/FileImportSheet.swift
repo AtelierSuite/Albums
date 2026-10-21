@@ -87,11 +87,11 @@ struct FileImportSheet: View {
                     } label: {
                         Text("Import.SelectFromFiles", tableName: "Import")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
 
                     Button {
                         var loadedFiles: [(filename: String, data: Data)] = []
@@ -109,12 +109,12 @@ struct FileImportSheet: View {
                     } label: {
                         Text("Import.StartImport", tableName: "Import")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .tint(.accent)
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
                     .disabled(selectedURLs.isEmpty)
                 }
                 .padding(20.0)

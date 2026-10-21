@@ -73,12 +73,12 @@ struct WelcomeView: View {
                 } label: {
                     Text("Onboarding.Continue")
                         .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6.0)
                 }
-                .clipShape(.capsule)
                 .tint(.accent)
                 .buttonStyle(.glassProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
             }
             .padding()
         }

@@ -54,12 +54,12 @@ struct RestoreBackupView: View {
                     } label: {
                         Text("Shared.OK")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .tint(.accent)
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
                     .padding(20.0)
                 } else if !isImporting {
                     VStack(alignment: .leading, spacing: 8.0) {
@@ -68,12 +68,12 @@ struct RestoreBackupView: View {
                         } label: {
                             Text("Backup.Restore.Merge", tableName: "More")
                                 .bold()
-                                .padding(4.0)
-                                .frame(maxWidth: .infinity)
                         }
                         .tint(.accent)
                         .buttonStyle(.glassProminent)
                         .buttonBorderShape(.capsule)
+                        .controlSize(.extraLarge)
+                        .buttonSizing(.flexible)
 
                         Text("Backup.Restore.Merge.Description", tableName: "More")
                             .font(.caption)
@@ -91,12 +91,12 @@ struct RestoreBackupView: View {
                         } label: {
                             Text("Backup.Restore.ToAlbum", tableName: "More")
                                 .bold()
-                                .padding(4.0)
-                                .frame(maxWidth: .infinity)
                         }
                         .tint(.accent)
                         .buttonStyle(.glassProminent)
                         .buttonBorderShape(.capsule)
+                        .controlSize(.extraLarge)
+                        .buttonSizing(.flexible)
 
                         Text("Backup.Restore.ToAlbum.Description", tableName: "More")
                             .font(.caption)

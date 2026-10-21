@@ -31,12 +31,12 @@ extension PhotosFolderImportPickerView {
                     } label: {
                         Text("Import.ImportFolder", tableName: "Import")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .tint(.accent)
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(20.0)

@@ -23,11 +23,11 @@ struct ImportCancelButton: View {
                 } label: {
                     Text("Import.Cancel", tableName: "Import")
                         .bold()
-                        .padding(4.0)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glass)
                 .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 .disabled(!importManager.isRunning)
             }
         }

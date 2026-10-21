@@ -26,11 +26,11 @@ struct PhotosFolderImportPickerView: View {
                     } label: {
                         Text("Shared.OK")
                             .bold()
-                            .padding(4.0)
-                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                    .buttonSizing(.flexible)
                     .padding(20.0)
                 }
             } else if isImporting {

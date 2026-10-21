@@ -110,18 +110,22 @@ struct MoreBackupView: View {
                 Task { await runBackup() }
             } label: {
                 Text("Backup.Start", tableName: "More")
-                    .bold().padding(4.0).frame(maxWidth: .infinity)
+                    .bold()
             }
             .tint(.accent)
             .buttonStyle(.glassProminent)
             .buttonBorderShape(.capsule)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
             .disabled(!canStart)
             Button { dismiss() } label: {
-                Text("Shared.Cancel").padding(4.0).frame(maxWidth: .infinity)
+                Text("Shared.Cancel")
             }
             .tint(.secondary)
             .buttonStyle(.bordered)
             .buttonBorderShape(.capsule)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
         }
     }
 
@@ -152,11 +156,13 @@ struct MoreBackupView: View {
         VStack(alignment: .center, spacing: 16.0) {
             StatusView(type: isError ? .error : .success, title: title, message: message)
             Button { dismiss() } label: {
-                Text("Shared.OK").bold().padding(4.0).frame(maxWidth: .infinity)
+                Text("Shared.OK").bold()
             }
             .tint(.accent)
             .buttonStyle(.glassProminent)
             .buttonBorderShape(.capsule)
+            .controlSize(.extraLarge)
+            .buttonSizing(.flexible)
         }
     }
 

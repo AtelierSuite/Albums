@@ -28,11 +28,11 @@ struct RenamePicView: View {
                 } label: {
                     Text("Shared.Rename")
                         .bold()
-                        .padding(4.0)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
                 .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 .disabled(newPicName.trimmingCharacters(in: .whitespaces) == "")
                 .frame(maxWidth: .infinity)
                 .padding(20.0)
