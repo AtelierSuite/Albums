@@ -135,7 +135,6 @@ struct ShareView: View {
             } label: {
                 Text("Import.ImportHere", tableName: "Import")
                     .bold()
-                    .padding(4.0)
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glassProminent)

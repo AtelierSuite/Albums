@@ -20,15 +20,10 @@ public struct PhotosSaveView: View {
             case .none:
                 ProgressView()
             case .some(false):
-                ContentUnavailableView {
-                    Label(String(localized: "Photos.NoAccess.Title", table: "Saving", bundle: .engine),
-                          systemImage: "photo.badge.exclamationmark")
-                } description: {
-                    Text("Photos.NoAccess.Message", tableName: "Saving", bundle: .engine)
-                } actions: {
-                    Button(role: .close) { session.cancel() }
-                        .buttonStyle(.glass)
-                }
+                SaveErrorView(session: session,
+                              title: String(localized: "Photos.NoAccess.Title", table: "Saving", bundle: .engine),
+                              message: String(localized: "Photos.NoAccess.Message", table: "Saving", bundle: .engine),
+                              systemImage: "photo.badge.exclamationmark")
             case .some(true):
                 if session.items.isEmpty {
                     NothingToSaveView(session: session)
@@ -47,41 +42,43 @@ public struct PhotosSaveView: View {
         NavigationStack(path: $path) {
             PhotosCollectionGrid(folder: nil, session: session,
                                  selectedIDs: $selectedIDs, selectedTitles: $selectedTitles)
+                .safeAreaBar(edge: .bottom) { saveBar }
                 .navigationDestination(for: PhotosCollection.self) { collection in
                     if case .folder(let folder) = collection {
                         PhotosCollectionGrid(folder: folder, session: session,
                                              selectedIDs: $selectedIDs, selectedTitles: $selectedTitles)
+                            .safeAreaBar(edge: .bottom) { saveBar }
                     }
                 }
         }
-        .safeAreaInset(edge: .bottom) {
-            VStack(spacing: 12.0) {
-                SharedItemsStrip(items: session.items)
-                Button {
-                    let destination = SaveDestination.photos(
-                        collectionIDs: selectedIDs,
-                        titles: selectedIDs.compactMap { selectedTitles[$0] }
-                    )
-                    Task { await session.save(to: destination) }
-                } label: {
-                    Group {
-                        if selectedIDs.isEmpty {
-                            Text("Photos.SaveToLibrary", tableName: "Saving", bundle: .engine)
-                        } else {
-                            Text("Photos.SaveToSelected.\(selectedIDs.count)", tableName: "Saving", bundle: .engine)
-                        }
+    }
+
+    private var saveBar: some View {
+        VStack(spacing: 12.0) {
+            SharedItemsStrip(items: session.items)
+            Button {
+                let destination = SaveDestination.photos(
+                    collectionIDs: selectedIDs,
+                    titles: selectedIDs.compactMap { selectedTitles[$0] }
+                )
+                Task { await session.save(to: destination) }
+            } label: {
+                Group {
+                    if selectedIDs.isEmpty {
+                        Text("Photos.SaveToLibrary", tableName: "Saving", bundle: .engine)
+                    } else {
+                        Text("Photos.SaveToSelected.\(selectedIDs.count)", tableName: "Saving", bundle: .engine)
                     }
-                    .bold()
-                    .padding(4.0)
-                    .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.glassProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .padding(.horizontal, 20.0)
+                .bold()
+                .frame(maxWidth: .infinity)
             }
-            .padding(.vertical, 12.0)
+            .buttonStyle(.glassProminent)
+            .buttonBorderShape(.capsule)
+            .controlSize(.large)
+            .padding(.horizontal, 20.0)
         }
+        .padding(.vertical, 12.0)
     }
 }
 
@@ -125,6 +122,7 @@ struct PhotosCollectionGrid: View {
             }
             .padding(20.0)
         }
+        .scrollEdgeEffectStyle(.soft, for: .bottom)
         .overlay {
             if displayedCollections.isEmpty {
                 ContentUnavailableView(String(localized: "Photos.Empty", table: "Saving", bundle: .engine),
@@ -215,22 +213,12 @@ struct PhotosCollectionCell: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                .clipShape(.rect(cornerRadius: 12.0))
                 .overlay {
-                    if isSelected {
-                        RoundedRectangle(cornerRadius: 12.0)
-                            .strokeBorder(.tint, lineWidth: 3.0)
+                    if !isFolder {
+                        SelectionOverlay(isSelected)
                     }
                 }
-                .overlay(alignment: .bottomTrailing) {
-                    if isSelected {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.title2)
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white, .tint)
-                            .padding(6.0)
-                    }
-                }
+                .clipShape(.rect(cornerRadius: 12.0))
             Text(collection.title)
                 .font(.caption)
                 .lineLimit(1)
@@ -257,14 +245,9 @@ public struct NothingToSaveView: View {
     }
 
     public var body: some View {
-        ContentUnavailableView {
-            Label(String(localized: "Saving.NoItems.Title", table: "Saving", bundle: .engine),
-                  systemImage: "photo.badge.exclamationmark")
-        } description: {
-            Text("Saving.NoItems.Message", tableName: "Saving", bundle: .engine)
-        } actions: {
-            Button(role: .close) { session.cancel() }
-                .buttonStyle(.glass)
-        }
+        SaveErrorView(session: session,
+                      title: String(localized: "Saving.NoItems.Title", table: "Saving", bundle: .engine),
+                      message: String(localized: "Saving.NoItems.Message", table: "Saving", bundle: .engine),
+                      systemImage: "photo.badge.exclamationmark")
     }
 }

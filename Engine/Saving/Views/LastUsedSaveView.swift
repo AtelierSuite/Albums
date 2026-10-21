@@ -34,15 +34,10 @@ public struct LastUsedSaveView: View {
                     }
                 }
             } else {
-                ContentUnavailableView {
-                    Label(String(localized: "LastUsed.Empty.Title", table: "Saving", bundle: .engine),
-                          systemImage: "clock.arrow.circlepath")
-                } description: {
-                    Text("LastUsed.Empty.Message", tableName: "Saving", bundle: .engine)
-                } actions: {
-                    Button(role: .close) { session.cancel() }
-                        .buttonStyle(.glass)
-                }
+                SaveErrorView(session: session,
+                              title: String(localized: "LastUsed.Empty.Title", table: "Saving", bundle: .engine),
+                              message: String(localized: "LastUsed.Empty.Message", table: "Saving", bundle: .engine),
+                              systemImage: "clock.arrow.circlepath")
             }
             SaveSessionOverlay(session: session)
         }

@@ -33,21 +33,10 @@ public struct SaveSessionOverlay: View {
                 .font(.headline)
             }
         case .failed(let message):
-            status {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.system(size: 64.0))
-                    .symbolRenderingMode(.multicolor)
-                Text("Saving.Failed", tableName: "Saving", bundle: .engine)
-                    .font(.headline)
-                Text(message)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                Button(role: .close) {
-                    session.cancel()
-                }
-                .buttonStyle(.glass)
-                .controlSize(.large)
-            }
+            SaveErrorView(session: session,
+                          title: String(localized: "Saving.Failed", table: "Saving", bundle: .engine),
+                          message: message,
+                          systemImage: "exclamationmark.triangle")
         case .duplicates(let matches):
             DuplicateWarningView(session: session, matches: matches)
         }

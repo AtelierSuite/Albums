@@ -1,13 +1,13 @@
 import SwiftUI
 
-struct SelectionOverlay: View {
+public struct SelectionOverlay: View {
     let isSelected: Bool
 
-    init(_ isSelected: Bool) {
+    public init(_ isSelected: Bool) {
         self.isSelected = isSelected
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.clear
             if isSelected {
@@ -17,7 +17,7 @@ struct SelectionOverlay: View {
             ZStack {
                 if isSelected {
                     Circle()
-                        .fill(.accent)
+                        .fill(Color.accentColor)
                         .strokeBorder(Color.white, lineWidth: 2)
                         .frame(width: 24, height: 24)
                         .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
