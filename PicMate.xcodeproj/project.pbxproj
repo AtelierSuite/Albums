@@ -330,9 +330,9 @@
 			exceptions = (
 				E4C47BEF2F66BEB200BDF3F8 /* Exceptions for "Shared" folder in "Share with PicMate" target */,
 				E4D6F07D2F4D5B87006965BD /* Exceptions for "Shared" folder in "Save to Albums" target */,
-				E4E717D42F5F0EA6000C13CB /* Exceptions for "Shared" folder in "Photostand" target */,
-				E4F1A0012F9A000000000001 /* Exceptions for "Shared" folder in "Save to Last Used" target */,
 				E4F1A0022F9A000000000002 /* Exceptions for "Shared" folder in "Save to Photos" target */,
+				E4F1A0012F9A000000000001 /* Exceptions for "Shared" folder in "Save to Last Used" target */,
+				E4E717D42F5F0EA6000C13CB /* Exceptions for "Shared" folder in "Photostand" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
