@@ -17,15 +17,7 @@ extension AlbumView {
             }
             ToolbarSpacer(.fixed, placement: .topBarTrailing)
             ToolbarItemGroup(placement: .topBarTrailing) {
-                PicMoveMenu(title: "Shared.Move", systemImage: "tray.full",
-                            pics: selectedPics, containingAlbum: currentAlbum,
-                            totalAlbumCount: totalAlbumCount) {
-                    refreshDataAfterPicMoved()
-                } onOtherLibraries: {
-                    movePayload = .pics(selectedPics)
-                }
-                .disabled(selectedPics.isEmpty)
-                pinSelectedPicsButton
+                selectedPicsActionsMenu
                 Text("Shared.Selected.\(selectedPics.count)")
                     .foregroundStyle(.secondary)
                     .font(.caption)
@@ -58,15 +50,7 @@ extension AlbumView {
             }
             ToolbarSpacer(.flexible, placement: .bottomBar)
             ToolbarItemGroup(placement: .bottomBar) {
-                PicMoveMenu(title: "Shared.Move", systemImage: "tray.full",
-                            pics: selectedPics, containingAlbum: currentAlbum,
-                            totalAlbumCount: totalAlbumCount) {
-                    refreshDataAfterPicMoved()
-                } onOtherLibraries: {
-                    movePayload = .pics(selectedPics)
-                }
-                .disabled(selectedPics.isEmpty)
-                pinSelectedPicsButton
+                selectedPicsActionsMenu
                 Text("Shared.Selected.\(selectedPics.count)")
                     .foregroundStyle(.secondary)
                     .font(.caption)
@@ -147,9 +131,18 @@ extension AlbumView {
     }
 
     @ViewBuilder
-    var pinSelectedPicsButton: some View {
-        PinButton(isPinned: !selectedPics.isEmpty && selectedPics.allSatisfy(\.isPinned)) {
-            togglePin(for: selectedPics)
+    var selectedPicsActionsMenu: some View {
+        Menu("Shared.More", systemImage: "ellipsis") {
+            PicMoveMenu(title: "Shared.Move", systemImage: "tray.full",
+                        pics: selectedPics, containingAlbum: currentAlbum,
+                        totalAlbumCount: totalAlbumCount) {
+                refreshDataAfterPicMoved()
+            } onOtherLibraries: {
+                movePayload = .pics(selectedPics)
+            }
+            PinButton(isPinned: selectedPics.allSatisfy(\.isPinned)) {
+                togglePin(for: selectedPics)
+            }
         }
         .disabled(selectedPics.isEmpty)
     }

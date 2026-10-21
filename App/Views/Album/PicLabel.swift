@@ -114,11 +114,12 @@ struct PicLabel: View {
             .overlay(alignment: .topTrailing) {
                 if showsPinBadge {
                     Image(systemName: "pin.fill")
-                        .font(usesCompactBadges ? .system(size: 7.0) : .caption2)
-                        .fontWeight(.medium)
+                        .font(.system(size: usesCompactBadges ? 7.0 : 10.0, weight: .medium))
                         .foregroundStyle(.white)
-                        .padding(usesCompactBadges ? 2.5 : 4.0)
-                        .background(.black.opacity(0.6), in: .circle)
+                        .frame(width: usesCompactBadges ? 14.0 : 22.0,
+                               height: usesCompactBadges ? 14.0 : 22.0,
+                               alignment: .center)
+                        .glassEffect(.regular, in: .circle)
                         .padding(usesCompactBadges ? 2.0 : 4.0)
                         .accessibilityLabel(Text("Shared.Pinned"))
                 }
