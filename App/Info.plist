@@ -6,6 +6,7 @@
 	<array>
 		<string>com.tsubuzaki.IllustMate.widgetRefresh</string>
 		<string>com.tsubuzaki.IllustMate.iCloudSync</string>
+		<string>com.tsubuzaki.IllustMate.import.*</string>
 	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>

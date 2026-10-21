@@ -158,11 +158,14 @@ extension DataActor {
         return try? database.pluck(query).flatMap { try? $0.get(picData) }
     }
 
-    public func createPic(_ name: String, data: Data, inAlbumWithID albumID: String? = nil, dateAdded: Date? = nil) {
+    @discardableResult
+    public func createPic(
+        _ name: String, data: Data, inAlbumWithID albumID: String? = nil, dateAdded: Date? = nil
+    ) -> String? {
         let id = UUID().uuidString
         let now = dateAdded ?? Date.now
         let thumbnailData = Pic.makeThumbnail(data)
-        guard let relativePath = saveImageFile(data, id: id) else { return }
+        guard let relativePath = saveImageFile(data, id: id) else { return nil }
         _ = try? database.run(picsTable.insert(
             picId <- id,
             picName <- name,
@@ -175,8 +178,10 @@ extension DataActor {
             syncLastModified <- now.timeIntervalSince1970
         ))
         notifyLocalMutation()
+        return id
     }
 
+    @discardableResult
     public func createVideo(
         _ name: String,
         data: Data,
@@ -184,11 +189,11 @@ extension DataActor {
         fileExtension: String,
         inAlbumWithID albumID: String? = nil,
         dateAdded: Date? = nil
-    ) async {
+    ) async -> String? {
         let id = UUID().uuidString
         let now = dateAdded ?? Date.now
         guard let relativePath = saveVideoFile(data, id: id, fileExtension: fileExtension) else {
-            return
+            return nil
         }
         let videoURL = videoFileURL(forRelativePath: relativePath)
         let thumbnailData = await Pic.makeVideoThumbnail(videoURL)
@@ -205,6 +210,7 @@ extension DataActor {
             syncLastModified <- now.timeIntervalSince1970
         ))
         notifyLocalMutation()
+        return id
     }
 
     public func addPics(withIDs picIDs: [String], toAlbumWithID albumID: String) {
