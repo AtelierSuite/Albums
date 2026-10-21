@@ -2078,37 +2078,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import abbrechen"
+            "value" : "Abbrechen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancel Import"
+            "value" : "Cancel"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "インポートをキャンセル"
+            "value" : "キャンセル"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "가져오기 취소"
+            "value" : "취소"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "取消导入"
+            "value" : "取消"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "取消匯入"
+            "value" : "取消"
           }
         }
       }
