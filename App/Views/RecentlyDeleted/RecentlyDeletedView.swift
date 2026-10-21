@@ -148,27 +148,38 @@ struct RecentlyDeletedView: View {
                 .disabled(pics.isEmpty)
             }
         }
-        ToolbarItemGroup(placement: actionPlacement) {
-            if isSelecting {
+        if isSelecting {
+            ToolbarItem(placement: actionPlacement) {
                 Button(String(localized: "RecentlyDeleted.Recover", table: "Albums"),
                        systemImage: "arrow.uturn.backward") {
                     restore(Array(selectedIDs))
                 }
                 .disabled(selectedIDs.isEmpty)
+            }
+            ToolbarSpacer(.flexible, placement: actionPlacement)
+            ToolbarItem(placement: actionPlacement) {
                 Text("Shared.Selected.\(selectedIDs.count)")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .fixedSize()
+            }
+            ToolbarSpacer(.flexible, placement: actionPlacement)
+            ToolbarItem(placement: actionPlacement) {
                 Button("Shared.Delete", systemImage: "trash", role: .destructive) {
                     pendingDeletion = .pics(Array(selectedIDs))
                 }
                 .disabled(selectedIDs.isEmpty)
                 .tint(.red)
-            } else {
+            }
+        } else {
+            ToolbarItem(placement: actionPlacement) {
                 Button(String(localized: "RecentlyDeleted.RecoverAll", table: "Albums")) {
                     restore(pics.map(\.id))
                 }
                 .disabled(pics.isEmpty)
+            }
+            ToolbarSpacer(.flexible, placement: actionPlacement)
+            ToolbarItem(placement: actionPlacement) {
                 Button(String(localized: "RecentlyDeleted.DeleteAll", table: "Albums"), role: .destructive) {
                     pendingDeletion = .all
                 }
