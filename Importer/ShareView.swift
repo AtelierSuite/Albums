@@ -98,7 +98,7 @@ struct ShareView: View {
             Label {
                 Text(currentLibraryName)
             } icon: {
-                Image(systemName: "books.vertical")
+                Image(systemName: "square.stack.3d.up")
             }
             .labelStyle(.titleAndIcon)
         }

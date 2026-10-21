@@ -18,14 +18,17 @@ struct LibrariesView: View {
     @AppStorage("PhotosModeEnabled", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isPhotosModeEnabled: Bool = false
     @AppStorage("Libraries.Expanded.OnMyDevice", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var isOnMyDeviceExpanded: Bool = true
+    var isStoredOnMyDeviceExpanded: Bool = true
     @AppStorage("Libraries.Expanded.iCloud", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var isICloudExpanded: Bool = true
+    var isStoredICloudExpanded: Bool = true
     @AppStorage("Libraries.Expanded.Photos", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var isPhotosExpanded: Bool = true
+    var isStoredPhotosExpanded: Bool = true
     @AppStorage("Libraries.iCloudAvailable", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var isICloudAvailable: Bool = true
 
+    @State var isOnMyDeviceExpanded: Bool
+    @State var isICloudExpanded: Bool
+    @State var isPhotosExpanded: Bool
     @State var isSettingsPresented: Bool = false
     @State var newLibraryLocation: Location?
     @State var newLibraryName: String = ""
@@ -37,17 +40,9 @@ struct LibrariesView: View {
 
     private let coverLength: CGFloat = 44.0
 
-    var onMyDeviceLibraries: [PicLibrary] {
-        libraryManager.libraries.filter { !$0.syncEnabled }
-    }
-
-    var iCloudLibraries: [PicLibrary] {
-        libraryManager.libraries.filter(\.syncEnabled)
-    }
-
     var body: some View {
         List {
-            Section(isExpanded: $isOnMyDeviceExpanded.animation()) {
+            Section(isExpanded: $isOnMyDeviceExpanded) {
                 ForEach(onMyDeviceLibraries) { library in
                     libraryRow(for: library)
                 }
@@ -56,7 +51,7 @@ struct LibrariesView: View {
                 Text("Libraries.Section.OnMyDevice", tableName: "Libraries")
             }
             if isICloudAvailable {
-                Section(isExpanded: $isICloudExpanded.animation()) {
+                Section(isExpanded: $isICloudExpanded) {
                     ForEach(iCloudLibraries) { library in
                         libraryRow(for: library)
                     }
@@ -65,7 +60,7 @@ struct LibrariesView: View {
                     Text("Libraries.Section.iCloud", tableName: "Libraries")
                 }
             }
-            Section(isExpanded: $isPhotosExpanded.animation()) {
+            Section(isExpanded: $isPhotosExpanded) {
                 photosRow
             } header: {
                 Text("Libraries.Section.Photos", tableName: "Libraries")
@@ -118,6 +113,9 @@ struct LibrariesView: View {
         } message: {
             Text("Sync.iCloudRequired.Message", tableName: "More")
         }
+        .onChange(of: isOnMyDeviceExpanded) { isStoredOnMyDeviceExpanded = $1 }
+        .onChange(of: isICloudExpanded) { isStoredICloudExpanded = $1 }
+        .onChange(of: isPhotosExpanded) { isStoredPhotosExpanded = $1 }
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await refreshICloudAvailability()
@@ -263,6 +261,24 @@ struct LibrariesView: View {
 }
 
 extension LibrariesView {
+
+    init() {
+        let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
+        func isExpanded(_ key: String) -> Bool {
+            defaults?.object(forKey: "Libraries.Expanded.\(key)") as? Bool ?? true
+        }
+        _isOnMyDeviceExpanded = State(initialValue: isExpanded("OnMyDevice"))
+        _isICloudExpanded = State(initialValue: isExpanded("iCloud"))
+        _isPhotosExpanded = State(initialValue: isExpanded("Photos"))
+    }
+
+    var onMyDeviceLibraries: [PicLibrary] {
+        libraryManager.libraries.filter { !$0.syncEnabled }
+    }
+
+    var iCloudLibraries: [PicLibrary] {
+        libraryManager.libraries.filter(\.syncEnabled)
+    }
 
     private func refreshICloudAvailability() async {
         isICloudAvailable = await SyncManager.shared.canEnableSync()

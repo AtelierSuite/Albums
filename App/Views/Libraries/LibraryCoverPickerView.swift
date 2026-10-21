@@ -37,7 +37,7 @@ struct LibraryCoverPickerView: View {
                                     LibraryCoverPickerCell(
                                         pic: pic,
                                         dataActor: dataActor,
-                                        selectionNumber: selectedPicIDs.firstIndex(of: pic.id).map { $0 + 1 }
+                                        isSelected: selectedPicIDs.contains(pic.id)
                                     )
                                 }
                                 .buttonStyle(.plain)
@@ -110,12 +110,13 @@ struct LibraryCoverPickerCell: View {
 
     var pic: Pic
     var dataActor: DataActor
-    var selectionNumber: Int?
+    var isSelected: Bool
 
     @State private var image: UIImage?
 
     var body: some View {
-        Color.secondary.opacity(0.15)
+        Rectangle()
+            .fill(.primary.opacity(0.05))
             .aspectRatio(1.0, contentMode: .fit)
             .overlay {
                 if let image {
@@ -124,23 +125,9 @@ struct LibraryCoverPickerCell: View {
                         .scaledToFill()
                 }
             }
-            .clipped()
+            .clipShape(.rect(cornerRadius: 4.0))
             .overlay {
-                if selectionNumber != nil {
-                    Rectangle()
-                        .strokeBorder(.accent, lineWidth: 3.0)
-                }
-            }
-            .overlay(alignment: .topTrailing) {
-                if let selectionNumber {
-                    Text(String(selectionNumber))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
-                        .frame(width: 22.0, height: 22.0)
-                        .background(.accent, in: .circle)
-                        .padding(4.0)
-                }
+                SelectionOverlay(isSelected)
             }
             .contentShape(.rect)
             .task(id: pic.id) {
