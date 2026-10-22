@@ -19,7 +19,7 @@ extension PhotosCollectionView {
         }
         .onAppear {
             if !hasFetchedCollections {
-                items = photosManager.fetchTopLevelCollections()
+                items = photosManager.fetchTopLevelCollections().sortedAlbums(by: albumSort)
                 hasFetchedCollections = true
             }
         }
@@ -42,27 +42,16 @@ extension PhotosCollectionView {
                 } else {
                     SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
                                   count: filteredItems.count) {
-                        Picker(String(localized: "Albums.Style", table: "Albums"),
-                               selection: $albumStyleState.animation(.smooth.speed(2))) {
-                            Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                                  systemImage: "square.grid.2x2")
-                                .tag(ViewStyle.grid)
-                            Label(String(localized: "Albums.Style.List", table: "Albums"),
-                                  systemImage: "list.bullet")
-                                .tag(ViewStyle.list)
-                            Label(String(localized: "Albums.Style.Carousel", table: "Albums"),
-                                  systemImage: "rectangle.on.rectangle")
-                                .tag(ViewStyle.carousel)
-                        }
-                        if albumStyleState == .grid {
-                            GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4])
-                        }
+                        AlbumViewStylePicker(selection: $albumStyle)
+                        AlbumSortPicker(selection: $albumSort)
                     }
                 }
             }
             .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
             if !filteredItems.isEmpty {
-                PhotosAlbumsSection(items: filteredItems, style: $albumStyleState,
+                PhotosAlbumsSection(items: filteredItems, style: albumStyle,
+                                    columnCount: albumColumnCount,
+                                    onColumnCountChange: { albumColumnCount = $0 },
                                     onRename: { collection in
                                         albumToRename = collection
                                     },

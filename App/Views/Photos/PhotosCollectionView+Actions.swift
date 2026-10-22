@@ -35,7 +35,7 @@ extension PhotosCollectionView {
     }
 
     func refreshCollections() {
-        items = photosManager.fetchTopLevelCollections()
+        items = photosManager.fetchTopLevelCollections().sortedAlbums(by: albumSort)
     }
 
     func addDroppedAsset(_ transferable: PHAssetTransferable, to collection: PHAssetCollection) {

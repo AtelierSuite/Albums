@@ -9,12 +9,14 @@ extension AlbumCover {
 
         var folder: PHCollectionList
         var length: CGFloat?
+        var style: AlbumCoverStyle = .stack
 
         var body: some View {
             AlbumCover(name: folder.localizedTitle ?? "",
                        length: length,
                        picCount: 0,
-                       albumCount: PHCollection.fetchCollections(in: folder, options: nil).count)
+                       albumCount: PHCollection.fetchCollections(in: folder, options: nil).count,
+                       style: style)
         }
     }
 }

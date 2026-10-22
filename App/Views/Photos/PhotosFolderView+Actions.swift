@@ -16,13 +16,13 @@ extension PhotosFolderView {
             for subfolder in resolved.folders {
                 collected.append(.folder(subfolder))
             }
-            items = collected
+            items = collected.sortedAlbums(by: albumSort)
 
             if let ownPicsCollection = resolved.ownPicsCollection {
                 ownPicsFetchResult = photosManager.fetchAssets(in: ownPicsCollection)
             }
         } else {
-            items = photosManager.fetchCollections(in: folder)
+            items = photosManager.fetchCollections(in: folder).sortedAlbums(by: albumSort)
         }
         hasFetched = true
     }

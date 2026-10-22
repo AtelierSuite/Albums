@@ -5,7 +5,9 @@ import SwiftUI
 struct PhotosAlbumsSection: View {
 
     var items: [PHCollectionItem]
-    @Binding var style: ViewStyle
+    var style: AlbumViewStyle
+    var columnCount: Int = 4
+    var onColumnCountChange: ((Int) -> Void)?
     var enablesContextMenu: Bool = true
     var onRename: ((PHAssetCollection) -> Void)?
     var onDelete: ((PHAssetCollection) -> Void)?
@@ -16,85 +18,109 @@ struct PhotosAlbumsSection: View {
 
     @Namespace var albumTransitionNamespace
 
-    @AppStorage(wrappedValue: 3, "AlbumColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int
+    @State private var containerWidth: CGFloat = 0.0
 
     var body: some View {
         Group {
-            switch style {
-            case .grid, .masonry:
-                PinchZoomGrid(columnCount: fittedColumnCount,
-                              itemCount: items.count,
-                              range: GridColumnLimit.photosAlbums.range(width: gridWidth),
-                              columnSpacing: 20.0,
-                              rowSpacing: 20.0,
-                              onColumnCountChange: setColumnCount) { index in
-                    itemGridLabel(for: items[index], namespace: nil)
-                } content: {
-                    LazyVGrid(
-                        columns: Array(repeating: GridItem(.flexible(), spacing: 20.0), count: fittedColumnCount),
-                        spacing: 20.0
-                    ) {
-                        ForEach(items) { item in
-                            itemLink(for: item) {
-                                itemGridLabel(for: item)
-                                    .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
-                            }
-                            .contextMenu { contextMenu(for: item) }
-                            .buttonStyleAdaptive()
-                        }
+            if style.isGrid {
+                pinchZoomGrid
+            } else if style.isCarousel {
+                carousel
+            } else {
+                list
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width
+        } action: { width in
+            containerWidth = width
+        }
+    }
+
+    private var metrics: AlbumLayoutMetrics {
+        AlbumLayoutMetrics(style: style, containerWidth: containerWidth, columnCount: columnCount)
+    }
+
+    private var pinchZoomGrid: some View {
+        let metrics = metrics
+        let labelStyle = metrics.gridLabelStyle
+        return PinchZoomGrid(columnCount: metrics.fittedColumnCount,
+                             itemCount: items.count,
+                             range: metrics.gridColumnRange,
+                             columnSpacing: metrics.gridColumnSpacing,
+                             rowSpacing: metrics.gridRowSpacing,
+                             onColumnCountChange: onColumnCountChange) { index in
+            PhotosCollectionGridLabel(item: items[index], style: labelStyle,
+                                      coverRefreshID: coverRefreshID)
+        } content: {
+            LazyVGrid(columns: metrics.gridColumns, spacing: metrics.gridRowSpacing) {
+                ForEach(items) { item in
+                    itemLink(for: item) {
+                        PhotosCollectionGridLabel(namespace: albumTransitionNamespace, item: item,
+                                                  style: labelStyle, coverRefreshID: coverRefreshID)
+                            .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
                     }
+                    .contextMenu { contextMenu(for: item) }
+                    .buttonStyleAdaptive()
                 }
-                .onGeometryChange(for: CGFloat.self) { proxy in
-                    proxy.size.width
-                } action: { width in
-                    gridWidth = width
+            }
+        }
+        .padding(.horizontal, metrics.gridHorizontalPadding)
+        .padding(.top, 10.0)
+        .animation(.smooth.speed(2.0), value: metrics.fittedColumnCount)
+        .animation(.smooth.speed(2.0), value: style)
+    }
+
+    private var list: some View {
+        LazyVStack(alignment: .leading, spacing: 0.0) {
+            ForEach(items) { item in
+                itemLink(for: item) {
+                    PhotosCollectionListRow(namespace: albumTransitionNamespace, item: item,
+                                            coverRefreshID: coverRefreshID)
+                        .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
                 }
-                .padding(20.0)
-                .animation(.smooth, value: fittedColumnCount)
-            case .list:
-                LazyVStack(alignment: .leading, spacing: 0.0) {
-                    ForEach(items) { item in
-                        itemLink(for: item) {
-                            itemListRow(for: item)
-                                .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
-                        }
-                        .contextMenu { contextMenu(for: item) }
-                        .buttonStyleAdaptive()
-                        if item.id != items.last?.id {
-                            Divider()
-                                .padding([.leading], 84.0)
-                        }
-                    }
+                .contextMenu { contextMenu(for: item) }
+                .buttonStyleAdaptive()
+                if item.id != items.last?.id {
+                    Divider()
+                        .padding([.leading], 84.0)
                 }
-            case .carousel:
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(alignment: .top, spacing: 20.0) {
-                        ForEach(items) { item in
-                            itemLink(for: item) {
-                                itemGridLabel(for: item, length: 80.0)
-                                    .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
-                            }
-                            .contextMenu { contextMenu(for: item) }
-                            .buttonStyleAdaptive()
-                        }
-                    }
-                    .padding(20.0)
-                }
-                .scrollIndicators(.hidden)
-                .frame(height: 120.0)
             }
         }
     }
 
-    @State private var gridWidth: CGFloat = 0.0
-
-    private var fittedColumnCount: Int {
-        GridColumnLimit.photosAlbums.columns(columnCount, width: gridWidth)
-    }
-
-    private func setColumnCount(_ count: Int) {
-        columnCount = count
+    private var carousel: some View {
+        let metrics = metrics
+        let length = metrics.carouselCoverLength
+        let labelStyle = metrics.carouselLabelStyle
+        return ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(alignment: .top, spacing: metrics.carouselSpacing) {
+                ForEach(items) { item in
+                    itemLink(for: item) {
+                        Group {
+                            if style == .compactCarousel {
+                                PhotosCollectionChipLabel(namespace: albumTransitionNamespace, item: item,
+                                                          coverRefreshID: coverRefreshID)
+                            } else {
+                                PhotosCollectionGridLabel(namespace: albumTransitionNamespace, item: item,
+                                                          length: length, style: labelStyle,
+                                                          coverRefreshID: coverRefreshID)
+                            }
+                        }
+                        .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
+                    }
+                    .contextMenu { contextMenu(for: item) }
+                    .buttonStyleAdaptive()
+                }
+            }
+            .padding(.horizontal, 20.0)
+            .padding(.vertical, 10.0)
+        }
+        .scrollIndicators(.hidden)
+        .albumCarouselPinch(columnCount: columnCount, style: style, onColumnCountChange: onColumnCountChange)
+        .animation(.smooth.speed(2.0), value: columnCount)
+        .animation(.smooth.speed(2.0), value: style)
     }
 
     // MARK: - Context Menu
@@ -151,175 +177,102 @@ struct PhotosAlbumsSection: View {
             }
         }
     }
-
-    // MARK: - Grid Labels
-
-    @ViewBuilder
-    private func itemGridLabel(for item: PHCollectionItem, length: CGFloat? = nil) -> some View {
-        itemGridLabel(for: item, length: length, namespace: albumTransitionNamespace)
-    }
-
-    @ViewBuilder
-    private func itemGridLabel(for item: PHCollectionItem, length: CGFloat? = nil,
-                               namespace: Namespace.ID?) -> some View {
-        switch item {
-        case .album(let collection):
-            PhotosAlbumGridLabel(namespace: namespace,
-                                 collection: collection, length: length,
-                                 coverRefreshID: coverRefreshID)
-        case .folder(let folder):
-            PhotosFolderGridLabel(namespace: namespace,
-                                  folder: folder, length: length)
-        }
-    }
-
-    // MARK: - List Rows
-
-    @ViewBuilder
-    private func itemListRow(for item: PHCollectionItem) -> some View {
-        switch item {
-        case .album(let collection):
-            PhotosAlbumListRow(namespace: albumTransitionNamespace, collection: collection,
-                               coverRefreshID: coverRefreshID)
-        case .folder(let folder):
-            PhotosFolderListRow(namespace: albumTransitionNamespace, folder: folder)
-        }
-    }
 }
 
-// MARK: - Album Grid Label
+// MARK: - Labels
 
-struct PhotosAlbumGridLabel: View {
+struct PhotosCollectionCover: View {
 
-    var namespace: Namespace.ID?
-    var collection: PHAssetCollection
+    var item: PHCollectionItem
     var length: CGFloat?
+    var style: AlbumCoverStyle = .stack
     var coverRefreshID: Int = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
+        switch item {
+        case .album(let collection):
             AlbumCover.AsyncPhotosAlbumCover(collection: collection, length: length,
-                                             refreshID: coverRefreshID)
-                .optionalMatchedGeometryEffect(id: "\(collection.localIdentifier).Image", in: namespace)
-            Text(collection.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                .optionalMatchedGeometryEffect(id: "\(collection.localIdentifier).Title", in: namespace)
-                .font(.caption)
-                .foregroundStyle(.primary)
-                .lineLimit(1)
+                                             refreshID: coverRefreshID, style: style)
+        case .folder(let folder):
+            AlbumCover.AsyncPhotosFolderCover(folder: folder, length: length, style: style)
         }
-        .contentShape(.rect)
-        .frame(width: length)
     }
 }
 
-// MARK: - Folder Grid Label
+struct PhotosCollectionCounts {
+    var picCount: Int = 0
+    var albumCount: Int = 0
+}
 
-struct PhotosFolderGridLabel: View {
+extension PHCollectionItem {
+    var displayTitle: String {
+        title.isEmpty ? String(localized: "Import.Albums.Untitled", table: "Import") : title
+    }
+}
+
+extension View {
+    func loadsCounts(of item: PHCollectionItem, refreshID: Int,
+                     into counts: Binding<PhotosCollectionCounts>) -> some View {
+        task(id: "\(item.id)-\(refreshID)") {
+            counts.wrappedValue = PhotosCollectionCounts(picCount: item.picCount, albumCount: item.albumCount)
+        }
+    }
+}
+
+struct PhotosCollectionGridLabel: View {
 
     var namespace: Namespace.ID?
-    var folder: PHCollectionList
+    var item: PHCollectionItem
     var length: CGFloat?
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
-            AlbumCover.AsyncPhotosFolderCover(folder: folder, length: length)
-                .optionalMatchedGeometryEffect(id: "\(folder.localIdentifier).Image", in: namespace)
-            Text(folder.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                .optionalMatchedGeometryEffect(id: "\(folder.localIdentifier).Title", in: namespace)
-                .font(.caption)
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-        }
-        .contentShape(.rect)
-        .frame(width: length)
-    }
-}
-
-// MARK: - Album List Row
-
-struct PhotosAlbumListRow: View {
-
-    var namespace: Namespace.ID
-    var collection: PHAssetCollection
+    var style = AlbumLabelStyle()
     var coverRefreshID: Int = 0
 
-    @State private var picCount: Int = 0
+    @State private var counts = PhotosCollectionCounts()
 
     var body: some View {
-        HStack(alignment: .center, spacing: 16.0) {
-            AlbumCover.AsyncPhotosAlbumCover(collection: collection, length: 48.0,
-                                             refreshID: coverRefreshID)
-                .matchedGeometryEffect(id: "\(collection.localIdentifier).Image", in: namespace)
-            VStack(alignment: .leading, spacing: 2.0) {
-                Text(collection.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                    .matchedGeometryEffect(id: "\(collection.localIdentifier).Title", in: namespace)
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                Text("Shared.Album.\(picCount)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            Spacer(minLength: 0)
-            Image(systemName: "chevron.right")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 11.0, height: 11.0)
-                .foregroundStyle(.primary.opacity(0.25))
-                .fontWeight(.bold)
+        AlbumGridLabelLayout(namespace: namespace, id: item.id, title: item.displayTitle,
+                             picCount: counts.picCount, albumCount: counts.albumCount,
+                             length: length, style: style) {
+            PhotosCollectionCover(item: item, length: length, style: style.cover,
+                                  coverRefreshID: coverRefreshID)
         }
-        .contentShape(.rect)
-        .padding([.leading, .trailing], 20.0)
-        .padding([.top, .bottom], 8.0)
-        .task(id: collection.localIdentifier) {
-            let options = PHFetchOptions()
-            options.predicate = NSPredicate(
-                format: "mediaType = %d OR mediaType = %d",
-                PHAssetMediaType.image.rawValue,
-                PHAssetMediaType.video.rawValue
-            )
-            picCount = PHAsset.fetchAssets(in: collection, options: options).count
-        }
+        .loadsCounts(of: item, refreshID: coverRefreshID, into: $counts)
     }
 }
 
-// MARK: - Folder List Row
+struct PhotosCollectionChipLabel: View {
 
-struct PhotosFolderListRow: View {
+    var namespace: Namespace.ID?
+    var item: PHCollectionItem
+    var coverRefreshID: Int = 0
 
-    var namespace: Namespace.ID
-    var folder: PHCollectionList
-
-    @State private var childCount: Int = 0
+    @State private var counts = PhotosCollectionCounts()
 
     var body: some View {
-        HStack(alignment: .center, spacing: 16.0) {
-            AlbumCover.AsyncPhotosFolderCover(folder: folder, length: 48.0)
-                .matchedGeometryEffect(id: "\(folder.localIdentifier).Image", in: namespace)
-            VStack(alignment: .leading, spacing: 2.0) {
-                Text(folder.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                    .matchedGeometryEffect(id: "\(folder.localIdentifier).Title", in: namespace)
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                Text("Shared.Album.\(childCount)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            Spacer(minLength: 0)
-            Image(systemName: "chevron.right")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 11.0, height: 11.0)
-                .foregroundStyle(.primary.opacity(0.25))
-                .fontWeight(.bold)
+        AlbumChipLabelLayout(namespace: namespace, id: item.id, title: item.displayTitle,
+                             picCount: counts.picCount, albumCount: counts.albumCount) {
+            PhotosCollectionCover(item: item, length: 40.0, style: .flat(cornerRadius: 9.0),
+                                  coverRefreshID: coverRefreshID)
         }
-        .contentShape(.rect)
-        .padding([.leading, .trailing], 20.0)
-        .padding([.top, .bottom], 8.0)
-        .task(id: folder.localIdentifier) {
-            childCount = PHCollection.fetchCollections(in: folder, options: nil).count
+        .loadsCounts(of: item, refreshID: coverRefreshID, into: $counts)
+    }
+}
+
+struct PhotosCollectionListRow: View {
+
+    var namespace: Namespace.ID?
+    var item: PHCollectionItem
+    var coverRefreshID: Int = 0
+
+    @State private var counts = PhotosCollectionCounts()
+
+    var body: some View {
+        AlbumListRowLayout(namespace: namespace, id: item.id, title: item.displayTitle) {
+            PhotosCollectionCover(item: item, length: 48.0, coverRefreshID: coverRefreshID)
+        } detail: {
+            AlbumCountText(picCount: counts.picCount, albumCount: counts.albumCount)
         }
+        .loadsCounts(of: item, refreshID: coverRefreshID, into: $counts)
     }
 }
 
