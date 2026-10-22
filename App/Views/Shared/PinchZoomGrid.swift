@@ -118,9 +118,9 @@ struct PinchZoomGrid<Content: View, Cell: View>: View {
                 if target != session.startCount {
                     onColumnCountChange?(target)
                 }
-                scroller.scroll(by: scrollDelta)
                 zoom.session = nil
                 zoom.isSettling = false
+                scroller.layoutAndScroll(by: scrollDelta)
             }
         }
     }
@@ -428,11 +428,6 @@ struct PinchZoomScroller {
         } else {
             scrollView.contentOffset.y = target
         }
-    }
-
-    func scroll(by delta: CGFloat) {
-        guard let scrollView, delta != 0.0 else { return }
-        scrollView.contentOffset.y += delta
     }
 }
 
