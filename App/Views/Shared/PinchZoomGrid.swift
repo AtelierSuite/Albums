@@ -423,31 +423,6 @@ struct PinchZoomScroller {
         scrollView.window?.layoutIfNeeded()
         scrollView.contentOffset.y = target
     }
-
-    func zoomSnapshot(of frame: CGRect, from anchor: CGPoint, to target: CGPoint, scale: CGFloat,
-                      animation: Animation) {
-        guard let scrollView, let superview = scrollView.superview else { return }
-        let visible = scrollView.bounds.intersection(frame)
-        guard !visible.isNull, visible.height > 0.0,
-              let snapshot = scrollView.resizableSnapshotView(from: visible, afterScreenUpdates: false,
-                                                              withCapInsets: .zero) else { return }
-        let container = UIView(frame: scrollView.convert(visible, to: superview))
-        container.clipsToBounds = true
-        container.isUserInteractionEnabled = false
-        snapshot.frame = container.bounds
-        container.addSubview(snapshot)
-        superview.insertSubview(container, aboveSubview: scrollView)
-        let center = CGPoint(x: visible.midX, y: visible.midY)
-        let transform = CGAffineTransform(translationX: target.x - center.x - scale * (anchor.x - center.x),
-                                          y: target.y - center.y - scale * (anchor.y - center.y))
-            .scaledBy(x: scale, y: scale)
-        UIView.animate(animation) {
-            snapshot.transform = transform
-            snapshot.alpha = 0.0
-        } completion: {
-            container.removeFromSuperview()
-        }
-    }
 }
 
 struct PinchZoomGesture: UIGestureRecognizerRepresentable {
