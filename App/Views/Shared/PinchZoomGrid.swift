@@ -43,7 +43,7 @@ struct PinchZoomGrid<Content: View, Cell: View>: View {
             .coordinateSpace(.named(Self.coordinateSpace))
             .gesture(PinchZoomGesture(isEnabled: onColumnCountChange != nil && !zoom.isSettling,
                                       coordinateSpace: Self.coordinateSpace,
-                                      onBegan: { begin(at: $0, viewport: $1) },
+                                      onBegan: { location, viewport, _ in begin(at: location, viewport: viewport) },
                                       onChanged: { scale, location, _ in update(scale: scale, location: location) },
                                       onEnded: { end(velocity: $0, scroller: $1) }))
     }
@@ -416,17 +416,36 @@ struct PinchZoomScroller {
         return min(max(current + delta, minimum), maximum) - current
     }
 
-    func layoutAndScroll(by delta: CGFloat, animation: Animation? = nil) {
+    func layoutAndScroll(by delta: CGFloat) {
         guard let scrollView else { return }
         let target = scrollView.contentOffset.y + delta
         // SwiftUI resets offsets set before it lays out the new content, snapping lazy stacks to the top.
         scrollView.window?.layoutIfNeeded()
-        if let animation {
-            UIView.animate(animation) {
-                scrollView.contentOffset.y = target
-            }
-        } else {
-            scrollView.contentOffset.y = target
+        scrollView.contentOffset.y = target
+    }
+
+    func zoomSnapshot(of frame: CGRect, from anchor: CGPoint, to target: CGPoint, scale: CGFloat,
+                      animation: Animation) {
+        guard let scrollView, let superview = scrollView.superview else { return }
+        let visible = scrollView.bounds.intersection(frame)
+        guard !visible.isNull, visible.height > 0.0,
+              let snapshot = scrollView.resizableSnapshotView(from: visible, afterScreenUpdates: false,
+                                                              withCapInsets: .zero) else { return }
+        let container = UIView(frame: scrollView.convert(visible, to: superview))
+        container.clipsToBounds = true
+        container.isUserInteractionEnabled = false
+        snapshot.frame = container.bounds
+        container.addSubview(snapshot)
+        superview.insertSubview(container, aboveSubview: scrollView)
+        let center = CGPoint(x: visible.midX, y: visible.midY)
+        let transform = CGAffineTransform(translationX: target.x - center.x - scale * (anchor.x - center.x),
+                                          y: target.y - center.y - scale * (anchor.y - center.y))
+            .scaledBy(x: scale, y: scale)
+        UIView.animate(animation) {
+            snapshot.transform = transform
+            snapshot.alpha = 0.0
+        } completion: {
+            container.removeFromSuperview()
         }
     }
 }
@@ -435,7 +454,7 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
 
     var isEnabled: Bool
     var coordinateSpace: String
-    var onBegan: (CGPoint, CGRect) -> Void
+    var onBegan: (CGPoint, CGRect, PinchZoomScroller) -> Void
     var onChanged: (CGFloat, CGPoint, PinchZoomScroller) -> Void
     var onEnded: (CGFloat, PinchZoomScroller) -> Void
 
@@ -468,7 +487,7 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
                 viewport = scrollView.bounds.offsetBy(dx: location.x - locationInScrollView.x,
                                                       dy: location.y - locationInScrollView.y)
             }
-            onBegan(location, viewport)
+            onBegan(location, viewport, PinchZoomScroller(scrollView: coordinator.scrollView))
         case .changed:
             guard coordinator.engaged else { return }
             onChanged(recognizer.scale / coordinator.startScale,
