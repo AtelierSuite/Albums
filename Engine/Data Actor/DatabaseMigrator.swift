@@ -97,6 +97,23 @@ public struct DatabaseMigrator: Sendable {
         _ = try? database.run(picsTable.addColumn(Expression<Double?>("pinned_at")))
     }
 
+    // MARK: - Thumbnail Aspect Ratio
+
+    public static func migrateThumbnailAspectRatio(_ database: Connection, picsTable: Table) {
+        let existingColumns = (try? database.safeRows("PRAGMA table_info(\"pics\")"))?
+            .compactMap { $0[1] as? String } ?? []
+        if !existingColumns.contains("thumbnail_aspect_ratio") {
+            _ = try? database.run(picsTable.addColumn(Expression<Double?>("thumbnail_aspect_ratio")))
+        }
+        _ = try? database.execute("""
+            CREATE TRIGGER IF NOT EXISTS pics_thumbnail_aspect_ratio_reset
+            AFTER UPDATE OF thumbnail_data ON pics
+            BEGIN
+                UPDATE pics SET thumbnail_aspect_ratio = NULL WHERE id = NEW.id;
+            END;
+            """)
+    }
+
     // MARK: - Search Indexes
 
     public static func createSearchIndexes(_ database: Connection) {

@@ -28,8 +28,20 @@ struct PicLabel: View {
     var usesCompactBadges: Bool = false
     var onAspectRatio: ((CGFloat) -> Void)?
 
-    @State var isThumbnailReadyToPresent: Bool = false
+    @State var isThumbnailReadyToPresent: Bool
     @State var thumbnail: Image?
+
+    init(pic: Pic, maintainsAspectRatio: Bool = false, showsPinBadge: Bool = false,
+         usesCompactBadges: Bool = false, onAspectRatio: ((CGFloat) -> Void)? = nil) {
+        self.pic = pic
+        self.maintainsAspectRatio = maintainsAspectRatio
+        self.showsPinBadge = showsPinBadge
+        self.usesCompactBadges = usesCompactBadges
+        self.onAspectRatio = onAspectRatio
+        let cached = ThumbnailCache.shared.image(forKey: pic.id)
+        _isThumbnailReadyToPresent = State(initialValue: cached != nil)
+        _thumbnail = State(initialValue: cached.map { Image(uiImage: $0) })
+    }
 
     var body: some View {
         base
@@ -40,18 +52,15 @@ struct PicLabel: View {
                 let picID = pic.id
                 if let cached = ThumbnailCache.shared.image(forKey: picID) {
                     reportAspectRatio(for: cached)
-                    thumbnail = Image(uiImage: cached)
-                    isThumbnailReadyToPresent = true
+                    if thumbnail == nil {
+                        thumbnail = Image(uiImage: cached)
+                        isThumbnailReadyToPresent = true
+                    }
                     return
                 }
-                var thumbData = pic.thumbnailData
-                if thumbData == nil {
-                    thumbData = await DataActor.shared.thumbnailData(forPicWithID: picID)
-                }
-                if let thumbData,
-                   let uiImage = UIImage(data: thumbData),
-                   let prepared = await uiImage.byPreparingForDisplay() {
-                    guard !Task.isCancelled else { return }
+                let prepared = await Self.loadThumbnail(picID: picID, data: pic.thumbnailData)
+                guard !Task.isCancelled else { return }
+                if let prepared {
                     ThumbnailCache.shared.setImage(prepared, forKey: picID)
                     reportAspectRatio(for: prepared)
                     thumbnail = Image(uiImage: prepared)
@@ -124,6 +133,16 @@ struct PicLabel: View {
                         .accessibilityLabel(Text("Shared.Pinned"))
                 }
             }
+    }
+
+    @concurrent
+    nonisolated private static func loadThumbnail(picID: String, data: Data?) async -> UIImage? {
+        var data = data
+        if data == nil {
+            data = await DataActor.shared.thumbnailData(forPicWithID: picID)
+        }
+        guard let data, let image = UIImage(data: data) else { return nil }
+        return await image.byPreparingForDisplay()
     }
 
     private func reportAspectRatio(for image: UIImage) {
