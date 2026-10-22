@@ -32,8 +32,8 @@ struct AlbumView: View {
     @State var renameAlbumText: String = ""
     @State var albumSort: SortType = .nameAscending
     @State var albumSortState: SortType = .nameAscending
-    @State var albumStyle: ViewStyle = .grid
-    @State var albumStyleState: ViewStyle = .grid
+    @State var albumStyle: AlbumViewStyle = .mosaicGrid
+    @State var albumStyleState: AlbumViewStyle = .mosaicGrid
 
     @State var pics: [Pic] = []
     @State var picCount: Int = 0
@@ -98,7 +98,6 @@ struct AlbumView: View {
             .modifier(AlbumViewOptionsFocusModifier(options: AlbumViewOptions(
                 albumStyle: $albumStyleState,
                 albumSort: $albumSortState,
-                albumColumnCount: $albumColumnCount,
                 picSort: $picSortType,
                 picColumnCount: $columnCount,
                 picStyle: $picViewStyle,

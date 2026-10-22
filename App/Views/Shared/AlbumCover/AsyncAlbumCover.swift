@@ -9,6 +9,7 @@ extension AlbumCover {
         var album: Album
         var length: CGFloat?
         var isDownloading: Bool = false
+        var style: AlbumCoverStyle = .stack
 
         @State private var primaryImage: Image?
         @State private var secondaryImage: Image?
@@ -23,7 +24,8 @@ extension AlbumCover {
                        primaryImage: primaryImage,
                        secondaryImage: secondaryImage,
                        tertiaryImage: tertiaryImage,
-                       isDownloading: isDownloading)
+                       isDownloading: isDownloading,
+                       style: style)
             .onChange(of: AlbumCoverCache.shared.version) {
                 if AlbumCoverCache.shared.images(forAlbumID: album.id) == nil {
                     guard isLoaded else { return }

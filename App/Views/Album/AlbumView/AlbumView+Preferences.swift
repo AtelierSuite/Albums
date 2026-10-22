@@ -9,7 +9,7 @@ extension AlbumView {
     func loadPreferences() async {
         let prefs = await DataActor.shared.preferences(forAlbumWithID: preferencesAlbumID)
         albumSort = SortType(rawValue: prefs.albumSort) ?? .nameAscending
-        albumStyle = ViewStyle(rawValue: prefs.albumViewStyle) ?? .grid
+        albumStyle = AlbumViewStyle(storedValue: prefs.albumViewStyle)
         albumColumnCount = prefs.albumColumnCount
         picSortType = PicSortType(rawValue: prefs.picSort) ?? .dateAddedDescending
         columnCount = prefs.picColumnCount

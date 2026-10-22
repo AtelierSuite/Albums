@@ -3,20 +3,87 @@ import SwiftUI
 struct RecentlyDeletedAlbumGridLabel: View {
 
     var length: CGFloat?
+    var style = AlbumLabelStyle()
 
     var body: some View {
-        VStack(alignment: .center, spacing: length == nil ? 2.0 : 6.0) {
-            RecentlyDeletedAlbumCover(length: length)
-            Text("RecentlyDeleted.Title", tableName: "Albums")
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .padding(.horizontal, 1.0)
-                .padding(.bottom, 1.0)
+        VStack(alignment: style.alignment, spacing: style.spacing) {
+            cover
+            VStack(alignment: style.alignment, spacing: 0.0) {
+                Text("RecentlyDeleted.Title", tableName: "Albums")
+                    .font(style.titleFont)
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                if let countFont = style.countFont {
+                    Text(verbatim: " ")
+                        .font(countFont)
+                }
+            }
+            .frame(maxWidth: length == nil ? .infinity : nil,
+                   alignment: Alignment(horizontal: style.alignment, vertical: .center))
+            .padding(.horizontal, 1.0)
+            .padding(.bottom, 1.0)
         }
         .contentShape(.rect)
         .frame(width: length)
+    }
+
+    @ViewBuilder
+    var cover: some View {
+        switch style.cover {
+        case .stack:
+            RecentlyDeletedAlbumCover(length: length)
+        case .flat(let cornerRadius):
+            RecentlyDeletedFlatCover(length: length, cornerRadius: cornerRadius)
+        case .peek:
+            RecentlyDeletedFlatCover(length: length)
+                .padding(.top, AlbumPeekCover.peekHeight)
+        case .mosaic:
+            RecentlyDeletedFlatCover(length: length, cornerRadius: 12.0)
+        }
+    }
+}
+
+struct RecentlyDeletedFlatCover: View {
+
+    var length: CGFloat?
+    var cornerRadius: CGFloat = 10.0
+
+    var body: some View {
+        Color(uiColor: .secondarySystemFill)
+            .aspectRatio(1.0, contentMode: .fit)
+            .frame(width: length)
+            .overlay {
+                Image(systemName: "trash")
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+            }
+            .clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
+    }
+}
+
+struct RecentlyDeletedAlbumChipLabel: View {
+
+    var count: Int
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 8.0) {
+            RecentlyDeletedFlatCover(length: 40.0, cornerRadius: 9.0)
+            VStack(alignment: .leading, spacing: 0.0) {
+                Text("RecentlyDeleted.Title", tableName: "Albums")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                Text("RecentlyDeleted.Count.\(count)", tableName: "Albums")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .lineLimit(1)
+        }
+        .padding(.leading, 6.0)
+        .padding(.trailing, 14.0)
+        .padding(.vertical, 6.0)
+        .background(Color(uiColor: .secondarySystemFill), in: .rect(cornerRadius: 14.0, style: .continuous))
+        .contentShape(.rect(cornerRadius: 14.0))
     }
 }
 

@@ -16,18 +16,7 @@ extension AlbumView {
                     } else {
                         SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
                                       count: albums.count) {
-                            Picker(String(localized: "Albums.Style", table: "Albums"),
-                                   selection: ($albumStyleState.animation(.smooth.speed(2.0)))) {
-                                Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                                      systemImage: "square.grid.2x2")
-                                    .tag(ViewStyle.grid)
-                                Label(String(localized: "Albums.Style.List", table: "Albums"),
-                                      systemImage: "list.bullet")
-                                    .tag(ViewStyle.list)
-                                Label(String(localized: "Albums.Style.Carousel", table: "Albums"),
-                                      systemImage: "rectangle.on.rectangle")
-                                    .tag(ViewStyle.carousel)
-                            }
+                            AlbumViewStylePicker(selection: $albumStyleState)
                             Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $albumSortState) {
                                 Text("Shared.Sort.Name.Ascending")
                                     .tag(SortType.nameAscending)
@@ -39,9 +28,6 @@ extension AlbumView {
                                     .tag(SortType.sizeDescending)
                             }
                             .pickerStyle(.menu)
-                            if albumStyleState == .grid {
-                                GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5], kind: .album)
-                            }
                         }
                     }
 #endif
@@ -50,7 +36,7 @@ extension AlbumView {
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
             if hasAlbumItems {
-                AlbumsSection(albums: albums, style: $albumStyleState,
+                AlbumsSection(albums: albums, style: albumStyleState,
                              columnCount: albumColumnCount,
                              hideSectionHeaders: hideSectionHeaders,
                              recentlyDeletedCount: showsRecentlyDeletedAlbum ? recentlyDeletedCount : nil,
@@ -73,7 +59,9 @@ extension AlbumView {
                         movePayload = .album(album)
                     }
                 }
-                .pinchToResizeColumns($albumColumnCount, isEnabled: albumStyleState == .grid)
+                .pinchToResizeColumns($albumColumnCount,
+                                      range: albumStyleState.isCarousel ? 2...6 : 2...10,
+                                      isEnabled: albumStyleState.isResizable)
             } else if !hideSectionHeaders {
                 Text("Albums.NoAlbums", tableName: "Albums")
                     .foregroundStyle(.secondary)

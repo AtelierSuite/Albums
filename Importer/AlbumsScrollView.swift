@@ -14,8 +14,8 @@ struct AlbumsScrollView: View {
     @State var searchText: String = ""
     @State var isSearchPresented: Bool = false
 
-    @AppStorage(wrappedValue: ViewStyle.grid, "AlbumViewStyle",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: ViewStyle
+    @AppStorage(wrappedValue: AlbumViewStyle.mosaicGrid, "AlbumViewStyle",
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: AlbumViewStyle
     @AppStorage(wrappedValue: SortType.nameAscending, "AlbumSort",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumSort: SortType
 
@@ -37,7 +37,7 @@ struct AlbumsScrollView: View {
                             .padding(20.0)
                     }
                 } else {
-                    AlbumsSection(albums: displayedAlbums, style: $style,
+                    AlbumsSection(albums: displayedAlbums, style: style,
                                   enablesContextMenu: false) { _ in
                     }
                 }
