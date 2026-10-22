@@ -416,12 +416,18 @@ struct PinchZoomScroller {
         return min(max(current + delta, minimum), maximum) - current
     }
 
-    func layoutAndScroll(by delta: CGFloat) {
+    func layoutAndScroll(by delta: CGFloat, animation: Animation? = nil) {
         guard let scrollView else { return }
         let target = scrollView.contentOffset.y + delta
         // SwiftUI resets offsets set before it lays out the new content, snapping lazy stacks to the top.
         scrollView.window?.layoutIfNeeded()
-        scrollView.contentOffset.y = target
+        if let animation {
+            UIView.animate(animation) {
+                scrollView.contentOffset.y = target
+            }
+        } else {
+            scrollView.contentOffset.y = target
+        }
     }
 
     func scroll(by delta: CGFloat) {

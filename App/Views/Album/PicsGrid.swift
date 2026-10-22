@@ -241,14 +241,13 @@ struct PicsGrid<Content: View>: View {
         let delta = (newFrame.minY + pinch.fraction * newFrame.height)
             - (oldFrame.minY + pinch.fraction * oldFrame.height)
         let scrollDelta = scroller.clampedDelta(delta, contentHeightChange: newLayout.height - oldLayout.height)
-        var transaction = Transaction()
-        transaction.disablesAnimations = true
-        withTransaction(transaction) {
+        let animation = Animation.smooth(duration: 0.25)
+        withAnimation(animation) {
             onColumnCountChange?(target)
         }
         pinch.currentCount = target
         masonryPinch = pinch
-        scroller.layoutAndScroll(by: scrollDelta)
+        scroller.layoutAndScroll(by: scrollDelta, animation: animation)
         UISelectionFeedbackGenerator().selectionChanged()
     }
 
