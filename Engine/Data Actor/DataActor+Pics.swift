@@ -1,17 +1,20 @@
 import Foundation
+import ImageIO
 @preconcurrency import SQLite
 
 extension DataActor {
     private var picListColumns: [Expressible] {
         [picId, picName, picAlbumId, picDateAdded, picThumbnailData,
-         picMediaType, picDuration, picFilePath, picPinnedAt]
+         picMediaType, picDuration, picFilePath, picPinnedAt, picThumbnailAspectRatio]
     }
 
     private var picSkeletonColumns: [Expressible] {
-        [picId, picName, picAlbumId, picDateAdded, picMediaType, picDuration, picFilePath, picPinnedAt]
+        [picId, picName, picAlbumId, picDateAdded, picMediaType, picDuration, picFilePath, picPinnedAt,
+         picThumbnailAspectRatio]
     }
 
     public func pics() throws -> [Pic] {
+        fillMissingThumbnailAspectRatios(in: picsTable)
         let query = picsTable
             .filter(picDateDeleted == nil)
             .select(picListColumns)
@@ -26,6 +29,7 @@ extension DataActor {
         } else {
             baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
+        fillMissingThumbnailAspectRatios(in: baseQuery)
         let orderedQuery = (order == .reverse ? baseQuery.order(picDateAdded.desc) :
                                                 baseQuery.order(picDateAdded.asc))
             .select(picListColumns)
@@ -49,6 +53,7 @@ extension DataActor {
         } else {
             baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
+        fillMissingThumbnailAspectRatios(in: baseQuery)
         let orderedQuery = (order == .reverse ? baseQuery.order(picDateAdded.desc) :
                                                 baseQuery.order(picDateAdded.asc))
             .select(picSkeletonColumns)
@@ -76,6 +81,7 @@ extension DataActor {
         } else {
             baseQuery = picsTable.filter(picAlbumId == nil && picDateDeleted == nil)
         }
+        fillMissingThumbnailAspectRatios(in: baseQuery)
         let query = baseQuery.select(picSkeletonColumns)
         let pics = try database.safeRows(query).map { picFrom(row: $0) }
         return pics.sorted { lhs, rhs in
@@ -95,6 +101,7 @@ extension DataActor {
     }
 
     public func allPicSkeletons() throws -> [Pic] {
+        fillMissingThumbnailAspectRatios(in: picsTable)
         let query = picsTable
             .filter(picDateDeleted == nil)
             .select(picSkeletonColumns)
@@ -123,6 +130,35 @@ extension DataActor {
             }
         }
         return ids.compactMap { byID[$0] }
+    }
+
+    func fillMissingThumbnailAspectRatios(in baseQuery: SQLite.Table) {
+        let query = baseQuery
+            .filter(picThumbnailAspectRatio == nil && picThumbnailData != nil)
+            .select(picId, picThumbnailData)
+        guard let rows = try? database.safeRows(query), !rows.isEmpty else { return }
+        var ratios: [(String, Double)] = []
+        for row in rows {
+            guard let id = try? row.get(picId),
+                  let data = try? row.get(picThumbnailData),
+                  let ratio = Self.aspectRatio(ofImageData: data) else { continue }
+            ratios.append((id, ratio))
+        }
+        _ = try? database.transaction {
+            for (id, ratio) in ratios {
+                try database.run(picsTable.filter(picId == id).update(picThumbnailAspectRatio <- ratio))
+            }
+        }
+    }
+
+    static func aspectRatio(ofImageData data: Data) -> Double? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let width = properties[kCGImagePropertyPixelWidth] as? Double,
+              let height = properties[kCGImagePropertyPixelHeight] as? Double,
+              width > 0.0, height > 0.0 else { return nil }
+        let orientation = properties[kCGImagePropertyOrientation] as? UInt32 ?? 1
+        return orientation >= 5 ? height / width : width / height
     }
 
     public func thumbnailData(forPicWithID id: String) -> Data? {
