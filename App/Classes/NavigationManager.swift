@@ -14,7 +14,7 @@ class NavigationManager: ObservableObject {
     @Published var collectionTabPath: [ViewPath] = []
     @Published var albumsTabPath: [ViewPath] = []
     @Published var picsTabPath: [ViewPath] = []
-    @Published var moreTabPath: [ViewPath] = []
+    @Published var settingsTabPath: [ViewPath] = []
     @Published var dataVersion: Int = 0
     @Published var picRevealRequest: PicRevealRequest?
 
@@ -26,7 +26,7 @@ class NavigationManager: ObservableObject {
         collectionTabPath = collectionTabPath.first.map { $0.isLibraryRoot ? [$0] : [] } ?? []
         albumsTabPath.removeAll()
         picsTabPath.removeAll()
-        moreTabPath.removeAll()
+        settingsTabPath.removeAll()
     }
 
     func signalDataDeleted() {
@@ -46,8 +46,8 @@ class NavigationManager: ObservableObject {
             albumsTabPath.append(viewPath)
         case .pics:
             picsTabPath.append(viewPath)
-        case .more:
-            moreTabPath.append(viewPath)
+        case .settings:
+            settingsTabPath.append(viewPath)
         }
     }
 

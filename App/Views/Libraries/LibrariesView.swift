@@ -79,7 +79,7 @@ struct LibrariesView: View {
             }
         }
         .sheet(isPresented: $isSettingsPresented) {
-            MoreView()
+            SettingsView()
                 .phonePresentationDetents([.large])
                 .presentationDragIndicator(.hidden)
                 .navigationTransition(.zoom(sourceID: "settings", in: sheetNamespace))

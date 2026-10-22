@@ -352,7 +352,7 @@ struct IllustMateApp: App {
         }
 
         WindowGroup("ViewTitle.Settings", id: settingsWindowID) {
-            MoreView()
+            SettingsView()
                 .environmentObject(navigation)
                 .environmentObject(libraryManager)
                 .environment(viewer)

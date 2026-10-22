@@ -10,12 +10,12 @@ enum ViewPath: Hashable {
     case pics
     case picViewer(namespace: Namespace.ID)
     case album(album: Album)
-    case more
-    case moreDebug
-    case moreTroubleshooting
-    case moreAttributions
-    case moreLabsFileExplorer
-    case moreLabsTestData
+    case settings
+    case settingsDebug
+    case settingsTroubleshooting
+    case settingsAttributions
+    case settingsLabsFileExplorer
+    case settingsLabsTestData
     case photosFolder(folder: PHCollectionListWrapper)
     case photosAlbum(album: PHAssetCollectionWrapper)
     case photosAssetViewer(asset: PHAssetWrapper, namespace: Namespace.ID)
