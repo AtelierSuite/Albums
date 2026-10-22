@@ -32,6 +32,7 @@ struct PicsGrid<Content: View>: View {
     @State private var originalSelected: [Int: Bool] = [:]
     @State private var aspectRatios: [String: CGFloat] = [:]
     @State var masonryPinch: MasonryPinchAnchor?
+    @State var masonryVisibleRange: ClosedRange<CGFloat>?
 
     var body: some View {
         Group {
@@ -90,20 +91,27 @@ struct PicsGrid<Content: View>: View {
     }
 
     private var masonryGrid: some View {
-        HStack(alignment: .top, spacing: 2.0) {
-            ForEach(Array(masonryColumns.enumerated()), id: \.offset) { column in
-                LazyVStack(spacing: 2.0) {
-                    ForEach(column.element) { entry in
+        let layout = masonryLayout(columns: fittedColumnCount)
+        return ZStack(alignment: .topLeading) {
+            ForEach(layout.entries(in: masonryVisibleRange, including: highlightedPicID)) { entry in
+                if let frame = layout.frames[entry.id] {
+                    Group {
                         if let pic = entry.pic {
                             picCell(for: pic, maintainsAspectRatio: true)
-                                .aspectRatio(entry.aspectRatio, contentMode: .fit)
                         } else {
                             placeholderCell
                         }
                     }
+                    .frame(width: frame.width, height: frame.height)
+                    .offset(x: frame.minX, y: frame.minY)
                 }
-                .frame(maxWidth: .infinity, alignment: .top)
             }
+        }
+        .frame(maxWidth: .infinity, minHeight: layout.height, maxHeight: layout.height, alignment: .topLeading)
+        .onGeometryChange(for: CGRect.self) { proxy in
+            proxy.bounds(of: .scrollView) ?? .infinite
+        } action: { visible in
+            updateMasonryVisibleRange(visible)
         }
         .opacity(masonryPinch == nil ? 1.0 : 0.0)
         .overlay(alignment: .topLeading) {
@@ -289,10 +297,6 @@ extension PicsGrid {
             .fill(.primary.opacity(0.05))
             .aspectRatio(1.0, contentMode: .fit)
             .clipShape(.rect(cornerRadius: 4.0))
-    }
-
-    var masonryColumns: [[MasonryEntry]] {
-        masonryColumns(count: fittedColumnCount)
     }
 
     func masonryColumns(count requestedCount: Int) -> [[MasonryEntry]] {

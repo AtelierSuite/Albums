@@ -126,13 +126,36 @@ extension PicsGrid {
             }
             height = max(height, top - 2.0)
         }
-        return MasonryLayout(frames: frames, height: height)
+        return MasonryLayout(entries: columns.flatMap { $0 }, frames: frames, height: height)
+    }
+
+    func updateMasonryVisibleRange(_ visible: CGRect) {
+        let range: ClosedRange<CGFloat>
+        if visible.isNull || visible.isInfinite || visible.height <= 0.0 {
+            range = -CGFloat.infinity...CGFloat.infinity
+        } else {
+            let step = max(visible.height / 2.0, 100.0)
+            range = ((visible.minY - visible.height) / step).rounded(.down) * step
+                ... ((visible.maxY + visible.height) / step).rounded(.up) * step
+        }
+        if range != masonryVisibleRange {
+            masonryVisibleRange = range
+        }
     }
 }
 
 struct MasonryLayout {
+    let entries: [MasonryEntry]
     let frames: [String: CGRect]
     let height: CGFloat
+
+    func entries(in range: ClosedRange<CGFloat>?, including includedID: String?) -> [MasonryEntry] {
+        entries.filter { entry in
+            if entry.id == includedID { return true }
+            guard let range, let frame = frames[entry.id] else { return false }
+            return frame.maxY >= range.lowerBound && frame.minY <= range.upperBound
+        }
+    }
 }
 
 struct MasonryPinchAnchor {
