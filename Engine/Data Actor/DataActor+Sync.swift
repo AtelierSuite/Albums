@@ -14,12 +14,23 @@ extension Notification.Name {
 public struct LibrarySyncSnapshot: Sendable {
     public let id: String
     public let name: String
+    public let coverPicIDs: [String]
+    public let includesCoverPicIDs: Bool
     public let systemFields: Data?
     public let lastModified: Double
 
-    public init(id: String, name: String, systemFields: Data? = nil, lastModified: Double) {
+    public init(
+        id: String,
+        name: String,
+        coverPicIDs: [String] = [],
+        includesCoverPicIDs: Bool = true,
+        systemFields: Data? = nil,
+        lastModified: Double
+    ) {
         self.id = id
         self.name = name
+        self.coverPicIDs = coverPicIDs
+        self.includesCoverPicIDs = includesCoverPicIDs
         self.systemFields = systemFields
         self.lastModified = lastModified
     }

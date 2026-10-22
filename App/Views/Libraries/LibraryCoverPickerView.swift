@@ -91,6 +91,7 @@ struct LibraryCoverPickerView: View {
         Task {
             await LibrariesActor.shared.setCoverPicIDs(picIDs, forID: libraryID)
             onSave()
+            await SyncManager.shared.pushLibraryChanges()
         }
         dismiss()
     }

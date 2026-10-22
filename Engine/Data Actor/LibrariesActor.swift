@@ -69,6 +69,10 @@ public actor LibrariesActor {
                 table.column(tombstoneId, primaryKey: true)
                 table.column(tombstoneDeletedAt, defaultValue: 0)
             })
+            if ((try? database.scalar("PRAGMA user_version") as? Int64) ?? 0) < 1 {
+                _ = try? database.run(librariesTable.filter(libraryCoverPicIDs != "").update(libraryDirty <- true))
+                _ = try? database.execute("PRAGMA user_version = 1;")
+            }
         } catch {
             debugPrint("Libraries database setup error: \(error)")
         }
@@ -135,8 +139,11 @@ public actor LibrariesActor {
     }
 
     public func setCoverPicIDs(_ picIDs: [String], forID id: String) {
-        _ = try? database.run(librariesTable.filter(libraryId == id)
-            .update(libraryCoverPicIDs <- picIDs.joined(separator: ",")))
+        _ = try? database.run(librariesTable.filter(libraryId == id).update(
+            libraryCoverPicIDs <- picIDs.joined(separator: ","),
+            libraryDirty <- true,
+            libraryLastModified <- Date.now.timeIntervalSince1970
+        ))
     }
 
     // MARK: - Delete
@@ -293,6 +300,7 @@ extension LibrariesActor {
         return LibrarySyncSnapshot(
             id: id,
             name: (try? row.get(libraryName)) ?? "",
+            coverPicIDs: ((try? row.get(libraryCoverPicIDs)) ?? "").split(separator: ",").map(String.init),
             systemFields: try? row.get(libraryCKSystemFields),
             lastModified: (try? row.get(libraryLastModified)) ?? 0
         )
@@ -321,16 +329,21 @@ extension LibrariesActor {
         ensureFolder(for: snapshot.id)
         let exists = ((try? database.scalar(librariesTable.filter(libraryId == snapshot.id).count)) ?? 0) > 0
         if exists {
-            _ = try? database.run(librariesTable.filter(libraryId == snapshot.id).update(
+            var setters: [Setter] = [
                 libraryName <- snapshot.name,
                 libraryDirty <- false,
                 libraryCKSystemFields <- snapshot.systemFields,
                 libraryLastModified <- snapshot.lastModified
-            ))
+            ]
+            if snapshot.includesCoverPicIDs {
+                setters.append(libraryCoverPicIDs <- snapshot.coverPicIDs.joined(separator: ","))
+            }
+            _ = try? database.run(librariesTable.filter(libraryId == snapshot.id).update(setters))
         } else {
             _ = try? database.run(librariesTable.insert(or: .replace,
                 libraryId <- snapshot.id,
                 libraryName <- snapshot.name,
+                libraryCoverPicIDs <- snapshot.coverPicIDs.joined(separator: ","),
                 libraryDirty <- false,
                 librarySyncEnabled <- true,
                 libraryMigratedV2 <- true,

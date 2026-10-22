@@ -166,9 +166,8 @@ actor SyncMate {
         var changed = false
         for (_, modification) in result.modificationResultsByID {
             guard let record = try? modification.get().record else { continue }
-            await LibrariesActor.shared.applyRemoteLibrary(LibrarySyncSnapshot(
-                id: record.recordID.recordName,
-                name: record["name"] as? String ?? "",
+            await LibrariesActor.shared.applyRemoteLibrary(Self.librarySnapshot(
+                from: record,
                 systemFields: Self.encodeSystemFields(record),
                 lastModified: (record.modificationDate ?? Date.now).timeIntervalSince1970
             ))

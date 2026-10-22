@@ -70,6 +70,8 @@ extension SyncMate: CKSyncEngineDelegate {
     private func libraryRecord(from snapshot: LibrarySyncSnapshot, recordID: CKRecord.ID) -> CKRecord {
         let record = baseRecord(snapshot.systemFields, recordID: recordID, type: SyncRecordType.library)
         record["name"] = snapshot.name
+        record["coverPicIDs"] = snapshot.coverPicIDs.isEmpty ? nil : snapshot.coverPicIDs
+        record["coverPicIDsTracked"] = 1
         return record
     }
 
@@ -165,11 +167,8 @@ extension SyncMate: CKSyncEngineDelegate {
         let systemFields = Self.encodeSystemFields(record)
         let modified = (record.modificationDate ?? Date.now).timeIntervalSince1970
         if record.recordID.zoneID.zoneName == Self.librariesZoneName {
-            await LibrariesActor.shared.applyRemoteLibrary(LibrarySyncSnapshot(
-                id: record.recordID.recordName,
-                name: record["name"] as? String ?? "",
-                systemFields: systemFields,
-                lastModified: modified
+            await LibrariesActor.shared.applyRemoteLibrary(Self.librarySnapshot(
+                from: record, systemFields: systemFields, lastModified: modified
             ))
             return false
         }
@@ -274,6 +273,18 @@ extension SyncMate: CKSyncEngineDelegate {
         default:
             break
         }
+    }
+
+    static func librarySnapshot(from record: CKRecord, systemFields: Data,
+                                lastModified: Double) -> LibrarySyncSnapshot {
+        LibrarySyncSnapshot(
+            id: record.recordID.recordName,
+            name: record["name"] as? String ?? "",
+            coverPicIDs: record["coverPicIDs"] as? [String] ?? [],
+            includesCoverPicIDs: record["coverPicIDsTracked"] != nil,
+            systemFields: systemFields,
+            lastModified: lastModified
+        )
     }
 
     // MARK: - System fields (de)serialization
