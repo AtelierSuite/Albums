@@ -44,7 +44,7 @@ struct PinchZoomGrid<Content: View, Cell: View>: View {
             .gesture(PinchZoomGesture(isEnabled: onColumnCountChange != nil && !zoom.isSettling,
                                       coordinateSpace: Self.coordinateSpace,
                                       onBegan: { begin(at: $0, viewport: $1) },
-                                      onChanged: { update(scale: $0, location: $1) },
+                                      onChanged: { scale, location, _ in update(scale: scale, location: location) },
                                       onEnded: { end(velocity: $0, scroller: $1) }))
     }
 
@@ -416,6 +416,14 @@ struct PinchZoomScroller {
         return min(max(current + delta, minimum), maximum) - current
     }
 
+    func layoutAndScroll(by delta: CGFloat) {
+        guard let scrollView else { return }
+        let target = scrollView.contentOffset.y + delta
+        // SwiftUI resets offsets set before it lays out the new content, snapping lazy stacks to the top.
+        scrollView.window?.layoutIfNeeded()
+        scrollView.contentOffset.y = target
+    }
+
     func scroll(by delta: CGFloat) {
         guard let scrollView, delta != 0.0 else { return }
         scrollView.contentOffset.y += delta
@@ -427,7 +435,7 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
     var isEnabled: Bool
     var coordinateSpace: String
     var onBegan: (CGPoint, CGRect) -> Void
-    var onChanged: (CGFloat, CGPoint) -> Void
+    var onChanged: (CGFloat, CGPoint, PinchZoomScroller) -> Void
     var onEnded: (CGFloat, PinchZoomScroller) -> Void
 
     func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator {
@@ -452,7 +460,7 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
             coordinator.startScale = max(recognizer.scale, 0.01)
             let location = context.converter.location(in: .named(coordinateSpace))
             var viewport = CGRect(x: 0.0, y: location.y - 1000.0, width: 0.0, height: 2000.0)
-            if let scrollView = coordinator.enclosingScrollView(of: recognizer.view) {
+            if let scrollView = recognizer.scrollViewUnderTouch {
                 coordinator.scrollView = scrollView
                 scrollView.isScrollEnabled = false
                 let locationInScrollView = recognizer.location(in: scrollView)
@@ -463,7 +471,8 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
         case .changed:
             guard coordinator.engaged else { return }
             onChanged(recognizer.scale / coordinator.startScale,
-                      context.converter.location(in: .named(coordinateSpace)))
+                      context.converter.location(in: .named(coordinateSpace)),
+                      PinchZoomScroller(scrollView: coordinator.scrollView))
         case .ended, .cancelled, .failed:
             guard coordinator.engaged else { return }
             coordinator.engaged = false
@@ -480,17 +489,6 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
         var engaged = false
         var startScale: CGFloat = 1.0
         weak var scrollView: UIScrollView?
-
-        func enclosingScrollView(of view: UIView?) -> UIScrollView? {
-            var current = view?.superview
-            while let view = current {
-                if let scrollView = view as? UIScrollView {
-                    return scrollView
-                }
-                current = view.superview
-            }
-            return nil
-        }
 
         func gestureRecognizer(
             _ gestureRecognizer: UIGestureRecognizer,

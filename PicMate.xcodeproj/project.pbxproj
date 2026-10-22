@@ -208,6 +208,7 @@
 				Views/Shared/GridColumnLimit.swift,
 				Views/Shared/PinchZoomCanvas.swift,
 				Views/Shared/PinchZoomGrid.swift,
+				"Views/Shared/UIGestureRecognizer+ScrollView.swift",
 			);
 			target = E4614CFB2ACA86EC00D751FB /* Share with PicMate */;
 		};
@@ -269,6 +270,7 @@
 				Views/Shared/GridColumnLimit.swift,
 				Views/Shared/PinchZoomCanvas.swift,
 				Views/Shared/PinchZoomGrid.swift,
+				"Views/Shared/UIGestureRecognizer+ScrollView.swift",
 			);
 			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 		};

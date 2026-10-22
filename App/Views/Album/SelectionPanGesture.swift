@@ -60,7 +60,7 @@ struct SelectionPanGesture: UIGestureRecognizerRepresentable {
         case .began:
             coordinator.engaged = true
             coordinator.onPaint = onChange
-            coordinator.lockedScrollView = coordinator.enclosingScrollView(of: recognizer.view)
+            coordinator.lockedScrollView = recognizer.scrollViewUnderTouch
             let location = context.converter.location(in: .named(coordinateSpace))
             coordinator.lastLocation = location
             onChange(location)
@@ -95,17 +95,6 @@ struct SelectionPanGesture: UIGestureRecognizerRepresentable {
 
         private let edgeBand = 90.0
         private let maxScrollSpeed = 700.0
-
-        func enclosingScrollView(of view: UIView?) -> UIScrollView? {
-            var current = view?.superview
-            while let view = current {
-                if let scrollView = view as? UIScrollView {
-                    return scrollView
-                }
-                current = view.superview
-            }
-            return nil
-        }
 
         func updateAutoScroll(recognizer: UIPanGestureRecognizer) {
             guard let scrollView = lockedScrollView else {
