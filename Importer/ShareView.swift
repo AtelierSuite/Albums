@@ -116,21 +116,7 @@ struct ShareView: View {
     }
 
     private var importButton: some View {
-        VStack(alignment: .center, spacing: 16.0) {
-            HStack(alignment: .top, spacing: 4.0) {
-                Group {
-                    Image(systemName: "info.circle")
-                    Text("Importer.Note", tableName: "Import")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .font(.callout)
-                .foregroundStyle(.secondary)
-            }
-            .padding(10.0)
-            .background(.regularMaterial)
-            .clipShape(.rect(cornerRadius: 16.0))
-            .padding(.horizontal, 20.0)
-
+        VStack(spacing: 12.0) {
             SharedItemsStrip(items: session.items)
 
             Button {
@@ -146,7 +132,7 @@ struct ShareView: View {
             .disabled(isSearching && viewPath.isEmpty)
             .padding(.horizontal, 20.0)
         }
-        .padding(.vertical, 20.0)
+        .padding(.vertical, 12.0)
     }
 
     func albumInViewPath() -> Album? {

@@ -1718,47 +1718,6 @@
         }
       }
     },
-    "Importer.Note" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verwenden Sie den In-App-Importer beim Importieren großer Bilder."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use the in-app importer when importing large pics."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "大きい画像を保存する場合、アプリ内のインポート機能のご利用を推薦します。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "큰 사진을 가져올 때는 앱 내 가져오기를 사용하세요."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "导入大型图片时，请使用 App 内置的导入工具。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "匯入大型圖片時，請使用 App 內建的匯入工具。"
-          }
-        }
-      }
-    },
     "Importer.ProgressText" : {
       "extractionState" : "manual",
       "localizations" : {
