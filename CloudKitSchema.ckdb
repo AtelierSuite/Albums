@@ -1,0 +1,48 @@
+DEFINE SCHEMA
+
+    RECORD TYPE Album (
+        coverPhoto        BYTES,
+        coverPhotoTracked INT64 QUERYABLE SORTABLE,
+        dateCreated       TIMESTAMP QUERYABLE SORTABLE,
+        name              STRING QUERYABLE SEARCHABLE SORTABLE,
+        parentAlbumID     STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );
+
+    RECORD TYPE AlbumPreferences (
+        albumColumnCount   INT64 QUERYABLE SORTABLE,
+        albumID            STRING QUERYABLE SEARCHABLE SORTABLE,
+        albumSort          STRING QUERYABLE SEARCHABLE SORTABLE,
+        albumViewStyle     STRING QUERYABLE SEARCHABLE SORTABLE,
+        hideSectionHeaders INT64 QUERYABLE SORTABLE,
+        picColumnCount     INT64 QUERYABLE SORTABLE,
+        picSort            STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );
+
+    RECORD TYPE Library (
+        coverPicIDs        LIST<STRING>,
+        coverPicIDsTracked INT64 QUERYABLE SORTABLE,
+        name               STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );
+
+    RECORD TYPE Pic (
+        containingAlbumID STRING QUERYABLE SEARCHABLE SORTABLE,
+        dateAdded         TIMESTAMP QUERYABLE SORTABLE,
+        dateDeleted       TIMESTAMP QUERYABLE SORTABLE,
+        duration          DOUBLE QUERYABLE SORTABLE,
+        mediaType         INT64 QUERYABLE SORTABLE,
+        name              STRING QUERYABLE SEARCHABLE SORTABLE,
+        pinnedDate        TIMESTAMP QUERYABLE SORTABLE,
+        thumbnail         BYTES,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );
