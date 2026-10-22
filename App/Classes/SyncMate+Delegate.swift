@@ -58,6 +58,10 @@ extension SyncMate: CKSyncEngineDelegate {
         let collectionID = Self.collectionID(forZone: recordID.zoneID)
         let dataActor = DataActor.instance(for: collectionID)
         let name = recordID.recordName
+        if let albumID = AlbumPreferences.albumID(fromRecordName: name) {
+            guard let preferences = await dataActor.preferencesSyncSnapshot(forAlbumID: albumID) else { return nil }
+            return preferencesRecord(from: preferences, recordID: recordID)
+        }
         if let album = await dataActor.albumSyncSnapshot(forID: name) {
             return albumRecord(from: album, recordID: recordID)
         }
@@ -98,6 +102,19 @@ extension SyncMate: CKSyncEngineDelegate {
         return record
     }
 
+    private func preferencesRecord(from snapshot: AlbumPreferencesSyncSnapshot, recordID: CKRecord.ID) -> CKRecord {
+        let record = baseRecord(snapshot.systemFields, recordID: recordID, type: SyncRecordType.albumPreferences)
+        let preferences = snapshot.preferences
+        record["albumID"] = preferences.albumID
+        record["albumSort"] = preferences.albumSort
+        record["albumViewStyle"] = preferences.albumViewStyle
+        record["albumColumnCount"] = preferences.albumColumnCount
+        record["picSort"] = preferences.picSort
+        record["picColumnCount"] = preferences.picColumnCount
+        record["hideSectionHeaders"] = preferences.hideSectionHeaders
+        return record
+    }
+
     private func baseRecord(_ systemFields: Data?, recordID: CKRecord.ID, type: String) -> CKRecord {
         if let systemFields, let record = Self.decodeSystemFields(systemFields) {
             return record
@@ -135,6 +152,10 @@ extension SyncMate: CKSyncEngineDelegate {
             let dataActor = DataActor.instance(for: Self.collectionID(forZone: deletion.recordID.zoneID))
             if deletion.recordType == SyncRecordType.album {
                 await dataActor.removeAlbumForRemoteDelete(id: deletion.recordID.recordName)
+            } else if deletion.recordType == SyncRecordType.albumPreferences {
+                if let albumID = AlbumPreferences.albumID(fromRecordName: deletion.recordID.recordName) {
+                    await dataActor.removePreferencesForRemoteDelete(albumID: albumID)
+                }
             } else {
                 await dataActor.removePicForRemoteDelete(id: deletion.recordID.recordName)
                 await OriginalsManager.shared.deleteCloudOriginal(
@@ -184,6 +205,12 @@ extension SyncMate: CKSyncEngineDelegate {
                 systemFields: systemFields,
                 lastModified: modified
             ))
+        } else if record.recordType == SyncRecordType.albumPreferences {
+            if let preferences = Self.albumPreferences(from: record) {
+                await dataActor.applyRemotePreferences(AlbumPreferencesSyncSnapshot(
+                    preferences: preferences, systemFields: systemFields
+                ))
+            }
         } else if record.recordType == SyncRecordType.pic {
             await dataActor.applyRemotePic(PicSyncSnapshot(
                 id: record.recordID.recordName,
@@ -219,6 +246,10 @@ extension SyncMate: CKSyncEngineDelegate {
             let dataActor = DataActor.instance(for: collectionID)
             if record.recordType == SyncRecordType.album {
                 await dataActor.markAlbumSynced(id: record.recordID.recordName, systemFields: systemFields)
+            } else if record.recordType == SyncRecordType.albumPreferences {
+                if let albumID = AlbumPreferences.albumID(fromRecordName: record.recordID.recordName) {
+                    await dataActor.markPreferencesSynced(albumID: albumID, systemFields: systemFields)
+                }
             } else {
                 await dataActor.markPicSynced(id: record.recordID.recordName, systemFields: systemFields)
                 await OriginalsManager.shared.uploadOriginal(picID: record.recordID.recordName,
@@ -253,6 +284,8 @@ extension SyncMate: CKSyncEngineDelegate {
                 let dataActor = DataActor.instance(for: collectionID)
                 if failure.record.recordType == SyncRecordType.album {
                     await dataActor.markAlbumSynced(id: recordID.recordName, systemFields: serverFields)
+                } else if let albumID = AlbumPreferences.albumID(fromRecordName: recordID.recordName) {
+                    await dataActor.markPreferencesSynced(albumID: albumID, systemFields: serverFields)
                 } else {
                     await dataActor.markPicSynced(id: recordID.recordName, systemFields: serverFields)
                 }
@@ -273,6 +306,20 @@ extension SyncMate: CKSyncEngineDelegate {
         default:
             break
         }
+    }
+
+    static func albumPreferences(from record: CKRecord) -> AlbumPreferences? {
+        guard let albumID = AlbumPreferences.albumID(fromRecordName: record.recordID.recordName) else { return nil }
+        let defaults = AlbumPreferences.defaults
+        return AlbumPreferences(
+            albumID: albumID,
+            albumSort: record["albumSort"] as? String ?? defaults.albumSort,
+            albumViewStyle: record["albumViewStyle"] as? String ?? defaults.albumViewStyle,
+            albumColumnCount: record["albumColumnCount"] as? Int ?? defaults.albumColumnCount,
+            picSort: record["picSort"] as? String ?? defaults.picSort,
+            picColumnCount: record["picColumnCount"] as? Int ?? defaults.picColumnCount,
+            hideSectionHeaders: record["hideSectionHeaders"] as? Bool ?? defaults.hideSectionHeaders
+        )
     }
 
     static func librarySnapshot(from record: CKRecord, systemFields: Data,

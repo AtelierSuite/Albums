@@ -5,6 +5,7 @@ public enum SyncRecordType: Sendable {
     public static let pic = "Pic"
     public static let album = "Album"
     public static let library = "Library"
+    public static let albumPreferences = "AlbumPreferences"
 }
 
 extension Notification.Name {
