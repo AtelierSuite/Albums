@@ -6,107 +6,19 @@ struct PhotosAssetsGrid: View {
     var namespace: Namespace.ID
     var assets: [PHAsset]
 
-    @Environment(PhotosViewerManager.self) var photosViewer
-    @Environment(\.openWindow) var openWindow
-
     private let batchSize = 200
-
-    @AppStorage(wrappedValue: 4, "PicColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     @State private var displayCount: Int = 200
 
-    private var visibleAssets: ArraySlice<PHAsset> {
-        assets.prefix(displayCount)
-    }
-
     var body: some View {
-        PinchZoomGrid(columnCount: fittedColumnCount,
-                      itemCount: visibleAssets.count,
-                      range: GridColumnLimit.pics.range(width: gridWidth),
-                      onColumnCountChange: setColumnCount,
-                      cachedImage: cachedThumbnail(at:),
-                      loadImage: loadThumbnail(at:)) {
-            grid
-        }
-        .onGeometryChange(for: CGFloat.self) { proxy in
-            proxy.size.width
-        } action: { width in
-            gridWidth = width
+        PhotosAssetsGridLayout(namespace: namespace,
+                               assets: Array(assets.prefix(displayCount)),
+                               siblings: assets,
+                               hasMore: displayCount < assets.count) {
+            displayCount = min(displayCount + batchSize, assets.count)
         }
         .onChange(of: assets.count) {
             displayCount = min(batchSize, assets.count)
-        }
-    }
-
-    @State private var gridWidth: CGFloat = 0.0
-
-    private var fittedColumnCount: Int {
-        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
-    }
-
-    private func setColumnCount(_ count: Int) {
-        columnCount = count
-    }
-
-    private func cachedThumbnail(at index: Int) -> UIImage? {
-        PhotosAssetLabel.cachedThumbnail(for: assets[index])
-    }
-
-    private func loadThumbnail(at index: Int) async -> UIImage? {
-        await PhotosAssetLabel.thumbnail(for: assets[index])
-    }
-
-    private var grid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount), spacing: 2.0) {
-            ForEach(Array(visibleAssets), id: \.localIdentifier) { asset in
-                Group {
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        Button {
-#if targetEnvironment(macCatalyst)
-                            if openPicsInNewWindow {
-                                openWindow(value: ViewerWindowValue.photo(
-                                    selectedID: asset.localIdentifier,
-                                    siblingIDs: assets.map(\.localIdentifier)))
-                            } else {
-                                photosViewer.setDisplay(asset, in: assets)
-                            }
-#else
-                            photosViewer.setDisplay(asset, in: assets)
-#endif
-                        } label: {
-                            PhotosAssetLabel(asset: asset)
-                        }
-                    } else {
-                        NavigationLink(value: ViewPath.photosAssetViewer(
-                            asset: PHAssetWrapper(asset: asset), namespace: namespace)) {
-                            PhotosAssetLabel(asset: asset)
-                        }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            photosViewer.setDisplay(asset, in: assets)
-                        })
-                    }
-                }
-                .matchedTransitionSource(id: asset.localIdentifier, in: namespace)
-                .draggable(PHAssetTransferable(localIdentifier: asset.localIdentifier))
-                .contextMenu {
-                    PhotosAssetContextMenu(asset: asset)
-                }
-#if targetEnvironment(macCatalyst)
-                .buttonStyle(.borderless)
-#else
-                .buttonStyle(.plain)
-#endif
-            }
-            if displayCount < assets.count {
-                Color.clear
-                    .frame(height: 1)
-                    .onAppear {
-                        displayCount = min(displayCount + batchSize, assets.count)
-                    }
-            }
         }
     }
 }
@@ -116,35 +28,16 @@ struct PhotosFetchResultAssetsGrid: View {
     var namespace: Namespace.ID
     var fetchResult: PHFetchResult<PHAsset>
 
-    @Environment(PhotosViewerManager.self) var photosViewer
-    @Environment(\.openWindow) var openWindow
-
     private let batchSize = 200
-
-    @AppStorage(wrappedValue: 4, "PicColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     @State private var displayedAssets: [PHAsset] = []
 
-    private var hasMore: Bool {
-        displayedAssets.count < fetchResult.count
-    }
-
     var body: some View {
-        PinchZoomGrid(columnCount: fittedColumnCount,
-                      itemCount: displayedAssets.count,
-                      range: GridColumnLimit.pics.range(width: gridWidth),
-                      onColumnCountChange: setColumnCount,
-                      cachedImage: cachedThumbnail(at:),
-                      loadImage: loadThumbnail(at:)) {
-            grid
-        }
-        .onGeometryChange(for: CGFloat.self) { proxy in
-            proxy.size.width
-        } action: { width in
-            gridWidth = width
+        PhotosAssetsGridLayout(namespace: namespace,
+                               assets: displayedAssets,
+                               siblings: displayedAssets,
+                               hasMore: displayedAssets.count < fetchResult.count) {
+            loadMoreAssets()
         }
         .onAppear {
             if displayedAssets.isEmpty {
@@ -154,75 +47,6 @@ struct PhotosFetchResultAssetsGrid: View {
         .onChange(of: fetchResult) {
             displayedAssets = []
             loadMoreAssets()
-        }
-    }
-
-    @State private var gridWidth: CGFloat = 0.0
-
-    private var fittedColumnCount: Int {
-        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
-    }
-
-    private func setColumnCount(_ count: Int) {
-        columnCount = count
-    }
-
-    private func cachedThumbnail(at index: Int) -> UIImage? {
-        PhotosAssetLabel.cachedThumbnail(for: displayedAssets[index])
-    }
-
-    private func loadThumbnail(at index: Int) async -> UIImage? {
-        await PhotosAssetLabel.thumbnail(for: displayedAssets[index])
-    }
-
-    private var grid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount), spacing: 2.0) {
-            ForEach(displayedAssets, id: \.localIdentifier) { asset in
-                Group {
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        Button {
-#if targetEnvironment(macCatalyst)
-                            if openPicsInNewWindow {
-                                openWindow(value: ViewerWindowValue.photo(
-                                    selectedID: asset.localIdentifier,
-                                    siblingIDs: displayedAssets.map(\.localIdentifier)))
-                            } else {
-                                photosViewer.setDisplay(asset, in: displayedAssets)
-                            }
-#else
-                            photosViewer.setDisplay(asset, in: displayedAssets)
-#endif
-                        } label: {
-                            PhotosAssetLabel(asset: asset)
-                        }
-                    } else {
-                        NavigationLink(value: ViewPath.photosAssetViewer(
-                            asset: PHAssetWrapper(asset: asset), namespace: namespace)) {
-                            PhotosAssetLabel(asset: asset)
-                        }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            photosViewer.setDisplay(asset, in: displayedAssets)
-                        })
-                    }
-                }
-                .matchedTransitionSource(id: asset.localIdentifier, in: namespace)
-                .draggable(PHAssetTransferable(localIdentifier: asset.localIdentifier))
-                .contextMenu {
-                    PhotosAssetContextMenu(asset: asset)
-                }
-#if targetEnvironment(macCatalyst)
-                .buttonStyle(.borderless)
-#else
-                .buttonStyle(.plain)
-#endif
-            }
-            if hasMore {
-                Color.clear
-                    .frame(height: 1)
-                    .onAppear {
-                        loadMoreAssets()
-                    }
-            }
         }
     }
 
@@ -236,6 +60,154 @@ struct PhotosFetchResultAssetsGrid: View {
             newAssets.append(fetchResult.object(at: index))
         }
         displayedAssets.append(contentsOf: newAssets)
+    }
+}
+
+struct PhotosAssetsGridLayout: View {
+
+    var namespace: Namespace.ID
+    var assets: [PHAsset]
+    var siblings: [PHAsset]
+    var hasMore: Bool
+    var loadMore: () -> Void
+
+    @Environment(PhotosViewerManager.self) var photosViewer
+    @Environment(\.openWindow) var openWindow
+
+    @AppStorage(photosPicColumnCountKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int = 4
+    @AppStorage(photosPicViewStyleKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: ViewStyle = .grid
+    @AppStorage(openPicsInNewWindowKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
+
+    @State private var gridWidth: CGFloat = 0.0
+
+    var body: some View {
+        Group {
+            if style == .masonry {
+                masonryGrid
+            } else {
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: assets.count,
+                              range: GridColumnLimit.pics.range(width: gridWidth),
+                              onColumnCountChange: setColumnCount,
+                              cachedImage: cachedThumbnail(at:),
+                              loadImage: loadThumbnail(at:)) {
+                    squareGrid
+                }
+            }
+        }
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width
+        } action: { width in
+            gridWidth = width
+        }
+    }
+
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
+    private func cachedThumbnail(at index: Int) -> UIImage? {
+        guard index < assets.count else { return nil }
+        return PhotosAssetLabel.cachedThumbnail(for: assets[index])
+    }
+
+    private func loadThumbnail(at index: Int) async -> UIImage? {
+        guard index < assets.count else { return nil }
+        return await PhotosAssetLabel.thumbnail(for: assets[index])
+    }
+
+    private var squareGrid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount),
+                  spacing: 2.0) {
+            ForEach(assets, id: \.localIdentifier) { asset in
+                assetCell(for: asset, maintainsAspectRatio: false)
+            }
+            if hasMore {
+                Color.clear
+                    .frame(height: 1)
+                    .onAppear {
+                        loadMore()
+                    }
+            }
+        }
+    }
+
+    private var masonryGrid: some View {
+        VStack(spacing: 0.0) {
+            MasonryGrid(items: assets.map { MasonryItem(id: $0.localIdentifier, aspectRatio: $0.aspectRatio) },
+                        columnCount: fittedColumnCount,
+                        range: GridColumnLimit.pics.range(width: gridWidth),
+                        width: gridWidth,
+                        onColumnCountChange: setColumnCount) { index in
+                assetCell(for: assets[index], maintainsAspectRatio: true)
+            } morphCell: { index in
+                PhotosAssetLabel(asset: assets[index], maintainsAspectRatio: true)
+            }
+            if hasMore {
+                Color.clear
+                    .frame(height: 1)
+                    .id(assets.count)
+                    .onScrollVisibilityChange { isVisible in
+                        if isVisible {
+                            loadMore()
+                        }
+                    }
+            }
+        }
+    }
+
+    private func assetCell(for asset: PHAsset, maintainsAspectRatio: Bool) -> some View {
+        Group {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                Button {
+#if targetEnvironment(macCatalyst)
+                    if openPicsInNewWindow {
+                        openWindow(value: ViewerWindowValue.photo(
+                            selectedID: asset.localIdentifier,
+                            siblingIDs: siblings.map(\.localIdentifier)))
+                    } else {
+                        photosViewer.setDisplay(asset, in: siblings)
+                    }
+#else
+                    photosViewer.setDisplay(asset, in: siblings)
+#endif
+                } label: {
+                    PhotosAssetLabel(asset: asset, maintainsAspectRatio: maintainsAspectRatio)
+                }
+            } else {
+                NavigationLink(value: ViewPath.photosAssetViewer(
+                    asset: PHAssetWrapper(asset: asset), namespace: namespace)) {
+                    PhotosAssetLabel(asset: asset, maintainsAspectRatio: maintainsAspectRatio)
+                }
+                .simultaneousGesture(TapGesture().onEnded {
+                    photosViewer.setDisplay(asset, in: siblings)
+                })
+            }
+        }
+        .matchedTransitionSource(id: asset.localIdentifier, in: namespace)
+        .draggable(PHAssetTransferable(localIdentifier: asset.localIdentifier))
+        .contextMenu {
+            PhotosAssetContextMenu(asset: asset)
+        }
+#if targetEnvironment(macCatalyst)
+        .buttonStyle(.borderless)
+#else
+        .buttonStyle(.plain)
+#endif
+    }
+}
+
+extension PHAsset {
+    var aspectRatio: CGFloat {
+        guard pixelWidth > 0, pixelHeight > 0 else { return 1.0 }
+        return CGFloat(pixelWidth) / CGFloat(pixelHeight)
     }
 }
 
@@ -316,14 +288,16 @@ struct PHAssetShareable: Transferable {
 struct PhotosAssetLabel: View {
 
     let asset: PHAsset
+    var maintainsAspectRatio: Bool = false
 
     @Environment(\.displayScale) private var displayScale
 
     @State private var thumbnail: UIImage?
     @State private var requestID: PHImageRequestID?
 
-    init(asset: PHAsset) {
+    init(asset: PHAsset, maintainsAspectRatio: Bool = false) {
         self.asset = asset
+        self.maintainsAspectRatio = maintainsAspectRatio
         _thumbnail = State(initialValue: ThumbnailCache.shared.image(forKey: Self.cacheKey(for: asset)))
     }
 
@@ -350,9 +324,7 @@ struct PhotosAssetLabel: View {
     }
 
     var body: some View {
-        Rectangle()
-            .fill(.primary.opacity(0.05))
-            .aspectRatio(1.0, contentMode: .fit)
+        placeholder
             .overlay { geometryOverlay }
             .overlay(alignment: .bottomTrailing) {
                 if asset.mediaType == .video {
@@ -376,6 +348,18 @@ struct PhotosAssetLabel: View {
                 }
                 thumbnail = nil
             }
+    }
+
+    @ViewBuilder
+    private var placeholder: some View {
+        if maintainsAspectRatio {
+            Rectangle()
+                .fill(.primary.opacity(0.05))
+        } else {
+            Rectangle()
+                .fill(.primary.opacity(0.05))
+                .aspectRatio(1.0, contentMode: .fit)
+        }
     }
 
     private var geometryOverlay: some View {

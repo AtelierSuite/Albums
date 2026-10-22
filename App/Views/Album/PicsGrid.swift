@@ -31,8 +31,6 @@ struct PicsGrid<Content: View>: View {
     @State private var paintedRange: ClosedRange<Int>?
     @State private var originalSelected: [Int: Bool] = [:]
     @State private var aspectRatios: [String: CGFloat] = [:]
-    @State var masonryPinch: MasonryPinchAnchor?
-    @State var masonryVisibleRange: ClosedRange<CGFloat>?
 
     var body: some View {
         Group {
@@ -56,15 +54,6 @@ struct PicsGrid<Content: View>: View {
         } action: { width in
             gridWidth = width
         }
-        .gesture(PinchZoomGesture(isEnabled: style == .masonry && onColumnCountChange != nil,
-                                  coordinateSpace: Self.selectionSpace,
-                                  onBegan: { location, viewport, _ in
-                                      beginMasonryPinch(at: location, viewport: viewport)
-                                  },
-                                  onChanged: { scale, _, scroller in
-                                      updateMasonryPinch(scale: scale, scroller: scroller)
-                                  },
-                                  onEnded: { _, scroller in endMasonryPinch(scroller: scroller) }))
         .gesture(SelectionPanGesture(isEnabled: isSelecting && style != .masonry,
                                      coordinateSpace: Self.selectionSpace,
                                      onChange: { updateSelection(at: $0) },
@@ -91,32 +80,22 @@ struct PicsGrid<Content: View>: View {
     }
 
     private var masonryGrid: some View {
-        let layout = masonryLayout(columns: fittedColumnCount)
-        return ZStack(alignment: .topLeading) {
-            ForEach(layout.entries(in: masonryVisibleRange, including: highlightedPicID)) { entry in
-                if let frame = layout.frames[entry.id] {
-                    Group {
-                        if let pic = entry.pic {
-                            picCell(for: pic, maintainsAspectRatio: true)
-                        } else {
-                            placeholderCell
-                        }
-                    }
-                    .frame(width: frame.width, height: frame.height)
-                    .offset(x: frame.minX, y: frame.minY)
-                }
+        MasonryGrid(items: masonryItems,
+                    columnCount: fittedColumnCount,
+                    range: GridColumnLimit.pics.range(width: gridWidth),
+                    width: gridWidth,
+                    includedID: highlightedPicID,
+                    onColumnCountChange: onColumnCountChange) { index in
+            if index < pics.count {
+                picCell(for: pics[index], maintainsAspectRatio: true)
+            } else {
+                placeholderCell
             }
-        }
-        .frame(maxWidth: .infinity, minHeight: layout.height, maxHeight: layout.height, alignment: .topLeading)
-        .onGeometryChange(for: CGRect.self) { proxy in
-            proxy.bounds(of: .scrollView) ?? .infinite
-        } action: { visible in
-            updateMasonryVisibleRange(visible)
-        }
-        .opacity(masonryPinch == nil ? 1.0 : 0.0)
-        .overlay(alignment: .topLeading) {
-            if let masonryPinch {
-                masonryMorphLayer(for: masonryPinch)
+        } morphCell: { index in
+            if index < pics.count {
+                picCellBase(for: pics[index], maintainsAspectRatio: true)
+            } else {
+                placeholderCell
             }
         }
     }
@@ -299,28 +278,10 @@ extension PicsGrid {
             .clipShape(.rect(cornerRadius: 4.0))
     }
 
-    func masonryColumns(count requestedCount: Int) -> [[MasonryEntry]] {
-        let count = max(requestedCount, 1)
-        var columns = Array(repeating: [MasonryEntry](), count: count)
-        var heights = Array(repeating: 0.0, count: count)
-        func place(_ entry: MasonryEntry) {
-            var target = 0
-            for index in 1..<count where heights[index] < heights[target] {
-                target = index
-            }
-            columns[target].append(entry)
-            heights[target] += 1.0 / max(entry.aspectRatio, 0.01)
-        }
-        for pic in pics {
-            place(MasonryEntry(id: pic.id, pic: pic, aspectRatio: aspectRatio(for: pic)))
-        }
-        if placeholderCount > 0 {
-            let visiblePlaceholders = min(placeholderCount, count * 10)
-            for index in 0..<visiblePlaceholders {
-                place(MasonryEntry(id: "placeholder-\(index)", pic: nil, aspectRatio: 1.0))
-            }
-        }
-        return columns
+    var masonryItems: [MasonryItem] {
+        let visiblePlaceholders = min(placeholderCount, fittedColumnCount * 10)
+        return pics.map { MasonryItem(id: $0.id, aspectRatio: aspectRatio(for: $0)) }
+            + (0..<visiblePlaceholders).map { MasonryItem(id: "placeholder-\($0)", aspectRatio: 1.0) }
     }
 
     func cachedThumbnail(at index: Int) -> UIImage? {
@@ -352,12 +313,6 @@ extension PicsGrid {
             }
         }
     }
-}
-
-struct MasonryEntry: Identifiable {
-    let id: String
-    let pic: Pic?
-    let aspectRatio: CGFloat
 }
 
 struct PicShareable: Transferable {

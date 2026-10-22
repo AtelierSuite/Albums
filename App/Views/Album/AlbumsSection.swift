@@ -42,73 +42,31 @@ struct AlbumsSection<Content: View>: View {
         }
     }
 
-    var gridHorizontalPadding: CGFloat {
-        style == .stackedGrid ? 14.0 : 16.0
-    }
-
-    var gridColumnSpacing: CGFloat {
-        style == .stackedGrid ? 10.0 : 12.0
-    }
-
-    var gridRowSpacing: CGFloat {
-        style == .stackedGrid ? 12.0 : 14.0
-    }
-
-    var gridWidth: CGFloat {
-        max(containerWidth - gridHorizontalPadding * 2.0, 0.0)
-    }
-
-    var gridColumnLimit: GridColumnLimit {
-        GridColumnLimit(minimumCellWidth: GridColumnLimit.albums.minimumCellWidth,
-                        spacing: gridColumnSpacing,
-                        range: GridColumnLimit.albums.range)
-    }
-
-    var fittedColumnCount: Int {
-        gridColumnLimit.columns(columnCount, width: gridWidth)
-    }
-
-    var gridCoverWidth: CGFloat {
-        let count = CGFloat(fittedColumnCount)
-        return (gridWidth - gridColumnSpacing * (count - 1.0)) / count
-    }
-
-    var carouselColumnCount: Binding<Int> {
-        Binding {
-            columnCount
-        } set: { count in
-            onColumnCountChange?(count)
-        }
-    }
-
-    var carouselCoverLength: CGFloat {
-        let baseLength: CGFloat = style == .plainCarousel ? 132.0 : 80.0
-        return baseLength * 4.0 / CGFloat(min(max(columnCount, 2), 6))
+    var metrics: AlbumLayoutMetrics {
+        AlbumLayoutMetrics(style: style, containerWidth: containerWidth, columnCount: columnCount)
     }
 
     var pinchZoomGrid: some View {
-        let labelStyle = AlbumLabelStyle(viewStyle: style, coverWidth: gridCoverWidth)
-        return PinchZoomGrid(columnCount: fittedColumnCount,
+        let metrics = metrics
+        let labelStyle = metrics.gridLabelStyle
+        return PinchZoomGrid(columnCount: metrics.fittedColumnCount,
                              itemCount: albums.count + (recentlyDeletedCount == nil ? 0 : 1),
-                             range: gridColumnLimit.range(width: gridWidth),
-                             columnSpacing: gridColumnSpacing,
-                             rowSpacing: gridRowSpacing,
+                             range: metrics.gridColumnRange,
+                             columnSpacing: metrics.gridColumnSpacing,
+                             rowSpacing: metrics.gridRowSpacing,
                              onColumnCountChange: onColumnCountChange) { index in
             pinchZoomCell(at: index, style: labelStyle)
         } content: {
-            grid(style: labelStyle)
+            grid(style: labelStyle, metrics: metrics)
         }
-        .padding(.horizontal, gridHorizontalPadding)
+        .padding(.horizontal, metrics.gridHorizontalPadding)
         .padding(.top, hideSectionHeaders ? 0.0 : 10.0)
-        .animation(.smooth.speed(2.0), value: fittedColumnCount)
+        .animation(.smooth.speed(2.0), value: metrics.fittedColumnCount)
         .animation(.smooth.speed(2.0), value: style)
     }
 
-    func grid(style labelStyle: AlbumLabelStyle) -> some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: gridColumnSpacing,
-                                                     alignment: .top),
-                                 count: fittedColumnCount),
-                  spacing: gridRowSpacing) {
+    func grid(style labelStyle: AlbumLabelStyle, metrics: AlbumLayoutMetrics) -> some View {
+        LazyVGrid(columns: metrics.gridColumns, spacing: metrics.gridRowSpacing) {
             ForEach(albums) { album in
                 NavigationLink(value: ViewPath.album(album: album)) {
                     gridLabel(album, style: labelStyle)
@@ -160,10 +118,11 @@ struct AlbumsSection<Content: View>: View {
     }
 
     var carousel: some View {
-        let length = carouselCoverLength
-        let labelStyle = AlbumLabelStyle(viewStyle: style, coverWidth: length)
+        let metrics = metrics
+        let length = metrics.carouselCoverLength
+        let labelStyle = metrics.carouselLabelStyle
         return ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(alignment: .top, spacing: style == .stackedCarousel ? 20.0 : 12.0) {
+            LazyHStack(alignment: .top, spacing: metrics.carouselSpacing) {
                 ForEach(carouselItems) { item in
                     carouselItem(item, length: length, labelStyle: labelStyle)
                 }
@@ -172,8 +131,7 @@ struct AlbumsSection<Content: View>: View {
             .padding(.vertical, 10.0)
         }
         .scrollIndicators(.hidden)
-        .pinchToResizeColumns(carouselColumnCount, range: 2...6,
-                              isEnabled: style.isResizable && onColumnCountChange != nil)
+        .albumCarouselPinch(columnCount: columnCount, style: style, onColumnCountChange: onColumnCountChange)
         .animation(.smooth.speed(2.0), value: columnCount)
         .animation(.smooth.speed(2.0), value: style)
     }

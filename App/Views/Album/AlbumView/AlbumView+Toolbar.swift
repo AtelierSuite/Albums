@@ -161,43 +161,11 @@ extension AlbumView {
             }
             Section(String(localized: "Albums.Albums", table: "Albums")) {
                 AlbumViewStylePicker(selection: $albumStyleState)
-                Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $albumSortState) {
-                    Text("Shared.Sort.Name.Ascending")
-                        .tag(SortType.nameAscending)
-                    Text("Shared.Sort.Name.Descending")
-                        .tag(SortType.nameDescending)
-                    Text("Shared.Sort.PicCount.Ascending")
-                        .tag(SortType.sizeAscending)
-                    Text("Shared.Sort.PicCount.Descending")
-                        .tag(SortType.sizeDescending)
-                }
-                .pickerStyle(.menu)
+                AlbumSortPicker(selection: $albumSortState)
             }
             Section(String(localized: "Albums.Pics", table: "Albums")) {
-                Picker(String(localized: "Albums.Style", table: "Albums"),
-                       systemImage: "paintbrush",
-                       selection: $picViewStyle.animation(.smooth.speed(2.0))) {
-                    Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                          systemImage: "square.grid.2x2")
-                        .tag(ViewStyle.grid)
-                    Label(String(localized: "Albums.Style.Masonry", table: "Albums"),
-                          systemImage: "rectangle.3.offgrid")
-                        .tag(ViewStyle.masonry)
-                }
-                .pickerStyle(.menu)
-                Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $picSortType) {
-                    Text("Shared.Sort.DateAdded.Ascending")
-                        .tag(PicSortType.dateAddedAscending)
-                    Text("Shared.Sort.DateAdded.Descending")
-                        .tag(PicSortType.dateAddedDescending)
-                    Text("Shared.Sort.Name.Ascending")
-                        .tag(PicSortType.nameAscending)
-                    Text("Shared.Sort.Name.Descending")
-                        .tag(PicSortType.nameDescending)
-                    Text("Shared.Sort.ProminentColor")
-                        .tag(PicSortType.prominentColor)
-                }
-                .pickerStyle(.menu)
+                PicViewStylePicker(selection: $picViewStyle)
+                PicSortPicker(selection: $picSortType)
             }
             Section {
                 Toggle(String(localized: "Albums.HideHeaders", table: "Albums"),

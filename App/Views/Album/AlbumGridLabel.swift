@@ -86,11 +86,12 @@ struct AlbumGridLabel: View {
     }
 
     var body: some View {
-        VStack(alignment: style.alignment, spacing: style.spacing) {
+        AlbumGridLabelLayout(namespace: namespace, id: album.id, title: album.name,
+                             picCount: album.picCount(), albumCount: album.albumCount(),
+                             length: length, style: style) {
             AlbumCover.AsyncAlbumCover(album: album, length: length,
                                       isDownloading: downloadFraction != nil,
                                       style: style.cover)
-            .optionalMatchedGeometryEffect(id: "\(album.id).Image", in: namespace)
             .overlay {
                 if let progress = downloadFraction {
                     ZStack {
@@ -106,27 +107,7 @@ struct AlbumGridLabel: View {
                     .animation(.smooth, value: progress)
                 }
             }
-            VStack(alignment: style.alignment, spacing: 0.0) {
-                Text(album.name)
-                    .optionalMatchedGeometryEffect(id: "\(album.id).Title", in: namespace)
-                    .font(style.titleFont)
-                    .foregroundStyle(.primary)
-                    .truncationMode(.middle)
-                if let countFont = style.countFont {
-                    AlbumCountText(picCount: album.picCount(), albumCount: album.albumCount(),
-                                   compact: style.compactCount)
-                        .font(countFont)
-                        .foregroundStyle(.secondary)
-                }
-            }
-            .lineLimit(1)
-            .frame(maxWidth: length == nil ? .infinity : nil,
-                   alignment: Alignment(horizontal: style.alignment, vertical: .center))
-            .padding(.horizontal, 1.0)
-            .padding(.bottom, 1.0)
         }
-        .contentShape(.rect)
-        .frame(width: length)
         .onReceive(progressPublisher) { note in
             guard note.userInfo?["albumID"] as? String == album.id else { return }
             downloadFraction = note.userInfo?["fraction"] as? Double
@@ -140,24 +121,9 @@ struct AlbumChipLabel: View {
     var album: Album
 
     var body: some View {
-        HStack(alignment: .center, spacing: 8.0) {
+        AlbumChipLabelLayout(namespace: namespace, id: album.id, title: album.name,
+                             picCount: album.picCount(), albumCount: album.albumCount()) {
             AlbumCover.AsyncAlbumCover(album: album, length: 40.0, style: .flat(cornerRadius: 9.0))
-                .matchedGeometryEffect(id: "\(album.id).Image", in: namespace)
-            VStack(alignment: .leading, spacing: 0.0) {
-                Text(album.name)
-                    .matchedGeometryEffect(id: "\(album.id).Title", in: namespace)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.primary)
-                AlbumCountText(picCount: album.picCount(), albumCount: album.albumCount())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            .lineLimit(1)
         }
-        .padding(.leading, 6.0)
-        .padding(.trailing, 14.0)
-        .padding(.vertical, 6.0)
-        .background(Color(uiColor: .secondarySystemFill), in: .rect(cornerRadius: 14.0, style: .continuous))
-        .contentShape(.rect(cornerRadius: 14.0))
     }
 }

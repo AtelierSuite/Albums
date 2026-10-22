@@ -10,6 +10,7 @@ extension AlbumCover {
         var collection: PHAssetCollection
         var length: CGFloat?
         var refreshID: Int = 0
+        var style: AlbumCoverStyle = .stack
 
         @Environment(\.displayScale) private var displayScale
 
@@ -25,7 +26,8 @@ extension AlbumCover {
                        albumCount: 0,
                        primaryImage: primaryImage,
                        secondaryImage: secondaryImage,
-                       tertiaryImage: tertiaryImage)
+                       tertiaryImage: tertiaryImage,
+                       style: style)
             .task(id: "\(collection.localIdentifier)-\(refreshID)") {
                 loadRepresentativePhotos()
             }

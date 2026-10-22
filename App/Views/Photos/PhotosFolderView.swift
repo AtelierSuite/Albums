@@ -38,10 +38,17 @@ struct PhotosFolderView: View {
     @State var newAlbumName: String = ""
     @State var coverRefreshID: Int = 0
 
-    @AppStorage(wrappedValue: ViewStyle.grid, "AlbumViewStyle",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumStyleState: ViewStyle
-    @AppStorage(wrappedValue: 3, "AlbumColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumColumnCount: Int
+    @AppStorage(photosAlbumViewStyleKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var albumStyle: AlbumViewStyle = .mosaicGrid
+    @AppStorage(photosAlbumSortKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var albumSort: SortType = .nameAscending
+    @AppStorage(photosAlbumColumnCountKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumColumnCount: Int = 4
+    @AppStorage(photosPicSortKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var picSort: PhotosPicSortType = .dateCreatedDescending
 
     var body: some View {
         ScrollView(.vertical) {
@@ -68,8 +75,17 @@ struct PhotosFolderView: View {
                 if newValue.isEmpty {
                     searchResults = nil
                 } else {
-                    searchResults = photosManager.searchAlbums(matching: newValue)
+                    searchResults = photosManager.searchAlbums(matching: newValue).sortedAlbums(by: albumSort)
                 }
+            }
+        }
+        .onChange(of: picSort) { _, _ in
+            fetchContent()
+        }
+        .onChange(of: albumSort) { _, newValue in
+            withAnimation(.smooth.speed(2.0)) {
+                items = items.sortedAlbums(by: newValue)
+                searchResults = searchResults?.sortedAlbums(by: newValue)
             }
         }
         .toolbar {
@@ -133,28 +149,19 @@ struct PhotosFolderView: View {
     @ViewBuilder
     private var photosFilterMenu: some View {
         Menu {
-            ControlGroup {
-                Picker(String(localized: "Albums.Style", table: "Albums"),
-                       selection: $albumStyleState.animation(.smooth.speed(2))) {
-                    Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                          systemImage: "square.grid.2x2")
-                        .tag(ViewStyle.grid)
-                    Label(String(localized: "Albums.Style.List", table: "Albums"),
-                          systemImage: "list.bullet")
-                        .tag(ViewStyle.list)
-                    Label(String(localized: "Albums.Style.Carousel", table: "Albums"),
-                          systemImage: "rectangle.on.rectangle")
-                        .tag(ViewStyle.carousel)
-                }
-            }
             Section(String(localized: "Albums.Albums", table: "Albums")) {
-                if albumStyleState == .grid {
-                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4])
+                AlbumViewStylePicker(selection: $albumStyle)
+                AlbumSortPicker(selection: $albumSort)
+            }
+            if isNestedAlbumsEnabled, ownPicsFetchResult != nil {
+                Section(String(localized: "Albums.Pics", table: "Albums")) {
+                    PhotosPicOptions()
                 }
             }
         } label: {
             Label("Shared.Filter", systemImage: "line.3.horizontal.decrease")
         }
         .menuActionDismissBehavior(.disabled)
+        .menuOrder(.fixed)
     }
 }

@@ -49,14 +49,14 @@ class PhotosManager {
 
     // MARK: - Fetch Assets in Album
 
-    func fetchAssets(in collection: PHAssetCollection) -> PHFetchResult<PHAsset> {
+    func fetchAssets(in collection: PHAssetCollection, ascending: Bool = false) -> PHFetchResult<PHAsset> {
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(
             format: "mediaType = %d OR mediaType = %d",
             PHAssetMediaType.image.rawValue,
             PHAssetMediaType.video.rawValue
         )
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: ascending)]
         return PHAsset.fetchAssets(in: collection, options: fetchOptions)
     }
 

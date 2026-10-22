@@ -550,17 +550,7 @@ struct MacCommands: Commands {
     @ViewBuilder
     private func albumOptions(_ options: AlbumViewOptions) -> some View {
         AlbumViewStylePicker(selection: options.albumStyle)
-        Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: options.albumSort) {
-            Text("Shared.Sort.Name.Ascending")
-                .tag(SortType.nameAscending)
-            Text("Shared.Sort.Name.Descending")
-                .tag(SortType.nameDescending)
-            Text("Shared.Sort.PicCount.Ascending")
-                .tag(SortType.sizeAscending)
-            Text("Shared.Sort.PicCount.Descending")
-                .tag(SortType.sizeDescending)
-        }
-        .pickerStyle(.menu)
+        AlbumSortPicker(selection: options.albumSort)
     }
 
     @ViewBuilder
@@ -574,19 +564,7 @@ struct MacCommands: Commands {
                   systemImage: "rectangle.3.offgrid")
                 .tag(ViewStyle.masonry)
         }
-        Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: options.picSort) {
-            Text("Shared.Sort.DateAdded.Ascending")
-                .tag(PicSortType.dateAddedAscending)
-            Text("Shared.Sort.DateAdded.Descending")
-                .tag(PicSortType.dateAddedDescending)
-            Text("Shared.Sort.Name.Ascending")
-                .tag(PicSortType.nameAscending)
-            Text("Shared.Sort.Name.Descending")
-                .tag(PicSortType.nameDescending)
-            Text("Shared.Sort.ProminentColor")
-                .tag(PicSortType.prominentColor)
-        }
-        .pickerStyle(.menu)
+        PicSortPicker(selection: options.picSort)
     }
 }
 #endif
