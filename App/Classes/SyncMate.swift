@@ -52,15 +52,17 @@ actor SyncMate {
         let tombstones = await dataActor.pendingTombstones()
         let albumIDs = Array(Set(dirtyAlbums + unsyncedAlbums))
         let picIDs = Array(Set(dirtyPics + unsyncedPics))
+        let preferenceRecordNames = await dataActor.dirtyPreferencesAlbumIDs()
+            .map(AlbumPreferences.recordName(forAlbumID:))
 
         var pending: [CKSyncEngine.PendingRecordZoneChange] = []
-        for id in albumIDs + picIDs {
+        for id in albumIDs + picIDs + preferenceRecordNames {
             pending.append(.saveRecord(CKRecord.ID(recordName: id, zoneID: zoneID)))
         }
         for tombstone in tombstones {
             pending.append(.deleteRecord(CKRecord.ID(recordName: tombstone.id, zoneID: zoneID)))
         }
-        await debugLog("scan \(albumIDs.count)A \(picIDs.count)P \(tombstones.count)del")
+        await debugLog("scan \(albumIDs.count)A \(picIDs.count)P \(preferenceRecordNames.count)V \(tombstones.count)del")
         guard !pending.isEmpty else { return }
         engine.state.add(pendingRecordZoneChanges: pending)
     }
@@ -101,9 +103,11 @@ actor SyncMate {
         let dataActor = DataActor.instance(for: collectionID)
         let albumIDs = await dataActor.allAlbumIDs()
         let picIDs = await dataActor.allOriginalPicIDs()
+        let preferenceRecordNames = await dataActor.allPreferencesAlbumIDs()
+            .map(AlbumPreferences.recordName(forAlbumID:))
 
         var pending: [CKSyncEngine.PendingRecordZoneChange] = []
-        for id in albumIDs + picIDs {
+        for id in albumIDs + picIDs + preferenceRecordNames {
             pending.append(.saveRecord(CKRecord.ID(recordName: id, zoneID: zoneID)))
         }
         await debugLog("force scan \(albumIDs.count)A \(picIDs.count)P")
@@ -166,9 +170,8 @@ actor SyncMate {
         var changed = false
         for (_, modification) in result.modificationResultsByID {
             guard let record = try? modification.get().record else { continue }
-            await LibrariesActor.shared.applyRemoteLibrary(LibrarySyncSnapshot(
-                id: record.recordID.recordName,
-                name: record["name"] as? String ?? "",
+            await LibrariesActor.shared.applyRemoteLibrary(Self.librarySnapshot(
+                from: record,
                 systemFields: Self.encodeSystemFields(record),
                 lastModified: (record.modificationDate ?? Date.now).timeIntervalSince1970
             ))

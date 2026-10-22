@@ -1,0 +1,84 @@
+DEFINE SCHEMA
+
+    RECORD TYPE Album (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE,
+        coverPhoto        BYTES,
+        coverPhotoTracked INT64 QUERYABLE SORTABLE,
+        dateCreated       TIMESTAMP QUERYABLE SORTABLE,
+        name              STRING QUERYABLE SEARCHABLE SORTABLE,
+        parentAlbumID     STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE AlbumPreferences (
+        "___createTime"    TIMESTAMP,
+        "___createdBy"     REFERENCE,
+        "___etag"          STRING,
+        "___modTime"       TIMESTAMP,
+        "___modifiedBy"    REFERENCE,
+        "___recordID"      REFERENCE,
+        albumColumnCount   INT64 QUERYABLE SORTABLE,
+        albumID            STRING QUERYABLE SEARCHABLE SORTABLE,
+        albumSort          STRING QUERYABLE SEARCHABLE SORTABLE,
+        albumViewStyle     STRING QUERYABLE SEARCHABLE SORTABLE,
+        hideSectionHeaders INT64 QUERYABLE SORTABLE,
+        picColumnCount     INT64 QUERYABLE SORTABLE,
+        picSort            STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Library (
+        "___createTime"    TIMESTAMP,
+        "___createdBy"     REFERENCE,
+        "___etag"          STRING,
+        "___modTime"       TIMESTAMP,
+        "___modifiedBy"    REFERENCE,
+        "___recordID"      REFERENCE,
+        coverPicIDs        LIST<STRING>,
+        coverPicIDsTracked INT64 QUERYABLE SORTABLE,
+        name               STRING QUERYABLE SEARCHABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Pic (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE,
+        containingAlbumID STRING QUERYABLE SEARCHABLE SORTABLE,
+        dateAdded         TIMESTAMP QUERYABLE SORTABLE,
+        dateDeleted       TIMESTAMP QUERYABLE SORTABLE,
+        duration          DOUBLE QUERYABLE SORTABLE,
+        mediaType         INT64 QUERYABLE SORTABLE,
+        name              STRING QUERYABLE SEARCHABLE SORTABLE,
+        pinnedDate        TIMESTAMP QUERYABLE SORTABLE,
+        thumbnail         BYTES QUERYABLE SORTABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Users (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE,
+        roles           LIST<INT64>,
+        GRANT WRITE TO "_creator",
+        GRANT READ TO "_world"
+    );

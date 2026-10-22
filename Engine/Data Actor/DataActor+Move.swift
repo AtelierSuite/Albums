@@ -227,7 +227,7 @@ extension DataActor {
         }
         if !albumIDs.isEmpty {
             _ = try? database.run(albumsTable.filter(albumIDs.contains(albumId)).delete())
-            _ = try? database.run(preferencesTable.filter(albumIDs.contains(prefAlbumId)).delete())
+            deletePreferences(forAlbumIDs: albumIDs)
         }
     }
 }

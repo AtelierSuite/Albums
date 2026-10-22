@@ -145,7 +145,7 @@ public actor DataActor {
                 table.column(prefHideSectionHeaders, defaultValue: false)
             })
 
-            for table in [albumsTable, picsTable] {
+            for table in [albumsTable, picsTable, preferencesTable] {
                 _ = try? database.run(table.addColumn(syncDirty, defaultValue: true))
                 _ = try? database.run(table.addColumn(syncLastModified, defaultValue: 0))
                 _ = try? database.run(table.addColumn(syncCKSystemFields))
@@ -165,6 +165,7 @@ public actor DataActor {
                 table.column(migrationAppVersion, defaultValue: "")
                 table.column(migrationCompleted, defaultValue: false)
             })
+            DatabaseMigrator.markAlbumCoversForSync(database)
 
             try database.run(albumsTable.createIndex(albumParentId, ifNotExists: true))
             try database.run(picsTable.createIndex(picAlbumId, ifNotExists: true))

@@ -26,7 +26,7 @@ extension DataActor {
             recordTombstone(id: id, recordType: SyncRecordType.album)
         }
         _ = try? database.run(albumsTable.filter(subtree.albumIDs.contains(albumId)).delete())
-        _ = try? database.run(preferencesTable.filter(subtree.albumIDs.contains(prefAlbumId)).delete())
+        deletePreferences(forAlbumIDs: subtree.albumIDs)
         notifyLocalMutation()
         return subtree.picIDs
     }

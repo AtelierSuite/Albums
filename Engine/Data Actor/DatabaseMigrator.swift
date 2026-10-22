@@ -88,6 +88,21 @@ public struct DatabaseMigrator: Sendable {
         _ = try? database.execute("PRAGMA user_version = \(DataActor.schemaVersion);")
     }
 
+    // MARK: - Synced Album Covers
+
+    public static func markAlbumCoversForSync(_ database: Connection) {
+        let migration = "sync_album_covers"
+        let count = (try? database.scalar(
+            "SELECT COUNT(*) FROM migrations WHERE migration_name = ?", migration
+        )) as? Int64 ?? 0
+        guard count == 0 else { return }
+        _ = try? database.run("UPDATE albums SET dirty = 1 WHERE cover_photo IS NOT NULL")
+        _ = try? database.run(
+            "INSERT OR REPLACE INTO migrations (migration_name, app_version, completed) VALUES (?, '', 1)",
+            migration
+        )
+    }
+
     // MARK: - Pins
 
     public static func migratePinsColumn(_ database: Connection, picsTable: Table) {

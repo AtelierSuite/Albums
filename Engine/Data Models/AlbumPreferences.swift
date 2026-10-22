@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AlbumPreferences: Sendable {
+public struct AlbumPreferences: Sendable, Equatable {
     public var albumID: String
     public var albumSort: String
     public var albumViewStyle: String
@@ -36,4 +36,27 @@ public struct AlbumPreferences: Sendable {
         picColumnCount: 4,
         hideSectionHeaders: false
     )
+}
+
+extension AlbumPreferences {
+    public static let recordNamePrefix = "Preferences-"
+
+    public static func recordName(forAlbumID albumID: String) -> String {
+        recordNamePrefix + albumID
+    }
+
+    public static func albumID(fromRecordName recordName: String) -> String? {
+        guard recordName.hasPrefix(recordNamePrefix) else { return nil }
+        return String(recordName.dropFirst(recordNamePrefix.count))
+    }
+}
+
+public struct AlbumPreferencesSyncSnapshot: Sendable {
+    public let preferences: AlbumPreferences
+    public let systemFields: Data?
+
+    public init(preferences: AlbumPreferences, systemFields: Data? = nil) {
+        self.preferences = preferences
+        self.systemFields = systemFields
+    }
 }

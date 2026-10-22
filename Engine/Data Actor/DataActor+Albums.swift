@@ -241,8 +241,7 @@ extension DataActor {
         let albumQuery = albumsTable.filter(albumId == albumID)
         _ = try? database.run(albumQuery.delete())
 
-        let prefQuery = preferencesTable.filter(prefAlbumId == albumID)
-        _ = try? database.run(prefQuery.delete())
+        deletePreferences(forAlbumIDs: [albumID])
         notifyLocalMutation()
     }
 
@@ -279,8 +278,7 @@ extension DataActor {
         let albumQuery = albumsTable.filter(albumIDs.contains(albumId))
         _ = try? database.run(albumQuery.delete())
 
-        let prefQuery = preferencesTable.filter(albumIDs.contains(prefAlbumId))
-        _ = try? database.run(prefQuery.delete())
+        deletePreferences(forAlbumIDs: albumIDs)
         notifyLocalMutation()
         return deletedPicIDs
     }
