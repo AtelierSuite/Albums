@@ -6,7 +6,6 @@ struct AlbumViewOptions {
     var albumSort: Binding<SortType>
     var albumColumnCount: Binding<Int>
     var picSort: Binding<PicSortType>
-    var picColumnCount: Binding<Int>
     var picStyle: Binding<ViewStyle>
     var hideSectionHeaders: Binding<Bool>
 }

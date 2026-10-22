@@ -36,12 +36,14 @@ struct PicsGrid<Content: View>: View {
         Group {
             if style == .masonry {
                 masonryGrid
-                    .pinchToResizeColumns(Binding(get: { columnCount },
+                    .pinchToResizeColumns(Binding(get: { fittedColumnCount },
                                                   set: { onColumnCountChange?($0) }),
+                                          range: GridColumnLimit.pics.range(width: gridWidth),
                                           isEnabled: onColumnCountChange != nil)
             } else {
-                PinchZoomGrid(columnCount: columnCount,
-                              itemCount: pics.count + min(placeholderCount, columnCount * 10),
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: pics.count + min(placeholderCount, fittedColumnCount * 10),
+                              range: GridColumnLimit.pics.range(width: gridWidth),
                               cropsToTop: true,
                               onColumnCountChange: onColumnCountChange,
                               cachedImage: cachedThumbnail(at:),
@@ -62,14 +64,18 @@ struct PicsGrid<Content: View>: View {
                                      onEnd: { resetSelectionDrag() }))
     }
 
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
+    }
+
     private var squareGrid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount),
                   spacing: 2.0) {
             ForEach(pics) { pic in
                 picCell(for: pic, maintainsAspectRatio: false)
             }
             if placeholderCount > 0 {
-                let visiblePlaceholders = min(placeholderCount, columnCount * 10)
+                let visiblePlaceholders = min(placeholderCount, fittedColumnCount * 10)
                 ForEach(0..<visiblePlaceholders, id: \.self) { _ in
                     placeholderCell
                 }
@@ -124,7 +130,7 @@ struct PicsGrid<Content: View>: View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
-                 usesCompactBadges: usesCompactBadges(columns: columnCount),
+                 usesCompactBadges: usesCompactBadges(columns: fittedColumnCount),
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if abs(aspectRatio(for: pic) - ratio) > 0.001 {
                          aspectRatios[pic.id] = ratio
@@ -212,18 +218,18 @@ struct PicsGrid<Content: View>: View {
     }
 
     private func picIndex(at location: CGPoint) -> Int? {
-        guard gridWidth > 0.0, columnCount > 0,
+        guard gridWidth > 0.0, fittedColumnCount > 0,
               location.x >= 0.0, location.y >= 0.0 else {
             return nil
         }
         let spacing = 2.0
-        let itemWidth = (gridWidth - spacing * Double(columnCount - 1)) / Double(columnCount)
+        let itemWidth = (gridWidth - spacing * Double(fittedColumnCount - 1)) / Double(fittedColumnCount)
         guard itemWidth > 0.0 else { return nil }
         let pitch = itemWidth + spacing
         let column = Int(location.x / pitch)
         let row = Int(location.y / pitch)
-        guard column >= 0, column < columnCount else { return nil }
-        let index = row * columnCount + column
+        guard column >= 0, column < fittedColumnCount else { return nil }
+        let index = row * fittedColumnCount + column
         guard index >= 0, index < pics.count else { return nil }
         return index
     }
@@ -274,7 +280,7 @@ extension PicsGrid {
     }
 
     var masonryColumns: [[MasonryEntry]] {
-        let count = max(columnCount, 1)
+        let count = max(fittedColumnCount, 1)
         var columns = Array(repeating: [MasonryEntry](), count: count)
         var heights = Array(repeating: 0.0, count: count)
         func place(_ entry: MasonryEntry) {

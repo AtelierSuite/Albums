@@ -570,7 +570,7 @@ struct MacCommands: Commands {
         }
         .pickerStyle(.menu)
         if options.albumStyle.wrappedValue == .grid {
-            GridSizePicker(selection: options.albumColumnCount, sizes: [2, 3, 4, 5], kind: .album)
+            GridSizePicker(selection: options.albumColumnCount, sizes: [2, 3, 4, 5])
         }
     }
 
@@ -598,7 +598,6 @@ struct MacCommands: Commands {
                 .tag(PicSortType.prominentColor)
         }
         .pickerStyle(.menu)
-        GridSizePicker(selection: options.picColumnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
     }
 }
 #endif

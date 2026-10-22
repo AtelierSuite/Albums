@@ -11,6 +11,7 @@ struct AlbumsSection<Content: View>: View {
     @Binding var style: ViewStyle
     var enablesContextMenu: Bool = true
     var columnCount: Int = 3
+    var onColumnCountChange: ((Int) -> Void)?
     var hideSectionHeaders: Bool = false
     var recentlyDeletedCount: Int?
     var isKeptOffline: ((Album) -> Bool)?
@@ -21,39 +22,34 @@ struct AlbumsSection<Content: View>: View {
     var onDropFiles: (([URL], Album) -> Void)?
     @ViewBuilder var moveMenu: (Album) -> Content
 
+    @State private var gridWidth: CGFloat = 0.0
+
+    private var fittedColumnCount: Int {
+        GridColumnLimit.albums.columns(columnCount, width: gridWidth)
+    }
+
     var body: some View {
         Group {
             switch style {
             case .grid, .masonry:
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10.0), count: columnCount),
-                          spacing: 12.0) {
-                    ForEach(albums) { album in
-                        NavigationLink(value: ViewPath.album(album: album)) {
-                            if enablesContextMenu {
-                                AlbumGridLabel(namespace: albumTransitionNamespace, album: album)
-                                .draggable(AlbumTransferable(id: album.id))
-                                .albumDropDestination(onDrop: onDrop, onDropFiles: onDropFiles, album: album)
-                            } else {
-                                AlbumGridLabel(namespace: albumTransitionNamespace,
-                                               album: album)
-                            }
-                        }
-                        .id("\(album.identifiableString())")
-                        .contextMenu {
-                            contextMenu(album)
-                        }
-                        .buttonStyleAdaptive()
-                    }
-                    if let recentlyDeletedCount {
-                        NavigationLink(value: ViewPath.recentlyDeleted) {
-                            RecentlyDeletedAlbumGridLabel()
-                        }
-                        .buttonStyleAdaptive()
-                    }
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: albums.count + (recentlyDeletedCount == nil ? 0 : 1),
+                              range: GridColumnLimit.albums.range(width: gridWidth),
+                              columnSpacing: 10.0,
+                              rowSpacing: 12.0,
+                              onColumnCountChange: onColumnCountChange) { index in
+                    pinchZoomCell(at: index)
+                } content: {
+                    grid
+                }
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.width
+                } action: { width in
+                    gridWidth = width
                 }
                 .padding(.horizontal, 14.0)
                 .padding(.top, hideSectionHeaders ? 0.0 : 10.0)
-                .animation(.smooth.speed(2.0), value: columnCount)
+                .animation(.smooth.speed(2.0), value: fittedColumnCount)
             case .list:
                 LazyVStack(alignment: .leading, spacing: 0.0) {
                     ForEach(albums) { album in
@@ -106,6 +102,44 @@ struct AlbumsSection<Content: View>: View {
                 .scrollIndicators(.hidden)
                 .frame(height: 120.0)
             }
+        }
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10.0), count: fittedColumnCount),
+                  spacing: 12.0) {
+            ForEach(albums) { album in
+                NavigationLink(value: ViewPath.album(album: album)) {
+                    if enablesContextMenu {
+                        AlbumGridLabel(namespace: albumTransitionNamespace, album: album)
+                        .draggable(AlbumTransferable(id: album.id))
+                        .albumDropDestination(onDrop: onDrop, onDropFiles: onDropFiles, album: album)
+                    } else {
+                        AlbumGridLabel(namespace: albumTransitionNamespace,
+                                       album: album)
+                    }
+                }
+                .id("\(album.identifiableString())")
+                .contextMenu {
+                    contextMenu(album)
+                }
+                .buttonStyleAdaptive()
+            }
+            if recentlyDeletedCount != nil {
+                NavigationLink(value: ViewPath.recentlyDeleted) {
+                    RecentlyDeletedAlbumGridLabel()
+                }
+                .buttonStyleAdaptive()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func pinchZoomCell(at index: Int) -> some View {
+        if index < albums.count {
+            AlbumGridLabel(namespace: nil, album: albums[index])
+        } else {
+            RecentlyDeletedAlbumGridLabel()
         }
     }
 
