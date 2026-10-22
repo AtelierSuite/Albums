@@ -85,6 +85,10 @@ extension AlbumView {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    func setPicColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
     var showsRecentlyDeletedAlbum: Bool {
         currentAlbum == nil && !isSearching && hasFetchedAlbums
     }
@@ -163,6 +167,7 @@ extension AlbumView {
                          placeholderCount: max(picCount - pics.count, 0),
                          isSelecting: $isSelectingPics,
                          columnCount: columnCount,
+                         onColumnCountChange: setPicColumnCount,
                          style: picViewStyle,
                          highlightedPicID: highlightedPicID) { pic in
                     selectedPics.contains(pic)
@@ -187,7 +192,6 @@ extension AlbumView {
                         movePayload = .pics(isSelectingPics ? selectedPics : [pic])
                     }
                 }
-                .pinchToResizeColumns($columnCount)
             } else if !hasFetchedPicCount {
                 ProgressView()
                     .frame(maxWidth: .infinity)

@@ -28,8 +28,23 @@ struct PicLabel: View {
     var usesCompactBadges: Bool = false
     var onAspectRatio: ((CGFloat) -> Void)?
 
-    @State var isThumbnailReadyToPresent: Bool = false
+    @State var isThumbnailReadyToPresent: Bool
     @State var thumbnail: Image?
+
+    init(pic: Pic,
+         maintainsAspectRatio: Bool = false,
+         showsPinBadge: Bool = false,
+         usesCompactBadges: Bool = false,
+         onAspectRatio: ((CGFloat) -> Void)? = nil) {
+        self.pic = pic
+        self.maintainsAspectRatio = maintainsAspectRatio
+        self.showsPinBadge = showsPinBadge
+        self.usesCompactBadges = usesCompactBadges
+        self.onAspectRatio = onAspectRatio
+        let cached = ThumbnailCache.shared.image(forKey: pic.id)
+        _thumbnail = State(initialValue: cached.map { Image(uiImage: $0) })
+        _isThumbnailReadyToPresent = State(initialValue: cached != nil)
+    }
 
     var body: some View {
         base

@@ -23,10 +23,24 @@ struct PhotosAssetsGrid: View {
     }
 
     var body: some View {
-        LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
-            spacing: 2.0
-        ) {
+        PinchZoomGrid(columnCount: columnCount,
+                      itemCount: visibleAssets.count,
+                      onColumnCountChange: setColumnCount) {
+            grid
+        } preview: { index, _ in
+            PhotosAssetLabel(asset: assets[index])
+        }
+        .onChange(of: assets.count) {
+            displayCount = min(batchSize, assets.count)
+        }
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
             ForEach(Array(visibleAssets), id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -74,11 +88,6 @@ struct PhotosAssetsGrid: View {
                     }
             }
         }
-        .animation(.smooth, value: columnCount)
-        .pinchToResizeColumns($columnCount)
-        .onChange(of: assets.count) {
-            displayCount = min(batchSize, assets.count)
-        }
     }
 }
 
@@ -104,10 +113,30 @@ struct PhotosFetchResultAssetsGrid: View {
     }
 
     var body: some View {
-        LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
-            spacing: 2.0
-        ) {
+        PinchZoomGrid(columnCount: columnCount,
+                      itemCount: displayedAssets.count,
+                      onColumnCountChange: setColumnCount) {
+            grid
+        } preview: { index, _ in
+            PhotosAssetLabel(asset: displayedAssets[index])
+        }
+        .onAppear {
+            if displayedAssets.isEmpty {
+                loadMoreAssets()
+            }
+        }
+        .onChange(of: fetchResult) {
+            displayedAssets = []
+            loadMoreAssets()
+        }
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
             ForEach(displayedAssets, id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -154,17 +183,6 @@ struct PhotosFetchResultAssetsGrid: View {
                         loadMoreAssets()
                     }
             }
-        }
-        .animation(.smooth, value: columnCount)
-        .pinchToResizeColumns($columnCount)
-        .onAppear {
-            if displayedAssets.isEmpty {
-                loadMoreAssets()
-            }
-        }
-        .onChange(of: fetchResult) {
-            displayedAssets = []
-            loadMoreAssets()
         }
     }
 
@@ -264,6 +282,15 @@ struct PhotosAssetLabel: View {
     @State private var thumbnail: UIImage?
     @State private var requestID: PHImageRequestID?
 
+    init(asset: PHAsset) {
+        self.asset = asset
+        _thumbnail = State(initialValue: ThumbnailCache.shared.image(forKey: Self.cacheKey(for: asset)))
+    }
+
+    private static func cacheKey(for asset: PHAsset) -> String {
+        "PHAsset:\(asset.localIdentifier)"
+    }
+
     var body: some View {
         Rectangle()
             .fill(.primary.opacity(0.05))
@@ -322,6 +349,7 @@ struct PhotosAssetLabel: View {
                              contentMode: .aspectFill, options: options) { result, _ in
             if let result {
                 DispatchQueue.main.async {
+                    ThumbnailCache.shared.setImage(result, forKey: Self.cacheKey(for: asset))
                     self.thumbnail = result
                 }
             }

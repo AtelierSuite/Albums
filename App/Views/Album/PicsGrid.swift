@@ -12,6 +12,7 @@ struct PicsGrid<Content: View>: View {
     @Binding var isSelecting: Bool
     @State var enableSelection: Bool = true
     var columnCount: Int = 4
+    var onColumnCountChange: ((Int) -> Void)?
     var style: ViewStyle = .grid
     var highlightedPicID: String?
     var isSelected: ((Pic) -> Bool)?
@@ -35,8 +36,17 @@ struct PicsGrid<Content: View>: View {
         Group {
             if style == .masonry {
                 masonryGrid
+                    .pinchToResizeColumns(Binding(get: { columnCount },
+                                                  set: { onColumnCountChange?($0) }),
+                                          isEnabled: onColumnCountChange != nil)
             } else {
-                squareGrid
+                PinchZoomGrid(columnCount: columnCount,
+                              itemCount: pics.count + min(placeholderCount, columnCount * 10),
+                              onColumnCountChange: onColumnCountChange) {
+                    squareGrid
+                } preview: { index, columns in
+                    previewCell(at: index, columns: columns)
+                }
             }
         }
         .coordinateSpace(.named(Self.selectionSpace))
@@ -49,7 +59,6 @@ struct PicsGrid<Content: View>: View {
                                      coordinateSpace: Self.selectionSpace,
                                      onChange: { updateSelection(at: $0) },
                                      onEnd: { resetSelectionDrag() }))
-        .animation(.smooth.speed(2.0), value: columnCount)
     }
 
     private var squareGrid: some View {
@@ -92,36 +101,12 @@ struct PicsGrid<Content: View>: View {
             .clipShape(.rect(cornerRadius: 4.0))
     }
 
-    private var masonryColumns: [[MasonryEntry]] {
-        let count = max(columnCount, 1)
-        var columns = Array(repeating: [MasonryEntry](), count: count)
-        var heights = Array(repeating: 0.0, count: count)
-        func place(_ entry: MasonryEntry) {
-            var target = 0
-            for index in 1..<count where heights[index] < heights[target] {
-                target = index
-            }
-            columns[target].append(entry)
-            heights[target] += 1.0 / max(entry.aspectRatio, 0.01)
-        }
-        for pic in pics {
-            place(MasonryEntry(id: pic.id, pic: pic, aspectRatio: aspectRatios[pic.id] ?? 1.0))
-        }
-        if placeholderCount > 0 {
-            let visiblePlaceholders = min(placeholderCount, count * 10)
-            for index in 0..<visiblePlaceholders {
-                place(MasonryEntry(id: "placeholder-\(index)", pic: nil, aspectRatio: 1.0))
-            }
-        }
-        return columns
-    }
-
     @ViewBuilder
     private func picCell(for pic: Pic, maintainsAspectRatio: Bool) -> some View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
-                 usesCompactBadges: usesCompactBadges,
+                 usesCompactBadges: usesCompactBadges(columns: columnCount),
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if aspectRatios[pic.id] != ratio {
                          aspectRatios[pic.id] = ratio
@@ -272,9 +257,53 @@ struct PicsGrid<Content: View>: View {
 }
 
 extension PicsGrid {
-    var usesCompactBadges: Bool {
-        guard gridWidth > 0.0, columnCount > 0 else { return false }
-        let itemWidth = (gridWidth - 2.0 * Double(columnCount - 1)) / Double(columnCount)
+    var masonryColumns: [[MasonryEntry]] {
+        let count = max(columnCount, 1)
+        var columns = Array(repeating: [MasonryEntry](), count: count)
+        var heights = Array(repeating: 0.0, count: count)
+        func place(_ entry: MasonryEntry) {
+            var target = 0
+            for index in 1..<count where heights[index] < heights[target] {
+                target = index
+            }
+            columns[target].append(entry)
+            heights[target] += 1.0 / max(entry.aspectRatio, 0.01)
+        }
+        for pic in pics {
+            place(MasonryEntry(id: pic.id, pic: pic, aspectRatio: aspectRatios[pic.id] ?? 1.0))
+        }
+        if placeholderCount > 0 {
+            let visiblePlaceholders = min(placeholderCount, count * 10)
+            for index in 0..<visiblePlaceholders {
+                place(MasonryEntry(id: "placeholder-\(index)", pic: nil, aspectRatio: 1.0))
+            }
+        }
+        return columns
+    }
+
+    @ViewBuilder
+    func previewCell(at index: Int, columns: Int) -> some View {
+        if index < pics.count {
+            let pic = pics[index]
+            PicLabel(pic: pic,
+                     showsPinBadge: onTogglePin != nil && pic.isPinned,
+                     usesCompactBadges: usesCompactBadges(columns: columns))
+                .overlay {
+                    if isSelecting, let isSelected {
+                        ZStack(alignment: .bottomTrailing) {
+                            SelectionOverlay(isSelected(pic))
+                            Color.clear
+                        }
+                    }
+                }
+        } else {
+            placeholderCell
+        }
+    }
+
+    func usesCompactBadges(columns: Int) -> Bool {
+        guard gridWidth > 0.0, columns > 0 else { return false }
+        let itemWidth = (gridWidth - 2.0 * Double(columns - 1)) / Double(columns)
         return itemWidth < 60.0
     }
 
