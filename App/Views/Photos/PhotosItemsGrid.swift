@@ -38,6 +38,7 @@ struct PhotosAlbumsSection: View {
                 }
                 .padding(20.0)
                 .animation(.smooth, value: columnCount)
+                .pinchToResizeColumns($columnCount)
             case .list:
                 LazyVStack(alignment: .leading, spacing: 0.0) {
                     ForEach(items) { item in

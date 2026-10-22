@@ -23,10 +23,32 @@ struct PhotosAssetsGrid: View {
     }
 
     var body: some View {
-        LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
-            spacing: 2.0
-        ) {
+        PinchZoomGrid(columnCount: columnCount,
+                      itemCount: visibleAssets.count,
+                      onColumnCountChange: setColumnCount,
+                      cachedImage: cachedThumbnail(at:),
+                      loadImage: loadThumbnail(at:)) {
+            grid
+        }
+        .onChange(of: assets.count) {
+            displayCount = min(batchSize, assets.count)
+        }
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
+    private func cachedThumbnail(at index: Int) -> UIImage? {
+        PhotosAssetLabel.cachedThumbnail(for: assets[index])
+    }
+
+    private func loadThumbnail(at index: Int) async -> UIImage? {
+        await PhotosAssetLabel.thumbnail(for: assets[index])
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
             ForEach(Array(visibleAssets), id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -74,10 +96,6 @@ struct PhotosAssetsGrid: View {
                     }
             }
         }
-        .animation(.smooth, value: columnCount)
-        .onChange(of: assets.count) {
-            displayCount = min(batchSize, assets.count)
-        }
     }
 }
 
@@ -103,10 +121,38 @@ struct PhotosFetchResultAssetsGrid: View {
     }
 
     var body: some View {
-        LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
-            spacing: 2.0
-        ) {
+        PinchZoomGrid(columnCount: columnCount,
+                      itemCount: displayedAssets.count,
+                      onColumnCountChange: setColumnCount,
+                      cachedImage: cachedThumbnail(at:),
+                      loadImage: loadThumbnail(at:)) {
+            grid
+        }
+        .onAppear {
+            if displayedAssets.isEmpty {
+                loadMoreAssets()
+            }
+        }
+        .onChange(of: fetchResult) {
+            displayedAssets = []
+            loadMoreAssets()
+        }
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
+    }
+
+    private func cachedThumbnail(at index: Int) -> UIImage? {
+        PhotosAssetLabel.cachedThumbnail(for: displayedAssets[index])
+    }
+
+    private func loadThumbnail(at index: Int) async -> UIImage? {
+        await PhotosAssetLabel.thumbnail(for: displayedAssets[index])
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
             ForEach(displayedAssets, id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -153,16 +199,6 @@ struct PhotosFetchResultAssetsGrid: View {
                         loadMoreAssets()
                     }
             }
-        }
-        .animation(.smooth, value: columnCount)
-        .onAppear {
-            if displayedAssets.isEmpty {
-                loadMoreAssets()
-            }
-        }
-        .onChange(of: fetchResult) {
-            displayedAssets = []
-            loadMoreAssets()
         }
     }
 
@@ -262,6 +298,33 @@ struct PhotosAssetLabel: View {
     @State private var thumbnail: UIImage?
     @State private var requestID: PHImageRequestID?
 
+    init(asset: PHAsset) {
+        self.asset = asset
+        _thumbnail = State(initialValue: ThumbnailCache.shared.image(forKey: Self.cacheKey(for: asset)))
+    }
+
+    private static func cacheKey(for asset: PHAsset) -> String {
+        "PHAsset:\(asset.localIdentifier)"
+    }
+
+    static func cachedThumbnail(for asset: PHAsset) -> UIImage? {
+        ThumbnailCache.shared.image(forKey: cacheKey(for: asset))
+    }
+
+    static func thumbnail(for asset: PHAsset) async -> UIImage? {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .fastFormat
+        options.isNetworkAccessAllowed = false
+        return await withCheckedContinuation { continuation in
+            PHCachingImageManager.default().requestImage(for: asset,
+                                                         targetSize: CGSize(width: 256.0, height: 256.0),
+                                                         contentMode: .aspectFill,
+                                                         options: options) { image, _ in
+                continuation.resume(returning: image)
+            }
+        }
+    }
+
     var body: some View {
         Rectangle()
             .fill(.primary.opacity(0.05))
@@ -320,6 +383,7 @@ struct PhotosAssetLabel: View {
                              contentMode: .aspectFill, options: options) { result, _ in
             if let result {
                 DispatchQueue.main.async {
+                    ThumbnailCache.shared.setImage(result, forKey: Self.cacheKey(for: asset))
                     self.thumbnail = result
                 }
             }

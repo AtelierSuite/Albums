@@ -18,6 +18,26 @@ final class ThumbnailCache: @unchecked Sendable {
         let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
         cache.setObject(image, forKey: key as NSString, cost: cost)
     }
+
+    func thumbnail(for pic: Pic) async -> UIImage? {
+        let picID = pic.id
+        if let cached = image(forKey: picID) {
+            return cached
+        }
+        guard let prepared = await Self.loadThumbnail(picID: picID, data: pic.thumbnailData) else { return nil }
+        setImage(prepared, forKey: picID)
+        return prepared
+    }
+
+    @concurrent
+    nonisolated private static func loadThumbnail(picID: String, data: Data?) async -> UIImage? {
+        var data = data
+        if data == nil {
+            data = await DataActor.shared.thumbnailData(forPicWithID: picID)
+        }
+        guard let data, let image = UIImage(data: data) else { return nil }
+        return await image.byPreparingForDisplay()
+    }
 }
 
 struct PicLabel: View {
@@ -58,10 +78,9 @@ struct PicLabel: View {
                     }
                     return
                 }
-                let prepared = await Self.loadThumbnail(picID: picID, data: pic.thumbnailData)
+                let prepared = await ThumbnailCache.shared.thumbnail(for: pic)
                 guard !Task.isCancelled else { return }
                 if let prepared {
-                    ThumbnailCache.shared.setImage(prepared, forKey: picID)
                     reportAspectRatio(for: prepared)
                     thumbnail = Image(uiImage: prepared)
                 }
@@ -133,16 +152,6 @@ struct PicLabel: View {
                         .accessibilityLabel(Text("Shared.Pinned"))
                 }
             }
-    }
-
-    @concurrent
-    nonisolated private static func loadThumbnail(picID: String, data: Data?) async -> UIImage? {
-        var data = data
-        if data == nil {
-            data = await DataActor.shared.thumbnailData(forPicWithID: picID)
-        }
-        guard let data, let image = UIImage(data: data) else { return nil }
-        return await image.byPreparingForDisplay()
     }
 
     private func reportAspectRatio(for image: UIImage) {
