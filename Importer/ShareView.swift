@@ -129,6 +129,9 @@ struct ShareView: View {
             .padding(10.0)
             .background(.regularMaterial)
             .clipShape(.rect(cornerRadius: 16.0))
+            .padding(.horizontal, 20.0)
+
+            SharedItemsStrip(items: session.items)
 
             Button {
                 Task { await save(to: albumInViewPath()) }
@@ -141,8 +144,9 @@ struct ShareView: View {
             .controlSize(.extraLarge)
             .buttonSizing(.flexible)
             .disabled(isSearching && viewPath.isEmpty)
+            .padding(.horizontal, 20.0)
         }
-        .padding(20.0)
+        .padding(.vertical, 20.0)
     }
 
     func albumInViewPath() -> Album? {

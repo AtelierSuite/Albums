@@ -1,10 +1,14 @@
 import SwiftUI
 
-struct SharedItemsStrip: View {
+public struct SharedItemsStrip: View {
 
     var items: [SharedItem]
 
-    var body: some View {
+    public init(items: [SharedItem]) {
+        self.items = items
+    }
+
+    public var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8.0) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, item in
