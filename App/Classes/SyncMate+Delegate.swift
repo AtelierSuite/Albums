@@ -58,6 +58,10 @@ extension SyncMate: CKSyncEngineDelegate {
         let collectionID = Self.collectionID(forZone: recordID.zoneID)
         let dataActor = DataActor.instance(for: collectionID)
         let name = recordID.recordName
+        if let albumID = AlbumPreferences.albumID(fromRecordName: name) {
+            guard let preferences = await dataActor.preferencesSyncSnapshot(forAlbumID: albumID) else { return nil }
+            return preferencesRecord(from: preferences, recordID: recordID)
+        }
         if let album = await dataActor.albumSyncSnapshot(forID: name) {
             return albumRecord(from: album, recordID: recordID)
         }
@@ -70,6 +74,8 @@ extension SyncMate: CKSyncEngineDelegate {
     private func libraryRecord(from snapshot: LibrarySyncSnapshot, recordID: CKRecord.ID) -> CKRecord {
         let record = baseRecord(snapshot.systemFields, recordID: recordID, type: SyncRecordType.library)
         record["name"] = snapshot.name
+        record["coverPicIDs"] = snapshot.coverPicIDs.isEmpty ? nil : snapshot.coverPicIDs
+        record["coverPicIDsTracked"] = 1
         return record
     }
 
@@ -78,6 +84,8 @@ extension SyncMate: CKSyncEngineDelegate {
         record["name"] = snapshot.name
         record["parentAlbumID"] = snapshot.parentAlbumID
         record["dateCreated"] = Date(timeIntervalSince1970: snapshot.dateCreated)
+        record["coverPhoto"] = snapshot.coverPhoto
+        record["coverPhotoTracked"] = 1
         return record
     }
 
@@ -91,6 +99,19 @@ extension SyncMate: CKSyncEngineDelegate {
         record["thumbnail"] = snapshot.thumbnail
         record["pinnedDate"] = snapshot.pinnedAt.map { Date(timeIntervalSince1970: $0) }
         record["dateDeleted"] = snapshot.dateDeleted.map { Date(timeIntervalSince1970: $0) }
+        return record
+    }
+
+    private func preferencesRecord(from snapshot: AlbumPreferencesSyncSnapshot, recordID: CKRecord.ID) -> CKRecord {
+        let record = baseRecord(snapshot.systemFields, recordID: recordID, type: SyncRecordType.albumPreferences)
+        let preferences = snapshot.preferences
+        record["albumID"] = preferences.albumID
+        record["albumSort"] = preferences.albumSort
+        record["albumViewStyle"] = preferences.albumViewStyle
+        record["albumColumnCount"] = preferences.albumColumnCount
+        record["picSort"] = preferences.picSort
+        record["picColumnCount"] = preferences.picColumnCount
+        record["hideSectionHeaders"] = preferences.hideSectionHeaders
         return record
     }
 
@@ -108,11 +129,17 @@ extension SyncMate: CKSyncEngineDelegate {
     ) async {
         var libraryChanged = false
         var removedLibraryIDs: [String] = []
+        var changedCoverAlbumIDs: [String] = []
         for modification in changes.modifications {
             if modification.record.recordID.zoneID.zoneName == Self.librariesZoneName {
                 libraryChanged = true
             }
-            await applyRecord(modification.record)
+            if await applyRecord(modification.record) {
+                let recordID = modification.record.recordID
+                await CoverCacheActor.instance(for: Self.collectionID(forZone: recordID.zoneID))
+                    .deleteCover(forAlbumWithID: recordID.recordName)
+                changedCoverAlbumIDs.append(recordID.recordName)
+            }
         }
         var deletedPicIDsByCollection: [String: [String]] = [:]
         for deletion in changes.deletions {
@@ -125,6 +152,10 @@ extension SyncMate: CKSyncEngineDelegate {
             let dataActor = DataActor.instance(for: Self.collectionID(forZone: deletion.recordID.zoneID))
             if deletion.recordType == SyncRecordType.album {
                 await dataActor.removeAlbumForRemoteDelete(id: deletion.recordID.recordName)
+            } else if deletion.recordType == SyncRecordType.albumPreferences {
+                if let albumID = AlbumPreferences.albumID(fromRecordName: deletion.recordID.recordName) {
+                    await dataActor.removePreferencesForRemoteDelete(albumID: albumID)
+                }
             } else {
                 await dataActor.removePicForRemoteDelete(id: deletion.recordID.recordName)
                 await OriginalsManager.shared.deleteCloudOriginal(
@@ -141,8 +172,9 @@ extension SyncMate: CKSyncEngineDelegate {
         }
         if !changes.modifications.isEmpty || !changes.deletions.isEmpty {
             let removedLibraryIDs = removedLibraryIDs
+            let changedCoverAlbumIDs = changedCoverAlbumIDs
             await MainActor.run {
-                NotificationCenter.default.post(name: .syncDidApplyRemoteChanges, object: nil)
+                NotificationCenter.default.post(name: .syncDidApplyRemoteChanges, object: changedCoverAlbumIDs)
                 if libraryChanged {
                     NotificationCenter.default.post(name: .syncDidApplyLibraryChanges,
                                                     object: removedLibraryIDs)
@@ -151,28 +183,34 @@ extension SyncMate: CKSyncEngineDelegate {
         }
     }
 
-    private func applyRecord(_ record: CKRecord) async {
+    @discardableResult
+    private func applyRecord(_ record: CKRecord) async -> Bool {
         let systemFields = Self.encodeSystemFields(record)
         let modified = (record.modificationDate ?? Date.now).timeIntervalSince1970
         if record.recordID.zoneID.zoneName == Self.librariesZoneName {
-            await LibrariesActor.shared.applyRemoteLibrary(LibrarySyncSnapshot(
-                id: record.recordID.recordName,
-                name: record["name"] as? String ?? "",
-                systemFields: systemFields,
-                lastModified: modified
+            await LibrariesActor.shared.applyRemoteLibrary(Self.librarySnapshot(
+                from: record, systemFields: systemFields, lastModified: modified
             ))
-            return
+            return false
         }
         let dataActor = DataActor.instance(for: Self.collectionID(forZone: record.recordID.zoneID))
         if record.recordType == SyncRecordType.album {
-            await dataActor.applyRemoteAlbum(AlbumSyncSnapshot(
+            return await dataActor.applyRemoteAlbum(AlbumSyncSnapshot(
                 id: record.recordID.recordName,
                 name: record["name"] as? String ?? "",
                 parentAlbumID: record["parentAlbumID"] as? String,
                 dateCreated: (record["dateCreated"] as? Date)?.timeIntervalSince1970 ?? 0,
+                coverPhoto: record["coverPhoto"] as? Data,
+                includesCoverPhoto: record["coverPhotoTracked"] != nil,
                 systemFields: systemFields,
                 lastModified: modified
             ))
+        } else if record.recordType == SyncRecordType.albumPreferences {
+            if let preferences = Self.albumPreferences(from: record) {
+                await dataActor.applyRemotePreferences(AlbumPreferencesSyncSnapshot(
+                    preferences: preferences, systemFields: systemFields
+                ))
+            }
         } else if record.recordType == SyncRecordType.pic {
             await dataActor.applyRemotePic(PicSyncSnapshot(
                 id: record.recordID.recordName,
@@ -188,6 +226,7 @@ extension SyncMate: CKSyncEngineDelegate {
                 lastModified: modified
             ))
         }
+        return false
     }
 
     // MARK: - Handle sent changes
@@ -207,6 +246,10 @@ extension SyncMate: CKSyncEngineDelegate {
             let dataActor = DataActor.instance(for: collectionID)
             if record.recordType == SyncRecordType.album {
                 await dataActor.markAlbumSynced(id: record.recordID.recordName, systemFields: systemFields)
+            } else if record.recordType == SyncRecordType.albumPreferences {
+                if let albumID = AlbumPreferences.albumID(fromRecordName: record.recordID.recordName) {
+                    await dataActor.markPreferencesSynced(albumID: albumID, systemFields: systemFields)
+                }
             } else {
                 await dataActor.markPicSynced(id: record.recordID.recordName, systemFields: systemFields)
                 await OriginalsManager.shared.uploadOriginal(picID: record.recordID.recordName,
@@ -241,6 +284,8 @@ extension SyncMate: CKSyncEngineDelegate {
                 let dataActor = DataActor.instance(for: collectionID)
                 if failure.record.recordType == SyncRecordType.album {
                     await dataActor.markAlbumSynced(id: recordID.recordName, systemFields: serverFields)
+                } else if let albumID = AlbumPreferences.albumID(fromRecordName: recordID.recordName) {
+                    await dataActor.markPreferencesSynced(albumID: albumID, systemFields: serverFields)
                 } else {
                     await dataActor.markPicSynced(id: recordID.recordName, systemFields: serverFields)
                 }
@@ -261,6 +306,32 @@ extension SyncMate: CKSyncEngineDelegate {
         default:
             break
         }
+    }
+
+    static func albumPreferences(from record: CKRecord) -> AlbumPreferences? {
+        guard let albumID = AlbumPreferences.albumID(fromRecordName: record.recordID.recordName) else { return nil }
+        let defaults = AlbumPreferences.defaults
+        return AlbumPreferences(
+            albumID: albumID,
+            albumSort: record["albumSort"] as? String ?? defaults.albumSort,
+            albumViewStyle: record["albumViewStyle"] as? String ?? defaults.albumViewStyle,
+            albumColumnCount: record["albumColumnCount"] as? Int ?? defaults.albumColumnCount,
+            picSort: record["picSort"] as? String ?? defaults.picSort,
+            picColumnCount: record["picColumnCount"] as? Int ?? defaults.picColumnCount,
+            hideSectionHeaders: record["hideSectionHeaders"] as? Bool ?? defaults.hideSectionHeaders
+        )
+    }
+
+    static func librarySnapshot(from record: CKRecord, systemFields: Data,
+                                lastModified: Double) -> LibrarySyncSnapshot {
+        LibrarySyncSnapshot(
+            id: record.recordID.recordName,
+            name: record["name"] as? String ?? "",
+            coverPicIDs: record["coverPicIDs"] as? [String] ?? [],
+            includesCoverPicIDs: record["coverPicIDsTracked"] != nil,
+            systemFields: systemFields,
+            lastModified: lastModified
+        )
     }
 
     // MARK: - System fields (de)serialization

@@ -28,8 +28,10 @@ extension AlbumView {
             picColumnCount: columnCount,
             hideSectionHeaders: hideSectionHeaders
         )
+        let dataActor = DataActor.shared
         Task {
-            await DataActor.shared.savePreferences(prefs)
+            await dataActor.savePreferences(prefs)
+            SyncManager.shared.schedulePush(forLibrary: dataActor.collectionID)
         }
     }
 }

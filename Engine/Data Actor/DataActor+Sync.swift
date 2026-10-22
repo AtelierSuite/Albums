@@ -5,6 +5,7 @@ public enum SyncRecordType: Sendable {
     public static let pic = "Pic"
     public static let album = "Album"
     public static let library = "Library"
+    public static let albumPreferences = "AlbumPreferences"
 }
 
 extension Notification.Name {
@@ -14,12 +15,23 @@ extension Notification.Name {
 public struct LibrarySyncSnapshot: Sendable {
     public let id: String
     public let name: String
+    public let coverPicIDs: [String]
+    public let includesCoverPicIDs: Bool
     public let systemFields: Data?
     public let lastModified: Double
 
-    public init(id: String, name: String, systemFields: Data? = nil, lastModified: Double) {
+    public init(
+        id: String,
+        name: String,
+        coverPicIDs: [String] = [],
+        includesCoverPicIDs: Bool = true,
+        systemFields: Data? = nil,
+        lastModified: Double
+    ) {
         self.id = id
         self.name = name
+        self.coverPicIDs = coverPicIDs
+        self.includesCoverPicIDs = includesCoverPicIDs
         self.systemFields = systemFields
         self.lastModified = lastModified
     }
@@ -70,6 +82,8 @@ public struct AlbumSyncSnapshot: Sendable {
     public let name: String
     public let parentAlbumID: String?
     public let dateCreated: Double
+    public let coverPhoto: Data?
+    public let includesCoverPhoto: Bool
     public let systemFields: Data?
     public let lastModified: Double
 
@@ -78,6 +92,8 @@ public struct AlbumSyncSnapshot: Sendable {
         name: String,
         parentAlbumID: String? = nil,
         dateCreated: Double,
+        coverPhoto: Data? = nil,
+        includesCoverPhoto: Bool = true,
         systemFields: Data? = nil,
         lastModified: Double
     ) {
@@ -85,6 +101,8 @@ public struct AlbumSyncSnapshot: Sendable {
         self.name = name
         self.parentAlbumID = parentAlbumID
         self.dateCreated = dateCreated
+        self.coverPhoto = coverPhoto
+        self.includesCoverPhoto = includesCoverPhoto
         self.systemFields = systemFields
         self.lastModified = lastModified
     }
@@ -182,6 +200,7 @@ extension DataActor {
             name: (try? row.get(albumName)) ?? "",
             parentAlbumID: try? row.get(albumParentId),
             dateCreated: (try? row.get(albumDateCreated)) ?? 0,
+            coverPhoto: (try? row.get(albumCoverPhoto)) ?? nil,
             systemFields: try? row.get(syncCKSystemFields),
             lastModified: (try? row.get(syncLastModified)) ?? 0
         )
@@ -284,28 +303,37 @@ extension DataActor {
 
     // MARK: - Download: apply remote changes
 
-    public func applyRemoteAlbum(_ snapshot: AlbumSyncSnapshot) {
-        let exists = ((try? database.scalar(albumsTable.filter(albumId == snapshot.id).count)) ?? 0) > 0
-        if exists {
-            _ = try? database.run(albumsTable.filter(albumId == snapshot.id).update(
+    @discardableResult
+    public func applyRemoteAlbum(_ snapshot: AlbumSyncSnapshot) -> Bool {
+        let existing = try? database.pluck(albumsTable.filter(albumId == snapshot.id).select(albumCoverPhoto))
+        if let existing {
+            var setters: [Setter] = [
                 albumName <- snapshot.name,
                 albumParentId <- snapshot.parentAlbumID,
                 albumDateCreated <- snapshot.dateCreated,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified
-            ))
+            ]
+            guard snapshot.includesCoverPhoto else {
+                _ = try? database.run(albumsTable.filter(albumId == snapshot.id).update(setters))
+                return false
+            }
+            setters.append(albumCoverPhoto <- snapshot.coverPhoto)
+            _ = try? database.run(albumsTable.filter(albumId == snapshot.id).update(setters))
+            return ((try? existing.get(albumCoverPhoto)) ?? nil) != snapshot.coverPhoto
         } else {
             _ = try? database.run(albumsTable.insert(or: .replace,
                 albumId <- snapshot.id,
                 albumName <- snapshot.name,
-                albumCoverPhoto <- nil,
+                albumCoverPhoto <- snapshot.coverPhoto,
                 albumParentId <- snapshot.parentAlbumID,
                 albumDateCreated <- snapshot.dateCreated,
                 syncDirty <- false,
                 syncCKSystemFields <- snapshot.systemFields,
                 syncLastModified <- snapshot.lastModified
             ))
+            return snapshot.coverPhoto != nil
         }
     }
 
