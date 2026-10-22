@@ -23,22 +23,35 @@ struct PhotosAlbumsSection: View {
         Group {
             switch style {
             case .grid, .masonry:
-                LazyVGrid(
-                    columns: Array(repeating: GridItem(.flexible(), spacing: 20.0), count: columnCount),
-                    spacing: 20.0
-                ) {
-                    ForEach(items) { item in
-                        itemLink(for: item) {
-                            itemGridLabel(for: item)
-                                .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: items.count,
+                              range: GridColumnLimit.photosAlbums.range(width: gridWidth),
+                              columnSpacing: 20.0,
+                              rowSpacing: 20.0,
+                              onColumnCountChange: setColumnCount) { index in
+                    itemGridLabel(for: items[index], namespace: nil)
+                } content: {
+                    LazyVGrid(
+                        columns: Array(repeating: GridItem(.flexible(), spacing: 20.0), count: fittedColumnCount),
+                        spacing: 20.0
+                    ) {
+                        ForEach(items) { item in
+                            itemLink(for: item) {
+                                itemGridLabel(for: item)
+                                    .photosAlbumDropDestination(item: item, onDropAssets: onDropAssets)
+                            }
+                            .contextMenu { contextMenu(for: item) }
+                            .buttonStyleAdaptive()
                         }
-                        .contextMenu { contextMenu(for: item) }
-                        .buttonStyleAdaptive()
                     }
                 }
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.width
+                } action: { width in
+                    gridWidth = width
+                }
                 .padding(20.0)
-                .animation(.smooth, value: columnCount)
-                .pinchToResizeColumns($columnCount)
+                .animation(.smooth, value: fittedColumnCount)
             case .list:
                 LazyVStack(alignment: .leading, spacing: 0.0) {
                     ForEach(items) { item in
@@ -72,6 +85,16 @@ struct PhotosAlbumsSection: View {
                 .frame(height: 120.0)
             }
         }
+    }
+
+    @State private var gridWidth: CGFloat = 0.0
+
+    private var fittedColumnCount: Int {
+        GridColumnLimit.photosAlbums.columns(columnCount, width: gridWidth)
+    }
+
+    private func setColumnCount(_ count: Int) {
+        columnCount = count
     }
 
     // MARK: - Context Menu
@@ -133,13 +156,19 @@ struct PhotosAlbumsSection: View {
 
     @ViewBuilder
     private func itemGridLabel(for item: PHCollectionItem, length: CGFloat? = nil) -> some View {
+        itemGridLabel(for: item, length: length, namespace: albumTransitionNamespace)
+    }
+
+    @ViewBuilder
+    private func itemGridLabel(for item: PHCollectionItem, length: CGFloat? = nil,
+                               namespace: Namespace.ID?) -> some View {
         switch item {
         case .album(let collection):
-            PhotosAlbumGridLabel(namespace: albumTransitionNamespace,
+            PhotosAlbumGridLabel(namespace: namespace,
                                  collection: collection, length: length,
                                  coverRefreshID: coverRefreshID)
         case .folder(let folder):
-            PhotosFolderGridLabel(namespace: albumTransitionNamespace,
+            PhotosFolderGridLabel(namespace: namespace,
                                   folder: folder, length: length)
         }
     }
@@ -162,7 +191,7 @@ struct PhotosAlbumsSection: View {
 
 struct PhotosAlbumGridLabel: View {
 
-    var namespace: Namespace.ID
+    var namespace: Namespace.ID?
     var collection: PHAssetCollection
     var length: CGFloat?
     var coverRefreshID: Int = 0
@@ -171,9 +200,9 @@ struct PhotosAlbumGridLabel: View {
         VStack(alignment: .leading, spacing: 8.0) {
             AlbumCover.AsyncPhotosAlbumCover(collection: collection, length: length,
                                              refreshID: coverRefreshID)
-                .matchedGeometryEffect(id: "\(collection.localIdentifier).Image", in: namespace)
+                .optionalMatchedGeometryEffect(id: "\(collection.localIdentifier).Image", in: namespace)
             Text(collection.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                .matchedGeometryEffect(id: "\(collection.localIdentifier).Title", in: namespace)
+                .optionalMatchedGeometryEffect(id: "\(collection.localIdentifier).Title", in: namespace)
                 .font(.caption)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
@@ -187,16 +216,16 @@ struct PhotosAlbumGridLabel: View {
 
 struct PhotosFolderGridLabel: View {
 
-    var namespace: Namespace.ID
+    var namespace: Namespace.ID?
     var folder: PHCollectionList
     var length: CGFloat?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
             AlbumCover.AsyncPhotosFolderCover(folder: folder, length: length)
-                .matchedGeometryEffect(id: "\(folder.localIdentifier).Image", in: namespace)
+                .optionalMatchedGeometryEffect(id: "\(folder.localIdentifier).Image", in: namespace)
             Text(folder.localizedTitle ?? String(localized: "Import.Albums.Untitled", table: "Import"))
-                .matchedGeometryEffect(id: "\(folder.localIdentifier).Title", in: namespace)
+                .optionalMatchedGeometryEffect(id: "\(folder.localIdentifier).Title", in: namespace)
                 .font(.caption)
                 .foregroundStyle(.primary)
                 .lineLimit(1)

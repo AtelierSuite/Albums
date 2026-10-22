@@ -56,13 +56,13 @@ final class PinchZoomCanvasView: UIView {
         for index in Array(ghosts.keys) where !items.contains(index) {
             recycle(ghosts.removeValue(forKey: index))
         }
-        let size = CGSize(width: morph.cellWidth, height: morph.cellWidth)
+        let size = CGSize(width: morph.cellWidth, height: morph.cellHeight)
         for index in items {
             let start = session.cellOrigin(index: index, columns: morph.fewerColumns, morph: morph, focusY: focusY)
             let end = session.cellOrigin(index: index, columns: morph.moreColumns, morph: morph, focusY: focusY)
             let cell = cells[index] ?? makeLayer(for: index)
             cells[index] = cell
-            if abs(end.x - start.x) > morph.pitch * 1.5 {
+            if abs(end.x - start.x) > morph.columnPitch * 1.5 {
                 let ghost = ghosts[index] ?? makeLayer(for: index)
                 ghosts[index] = ghost
                 cell.frame = CGRect(origin: start, size: size)

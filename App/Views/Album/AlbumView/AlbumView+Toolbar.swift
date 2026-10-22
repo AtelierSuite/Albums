@@ -175,7 +175,7 @@ extension AlbumView {
                 }
                 .pickerStyle(.menu)
                 if albumStyleState == .grid {
-                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5], kind: .album)
+                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5])
                 }
                 Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $albumSortState) {
                     Text("Shared.Sort.Name.Ascending")
@@ -201,7 +201,6 @@ extension AlbumView {
                         .tag(ViewStyle.masonry)
                 }
                 .pickerStyle(.menu)
-                GridSizePicker(selection: $columnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
                 Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $picSortType) {
                     Text("Shared.Sort.DateAdded.Ascending")
                         .tag(PicSortType.dateAddedAscending)

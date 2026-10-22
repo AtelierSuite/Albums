@@ -23,16 +23,28 @@ struct PhotosAssetsGrid: View {
     }
 
     var body: some View {
-        PinchZoomGrid(columnCount: columnCount,
+        PinchZoomGrid(columnCount: fittedColumnCount,
                       itemCount: visibleAssets.count,
+                      range: GridColumnLimit.pics.range(width: gridWidth),
                       onColumnCountChange: setColumnCount,
                       cachedImage: cachedThumbnail(at:),
                       loadImage: loadThumbnail(at:)) {
             grid
         }
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width
+        } action: { width in
+            gridWidth = width
+        }
         .onChange(of: assets.count) {
             displayCount = min(batchSize, assets.count)
         }
+    }
+
+    @State private var gridWidth: CGFloat = 0.0
+
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
     }
 
     private func setColumnCount(_ count: Int) {
@@ -48,7 +60,7 @@ struct PhotosAssetsGrid: View {
     }
 
     private var grid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount), spacing: 2.0) {
             ForEach(Array(visibleAssets), id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -121,12 +133,18 @@ struct PhotosFetchResultAssetsGrid: View {
     }
 
     var body: some View {
-        PinchZoomGrid(columnCount: columnCount,
+        PinchZoomGrid(columnCount: fittedColumnCount,
                       itemCount: displayedAssets.count,
+                      range: GridColumnLimit.pics.range(width: gridWidth),
                       onColumnCountChange: setColumnCount,
                       cachedImage: cachedThumbnail(at:),
                       loadImage: loadThumbnail(at:)) {
             grid
+        }
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width
+        } action: { width in
+            gridWidth = width
         }
         .onAppear {
             if displayedAssets.isEmpty {
@@ -137,6 +155,12 @@ struct PhotosFetchResultAssetsGrid: View {
             displayedAssets = []
             loadMoreAssets()
         }
+    }
+
+    @State private var gridWidth: CGFloat = 0.0
+
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
     }
 
     private func setColumnCount(_ count: Int) {
@@ -152,7 +176,7 @@ struct PhotosFetchResultAssetsGrid: View {
     }
 
     private var grid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount), spacing: 2.0) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount), spacing: 2.0) {
             ForEach(displayedAssets, id: \.localIdentifier) { asset in
                 Group {
                     if UIDevice.current.userInterfaceIdiom == .pad {

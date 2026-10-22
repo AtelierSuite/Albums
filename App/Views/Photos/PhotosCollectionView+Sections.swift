@@ -55,7 +55,7 @@ extension PhotosCollectionView {
                                 .tag(ViewStyle.carousel)
                         }
                         if albumStyleState == .grid {
-                            GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4], kind: .album)
+                            GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4])
                         }
                     }
                 }
@@ -100,18 +100,9 @@ extension PhotosCollectionView {
                     .frame(maxWidth: .infinity)
                     .padding(20.0)
             } else if !rootAssets.isEmpty {
-                Group {
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
-                                      count: rootAssets.count)
-                    } else {
-                        SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
-                                      count: rootAssets.count) {
-                            GridSizePicker(selection: $picColumnCount, sizes: [3, 4, 5, 8], kind: .pics)
-                        }
-                    }
-                }
-                .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
+                SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
+                              count: rootAssets.count)
+                    .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
                 PhotosAssetsGrid(namespace: namespace, assets: rootAssets)
             }
         }

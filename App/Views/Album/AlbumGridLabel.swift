@@ -4,7 +4,7 @@ import SwiftUI
 
 struct AlbumGridLabel: View {
 
-    var namespace: Namespace.ID
+    var namespace: Namespace.ID?
     var album: Album
     var length: CGFloat?
 
@@ -18,7 +18,7 @@ struct AlbumGridLabel: View {
         VStack(alignment: .center, spacing: length == nil ? 2.0 : 6.0) {
             AlbumCover.AsyncAlbumCover(album: album, length: length,
                                       isDownloading: downloadFraction != nil)
-            .matchedGeometryEffect(id: "\(album.id).Image", in: namespace)
+            .optionalMatchedGeometryEffect(id: "\(album.id).Image", in: namespace)
             .overlay {
                 if let progress = downloadFraction {
                     ZStack {
@@ -35,7 +35,7 @@ struct AlbumGridLabel: View {
                 }
             }
             Text(album.name)
-                .matchedGeometryEffect(id: "\(album.id).Title", in: namespace)
+                .optionalMatchedGeometryEffect(id: "\(album.id).Title", in: namespace)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)

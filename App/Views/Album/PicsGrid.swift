@@ -38,8 +38,9 @@ struct PicsGrid<Content: View>: View {
             if style == .masonry {
                 masonryGrid
             } else {
-                PinchZoomGrid(columnCount: columnCount,
-                              itemCount: pics.count + min(placeholderCount, columnCount * 10),
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: pics.count + min(placeholderCount, fittedColumnCount * 10),
+                              range: GridColumnLimit.pics.range(width: gridWidth),
                               cropsToTop: true,
                               onColumnCountChange: onColumnCountChange,
                               cachedImage: cachedThumbnail(at:),
@@ -65,14 +66,18 @@ struct PicsGrid<Content: View>: View {
                                      onEnd: { resetSelectionDrag() }))
     }
 
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
+    }
+
     private var squareGrid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount),
                   spacing: 2.0) {
             ForEach(pics) { pic in
                 picCell(for: pic, maintainsAspectRatio: false)
             }
             if placeholderCount > 0 {
-                let visiblePlaceholders = min(placeholderCount, columnCount * 10)
+                let visiblePlaceholders = min(placeholderCount, fittedColumnCount * 10)
                 ForEach(0..<visiblePlaceholders, id: \.self) { _ in
                     placeholderCell
                 }
@@ -127,7 +132,7 @@ struct PicsGrid<Content: View>: View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
-                 usesCompactBadges: usesCompactBadges(columns: columnCount),
+                 usesCompactBadges: usesCompactBadges(columns: fittedColumnCount),
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if abs(aspectRatio(for: pic) - ratio) > 0.001 {
                          aspectRatios[pic.id] = ratio
@@ -209,14 +214,15 @@ struct PicsGrid<Content: View>: View {
     }
 
     private func beginMasonryPinch(at location: CGPoint) {
-        let layout = masonryLayout(columns: columnCount)
+        let layout = masonryLayout(columns: fittedColumnCount)
         let nearest = layout.frames.min { lhs, rhs in
             distance(from: location, to: lhs.value) < distance(from: location, to: rhs.value)
         }
         guard let nearest else { return }
         let frame = nearest.value
-        masonryPinch = MasonryPinchAnchor(startCount: columnCount,
-                                          currentCount: columnCount,
+        masonryPinch = MasonryPinchAnchor(startCount: fittedColumnCount,
+                                          currentCount: fittedColumnCount,
+                                          range: GridColumnLimit.pics.range(width: gridWidth),
                                           entryID: nearest.key,
                                           fraction: min(max((location.y - frame.minY) / frame.height, 0.0), 1.0))
     }
@@ -225,7 +231,8 @@ struct PicsGrid<Content: View>: View {
     private func updateMasonryPinch(scale: CGFloat, scroller: PinchZoomScroller) {
         guard var pinch = masonryPinch else { return }
         let steps = Int((log(max(scale, 0.01)) / log(1.2)).rounded())
-        let target = min(max(pinch.startCount - steps, min(2, pinch.startCount)), max(10, pinch.startCount))
+        let target = min(max(pinch.startCount - steps, min(pinch.range.lowerBound, pinch.startCount)),
+                         max(pinch.range.upperBound, pinch.startCount))
         guard target != pinch.currentCount else { return }
         let oldLayout = masonryLayout(columns: pinch.currentCount)
         let newLayout = masonryLayout(columns: target)
@@ -258,18 +265,18 @@ struct PicsGrid<Content: View>: View {
     }
 
     private func picIndex(at location: CGPoint) -> Int? {
-        guard gridWidth > 0.0, columnCount > 0,
+        guard gridWidth > 0.0, fittedColumnCount > 0,
               location.x >= 0.0, location.y >= 0.0 else {
             return nil
         }
         let spacing = 2.0
-        let itemWidth = (gridWidth - spacing * Double(columnCount - 1)) / Double(columnCount)
+        let itemWidth = (gridWidth - spacing * Double(fittedColumnCount - 1)) / Double(fittedColumnCount)
         guard itemWidth > 0.0 else { return nil }
         let pitch = itemWidth + spacing
         let column = Int(location.x / pitch)
         let row = Int(location.y / pitch)
-        guard column >= 0, column < columnCount else { return nil }
-        let index = row * columnCount + column
+        guard column >= 0, column < fittedColumnCount else { return nil }
+        let index = row * fittedColumnCount + column
         guard index >= 0, index < pics.count else { return nil }
         return index
     }
@@ -320,7 +327,7 @@ extension PicsGrid {
     }
 
     var masonryColumns: [[MasonryEntry]] {
-        masonryColumns(count: columnCount)
+        masonryColumns(count: fittedColumnCount)
     }
 
     func masonryColumns(count requestedCount: Int) -> [[MasonryEntry]] {
@@ -404,6 +411,7 @@ struct MasonryLayout {
 struct MasonryPinchAnchor {
     let startCount: Int
     var currentCount: Int
+    let range: ClosedRange<Int>
     let entryID: String
     let fraction: CGFloat
 }

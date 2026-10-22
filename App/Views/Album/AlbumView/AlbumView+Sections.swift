@@ -40,7 +40,7 @@ extension AlbumView {
                             }
                             .pickerStyle(.menu)
                             if albumStyleState == .grid {
-                                GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5], kind: .album)
+                                GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5])
                             }
                         }
                     }
@@ -52,6 +52,7 @@ extension AlbumView {
             if hasAlbumItems {
                 AlbumsSection(albums: albums, style: $albumStyleState,
                              columnCount: albumColumnCount,
+                             onColumnCountChange: setAlbumColumnCount,
                              hideSectionHeaders: hideSectionHeaders,
                              recentlyDeletedCount: showsRecentlyDeletedAlbum ? recentlyDeletedCount : nil,
                              isKeptOffline: { OfflineAlbums.contains($0.id) },
@@ -73,7 +74,6 @@ extension AlbumView {
                         movePayload = .album(album)
                     }
                 }
-                .pinchToResizeColumns($albumColumnCount, isEnabled: albumStyleState == .grid)
             } else if !hideSectionHeaders {
                 Text("Albums.NoAlbums", tableName: "Albums")
                     .foregroundStyle(.secondary)
@@ -83,6 +83,10 @@ extension AlbumView {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    func setAlbumColumnCount(_ count: Int) {
+        albumColumnCount = count
     }
 
     func setPicColumnCount(_ count: Int) {
@@ -148,7 +152,6 @@ extension AlbumView {
                                     .tag(ViewStyle.masonry)
                             }
                             .pickerStyle(.menu)
-                            GridSizePicker(selection: $columnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
                         }
                     }
 #endif
