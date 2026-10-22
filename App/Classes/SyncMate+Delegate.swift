@@ -78,6 +78,8 @@ extension SyncMate: CKSyncEngineDelegate {
         record["name"] = snapshot.name
         record["parentAlbumID"] = snapshot.parentAlbumID
         record["dateCreated"] = Date(timeIntervalSince1970: snapshot.dateCreated)
+        record["coverPhoto"] = snapshot.coverPhoto
+        record["coverPhotoTracked"] = 1
         return record
     }
 
@@ -108,11 +110,17 @@ extension SyncMate: CKSyncEngineDelegate {
     ) async {
         var libraryChanged = false
         var removedLibraryIDs: [String] = []
+        var changedCoverAlbumIDs: [String] = []
         for modification in changes.modifications {
             if modification.record.recordID.zoneID.zoneName == Self.librariesZoneName {
                 libraryChanged = true
             }
-            await applyRecord(modification.record)
+            if await applyRecord(modification.record) {
+                let recordID = modification.record.recordID
+                await CoverCacheActor.instance(for: Self.collectionID(forZone: recordID.zoneID))
+                    .deleteCover(forAlbumWithID: recordID.recordName)
+                changedCoverAlbumIDs.append(recordID.recordName)
+            }
         }
         var deletedPicIDsByCollection: [String: [String]] = [:]
         for deletion in changes.deletions {
@@ -141,8 +149,9 @@ extension SyncMate: CKSyncEngineDelegate {
         }
         if !changes.modifications.isEmpty || !changes.deletions.isEmpty {
             let removedLibraryIDs = removedLibraryIDs
+            let changedCoverAlbumIDs = changedCoverAlbumIDs
             await MainActor.run {
-                NotificationCenter.default.post(name: .syncDidApplyRemoteChanges, object: nil)
+                NotificationCenter.default.post(name: .syncDidApplyRemoteChanges, object: changedCoverAlbumIDs)
                 if libraryChanged {
                     NotificationCenter.default.post(name: .syncDidApplyLibraryChanges,
                                                     object: removedLibraryIDs)
@@ -151,7 +160,8 @@ extension SyncMate: CKSyncEngineDelegate {
         }
     }
 
-    private func applyRecord(_ record: CKRecord) async {
+    @discardableResult
+    private func applyRecord(_ record: CKRecord) async -> Bool {
         let systemFields = Self.encodeSystemFields(record)
         let modified = (record.modificationDate ?? Date.now).timeIntervalSince1970
         if record.recordID.zoneID.zoneName == Self.librariesZoneName {
@@ -161,15 +171,17 @@ extension SyncMate: CKSyncEngineDelegate {
                 systemFields: systemFields,
                 lastModified: modified
             ))
-            return
+            return false
         }
         let dataActor = DataActor.instance(for: Self.collectionID(forZone: record.recordID.zoneID))
         if record.recordType == SyncRecordType.album {
-            await dataActor.applyRemoteAlbum(AlbumSyncSnapshot(
+            return await dataActor.applyRemoteAlbum(AlbumSyncSnapshot(
                 id: record.recordID.recordName,
                 name: record["name"] as? String ?? "",
                 parentAlbumID: record["parentAlbumID"] as? String,
                 dateCreated: (record["dateCreated"] as? Date)?.timeIntervalSince1970 ?? 0,
+                coverPhoto: record["coverPhoto"] as? Data,
+                includesCoverPhoto: record["coverPhotoTracked"] != nil,
                 systemFields: systemFields,
                 lastModified: modified
             ))
@@ -188,6 +200,7 @@ extension SyncMate: CKSyncEngineDelegate {
                 lastModified: modified
             ))
         }
+        return false
     }
 
     // MARK: - Handle sent changes

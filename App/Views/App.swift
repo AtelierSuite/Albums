@@ -138,7 +138,10 @@ struct IllustMateApp: App {
                 await SyncManager.shared.refresh()
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .syncDidApplyRemoteChanges)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .syncDidApplyRemoteChanges)) { note in
+            for albumID in note.object as? [String] ?? [] {
+                AlbumCoverCache.shared.removeImages(forAlbumID: albumID)
+            }
             navigation.signalDataChanged()
         }
         .onReceive(NotificationCenter.default.publisher(for: .dataActorDidMutateLocally)) { note in

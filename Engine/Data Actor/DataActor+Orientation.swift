@@ -83,6 +83,8 @@ extension DataActor {
               let thumbnailHash = DHash.compute(from: thumbnailImage),
               DHash.hammingDistance(coverHash, thumbnailHash) <= 3,
               let newCover = Album.makeCover(data) else { return }
-        _ = try? database.run(albumsTable.filter(albumId == albumID).update(albumCoverPhoto <- newCover))
+        _ = try? database.run(albumsTable.filter(albumId == albumID).update(
+            albumCoverPhoto <- newCover, syncDirty <- true, syncLastModified <- syncTimestamp
+        ))
     }
 }

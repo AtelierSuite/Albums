@@ -165,6 +165,7 @@ public actor DataActor {
                 table.column(migrationAppVersion, defaultValue: "")
                 table.column(migrationCompleted, defaultValue: false)
             })
+            DatabaseMigrator.markAlbumCoversForSync(database)
 
             try database.run(albumsTable.createIndex(albumParentId, ifNotExists: true))
             try database.run(picsTable.createIndex(picAlbumId, ifNotExists: true))
