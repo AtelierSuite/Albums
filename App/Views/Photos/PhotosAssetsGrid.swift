@@ -75,6 +75,7 @@ struct PhotosAssetsGrid: View {
             }
         }
         .animation(.smooth, value: columnCount)
+        .pinchToResizeColumns($columnCount)
         .onChange(of: assets.count) {
             displayCount = min(batchSize, assets.count)
         }
@@ -155,6 +156,7 @@ struct PhotosFetchResultAssetsGrid: View {
             }
         }
         .animation(.smooth, value: columnCount)
+        .pinchToResizeColumns($columnCount)
         .onAppear {
             if displayedAssets.isEmpty {
                 loadMoreAssets()

@@ -73,6 +73,7 @@ extension AlbumView {
                         movePayload = .album(album)
                     }
                 }
+                .pinchToResizeColumns($albumColumnCount, isEnabled: albumStyleState == .grid)
             } else if !hideSectionHeaders {
                 Text("Albums.NoAlbums", tableName: "Albums")
                     .foregroundStyle(.secondary)
@@ -186,6 +187,7 @@ extension AlbumView {
                         movePayload = .pics(isSelectingPics ? selectedPics : [pic])
                     }
                 }
+                .pinchToResizeColumns($columnCount)
             } else if !hasFetchedPicCount {
                 ProgressView()
                     .frame(maxWidth: .infinity)
