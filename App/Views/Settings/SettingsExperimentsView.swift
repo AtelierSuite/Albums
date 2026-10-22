@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MoreExperimentsView: View {
+struct SettingsExperimentsView: View {
 
     @AppStorage(wrappedValue: false, "DebugCloudEverywhere") var showCloudStatusEverywhere: Bool
 

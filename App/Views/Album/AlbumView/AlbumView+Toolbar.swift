@@ -185,7 +185,6 @@ extension AlbumView {
                         .tag(ViewStyle.masonry)
                 }
                 .pickerStyle(.menu)
-                GridSizePicker(selection: $columnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
                 Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $picSortType) {
                     Text("Shared.Sort.DateAdded.Ascending")
                         .tag(PicSortType.dateAddedAscending)

@@ -31,17 +31,16 @@ struct PicsGrid<Content: View>: View {
     @State private var paintedRange: ClosedRange<Int>?
     @State private var originalSelected: [Int: Bool] = [:]
     @State private var aspectRatios: [String: CGFloat] = [:]
+    @State private var masonryPinch: MasonryPinchAnchor?
 
     var body: some View {
         Group {
             if style == .masonry {
                 masonryGrid
-                    .pinchToResizeColumns(Binding(get: { columnCount },
-                                                  set: { onColumnCountChange?($0) }),
-                                          isEnabled: onColumnCountChange != nil)
             } else {
-                PinchZoomGrid(columnCount: columnCount,
-                              itemCount: pics.count + min(placeholderCount, columnCount * 10),
+                PinchZoomGrid(columnCount: fittedColumnCount,
+                              itemCount: pics.count + min(placeholderCount, fittedColumnCount * 10),
+                              range: GridColumnLimit.pics.range(width: gridWidth),
                               cropsToTop: true,
                               onColumnCountChange: onColumnCountChange,
                               cachedImage: cachedThumbnail(at:),
@@ -56,20 +55,31 @@ struct PicsGrid<Content: View>: View {
         } action: { width in
             gridWidth = width
         }
+        .gesture(PinchZoomGesture(isEnabled: style == .masonry && onColumnCountChange != nil,
+                                  coordinateSpace: Self.selectionSpace,
+                                  onBegan: { location, viewport, scroller in
+                                      beginMasonryPinch(at: location, viewport: viewport, scroller: scroller)
+                                  },
+                                  onChanged: { scale, _, scroller in updateMasonryPinch(scale: scale, scroller: scroller) },
+                                  onEnded: { _, _ in masonryPinch = nil }))
         .gesture(SelectionPanGesture(isEnabled: isSelecting && style != .masonry,
                                      coordinateSpace: Self.selectionSpace,
                                      onChange: { updateSelection(at: $0) },
                                      onEnd: { resetSelectionDrag() }))
     }
 
+    private var fittedColumnCount: Int {
+        GridColumnLimit.pics.columns(columnCount, width: gridWidth)
+    }
+
     private var squareGrid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: columnCount),
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2.0), count: fittedColumnCount),
                   spacing: 2.0) {
             ForEach(pics) { pic in
                 picCell(for: pic, maintainsAspectRatio: false)
             }
             if placeholderCount > 0 {
-                let visiblePlaceholders = min(placeholderCount, columnCount * 10)
+                let visiblePlaceholders = min(placeholderCount, fittedColumnCount * 10)
                 ForEach(0..<visiblePlaceholders, id: \.self) { _ in
                     placeholderCell
                 }
@@ -124,7 +134,7 @@ struct PicsGrid<Content: View>: View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
-                 usesCompactBadges: usesCompactBadges(columns: columnCount),
+                 usesCompactBadges: usesCompactBadges(columns: fittedColumnCount),
                  onAspectRatio: maintainsAspectRatio ? { ratio in
                      if abs(aspectRatio(for: pic) - ratio) > 0.001 {
                          aspectRatios[pic.id] = ratio
@@ -205,6 +215,61 @@ struct PicsGrid<Content: View>: View {
         }
     }
 
+    private func beginMasonryPinch(at location: CGPoint, viewport: CGRect, scroller: PinchZoomScroller) {
+        let layout = masonryLayout(columns: fittedColumnCount)
+        let nearest = layout.frames.min { lhs, rhs in
+            distance(from: location, to: lhs.value) < distance(from: location, to: rhs.value)
+        }
+        guard let nearest else { return }
+        let frame = nearest.value
+        let bounds = scroller.scrollView?.bounds.origin ?? viewport.origin
+        masonryPinch = MasonryPinchAnchor(startCount: fittedColumnCount,
+                                          currentCount: fittedColumnCount,
+                                          range: GridColumnLimit.pics.range(width: gridWidth),
+                                          entryID: nearest.key,
+                                          fraction: CGPoint(x: min(max((location.x - frame.minX) / frame.width, 0.0), 1.0),
+                                                            y: min(max((location.y - frame.minY) / frame.height, 0.0), 1.0)),
+                                          gridOrigin: CGPoint(x: bounds.x - viewport.minX, y: bounds.y - viewport.minY))
+    }
+
+    // SwiftUI doesn't refresh gesture representables mid-gesture, so columnCount is stale here.
+    private func updateMasonryPinch(scale: CGFloat, scroller: PinchZoomScroller) {
+        guard var pinch = masonryPinch else { return }
+        let steps = Int((log(max(scale, 0.01)) / log(1.2)).rounded())
+        let target = min(max(pinch.startCount - steps, min(pinch.range.lowerBound, pinch.startCount)),
+                         max(pinch.range.upperBound, pinch.startCount))
+        guard target != pinch.currentCount else { return }
+        let oldLayout = masonryLayout(columns: pinch.currentCount)
+        let newLayout = masonryLayout(columns: target)
+        guard let oldFrame = oldLayout.frames[pinch.entryID],
+              let newFrame = newLayout.frames[pinch.entryID] else { return }
+        let oldAnchor = pinch.anchor(in: oldFrame)
+        let newAnchor = pinch.anchor(in: newFrame)
+        let scrollDelta = scroller.clampedDelta(newAnchor.y - oldAnchor.y,
+                                                contentHeightChange: newLayout.height - oldLayout.height)
+        scroller.zoomSnapshot(of: CGRect(origin: pinch.gridOrigin,
+                                         size: CGSize(width: gridWidth, height: oldLayout.height)),
+                              from: oldAnchor,
+                              to: CGPoint(x: newAnchor.x, y: newAnchor.y - scrollDelta),
+                              scale: newFrame.width / oldFrame.width,
+                              animation: .smooth(duration: 0.3))
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        withTransaction(transaction) {
+            onColumnCountChange?(target)
+        }
+        pinch.currentCount = target
+        masonryPinch = pinch
+        scroller.layoutAndScroll(by: scrollDelta)
+        UISelectionFeedbackGenerator().selectionChanged()
+    }
+
+    private func distance(from point: CGPoint, to rect: CGRect) -> CGFloat {
+        let horizontal = max(rect.minX - point.x, 0.0, point.x - rect.maxX)
+        let vertical = max(rect.minY - point.y, 0.0, point.y - rect.maxY)
+        return horizontal * horizontal + vertical * vertical
+    }
+
     private func resetSelectionDrag() {
         anchorIndex = nil
         paintedRange = nil
@@ -212,18 +277,18 @@ struct PicsGrid<Content: View>: View {
     }
 
     private func picIndex(at location: CGPoint) -> Int? {
-        guard gridWidth > 0.0, columnCount > 0,
+        guard gridWidth > 0.0, fittedColumnCount > 0,
               location.x >= 0.0, location.y >= 0.0 else {
             return nil
         }
         let spacing = 2.0
-        let itemWidth = (gridWidth - spacing * Double(columnCount - 1)) / Double(columnCount)
+        let itemWidth = (gridWidth - spacing * Double(fittedColumnCount - 1)) / Double(fittedColumnCount)
         guard itemWidth > 0.0 else { return nil }
         let pitch = itemWidth + spacing
         let column = Int(location.x / pitch)
         let row = Int(location.y / pitch)
-        guard column >= 0, column < columnCount else { return nil }
-        let index = row * columnCount + column
+        guard column >= 0, column < fittedColumnCount else { return nil }
+        let index = row * fittedColumnCount + column
         guard index >= 0, index < pics.count else { return nil }
         return index
     }
@@ -274,7 +339,11 @@ extension PicsGrid {
     }
 
     var masonryColumns: [[MasonryEntry]] {
-        let count = max(columnCount, 1)
+        masonryColumns(count: fittedColumnCount)
+    }
+
+    func masonryColumns(count requestedCount: Int) -> [[MasonryEntry]] {
+        let count = max(requestedCount, 1)
         var columns = Array(repeating: [MasonryEntry](), count: count)
         var heights = Array(repeating: 0.0, count: count)
         func place(_ entry: MasonryEntry) {
@@ -295,6 +364,24 @@ extension PicsGrid {
             }
         }
         return columns
+    }
+
+    func masonryLayout(columns count: Int) -> MasonryLayout {
+        let columns = masonryColumns(count: count)
+        let cellWidth = max((gridWidth - 2.0 * CGFloat(columns.count - 1)) / CGFloat(columns.count), 1.0)
+        var frames: [String: CGRect] = [:]
+        var height = 0.0
+        for (index, column) in columns.enumerated() {
+            var top = 0.0
+            for entry in column {
+                let cellHeight = cellWidth / max(entry.aspectRatio, 0.01)
+                frames[entry.id] = CGRect(x: CGFloat(index) * (cellWidth + 2.0), y: top,
+                                          width: cellWidth, height: cellHeight)
+                top += cellHeight + 2.0
+            }
+            height = max(height, top - 2.0)
+        }
+        return MasonryLayout(frames: frames, height: height)
     }
 
     func cachedThumbnail(at index: Int) -> UIImage? {
@@ -325,6 +412,25 @@ extension PicsGrid {
                 onTogglePin(pic)
             }
         }
+    }
+}
+
+struct MasonryLayout {
+    let frames: [String: CGRect]
+    let height: CGFloat
+}
+
+struct MasonryPinchAnchor {
+    let startCount: Int
+    var currentCount: Int
+    let range: ClosedRange<Int>
+    let entryID: String
+    let fraction: CGPoint
+    let gridOrigin: CGPoint
+
+    func anchor(in frame: CGRect) -> CGPoint {
+        CGPoint(x: gridOrigin.x + frame.minX + fraction.x * frame.width,
+                y: gridOrigin.y + frame.minY + fraction.y * frame.height)
     }
 }
 

@@ -38,6 +38,7 @@ extension AlbumView {
             if hasAlbumItems {
                 AlbumsSection(albums: albums, style: albumStyleState,
                              columnCount: albumColumnCount,
+                             onColumnCountChange: setAlbumColumnCount,
                              hideSectionHeaders: hideSectionHeaders,
                              recentlyDeletedCount: showsRecentlyDeletedAlbum ? recentlyDeletedCount : nil,
                              isKeptOffline: { OfflineAlbums.contains($0.id) },
@@ -59,9 +60,6 @@ extension AlbumView {
                         movePayload = .album(album)
                     }
                 }
-                .pinchToResizeColumns($albumColumnCount,
-                                      range: albumStyleState.isCarousel ? 2...6 : 2...10,
-                                      isEnabled: albumStyleState.isResizable)
             } else if !hideSectionHeaders {
                 Text("Albums.NoAlbums", tableName: "Albums")
                     .foregroundStyle(.secondary)
@@ -71,6 +69,10 @@ extension AlbumView {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    func setAlbumColumnCount(_ count: Int) {
+        albumColumnCount = count
     }
 
     func setPicColumnCount(_ count: Int) {
@@ -136,7 +138,6 @@ extension AlbumView {
                                     .tag(ViewStyle.masonry)
                             }
                             .pickerStyle(.menu)
-                            GridSizePicker(selection: $columnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
                         }
                     }
 #endif

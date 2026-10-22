@@ -99,7 +99,6 @@ struct AlbumView: View {
                 albumStyle: $albumStyleState,
                 albumSort: $albumSortState,
                 picSort: $picSortType,
-                picColumnCount: $columnCount,
                 picStyle: $picViewStyle,
                 hideSectionHeaders: $hideSectionHeaders
             )))

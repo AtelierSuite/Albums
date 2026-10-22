@@ -2,7 +2,7 @@ import Engine
 import Foundation
 import SwiftUI
 
-struct MoreBackupView: View {
+struct SettingsBackupView: View {
 
     enum Phase: Equatable {
         case preparing

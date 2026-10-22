@@ -352,7 +352,7 @@ struct IllustMateApp: App {
         }
 
         WindowGroup("ViewTitle.Settings", id: settingsWindowID) {
-            MoreView()
+            SettingsView()
                 .environmentObject(navigation)
                 .environmentObject(libraryManager)
                 .environment(viewer)
@@ -584,7 +584,6 @@ struct MacCommands: Commands {
                 .tag(PicSortType.prominentColor)
         }
         .pickerStyle(.menu)
-        GridSizePicker(selection: options.picColumnCount, sizes: [2, 3, 4, 5, 8], kind: .pics)
     }
 }
 #endif

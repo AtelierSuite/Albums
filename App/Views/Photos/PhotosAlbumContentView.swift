@@ -12,9 +12,6 @@ struct PhotosAlbumContentView: View {
     @State private var fetchResult: PHFetchResult<PHAsset>?
     @State private var hasFetched: Bool = false
 
-    @AppStorage(wrappedValue: 4, "PicColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int
-
     @State private var isDuplicateCheckerPresented: Bool = false
 
     private var assetCount: Int {
@@ -24,16 +21,8 @@ struct PhotosAlbumContentView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 0.0) {
-                Group {
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"), count: assetCount)
-                    } else {
-                        SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"), count: assetCount) {
-                            GridSizePicker(selection: $columnCount, sizes: [3, 4, 5, 8], kind: .pics)
-                        }
-                    }
-                }
-                .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
+                SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"), count: assetCount)
+                    .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
 
                 if !hasFetched {
                     ProgressView()
@@ -81,9 +70,6 @@ struct PhotosAlbumContentView: View {
         Menu {
             Button(String(localized: "Duplicates.FindDuplicates", table: "Photos"), systemImage: "photo.stack") {
                 isDuplicateCheckerPresented = true
-            }
-            Section(String(localized: "Albums.Pics", table: "Albums")) {
-                GridSizePicker(selection: $columnCount, sizes: [3, 4, 5, 8], kind: .pics)
             }
         } label: {
             Label("Shared.Filter", systemImage: "line.3.horizontal.decrease")

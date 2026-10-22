@@ -195,6 +195,7 @@
 				Utilities/Animations.swift,
 				"View Modifiers/AlbumDropModifier.swift",
 				"View Modifiers/ButtonStyleModifier.swift",
+				"View Modifiers/OptionalMatchedGeometryEffect.swift",
 				Views/Album/AlbumGridLabel.swift,
 				Views/Album/AlbumListRow.swift,
 				Views/Album/AlbumsSection.swift,
@@ -204,6 +205,11 @@
 				Views/Shared/AlbumCover/AsyncAlbumCover.swift,
 				Views/Shared/AlbumCover/AsyncPhotosAlbumCover.swift,
 				Views/Shared/AlbumCover/AsyncPhotosFolderCover.swift,
+				Views/Shared/GridColumnLimit.swift,
+				Views/Shared/PinchToResizeColumns.swift,
+				Views/Shared/PinchZoomCanvas.swift,
+				Views/Shared/PinchZoomGrid.swift,
+				"Views/Shared/UIGestureRecognizer+ScrollView.swift",
 			);
 			target = E4614CFB2ACA86EC00D751FB /* Share with PicMate */;
 		};
@@ -252,6 +258,7 @@
 				Structs/PHCollectionListWrapper.swift,
 				"View Modifiers/AlbumDropModifier.swift",
 				"View Modifiers/ButtonStyleModifier.swift",
+				"View Modifiers/OptionalMatchedGeometryEffect.swift",
 				Views/Album/AlbumGridLabel.swift,
 				Views/Album/AlbumListRow.swift,
 				Views/Album/AlbumsSection.swift,
@@ -261,6 +268,11 @@
 				Views/Shared/AlbumCover/AsyncAlbumCover.swift,
 				Views/Shared/AlbumCover/AsyncPhotosAlbumCover.swift,
 				Views/Shared/AlbumCover/AsyncPhotosFolderCover.swift,
+				Views/Shared/GridColumnLimit.swift,
+				Views/Shared/PinchToResizeColumns.swift,
+				Views/Shared/PinchZoomCanvas.swift,
+				Views/Shared/PinchZoomGrid.swift,
+				"Views/Shared/UIGestureRecognizer+ScrollView.swift",
 			);
 			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
 		};

@@ -74,7 +74,7 @@ struct AlbumCountText: View {
 
 struct AlbumGridLabel: View {
 
-    var namespace: Namespace.ID
+    var namespace: Namespace.ID?
     var album: Album
     var length: CGFloat?
     var style = AlbumLabelStyle()
@@ -90,7 +90,7 @@ struct AlbumGridLabel: View {
             AlbumCover.AsyncAlbumCover(album: album, length: length,
                                       isDownloading: downloadFraction != nil,
                                       style: style.cover)
-            .matchedGeometryEffect(id: "\(album.id).Image", in: namespace)
+            .optionalMatchedGeometryEffect(id: "\(album.id).Image", in: namespace)
             .overlay {
                 if let progress = downloadFraction {
                     ZStack {
@@ -108,7 +108,7 @@ struct AlbumGridLabel: View {
             }
             VStack(alignment: style.alignment, spacing: 0.0) {
                 Text(album.name)
-                    .matchedGeometryEffect(id: "\(album.id).Title", in: namespace)
+                    .optionalMatchedGeometryEffect(id: "\(album.id).Title", in: namespace)
                     .font(style.titleFont)
                     .foregroundStyle(.primary)
                     .truncationMode(.middle)

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MoreLicensesView: View {
+struct SettingsLicensesView: View {
     var body: some View {
         List {
             ForEach(Dependency.all) { dependency in

@@ -50,6 +50,7 @@ struct PicLabel: View {
 
     @State var isThumbnailReadyToPresent: Bool
     @State var thumbnail: Image?
+    @State var fadesInThumbnail: Bool
 
     init(pic: Pic, maintainsAspectRatio: Bool = false, showsPinBadge: Bool = false,
          usesCompactBadges: Bool = false, onAspectRatio: ((CGFloat) -> Void)? = nil) {
@@ -61,6 +62,7 @@ struct PicLabel: View {
         let cached = ThumbnailCache.shared.image(forKey: pic.id)
         _isThumbnailReadyToPresent = State(initialValue: cached != nil)
         _thumbnail = State(initialValue: cached.map { Image(uiImage: $0) })
+        _fadesInThumbnail = State(initialValue: cached == nil)
     }
 
     var body: some View {
@@ -113,7 +115,7 @@ struct PicLabel: View {
                     thumbnail
                         .resizable()
                         .scaledToFill()
-                        .transition(.opacity.animation(.smooth.speed(2.0)))
+                        .transition(fadesInThumbnail ? .opacity.animation(.smooth.speed(2.0)) : .identity)
                 }
             }
             .overlay {

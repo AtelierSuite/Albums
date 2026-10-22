@@ -11,6 +11,7 @@ struct AlbumsSection<Content: View>: View {
     var style: AlbumViewStyle
     var enablesContextMenu: Bool = true
     var columnCount: Int = 3
+    var onColumnCountChange: ((Int) -> Void)?
     var hideSectionHeaders: Bool = false
     var recentlyDeletedCount: Int?
     var isKeptOffline: ((Album) -> Bool)?
@@ -26,7 +27,7 @@ struct AlbumsSection<Content: View>: View {
     var body: some View {
         Group {
             if style.isGrid {
-                grid
+                pinchZoomGrid
             } else if style.isCarousel {
                 carousel
             } else {
@@ -49,9 +50,35 @@ struct AlbumsSection<Content: View>: View {
         style == .stackedGrid ? 10.0 : 12.0
     }
 
+    var gridRowSpacing: CGFloat {
+        style == .stackedGrid ? 12.0 : 14.0
+    }
+
+    var gridWidth: CGFloat {
+        max(containerWidth - gridHorizontalPadding * 2.0, 0.0)
+    }
+
+    var gridColumnLimit: GridColumnLimit {
+        GridColumnLimit(minimumCellWidth: GridColumnLimit.albums.minimumCellWidth,
+                        spacing: gridColumnSpacing,
+                        range: GridColumnLimit.albums.range)
+    }
+
+    var fittedColumnCount: Int {
+        gridColumnLimit.columns(columnCount, width: gridWidth)
+    }
+
     var gridCoverWidth: CGFloat {
-        let count = CGFloat(max(columnCount, 1))
-        return (containerWidth - gridHorizontalPadding * 2.0 - gridColumnSpacing * (count - 1.0)) / count
+        let count = CGFloat(fittedColumnCount)
+        return (gridWidth - gridColumnSpacing * (count - 1.0)) / count
+    }
+
+    var carouselColumnCount: Binding<Int> {
+        Binding {
+            columnCount
+        } set: { count in
+            onColumnCountChange?(count)
+        }
     }
 
     var carouselCoverLength: CGFloat {
@@ -59,12 +86,29 @@ struct AlbumsSection<Content: View>: View {
         return baseLength * 4.0 / CGFloat(min(max(columnCount, 2), 6))
     }
 
-    var grid: some View {
+    var pinchZoomGrid: some View {
         let labelStyle = AlbumLabelStyle(viewStyle: style, coverWidth: gridCoverWidth)
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: gridColumnSpacing,
-                                                            alignment: .top),
-                                        count: columnCount),
-                         spacing: style == .stackedGrid ? 12.0 : 14.0) {
+        return PinchZoomGrid(columnCount: fittedColumnCount,
+                             itemCount: albums.count + (recentlyDeletedCount == nil ? 0 : 1),
+                             range: gridColumnLimit.range(width: gridWidth),
+                             columnSpacing: gridColumnSpacing,
+                             rowSpacing: gridRowSpacing,
+                             onColumnCountChange: onColumnCountChange) { index in
+            pinchZoomCell(at: index, style: labelStyle)
+        } content: {
+            grid(style: labelStyle)
+        }
+        .padding(.horizontal, gridHorizontalPadding)
+        .padding(.top, hideSectionHeaders ? 0.0 : 10.0)
+        .animation(.smooth.speed(2.0), value: fittedColumnCount)
+        .animation(.smooth.speed(2.0), value: style)
+    }
+
+    func grid(style labelStyle: AlbumLabelStyle) -> some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: gridColumnSpacing,
+                                                     alignment: .top),
+                                 count: fittedColumnCount),
+                  spacing: gridRowSpacing) {
             ForEach(albums) { album in
                 NavigationLink(value: ViewPath.album(album: album)) {
                     gridLabel(album, style: labelStyle)
@@ -82,10 +126,6 @@ struct AlbumsSection<Content: View>: View {
                 .buttonStyleAdaptive()
             }
         }
-        .padding(.horizontal, gridHorizontalPadding)
-        .padding(.top, hideSectionHeaders ? 0.0 : 10.0)
-        .animation(.smooth.speed(2.0), value: columnCount)
-        .animation(.smooth.speed(2.0), value: style)
     }
 
     var list: some View {
@@ -132,6 +172,8 @@ struct AlbumsSection<Content: View>: View {
             .padding(.vertical, 10.0)
         }
         .scrollIndicators(.hidden)
+        .pinchToResizeColumns(carouselColumnCount, range: 2...6,
+                              isEnabled: style.isResizable && onColumnCountChange != nil)
         .animation(.smooth.speed(2.0), value: columnCount)
         .animation(.smooth.speed(2.0), value: style)
     }
@@ -177,6 +219,15 @@ struct AlbumsSection<Content: View>: View {
                 .albumDropDestination(onDrop: onDrop, onDropFiles: onDropFiles, album: album)
         } else {
             AlbumGridLabel(namespace: albumTransitionNamespace, album: album, style: labelStyle)
+        }
+    }
+
+    @ViewBuilder
+    private func pinchZoomCell(at index: Int, style labelStyle: AlbumLabelStyle) -> some View {
+        if index < albums.count {
+            AlbumGridLabel(namespace: nil, album: albums[index], style: labelStyle)
+        } else {
+            RecentlyDeletedAlbumGridLabel(style: labelStyle)
         }
     }
 

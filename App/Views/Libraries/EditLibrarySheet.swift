@@ -238,9 +238,9 @@ struct EditLibrarySheet: View {
         }
         .sheet(isPresented: $isBackupSheetPresented) {
             if let backupFolderURL {
-                MoreBackupView(destinationURL: backupFolderURL,
-                              collectionID: library.id,
-                              libraryName: libraryManager.displayName(for: library))
+                SettingsBackupView(destinationURL: backupFolderURL,
+                                   collectionID: library.id,
+                                   libraryName: libraryManager.displayName(for: library))
             }
         }
         .sheet(isPresented: $isDuplicateCheckerPresented) {

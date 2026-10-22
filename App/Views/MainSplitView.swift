@@ -19,7 +19,7 @@ struct MainSplitView: View {
     @State var albums: [Album] = []
     @State var photosItems: [PHCollectionItem] = []
     @State var selectedView: ViewPath? = .collection
-    @State var isMoreViewPresenting: Bool = false
+    @State var isSettingsPresented: Bool = false
     @State var isLibraryManagerPresented: Bool = false
 
     @AppStorage(openPicsInNewWindowKey,
@@ -80,8 +80,8 @@ struct MainSplitView: View {
                 selectedView = .collection
             }
         }
-        .sheet(isPresented: $isMoreViewPresenting) {
-            MoreView()
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView()
         }
         .sheet(isPresented: $isLibraryManagerPresented) {
             LibraryManagerSheet()
@@ -156,9 +156,9 @@ struct MainSplitView: View {
                     }
 #if !targetEnvironment(macCatalyst)
                     Button {
-                        isMoreViewPresenting = true
+                        isSettingsPresented = true
                     } label: {
-                        Label("ViewTitle.More", systemImage: "ellipsis")
+                        Label("ViewTitle.Settings", systemImage: "gearshape")
                     }
 #endif
                 }

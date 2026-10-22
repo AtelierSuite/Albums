@@ -16,3 +16,15 @@
 - Keep `Sendable` correct: don't capture non-`Sendable` values across
   isolation boundaries, and prefer marking types `Sendable` over reaching for
   `@unchecked Sendable` or `nonisolated(unsafe)`.
+
+# Commits
+
+- Always commit changes once they are made; don't leave work uncommitted.
+- Commit directly to the `main` branch unless told otherwise; don't create
+  feature branches on your own.
+- Keep each commit focused on one logical change. For large changes, split
+  the work into multiple commits so each significant change (e.g. a refactor,
+  a new feature, a migration, a UI change) is in its own commit, rather than
+  one commit for everything.
+- Write commit messages as a short imperative summary of the change (e.g.
+  "Rename More sheet to Settings").

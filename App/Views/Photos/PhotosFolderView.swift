@@ -42,8 +42,6 @@ struct PhotosFolderView: View {
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumStyleState: ViewStyle
     @AppStorage(wrappedValue: 3, "AlbumColumnCount",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumColumnCount: Int
-    @AppStorage(wrappedValue: 4, "PicColumnCount",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var picColumnCount: Int
 
     var body: some View {
         ScrollView(.vertical) {
@@ -151,11 +149,8 @@ struct PhotosFolderView: View {
             }
             Section(String(localized: "Albums.Albums", table: "Albums")) {
                 if albumStyleState == .grid {
-                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4], kind: .album)
+                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4])
                 }
-            }
-            Section(String(localized: "Albums.Pics", table: "Albums")) {
-                GridSizePicker(selection: $picColumnCount, sizes: [3, 4, 5, 8], kind: .pics)
             }
         } label: {
             Label("Shared.Filter", systemImage: "line.3.horizontal.decrease")

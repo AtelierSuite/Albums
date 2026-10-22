@@ -3,7 +3,7 @@ import SwiftUI
 
 let settingsWindowID = "settings"
 
-struct MoreView: View {
+struct SettingsView: View {
 
     @Environment(\.dismiss) var dismiss
     @Environment(AuthenticationManager.self) var auth
@@ -110,9 +110,9 @@ struct MoreView: View {
             #if DEBUG
             Section {
                 NavigationLink(String(localized: "Labs.FileExplorer", table: "More"),
-                               value: ViewPath.moreLabsFileExplorer)
+                               value: ViewPath.settingsLabsFileExplorer)
                 NavigationLink(String(localized: "Labs.TestData", table: "More"),
-                               value: ViewPath.moreLabsTestData)
+                               value: ViewPath.settingsLabsTestData)
             } header: {
                 Text("Labs", tableName: "More")
             } footer: {
@@ -129,29 +129,29 @@ struct MoreView: View {
                     }
                 }
                 .tint(.primary)
-                NavigationLink(String(localized: "Attributions", table: "More"), value: ViewPath.moreAttributions)
+                NavigationLink(String(localized: "Attributions", table: "More"), value: ViewPath.settingsAttributions)
             }
         }
         .tint(.accent)
 #if targetEnvironment(macCatalyst)
         .navigationTitle("")
 #else
-        .navigationTitle("ViewTitle.More")
+        .navigationTitle("ViewTitle.Settings")
 #endif
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: ViewPath.self) { viewPath in
             switch viewPath {
-            case .moreDebug: MoreExperimentsView()
-            case .moreAttributions: MoreLicensesView()
-            case .moreLabsFileExplorer: LabsFileExplorerView()
-            case .moreLabsTestData: LabsTestDataView()
+            case .settingsDebug: SettingsExperimentsView()
+            case .settingsAttributions: SettingsLicensesView()
+            case .settingsLabsFileExplorer: LabsFileExplorerView()
+            case .settingsLabsTestData: LabsTestDataView()
             default: Color.clear
             }
         }
     }
 
     var body: some View {
-        NavigationStack(path: $navigation.moreTabPath) {
+        NavigationStack(path: $navigation.settingsTabPath) {
             listContent
                 .toolbar {
 #if !targetEnvironment(macCatalyst)
