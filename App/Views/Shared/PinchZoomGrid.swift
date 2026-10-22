@@ -1,15 +1,16 @@
 import SwiftUI
 import UIKit
 
-struct PinchZoomGrid<Content: View, Preview: View>: View {
+struct PinchZoomGrid<Content: View>: View {
 
     var columnCount: Int
     var itemCount: Int
     var range: ClosedRange<Int> = 2...10
     var spacing: CGFloat = 2.0
     var onColumnCountChange: ((Int) -> Void)?
+    var cachedImage: (Int) -> UIImage?
+    var loadImage: (Int) async -> UIImage?
     @ViewBuilder var content: () -> Content
-    @ViewBuilder var preview: (Int, Int) -> Preview
 
     private static var coordinateSpace: String { "PinchZoomGridSpace" }
 
@@ -25,7 +26,7 @@ struct PinchZoomGrid<Content: View, Preview: View>: View {
                 gridWidth = width
             }
             .overlay(alignment: .topLeading) {
-                PinchZoomOverlay(zoom: zoom, preview: preview)
+                PinchZoomOverlay(zoom: zoom, cachedImage: cachedImage, loadImage: loadImage)
                     .allowsHitTesting(false)
             }
             .coordinateSpace(.named(Self.coordinateSpace))
@@ -194,58 +195,39 @@ struct PinchZoomMorph {
     var pitch: CGFloat
 }
 
-private struct PinchZoomOverlay<Preview: View>: View {
+private struct PinchZoomOverlay: View {
 
     var zoom: PinchZoomState
-    var preview: (Int, Int) -> Preview
+    var cachedImage: (Int) -> UIImage?
+    var loadImage: (Int) async -> UIImage?
 
     var body: some View {
         if let session = zoom.session {
             PinchZoomLayers(session: session,
                             progress: zoom.progress,
                             focusY: zoom.focusY,
-                            preview: preview)
+                            cachedImage: cachedImage,
+                            loadImage: loadImage)
         }
     }
 }
 
 @Animatable
-private struct PinchZoomLayers<Preview: View>: View {
+private struct PinchZoomLayers: View {
 
     @AnimatableIgnored var session: PinchZoomSession
     var progress: CGFloat
     var focusY: CGFloat
-    @AnimatableIgnored var preview: (Int, Int) -> Preview
+    @AnimatableIgnored var cachedImage: (Int) -> UIImage?
+    @AnimatableIgnored var loadImage: (Int) async -> UIImage?
 
     var body: some View {
-        let morph = session.morph(progress: progress)
-        let fromItems = session.visibleItems(columns: morph.fewerColumns, morph: morph, focusY: focusY)
-        let toItems = session.visibleItems(columns: morph.moreColumns, morph: morph, focusY: focusY)
-        let items = min(fromItems.lowerBound, toItems.lowerBound)..<max(fromItems.upperBound, toItems.upperBound)
-        let columns = morph.blend < 0.5 ? morph.fewerColumns : morph.moreColumns
-        ZStack(alignment: .topLeading) {
-            ForEach(items, id: \.self) { index in
-                let start = session.cellOrigin(index: index, columns: morph.fewerColumns, morph: morph, focusY: focusY)
-                let end = session.cellOrigin(index: index, columns: morph.moreColumns, morph: morph, focusY: focusY)
-                if abs(end.x - start.x) > morph.pitch * 1.5 {
-                    cell(index, columns: columns, size: morph.cellWidth, at: start)
-                        .opacity(1.0 - morph.blend)
-                    cell(index, columns: columns, size: morph.cellWidth, at: end)
-                        .opacity(morph.blend)
-                } else {
-                    cell(index, columns: columns, size: morph.cellWidth,
-                         at: CGPoint(x: start.x + (end.x - start.x) * morph.blend,
-                                     y: start.y + (end.y - start.y) * morph.blend))
-                }
-            }
-        }
-        .frame(width: session.width, alignment: .topLeading)
-    }
-
-    private func cell(_ index: Int, columns: Int, size: CGFloat, at origin: CGPoint) -> some View {
-        preview(index, columns)
-            .frame(width: size, height: size)
-            .offset(x: origin.x, y: origin.y)
+        PinchZoomCanvas(session: session,
+                        progress: progress,
+                        focusY: focusY,
+                        cachedImage: cachedImage,
+                        loadImage: loadImage)
+            .frame(width: session.width, height: 1.0, alignment: .topLeading)
     }
 }
 

@@ -18,6 +18,21 @@ final class ThumbnailCache: @unchecked Sendable {
         let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
         cache.setObject(image, forKey: key as NSString, cost: cost)
     }
+
+    func thumbnail(for pic: Pic) async -> UIImage? {
+        if let cached = image(forKey: pic.id) {
+            return cached
+        }
+        var thumbData = pic.thumbnailData
+        if thumbData == nil {
+            thumbData = await DataActor.shared.thumbnailData(forPicWithID: pic.id)
+        }
+        guard let thumbData,
+              let uiImage = UIImage(data: thumbData),
+              let prepared = await uiImage.byPreparingForDisplay() else { return nil }
+        setImage(prepared, forKey: pic.id)
+        return prepared
+    }
 }
 
 struct PicLabel: View {
@@ -52,24 +67,10 @@ struct PicLabel: View {
             .contentShape(.rect)
             .clipShape(.rect(cornerRadius: 4.0))
             .task(id: pic.id) {
-                let picID = pic.id
-                if let cached = ThumbnailCache.shared.image(forKey: picID) {
-                    reportAspectRatio(for: cached)
-                    thumbnail = Image(uiImage: cached)
-                    isThumbnailReadyToPresent = true
-                    return
-                }
-                var thumbData = pic.thumbnailData
-                if thumbData == nil {
-                    thumbData = await DataActor.shared.thumbnailData(forPicWithID: picID)
-                }
-                if let thumbData,
-                   let uiImage = UIImage(data: thumbData),
-                   let prepared = await uiImage.byPreparingForDisplay() {
+                if let image = await ThumbnailCache.shared.thumbnail(for: pic) {
                     guard !Task.isCancelled else { return }
-                    ThumbnailCache.shared.setImage(prepared, forKey: picID)
-                    reportAspectRatio(for: prepared)
-                    thumbnail = Image(uiImage: prepared)
+                    reportAspectRatio(for: image)
+                    thumbnail = Image(uiImage: image)
                 }
                 isThumbnailReadyToPresent = true
             }

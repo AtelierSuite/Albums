@@ -42,10 +42,10 @@ struct PicsGrid<Content: View>: View {
             } else {
                 PinchZoomGrid(columnCount: columnCount,
                               itemCount: pics.count + min(placeholderCount, columnCount * 10),
-                              onColumnCountChange: onColumnCountChange) {
+                              onColumnCountChange: onColumnCountChange,
+                              cachedImage: cachedThumbnail(at:),
+                              loadImage: loadThumbnail(at:)) {
                     squareGrid
-                } preview: { index, columns in
-                    previewCell(at: index, columns: columns)
                 }
             }
         }
@@ -281,24 +281,14 @@ extension PicsGrid {
         return columns
     }
 
-    @ViewBuilder
-    func previewCell(at index: Int, columns: Int) -> some View {
-        if index < pics.count {
-            let pic = pics[index]
-            PicLabel(pic: pic,
-                     showsPinBadge: onTogglePin != nil && pic.isPinned,
-                     usesCompactBadges: usesCompactBadges(columns: columns))
-                .overlay {
-                    if isSelecting, let isSelected {
-                        ZStack(alignment: .bottomTrailing) {
-                            SelectionOverlay(isSelected(pic))
-                            Color.clear
-                        }
-                    }
-                }
-        } else {
-            placeholderCell
-        }
+    func cachedThumbnail(at index: Int) -> UIImage? {
+        guard index < pics.count else { return nil }
+        return ThumbnailCache.shared.image(forKey: pics[index].id)
+    }
+
+    func loadThumbnail(at index: Int) async -> UIImage? {
+        guard index < pics.count else { return nil }
+        return await ThumbnailCache.shared.thumbnail(for: pics[index])
     }
 
     func usesCompactBadges(columns: Int) -> Bool {
