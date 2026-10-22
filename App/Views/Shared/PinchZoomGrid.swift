@@ -7,6 +7,7 @@ struct PinchZoomGrid<Content: View>: View {
     var itemCount: Int
     var range: ClosedRange<Int> = 2...10
     var spacing: CGFloat = 2.0
+    var cropsToTop: Bool = false
     var onColumnCountChange: ((Int) -> Void)?
     var cachedImage: (Int) -> UIImage?
     var loadImage: (Int) async -> UIImage?
@@ -50,6 +51,7 @@ struct PinchZoomGrid<Content: View>: View {
                                         upper: max(range.upperBound, start),
                                         width: gridWidth,
                                         spacing: spacing,
+                                        cropsToTop: cropsToTop,
                                         itemCount: itemCount,
                                         viewport: viewport,
                                         anchorIndex: row * start + column,
@@ -117,6 +119,7 @@ struct PinchZoomSession {
     var upper: Int
     var width: CGFloat
     var spacing: CGFloat
+    var cropsToTop: Bool
     var itemCount: Int
     var viewport: CGRect
     var anchorIndex: Int
@@ -161,7 +164,7 @@ struct PinchZoomSession {
     func morph(progress: CGFloat) -> PinchZoomMorph {
         let fewer = min(max(Int(progress.rounded(.down)), lower), upper)
         let more = min(fewer + 1, upper)
-        let fraction = more == fewer ? 0.0 : min(max((progress - CGFloat(fewer)) / 0.3, 0.0), 1.0)
+        let fraction = more == fewer ? 0.0 : min(max((progress - CGFloat(fewer) - 0.35) / 0.3, 0.0), 1.0)
         let cellWidth = cellWidth(columns: progress)
         return PinchZoomMorph(fewerColumns: fewer,
                               moreColumns: more,

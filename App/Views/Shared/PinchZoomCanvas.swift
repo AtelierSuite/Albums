@@ -30,6 +30,7 @@ final class PinchZoomCanvasView: UIView {
     private var reusable: [CALayer] = []
     private var images: [Int: CGImage] = [:]
     private var requested: Set<Int> = []
+    private var cropsToTop = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,6 +42,7 @@ final class PinchZoomCanvasView: UIView {
     }
 
     func update(session: PinchZoomSession, progress: CGFloat, focusY: CGFloat) {
+        cropsToTop = session.cropsToTop
         let morph = session.morph(progress: progress)
         let fewerItems = session.visibleItems(columns: morph.fewerColumns, morph: morph, focusY: focusY)
         let moreItems = session.visibleItems(columns: morph.moreColumns, morph: morph, focusY: focusY)
@@ -83,14 +85,31 @@ final class PinchZoomCanvasView: UIView {
         layer.cornerRadius = 4.0
         layer.cornerCurve = .continuous
         layer.masksToBounds = true
-        layer.contentsGravity = .resizeAspectFill
+        layer.contentsGravity = .resize
         layer.backgroundColor = UIColor.label.withAlphaComponent(0.05).resolvedColor(with: traitCollection).cgColor
-        layer.contents = image(for: index)
+        setContents(image(for: index), of: layer)
         if layer.superlayer == nil {
             self.layer.addSublayer(layer)
         }
         layer.isHidden = false
         return layer
+    }
+
+    private func setContents(_ image: CGImage?, of layer: CALayer?) {
+        guard let layer else { return }
+        layer.contents = image
+        guard let image, image.width > 0, image.height > 0 else {
+            layer.contentsRect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
+            return
+        }
+        let aspectRatio = CGFloat(image.width) / CGFloat(image.height)
+        if aspectRatio > 1.0 {
+            let width = 1.0 / aspectRatio
+            layer.contentsRect = CGRect(x: (1.0 - width) / 2.0, y: 0.0, width: width, height: 1.0)
+        } else {
+            let height = aspectRatio
+            layer.contentsRect = CGRect(x: 0.0, y: cropsToTop ? 0.0 : (1.0 - height) / 2.0, width: 1.0, height: height)
+        }
     }
 
     private func recycle(_ layer: CALayer?) {
@@ -114,8 +133,8 @@ final class PinchZoomCanvasView: UIView {
         Task {
             guard let image = await loadImage(index)?.cgImage else { return }
             images[index] = image
-            cells[index]?.contents = image
-            ghosts[index]?.contents = image
+            setContents(image, of: cells[index])
+            setContents(image, of: ghosts[index])
         }
         return nil
     }

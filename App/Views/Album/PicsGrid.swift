@@ -42,6 +42,7 @@ struct PicsGrid<Content: View>: View {
             } else {
                 PinchZoomGrid(columnCount: columnCount,
                               itemCount: pics.count + min(placeholderCount, columnCount * 10),
+                              cropsToTop: true,
                               onColumnCountChange: onColumnCountChange,
                               cachedImage: cachedThumbnail(at:),
                               loadImage: loadThumbnail(at:)) {
