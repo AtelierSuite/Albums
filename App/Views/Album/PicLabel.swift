@@ -149,7 +149,7 @@ struct PicLabel: View {
                         .frame(width: usesCompactBadges ? 14.0 : 22.0,
                                height: usesCompactBadges ? 14.0 : 22.0,
                                alignment: .center)
-                        .glassEffect(.regular, in: .circle)
+                        .glassEffect(.regular.tint(.accentColor), in: .circle)
                         .padding(usesCompactBadges ? 2.0 : 4.0)
                         .accessibilityLabel(Text("Shared.Pinned"))
                 }
