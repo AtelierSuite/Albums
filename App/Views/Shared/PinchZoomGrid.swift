@@ -54,7 +54,6 @@ struct PinchZoomGrid<Content: View, Preview: View>: View {
                                         anchorIndex: row * start + column,
                                         anchorFraction: fraction)
         zoom.progress = CGFloat(start)
-        zoom.focusX = location.x
         zoom.focusY = location.y
     }
 
@@ -63,7 +62,6 @@ struct PinchZoomGrid<Content: View, Preview: View>: View {
         let startWidth = session.cellWidth(columns: CGFloat(session.startCount))
         let columns = session.columns(forCellWidth: startWidth * max(scale, 0.01))
         zoom.progress = session.rubberBanded(columns)
-        zoom.focusX = location.x
         zoom.focusY = location.y
     }
 
@@ -108,7 +106,6 @@ struct PinchZoomGrid<Content: View, Preview: View>: View {
 final class PinchZoomState {
     var session: PinchZoomSession?
     var progress: CGFloat = 0.0
-    var focusX: CGFloat = 0.0
     var focusY: CGFloat = 0.0
     var isSettling = false
 }
@@ -160,41 +157,41 @@ struct PinchZoomSession {
         return CGFloat(rows) * cellWidth(columns: CGFloat(columns)) + CGFloat(rows - 1) * spacing
     }
 
-    func visibleLayers(progress: CGFloat) -> [PinchZoomLayerVisibility] {
-        let lowerCount = min(max(Int(progress.rounded(.down)), lower), upper)
-        let upperCount = min(lowerCount + 1, upper)
-        guard upperCount != lowerCount else {
-            return [PinchZoomLayerVisibility(columns: lowerCount, opacity: 1.0)]
-        }
-        let fraction = progress - CGFloat(lowerCount)
-        return [PinchZoomLayerVisibility(columns: lowerCount, opacity: min(max((0.65 - fraction) / 0.15, 0.0), 1.0)),
-                PinchZoomLayerVisibility(columns: upperCount, opacity: min(max((fraction - 0.35) / 0.15, 0.0), 1.0))]
-            .filter { $0.opacity > 0.0 }
+    func morph(progress: CGFloat) -> PinchZoomMorph {
+        let fewer = min(max(Int(progress.rounded(.down)), lower), upper)
+        let more = min(fewer + 1, upper)
+        let fraction = more == fewer ? 0.0 : min(max((progress - CGFloat(fewer)) / 0.3, 0.0), 1.0)
+        let cellWidth = cellWidth(columns: progress)
+        return PinchZoomMorph(fewerColumns: fewer,
+                              moreColumns: more,
+                              blend: fraction * fraction * (3.0 - 2.0 * fraction),
+                              cellWidth: cellWidth,
+                              pitch: cellWidth + spacing)
     }
 
-    func scale(columns: Int, progress: CGFloat) -> CGFloat {
-        cellWidth(columns: progress) / cellWidth(columns: CGFloat(columns))
+    func cellOrigin(index: Int, columns: Int, morph: PinchZoomMorph, focusY: CGFloat) -> CGPoint {
+        let anchorTop = focusY - anchorFraction * morph.cellWidth
+        return CGPoint(x: CGFloat(index % columns) * morph.pitch,
+                       y: anchorTop + CGFloat(index / columns - anchorIndex / columns) * morph.pitch)
     }
 
-    func offset(columns: Int, scale: CGFloat, focus: CGPoint) -> CGSize {
-        CGSize(width: focus.x * (1.0 - scale), height: focus.y - scale * anchorY(columns: columns))
-    }
-
-    func visibleItems(columns: Int, scale: CGFloat, offset: CGSize) -> Range<Int> {
-        let pitch = cellWidth(columns: CGFloat(columns)) + spacing
-        let top = (viewport.minY - offset.height) / scale
-        let bottom = (viewport.maxY - offset.height) / scale
-        let firstRow = max(Int((top / pitch).rounded(.down)), 0)
-        let lastRow = Int((bottom / pitch).rounded(.down))
+    func visibleItems(columns: Int, morph: PinchZoomMorph, focusY: CGFloat) -> Range<Int> {
+        let anchorTop = focusY - anchorFraction * morph.cellWidth
+        let anchorRow = anchorIndex / columns
+        let firstRow = max(anchorRow + Int(((viewport.minY - anchorTop) / morph.pitch).rounded(.down)), 0)
+        let lastRow = anchorRow + Int(((viewport.maxY - anchorTop) / morph.pitch).rounded(.down))
         let first = min(firstRow * columns, itemCount)
         let last = min(max((lastRow + 1) * columns, first), itemCount)
         return first..<last
     }
 }
 
-struct PinchZoomLayerVisibility {
-    var columns: Int
-    var opacity: Double
+struct PinchZoomMorph {
+    var fewerColumns: Int
+    var moreColumns: Int
+    var blend: CGFloat
+    var cellWidth: CGFloat
+    var pitch: CGFloat
 }
 
 private struct PinchZoomOverlay<Preview: View>: View {
@@ -206,7 +203,6 @@ private struct PinchZoomOverlay<Preview: View>: View {
         if let session = zoom.session {
             PinchZoomLayers(session: session,
                             progress: zoom.progress,
-                            focusX: zoom.focusX,
                             focusY: zoom.focusY,
                             preview: preview)
         }
@@ -218,48 +214,38 @@ private struct PinchZoomLayers<Preview: View>: View {
 
     @AnimatableIgnored var session: PinchZoomSession
     var progress: CGFloat
-    var focusX: CGFloat
     var focusY: CGFloat
     @AnimatableIgnored var preview: (Int, Int) -> Preview
 
     var body: some View {
-        let focus = CGPoint(x: focusX, y: focusY)
+        let morph = session.morph(progress: progress)
+        let fromItems = session.visibleItems(columns: morph.fewerColumns, morph: morph, focusY: focusY)
+        let toItems = session.visibleItems(columns: morph.moreColumns, morph: morph, focusY: focusY)
+        let items = min(fromItems.lowerBound, toItems.lowerBound)..<max(fromItems.upperBound, toItems.upperBound)
+        let columns = morph.blend < 0.5 ? morph.fewerColumns : morph.moreColumns
         ZStack(alignment: .topLeading) {
-            ForEach(session.visibleLayers(progress: progress), id: \.columns) { layer in
-                let scale = session.scale(columns: layer.columns, progress: progress)
-                let offset = session.offset(columns: layer.columns, scale: scale, focus: focus)
-                PinchZoomLayer(columns: layer.columns,
-                               cellWidth: session.cellWidth(columns: CGFloat(layer.columns)),
-                               spacing: session.spacing,
-                               items: session.visibleItems(columns: layer.columns, scale: scale, offset: offset),
-                               preview: preview)
-                    .scaleEffect(scale, anchor: .topLeading)
-                    .offset(offset)
-                    .opacity(layer.opacity)
+            ForEach(items, id: \.self) { index in
+                let start = session.cellOrigin(index: index, columns: morph.fewerColumns, morph: morph, focusY: focusY)
+                let end = session.cellOrigin(index: index, columns: morph.moreColumns, morph: morph, focusY: focusY)
+                if abs(end.x - start.x) > morph.pitch * 1.5 {
+                    cell(index, columns: columns, size: morph.cellWidth, at: start)
+                        .opacity(1.0 - morph.blend)
+                    cell(index, columns: columns, size: morph.cellWidth, at: end)
+                        .opacity(morph.blend)
+                } else {
+                    cell(index, columns: columns, size: morph.cellWidth,
+                         at: CGPoint(x: start.x + (end.x - start.x) * morph.blend,
+                                     y: start.y + (end.y - start.y) * morph.blend))
+                }
             }
         }
         .frame(width: session.width, alignment: .topLeading)
     }
-}
 
-private struct PinchZoomLayer<Preview: View>: View {
-
-    var columns: Int
-    var cellWidth: CGFloat
-    var spacing: CGFloat
-    var items: Range<Int>
-    var preview: (Int, Int) -> Preview
-
-    var body: some View {
-        let pitch = cellWidth + spacing
-        ZStack(alignment: .topLeading) {
-            ForEach(items, id: \.self) { index in
-                preview(index, columns)
-                    .frame(width: cellWidth, height: cellWidth)
-                    .offset(x: CGFloat(index % columns) * pitch, y: CGFloat(index / columns) * pitch)
-            }
-        }
-        .frame(width: cellWidth, height: cellWidth, alignment: .topLeading)
+    private func cell(_ index: Int, columns: Int, size: CGFloat, at origin: CGPoint) -> some View {
+        preview(index, columns)
+            .frame(width: size, height: size)
+            .offset(x: origin.x, y: origin.y)
     }
 }
 
