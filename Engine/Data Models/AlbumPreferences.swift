@@ -30,7 +30,7 @@ public struct AlbumPreferences: Sendable, Equatable {
     public static let defaults = AlbumPreferences(
         albumID: "",
         albumSort: "nameAscending",
-        albumViewStyle: "grid",
+        albumViewStyle: "grid.mosaic",
         albumColumnCount: 4,
         picSort: "dateAddedDescending",
         picColumnCount: 4,

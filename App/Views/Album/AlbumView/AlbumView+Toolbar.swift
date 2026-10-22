@@ -160,23 +160,7 @@ extension AlbumView {
                 isIntelligentSortPresented = true
             }
             Section(String(localized: "Albums.Albums", table: "Albums")) {
-                Picker(String(localized: "Albums.Style", table: "Albums"),
-                       systemImage: "paintbrush",
-                       selection: ($albumStyleState.animation(.smooth.speed(2.0)))) {
-                    Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                          systemImage: "square.grid.2x2")
-                        .tag(ViewStyle.grid)
-                    Label(String(localized: "Albums.Style.List", table: "Albums"),
-                          systemImage: "list.bullet")
-                        .tag(ViewStyle.list)
-                    Label(String(localized: "Albums.Style.Carousel", table: "Albums"),
-                          systemImage: "rectangle.on.rectangle")
-                        .tag(ViewStyle.carousel)
-                }
-                .pickerStyle(.menu)
-                if albumStyleState == .grid {
-                    GridSizePicker(selection: $albumColumnCount, sizes: [2, 3, 4, 5])
-                }
+                AlbumViewStylePicker(selection: $albumStyleState)
                 Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $albumSortState) {
                     Text("Shared.Sort.Name.Ascending")
                         .tag(SortType.nameAscending)

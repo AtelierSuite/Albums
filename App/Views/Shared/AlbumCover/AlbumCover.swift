@@ -1,6 +1,13 @@
 import Photos
 import SwiftUI
 
+enum AlbumCoverStyle {
+    case stack
+    case flat(cornerRadius: CGFloat = 10.0)
+    case peek
+    case mosaic
+}
+
 struct AlbumCover: View {
 
     var name: String
@@ -12,6 +19,7 @@ struct AlbumCover: View {
     var secondaryImage: Image?
     var tertiaryImage: Image?
     var isDownloading: Bool = false
+    var style: AlbumCoverStyle = .stack
 
     init(
         name: String,
@@ -21,7 +29,8 @@ struct AlbumCover: View {
         primaryImage: Image? = nil,
         secondaryImage: Image? = nil,
         tertiaryImage: Image? = nil,
-        isDownloading: Bool = false
+        isDownloading: Bool = false,
+        style: AlbumCoverStyle = .stack
     ) {
         self.name = name
         self.length = length
@@ -31,9 +40,28 @@ struct AlbumCover: View {
         self.secondaryImage = secondaryImage
         self.tertiaryImage = tertiaryImage
         self.isDownloading = isDownloading
+        self.style = style
     }
 
     var body: some View {
+        switch style {
+        case .stack:
+            stackBody
+        case .flat(let cornerRadius):
+            AlbumFlatCover(name: name, length: length, image: primaryImage,
+                           cornerRadius: cornerRadius, isDownloading: isDownloading)
+        case .peek:
+            AlbumPeekCover(name: name, length: length, primaryImage: primaryImage,
+                           secondaryImage: secondaryImage, tertiaryImage: tertiaryImage,
+                           isDownloading: isDownloading)
+        case .mosaic:
+            AlbumMosaicCover(name: name, length: length, primaryImage: primaryImage,
+                             secondaryImage: secondaryImage, tertiaryImage: tertiaryImage,
+                             isDownloading: isDownloading)
+        }
+    }
+
+    var stackBody: some View {
         Canvas { context, size in
             let itemCountTag = "itemCount"
             // The canvas is physically larger than the layout size (via frame/padding)
@@ -205,4 +233,140 @@ struct AlbumCover: View {
     }
     // swiftlint:enable function_parameter_count
 
+}
+
+struct AlbumCoverFill: View {
+
+    var name: String
+    var image: Image?
+
+    var body: some View {
+        if let image {
+            Color.clear
+                .overlay {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                }
+                .clipped()
+        } else {
+            let colors = Color.gradient(from: name)
+            LinearGradient(colors: [colors.primary, colors.secondary],
+                           startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
+}
+
+struct AlbumFlatCover: View {
+
+    var name: String
+    var length: CGFloat?
+    var image: Image?
+    var cornerRadius: CGFloat = 10.0
+    var isDownloading: Bool = false
+
+    var body: some View {
+        Color.clear
+            .aspectRatio(1.0, contentMode: .fit)
+            .frame(width: length)
+            .overlay {
+                AlbumCoverFill(name: name, image: image)
+            }
+            .overlay {
+                if isDownloading {
+                    Color.black.opacity(0.3)
+                }
+            }
+            .clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(.primary.opacity(0.12), lineWidth: 0.5)
+            }
+            .transition(.opacity.animation(.smooth.speed(2)))
+    }
+}
+
+struct AlbumPeekCover: View {
+
+    var name: String
+    var length: CGFloat?
+    var primaryImage: Image?
+    var secondaryImage: Image?
+    var tertiaryImage: Image?
+    var isDownloading: Bool = false
+
+    static let peekHeight: CGFloat = 10.0
+
+    var body: some View {
+        AlbumFlatCover(name: name, image: primaryImage, isDownloading: isDownloading)
+            .frame(width: length)
+            .shadow(color: .black.opacity(0.18), radius: 1.5, y: 1.0)
+            .background(alignment: .top) {
+                GeometryReader { proxy in
+                    let width = proxy.size.width
+                    ZStack(alignment: .top) {
+                        if let tertiaryImage {
+                            backCard(tertiaryImage, width: width * 0.72, height: width)
+                                .offset(y: -Self.peekHeight)
+                                .opacity(0.7)
+                        }
+                        if let secondaryImage {
+                            backCard(secondaryImage, width: width * 0.86, height: width)
+                                .offset(y: -Self.peekHeight / 2)
+                                .opacity(0.9)
+                        }
+                    }
+                    .frame(width: width)
+                }
+            }
+            .padding(.top, Self.peekHeight)
+    }
+
+    func backCard(_ image: Image, width: CGFloat, height: CGFloat) -> some View {
+        AlbumCoverFill(name: name, image: image)
+            .saturation(0.8)
+            .brightness(-0.12)
+            .frame(width: width, height: height)
+            .clipShape(.rect(cornerRadius: 9.0, style: .continuous))
+    }
+}
+
+struct AlbumMosaicCover: View {
+
+    var name: String
+    var length: CGFloat?
+    var primaryImage: Image?
+    var secondaryImage: Image?
+    var tertiaryImage: Image?
+    var isDownloading: Bool = false
+
+    var body: some View {
+        Color.clear
+            .aspectRatio(1.0, contentMode: .fit)
+            .frame(width: length)
+            .overlay {
+                HStack(spacing: 1.5) {
+                    AlbumCoverFill(name: name, image: primaryImage)
+                    if secondaryImage != nil {
+                        VStack(spacing: 1.5) {
+                            AlbumCoverFill(name: name, image: secondaryImage)
+                            if tertiaryImage != nil {
+                                AlbumCoverFill(name: name, image: tertiaryImage)
+                            }
+                        }
+                    }
+                }
+            }
+            .overlay {
+                if isDownloading {
+                    Color.black.opacity(0.3)
+                }
+            }
+            .clipShape(.rect(cornerRadius: 12.0, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+                    .strokeBorder(.primary.opacity(0.12), lineWidth: 0.5)
+            }
+            .transition(.opacity.animation(.smooth.speed(2)))
+    }
 }

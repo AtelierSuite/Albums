@@ -2,9 +2,8 @@ import Engine
 import SwiftUI
 
 struct AlbumViewOptions {
-    var albumStyle: Binding<ViewStyle>
+    var albumStyle: Binding<AlbumViewStyle>
     var albumSort: Binding<SortType>
-    var albumColumnCount: Binding<Int>
     var picSort: Binding<PicSortType>
     var picStyle: Binding<ViewStyle>
     var hideSectionHeaders: Binding<Bool>

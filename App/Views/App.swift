@@ -549,18 +549,7 @@ struct MacCommands: Commands {
 
     @ViewBuilder
     private func albumOptions(_ options: AlbumViewOptions) -> some View {
-        Picker(String(localized: "Albums.Style", table: "Albums"),
-               selection: options.albumStyle.animation(.smooth.speed(2.0))) {
-            Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                  systemImage: "square.grid.2x2")
-                .tag(ViewStyle.grid)
-            Label(String(localized: "Albums.Style.List", table: "Albums"),
-                  systemImage: "list.bullet")
-                .tag(ViewStyle.list)
-            Label(String(localized: "Albums.Style.Carousel", table: "Albums"),
-                  systemImage: "rectangle.on.rectangle")
-                .tag(ViewStyle.carousel)
-        }
+        AlbumViewStylePicker(selection: options.albumStyle)
         Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: options.albumSort) {
             Text("Shared.Sort.Name.Ascending")
                 .tag(SortType.nameAscending)
@@ -572,9 +561,6 @@ struct MacCommands: Commands {
                 .tag(SortType.sizeDescending)
         }
         .pickerStyle(.menu)
-        if options.albumStyle.wrappedValue == .grid {
-            GridSizePicker(selection: options.albumColumnCount, sizes: [2, 3, 4, 5])
-        }
     }
 
     @ViewBuilder

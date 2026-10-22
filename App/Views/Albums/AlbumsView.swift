@@ -11,8 +11,8 @@ struct AlbumsView: View {
 
     @State var albums: [Album] = []
     @State private var lastDataVersion: Int = -1
-    @AppStorage(wrappedValue: ViewStyle.grid, "AlbumViewStyle",
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: ViewStyle
+    @AppStorage(wrappedValue: AlbumViewStyle.mosaicGrid, "AlbumViewStyle",
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: AlbumViewStyle
 
     @State var viewerManager = ViewerManager()
 
@@ -20,7 +20,7 @@ struct AlbumsView: View {
         ZStack {
             NavigationStack(path: $navigation.albumsTabPath) {
                 ScrollView(.vertical) {
-                    AlbumsSection(albums: albums, style: $style,
+                    AlbumsSection(albums: albums, style: style,
                                   isKeptOffline: { OfflineAlbums.contains($0.id) },
                                   onToggleOffline: {
                                       OfflineAlbums.toggle($0.id, in: DataActor.shared.collectionID)
