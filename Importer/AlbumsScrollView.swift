@@ -93,6 +93,7 @@ struct AlbumsScrollView: View {
                 }
             }
         }
+        .scrollEdgeEffectStyle(.soft, for: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, isPresented: $isSearchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),

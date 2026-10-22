@@ -29,32 +29,31 @@ struct ShareView: View {
             if session.items.isEmpty {
                 NothingToSaveView(session: session)
             } else if !hasDefaultAlbum {
-                VStack(spacing: 0.0) {
-                    NavigationStack(path: $viewPath) {
-                        AlbumsScrollView(title: "ViewTitle.Importer",
-                                         session: session,
-                                         isSearching: $isSearching,
-                                         focusSearchOnAppear: openSearchWhenSharing)
-                            .id(libraryID)
-                            .toolbar {
-                                if libraries.count > 1 {
-                                    ToolbarItem(placement: .topBarLeading) {
-                                        libraryMenu
-                                    }
+                NavigationStack(path: $viewPath) {
+                    AlbumsScrollView(title: "ViewTitle.Importer",
+                                     session: session,
+                                     isSearching: $isSearching,
+                                     focusSearchOnAppear: openSearchWhenSharing)
+                        .id(libraryID)
+                        .safeAreaBar(edge: .bottom) { importButton }
+                        .toolbar {
+                            if libraries.count > 1 {
+                                ToolbarItem(placement: .topBarLeading) {
+                                    libraryMenu
                                 }
                             }
-                            .navigationDestination(for: ViewPath.self) { viewPath in
-                                if case .album(let album) = viewPath {
-                                    AlbumsScrollView(title: LocalizedStringKey(album.name),
-                                                     session: session,
-                                                     parentAlbum: album,
-                                                     isSearching: $isSearching)
-                                } else {
-                                    Color.clear
-                                }
+                        }
+                        .navigationDestination(for: ViewPath.self) { viewPath in
+                            if case .album(let album) = viewPath {
+                                AlbumsScrollView(title: LocalizedStringKey(album.name),
+                                                 session: session,
+                                                 parentAlbum: album,
+                                                 isSearching: $isSearching)
+                                    .safeAreaBar(edge: .bottom) { importButton }
+                            } else {
+                                Color.clear
                             }
-                    }
-                    importButton
+                        }
                 }
             }
             SaveSessionOverlay(session: session)
