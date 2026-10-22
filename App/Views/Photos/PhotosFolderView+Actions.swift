@@ -19,7 +19,8 @@ extension PhotosFolderView {
             items = collected.sortedAlbums(by: albumSort)
 
             if let ownPicsCollection = resolved.ownPicsCollection {
-                ownPicsFetchResult = photosManager.fetchAssets(in: ownPicsCollection)
+                ownPicsFetchResult = photosManager.fetchAssets(in: ownPicsCollection,
+                                                               ascending: picSort.isAscending)
             }
         } else {
             items = photosManager.fetchCollections(in: folder).sortedAlbums(by: albumSort)

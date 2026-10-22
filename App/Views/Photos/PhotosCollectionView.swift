@@ -36,11 +36,16 @@ struct PhotosCollectionView: View {
     @State var coverRefreshID: Int = 0
 
     @AppStorage(photosAlbumViewStyleKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumStyle: AlbumViewStyle = .mosaicGrid
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var albumStyle: AlbumViewStyle = .mosaicGrid
     @AppStorage(photosAlbumSortKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumSort: SortType = .nameAscending
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var albumSort: SortType = .nameAscending
     @AppStorage(photosAlbumColumnCountKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var albumColumnCount: Int = 4
+    @AppStorage(photosPicSortKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var picSort: PhotosPicSortType = .dateCreatedDescending
 
     var body: some View {
         Group {
@@ -68,6 +73,11 @@ struct PhotosCollectionView: View {
                 } else {
                     searchResults = photosManager.searchAlbums(matching: newValue).sortedAlbums(by: albumSort)
                 }
+            }
+        }
+        .onChange(of: picSort) { _, _ in
+            withAnimation(.smooth.speed(2.0)) {
+                rootAssets.reverse()
             }
         }
         .onChange(of: albumSort) { _, newValue in
@@ -138,6 +148,9 @@ struct PhotosCollectionView: View {
             Section(String(localized: "Albums.Albums", table: "Albums")) {
                 AlbumViewStylePicker(selection: $albumStyle)
                 AlbumSortPicker(selection: $albumSort)
+            }
+            Section(String(localized: "Albums.Pics", table: "Albums")) {
+                PhotosPicOptions()
             }
         } label: {
             Label("Shared.Filter", systemImage: "line.3.horizontal.decrease")

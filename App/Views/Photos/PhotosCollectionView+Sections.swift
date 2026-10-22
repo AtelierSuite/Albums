@@ -26,7 +26,7 @@ extension PhotosCollectionView {
         .task {
             if !hasFetchedRootAssets && !isFetchingRootAssets {
                 isFetchingRootAssets = true
-                rootAssets = await photosManager.fetchAssetsNotInAnyAlbum()
+                rootAssets = oriented(await photosManager.fetchAssetsNotInAnyAlbum())
                 hasFetchedRootAssets = true
                 isFetchingRootAssets = false
             }
@@ -83,15 +83,12 @@ extension PhotosCollectionView {
     var photosPicsSection: some View {
         Group {
             if !hasFetchedRootAssets {
-                SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"), count: 0)
-                    .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
+                PhotosPicsSectionHeader(count: 0)
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .padding(20.0)
             } else if !rootAssets.isEmpty {
-                SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
-                              count: rootAssets.count)
-                    .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
+                PhotosPicsSectionHeader(count: rootAssets.count)
                 PhotosAssetsGrid(namespace: namespace, assets: rootAssets)
             }
         }

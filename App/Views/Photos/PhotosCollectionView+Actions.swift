@@ -34,6 +34,10 @@ extension PhotosCollectionView {
         }
     }
 
+    func oriented(_ assets: [PHAsset]) -> [PHAsset] {
+        picSort.isAscending ? assets.reversed() : assets
+    }
+
     func refreshCollections() {
         items = photosManager.fetchTopLevelCollections().sortedAlbums(by: albumSort)
     }
@@ -44,7 +48,7 @@ extension PhotosCollectionView {
         Task {
             do {
                 try await photosManager.addAssets([asset], to: collection)
-                let updatedAssets = await photosManager.fetchAssetsNotInAnyAlbum()
+                let updatedAssets = oriented(await photosManager.fetchAssetsNotInAnyAlbum())
                 await MainActor.run {
                     withAnimation(.smooth.speed(2.0)) {
                         rootAssets = updatedAssets
