@@ -105,7 +105,7 @@ struct PicsGrid<Content: View>: View {
             heights[target] += 1.0 / max(entry.aspectRatio, 0.01)
         }
         for pic in pics {
-            place(MasonryEntry(id: pic.id, pic: pic, aspectRatio: aspectRatios[pic.id] ?? 1.0))
+            place(MasonryEntry(id: pic.id, pic: pic, aspectRatio: aspectRatio(for: pic)))
         }
         if placeholderCount > 0 {
             let visiblePlaceholders = min(placeholderCount, count * 10)
@@ -118,12 +118,36 @@ struct PicsGrid<Content: View>: View {
 
     @ViewBuilder
     private func picCell(for pic: Pic, maintainsAspectRatio: Bool) -> some View {
+        picCellBase(for: pic, maintainsAspectRatio: maintainsAspectRatio)
+            .modifier(DeferredOverlayModifier {
+                Color.clear
+                    .contentShape(.rect)
+                    .modifier(PicExportDraggableModifier(pic: pic, isSelecting: isSelecting))
+                    .contextMenu {
+                        picContextMenu(for: pic)
+                    } preview: {
+                        PicPreview(picID: pic.id)
+                    }
+            })
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isImage)
+            .accessibilityIdentifier("pic:\(pic.name)")
+            .onTapGesture {
+                onSelect(pic)
+            }
+            .modifier(PicTransitionSourceModifier(picID: pic.id, namespace: namespace))
+#if targetEnvironment(macCatalyst)
+            .hoverEffect(.highlight)
+#endif
+    }
+
+    private func picCellBase(for pic: Pic, maintainsAspectRatio: Bool) -> some View {
         PicLabel(pic: pic,
                  maintainsAspectRatio: maintainsAspectRatio,
                  showsPinBadge: onTogglePin != nil && pic.isPinned,
                  usesCompactBadges: usesCompactBadges,
                  onAspectRatio: maintainsAspectRatio ? { ratio in
-                     if aspectRatios[pic.id] != ratio {
+                     if abs(aspectRatio(for: pic) - ratio) > 0.001 {
                          aspectRatios[pic.id] = ratio
                      }
                  } : nil)
@@ -146,69 +170,60 @@ struct PicsGrid<Content: View>: View {
                 }
             }
             .contentShape(.rect)
-            .accessibilityIdentifier("pic:\(pic.name)")
-            .onTapGesture {
-                onSelect(pic)
-            }
-            .modifier(PicExportDraggableModifier(pic: pic, isSelecting: isSelecting))
-            .matchedTransitionSource(id: pic.id, in: namespace)
-            .contextMenu {
-                if !isSelecting {
-                    if enableSelection {
-                        Button("Shared.Select", systemImage: "checkmark.circle") {
-                            doWithAnimation {
-                                isSelecting = true
-                                onSelect(pic)
-                            }
-                        }
-                        Divider()
-                    }
-                    Button("Shared.Copy", systemImage: "doc.on.doc") {
-                        Task {
-                            if let data = await DataActor.shared.imageData(forPicWithID: pic.id),
-                               let image = UIImage(data: data) {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                    }
-                    ShareLink(item: PicShareable(picID: pic.id),
-                              preview: SharePreview(pic.name,
-                                                    image: PicShareable(picID: pic.id))) {
-                        Label("Shared.Share", systemImage: "square.and.arrow.up")
-                    }
-                    pinMenuItem(for: pic)
-                    if let onRename {
-                        Divider()
-                        Button("Shared.Rename", systemImage: "pencil") {
-                            onRename(pic)
-                        }
-                    }
-                    Divider()
-                    if let albumID = pic.containingAlbumID {
-                        Button("Shared.SetAsCover", systemImage: "photo") {
-                            Task {
-                                await DataActor.shared.setAsAlbumCover(for: pic.id)
-                                AlbumCoverCache.shared.removeImages(forAlbumID: albumID)
-                            }
-                        }
-                    }
-                    Divider()
-                    moveMenu(pic)
-                    if let onDelete {
-                        Divider()
-                        Button("Shared.Delete", systemImage: "trash", role: .destructive) {
-                            onDelete(pic)
-                        }
+    }
+
+    @ViewBuilder
+    private func picContextMenu(for pic: Pic) -> some View {
+        if !isSelecting {
+            if enableSelection {
+                Button("Shared.Select", systemImage: "checkmark.circle") {
+                    doWithAnimation {
+                        isSelecting = true
+                        onSelect(pic)
                     }
                 }
-            } preview: {
-                PicPreview(picID: pic.id)
+                Divider()
             }
-#if targetEnvironment(macCatalyst)
-            .hoverEffect(.highlight)
-#endif
+            Button("Shared.Copy", systemImage: "doc.on.doc") {
+                Task {
+                    if let data = await DataActor.shared.imageData(forPicWithID: pic.id),
+                       let image = UIImage(data: data) {
+                        UIPasteboard.general.image = image
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        CopiedToast.showCopied()
+                    }
+                }
+            }
+            ShareLink(item: PicShareable(picID: pic.id),
+                      preview: SharePreview(pic.name,
+                                            image: PicShareable(picID: pic.id))) {
+                Label("Shared.Share", systemImage: "square.and.arrow.up")
+            }
+            pinMenuItem(for: pic)
+            if let onRename {
+                Divider()
+                Button("Shared.Rename", systemImage: "pencil") {
+                    onRename(pic)
+                }
+            }
+            Divider()
+            if let albumID = pic.containingAlbumID {
+                Button("Shared.SetAsCover", systemImage: "photo") {
+                    Task {
+                        await DataActor.shared.setAsAlbumCover(for: pic.id)
+                        AlbumCoverCache.shared.removeImages(forAlbumID: albumID)
+                    }
+                }
+            }
+            Divider()
+            moveMenu(pic)
+            if let onDelete {
+                Divider()
+                Button("Shared.Delete", systemImage: "trash", role: .destructive) {
+                    onDelete(pic)
+                }
+            }
+        }
     }
 
     private func resetSelectionDrag() {
@@ -272,6 +287,10 @@ struct PicsGrid<Content: View>: View {
 }
 
 extension PicsGrid {
+    func aspectRatio(for pic: Pic) -> CGFloat {
+        aspectRatios[pic.id] ?? pic.thumbnailAspectRatio ?? 1.0
+    }
+
     var usesCompactBadges: Bool {
         guard gridWidth > 0.0, columnCount > 0 else { return false }
         let itemWidth = (gridWidth - 2.0 * Double(columnCount - 1)) / Double(columnCount)
