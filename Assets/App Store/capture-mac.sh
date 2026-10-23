@@ -53,7 +53,7 @@ trap restore EXIT
 xcodebuild build-for-testing -project "$PROJECT_DIR/PicMate.xcodeproj" -scheme PicMate \
   -destination "platform=macOS,variant=Mac Catalyst" -derivedDataPath $DERIVED_DATA -quiet
 APP=$(ls -d $DERIVED_DATA/Build/Products/Debug-maccatalyst/*.app | grep -v Runner | head -1)
-XCTESTRUN=$(ls $DERIVED_DATA/Build/Products/*maccatalyst*.xctestrun | head -1)
+XCTESTRUN=$(ls $DERIVED_DATA/Build/Products/*.xctestrun | head -1)
 
 # MARK: - Capture
 
