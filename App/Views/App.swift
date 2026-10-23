@@ -108,6 +108,7 @@ struct IllustMateApp: App {
             #if DEBUG
             if ScreenshotSeeder.isActive {
                 navigation.signalDataChanged()
+                await ScreenshotSeeder.openRequestedAlbum(in: navigation)
             }
             #endif
             await imageMigration.runPendingMigrations()

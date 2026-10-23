@@ -83,6 +83,34 @@ enum ScreenshotSeeder {
         UserDefaults.standard.bool(forKey: "ScreenshotMode")
     }
 
+    static var albumToOpen: String? {
+        UserDefaults.standard.string(forKey: "ScreenshotOpenAlbum")
+    }
+
+    static var picToOpen: String? {
+        UserDefaults.standard.string(forKey: "ScreenshotOpenPic")
+    }
+
+    static var findsDuplicates: Bool {
+        UserDefaults.standard.bool(forKey: "ScreenshotFindDuplicates")
+    }
+
+    @MainActor static var canOpenTargets = false
+    @MainActor static var didOpenTargets = false
+
+    @MainActor
+    static func openRequestedAlbum(in navigation: NavigationManager) async {
+        defer { canOpenTargets = true }
+        guard let name = albumToOpen,
+              let albums = try? await DataActor.shared.albumsWithCounts(in: nil, sortedBy: .nameAscending),
+              let album = albums.first(where: { $0.name == name }) else { return }
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            navigation.collectionTabPath = [.library(id: PicLibrary.defaultID), .album(album: album)]
+        } else {
+            navigation.collectionTabPath = [.album(album: album)]
+        }
+    }
+
     @MainActor
     static func fixWindowSize() {
         #if targetEnvironment(macCatalyst)

@@ -173,6 +173,20 @@ extension AlbumView {
         }
     }
 
+#if DEBUG
+    func openScreenshotTargetsIfNeeded() {
+        guard ScreenshotSeeder.isActive, ScreenshotSeeder.canOpenTargets, !ScreenshotSeeder.didOpenTargets,
+              currentAlbum?.name == ScreenshotSeeder.albumToOpen else { return }
+        if ScreenshotSeeder.findsDuplicates {
+            ScreenshotSeeder.didOpenTargets = true
+            isDuplicateCheckerPresented = true
+        } else if let name = ScreenshotSeeder.picToOpen, let pic = pics.first(where: { $0.name == name }) {
+            ScreenshotSeeder.didOpenTargets = true
+            openPic(pic, in: pics)
+        }
+    }
+#endif
+
     func openPic(_ pic: Pic, in pics: [Pic]) {
         let picCopy = pic
         if UIDevice.current.userInterfaceIdiom == .phone {

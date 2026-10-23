@@ -62,6 +62,13 @@ struct DuplicateScanView: View {
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
         }
+#if DEBUG
+        .task {
+            if ScreenshotSeeder.isActive && ScreenshotSeeder.findsDuplicates {
+                await scanManager.scan(scope: scanScope)
+            }
+        }
+#endif
     }
 
     private var scanConfigContent: some View {

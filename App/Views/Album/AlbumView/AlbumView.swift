@@ -264,6 +264,11 @@ struct AlbumView: View {
                     }
                 }
             }
+#if DEBUG
+            .onChange(of: pics.count) { _, _ in
+                openScreenshotTargetsIfNeeded()
+            }
+#endif
             .onChange(of: navigation.dataVersion) { _, _ in
                 Task.detached(priority: .userInitiated) {
                     await reloadPreferencesAndRefreshData()

@@ -13,6 +13,11 @@ extension AlbumView {
             albumSortState = albumSort
         }
         await refreshData()
+#if DEBUG
+        await MainActor.run {
+            openScreenshotTargetsIfNeeded()
+        }
+#endif
     }
 
     func refreshData() async {

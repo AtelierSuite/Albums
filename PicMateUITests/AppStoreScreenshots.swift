@@ -60,11 +60,17 @@ final class AppStoreScreenshots: XCTestCase {
 
     func testScreens() throws {
         for shot in shots {
-            launch(albumStyle: shot.albumStyle, albumColumnCount: shot.albumColumnCount)
+#if targetEnvironment(macCatalyst)
+            // Synthesized clicks don't reach the app's SwiftUI controls on Mac Catalyst, so the app stages each shot itself.
+            launch(shot, arguments: stagingArguments(for: shot.steps))
+            Thread.sleep(forTimeInterval: shot.steps.contains { if case .findDuplicates = $0 { true } else { false } } ? 12 : 4)
+#else
+            launch(shot, arguments: [])
             for step in shot.steps {
                 try perform(step)
             }
             Thread.sleep(forTimeInterval: 2)
+#endif
             try save(shot.name)
         }
     }
@@ -79,7 +85,22 @@ final class AppStoreScreenshots: XCTestCase {
 
     // MARK: - Steps
 
-    private func launch(albumStyle: String?, albumColumnCount: Int?) {
+    private func stagingArguments(for steps: [Step]) -> [String] {
+        steps.flatMap { step -> [String] in
+            switch step {
+            case .openAlbum(let english, let japanese):
+                ["-ScreenshotOpenAlbum", language == "ja" ? japanese : english]
+            case .openPic(let english, let japanese):
+                ["-ScreenshotOpenPic", language == "ja" ? japanese : english]
+            case .findDuplicates:
+                ["-ScreenshotFindDuplicates", "YES"]
+            case .back:
+                []
+            }
+        }
+    }
+
+    private func launch(_ shot: Shot, arguments: [String]) {
         app = XCUIApplication()
         let locale = language == "ja" ? "ja_JP" : "en_US"
         app.launchArguments += [
@@ -87,18 +108,24 @@ final class AppStoreScreenshots: XCTestCase {
             "-AppleLanguages", "(\(language))",
             "-AppleLocale", locale
         ]
-        if let albumStyle {
+        app.launchArguments += arguments
+        if let albumStyle = shot.albumStyle {
             app.launchArguments += ["-ScreenshotAlbumStyle", albumStyle]
         }
-        if let albumColumnCount {
+        if let albumColumnCount = shot.albumColumnCount {
             app.launchArguments += ["-ScreenshotAlbumColumnCount", String(albumColumnCount)]
         }
 #if targetEnvironment(macCatalyst)
         app.launchArguments += ["-AppleInterfaceStyle", "Dark"]
 #endif
         app.launch()
-        let firstAlbum = app.buttons["album:\(language == "ja" ? "アビドス" : "Abydos")"].firstMatch
-        XCTAssertTrue(firstAlbum.waitForExistence(timeout: 180), "the sample library never appeared")
+#if targetEnvironment(macCatalyst)
+        let ready = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier BEGINSWITH 'pic:'")).firstMatch
+#else
+        let ready = app.buttons["album:\(language == "ja" ? "アビドス" : "Abydos")"].firstMatch
+#endif
+        XCTAssertTrue(ready.waitForExistence(timeout: 180), "the sample library never appeared")
     }
 
     private func perform(_ step: Step) throws {
