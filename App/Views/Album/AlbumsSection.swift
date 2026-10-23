@@ -72,6 +72,7 @@ struct AlbumsSection<Content: View>: View {
                     gridLabel(album, style: labelStyle)
                 }
                 .id("\(album.identifiableString())")
+                .accessibilityIdentifier("album:\(album.name)")
                 .contextMenu {
                     contextMenu(album)
                 }
@@ -95,6 +96,7 @@ struct AlbumsSection<Content: View>: View {
                         .albumDropDestination(onDrop: onDrop, onDropFiles: onDropFiles, album: album)
                 }
                 .id("\(album.identifiableString())")
+                .accessibilityIdentifier("album:\(album.name)")
                 .contextMenu {
                     contextMenu(album)
                 }
@@ -153,6 +155,7 @@ struct AlbumsSection<Content: View>: View {
                 .albumDropDestination(onDrop: onDrop, onDropFiles: onDropFiles, album: album)
             }
             .id("\(album.identifiableString())")
+            .accessibilityIdentifier("album:\(album.name)")
             .contextMenu {
                 contextMenu(album)
             }
