@@ -51,16 +51,23 @@ extension PicViewer {
         .disabled(!viewer.canEditDisplayedOrientation)
     }
 
+    @ViewBuilder
+    var copyButton: some View {
+        if viewer.displayedPic?.isVideo != true {
+            Button("Shared.Copy", systemImage: "doc.on.doc") {
+                if let image = currentImage {
+                    UIPasteboard.general.image = image
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    CopiedToast.showCopied()
+                }
+            }
+            .disabled(currentImage == nil || isEditingOrientation)
+        }
+    }
+
     var deleteButton: some View {
         Button("Shared.Delete", systemImage: "trash", role: .destructive) {
             isConfirmingDeletePic = true
-        }
-        .confirmationDialog("Shared.DeleteConfirmation.Pic", isPresented: $isConfirmingDeletePic,
-                            titleVisibility: .visible) {
-            Button("Shared.Delete", role: .destructive) {
-                deleteDisplayedPic()
-            }
-            Button("Shared.Cancel", role: .cancel) { }
         }
     }
 }

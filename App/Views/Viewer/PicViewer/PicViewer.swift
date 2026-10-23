@@ -129,6 +129,13 @@ struct PicViewer: View {
             }
             Button("Shared.Cancel", role: .cancel) { }
         }
+        .confirmationDialog("Shared.DeleteConfirmation.Pic", isPresented: $isConfirmingDeletePic,
+                            titleVisibility: .visible) {
+            Button("Shared.Delete", role: .destructive) {
+                deleteDisplayedPic()
+            }
+            Button("Shared.Cancel", role: .cancel) { }
+        }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack(spacing: 2.0) {
@@ -166,7 +173,7 @@ struct PicViewer: View {
                         rotateButton
                         flipButton
                     }
-                    deleteButton
+                    copyButton
                 }
             } else {
                 ToolbarItem(placement: .bottomBar) {
@@ -181,7 +188,7 @@ struct PicViewer: View {
                     ToolbarSpacer(.flexible, placement: .bottomBar)
                 }
                 ToolbarItem(placement: .bottomBar) {
-                    deleteButton
+                    copyButton
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -195,21 +202,13 @@ struct PicViewer: View {
                         renamePicText = displayedPicName
                         isRenamePicPresented = true
                     }
-                    if viewer.displayedPic?.isVideo != true {
-                        Button("Shared.Copy", systemImage: "doc.on.doc") {
-                            if let image = currentImage {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                        .disabled(currentImage == nil || isEditingOrientation)
-                    }
                     if canShowInAlbum {
                         Button("Shared.ShowInAlbum", systemImage: "rectangle.stack") {
                             showInAlbum()
                         }
                     }
+                    Divider()
+                    deleteButton
                 }
             }
         }
