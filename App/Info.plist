@@ -34,6 +34,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.com.tsubuzaki.IllustMate</key>
