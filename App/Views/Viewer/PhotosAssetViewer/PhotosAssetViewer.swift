@@ -89,85 +89,27 @@ struct PhotosAssetViewer: View {
                         .lineLimit(1)
                 }
             }
+            if pipManager.isPossible, currentAsset.mediaType != .video {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Shared.PictureInPicture",
+                           systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
+                        togglePictureInPicture()
+                    }
+                    .disabled(currentImage == nil)
+                }
+            }
             if isLandscape {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    if currentAsset.mediaType == .video {
-                        if let videoExportURL {
-                            ShareLink(
-                                "Shared.Share",
-                                item: videoExportURL,
-                                preview: SharePreview(displayName)
-                            )
-                        }
-                    } else {
-                        if pipManager.isPossible {
-                            Button("Shared.PictureInPicture",
-                                   systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
-                                togglePictureInPicture()
-                            }
-                            .disabled(currentImage == nil)
-                        }
-                        Button("Shared.Copy", systemImage: "doc.on.doc") {
-                            if let image = currentImage {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                        .disabled(currentImage == nil)
-                        ShareLink(
-                            "Shared.Share",
-                            item: shareImage,
-                            preview: SharePreview(
-                                displayName,
-                                image: shareImage
-                            )
-                        )
-                        .disabled(currentImage == nil)
-                    }
+                    shareButton
+                    copyButton
                 }
             } else {
-                if currentAsset.mediaType == .video {
-                    ToolbarSpacer(.flexible, placement: .bottomBar)
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        if let videoExportURL {
-                            ShareLink(
-                                "Shared.Share",
-                                item: videoExportURL,
-                                preview: SharePreview(displayName)
-                            )
-                        }
-                    }
-                } else {
-                    if pipManager.isPossible {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Button("Shared.PictureInPicture",
-                                   systemImage: pipManager.isActive ? "pip.exit" : "pip.enter") {
-                                togglePictureInPicture()
-                            }
-                            .disabled(currentImage == nil)
-                        }
-                    }
-                    ToolbarSpacer(.flexible, placement: .bottomBar)
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Shared.Copy", systemImage: "doc.on.doc") {
-                            if let image = currentImage {
-                                UIPasteboard.general.image = image
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                CopiedToast.showCopied()
-                            }
-                        }
-                        .disabled(currentImage == nil)
-                        ShareLink(
-                            "Shared.Share",
-                            item: shareImage,
-                            preview: SharePreview(
-                                displayName,
-                                image: shareImage
-                            )
-                        )
-                        .disabled(currentImage == nil)
-                    }
+                ToolbarItem(placement: .bottomBar) {
+                    shareButton
+                }
+                ToolbarSpacer(.flexible, placement: .bottomBar)
+                ToolbarItem(placement: .bottomBar) {
+                    copyButton
                 }
             }
         }

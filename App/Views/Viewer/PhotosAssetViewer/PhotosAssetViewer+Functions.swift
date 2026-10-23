@@ -5,6 +5,46 @@ import SwiftUI
 extension PhotosAssetViewer {
 
     @ViewBuilder
+    var shareButton: some View {
+        if currentAsset.mediaType == .video {
+            if let videoExportURL {
+                ShareLink(
+                    "Shared.Share",
+                    item: videoExportURL,
+                    preview: SharePreview(displayName)
+                )
+            } else {
+                Button("Shared.Share", systemImage: "square.and.arrow.up") { }
+                    .disabled(true)
+            }
+        } else {
+            ShareLink(
+                "Shared.Share",
+                item: shareImage,
+                preview: SharePreview(
+                    displayName,
+                    image: shareImage
+                )
+            )
+            .disabled(currentImage == nil)
+        }
+    }
+
+    @ViewBuilder
+    var copyButton: some View {
+        if currentAsset.mediaType != .video {
+            Button("Shared.Copy", systemImage: "doc.on.doc") {
+                if let image = currentImage {
+                    UIPasteboard.general.image = image
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    CopiedToast.showCopied()
+                }
+            }
+            .disabled(currentImage == nil)
+        }
+    }
+
+    @ViewBuilder
     var mainContent: some View {
         if isLandscape {
             HStack(spacing: 0.0) {
