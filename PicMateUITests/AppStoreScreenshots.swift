@@ -146,17 +146,27 @@ final class AppStoreScreenshots: XCTestCase {
     }
 
     private func save(_ name: String) throws {
-#if targetEnvironment(macCatalyst)
-        let screenshot = app.windows.firstMatch.screenshot()
-#else
-        let screenshot = XCUIScreen.main.screenshot()
-#endif
-        let attachment = XCTAttachment(screenshot: screenshot)
+        let image = capture()
+        let attachment = XCTAttachment(image: image)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
-        if let directory {
-            try? screenshot.pngRepresentation.write(to: directory.appendingPathComponent("\(name).png"))
+        if let directory, let png = image.pngData() {
+            try? png.write(to: directory.appendingPathComponent("\(name).png"))
         }
+    }
+
+    private func capture() -> UIImage {
+        let screen = XCUIScreen.main.screenshot().image
+#if targetEnvironment(macCatalyst)
+        // XCUIElement.screenshot() fails with "Image creation failed" on Mac Catalyst.
+        let frame = app.windows.firstMatch.frame
+        let crop = CGRect(x: frame.minX * screen.scale, y: frame.minY * screen.scale,
+                          width: frame.width * screen.scale, height: frame.height * screen.scale)
+        if let cropped = screen.cgImage?.cropping(to: crop.integral) {
+            return UIImage(cgImage: cropped, scale: screen.scale, orientation: .up)
+        }
+#endif
+        return screen
     }
 }

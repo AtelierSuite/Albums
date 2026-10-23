@@ -90,6 +90,7 @@ enum ScreenshotSeeder {
         for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
             scene.sizeRestrictions?.minimumSize = size
             scene.sizeRestrictions?.maximumSize = size
+            scene.requestGeometryUpdate(.Mac(systemFrame: CGRect(origin: CGPoint(x: 80, y: 80), size: size)))
         }
         #endif
     }
