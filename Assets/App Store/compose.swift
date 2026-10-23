@@ -48,6 +48,7 @@ struct Copy {
 
 struct Screenshot {
     let name: String
+    var pair: (String, String)?
     let copy: [String: Copy]
 }
 
@@ -80,22 +81,30 @@ let duplicatesCopy = [
 
 let iPhoneScreenshots = [
     Screenshot(name: "01-collection", copy: collectionCopy),
-    Screenshot(name: "02-nested", copy: nestedCopy),
     Screenshot(
-        name: "03-libraries",
+        name: "02-styles",
+        pair: ("02-styles-stacked", "02-styles-compact"),
+        copy: [
+            "en": Copy(header: "Style every album", caption: "Stacks, carousels, and more"),
+            "ja": Copy(header: "アルバムごとに見た目を", caption: "スタックやカルーセルなど自由に選べる")
+        ]
+    ),
+    Screenshot(name: "03-nested", copy: nestedCopy),
+    Screenshot(
+        name: "04-libraries",
         copy: [
             "en": Copy(header: "A library for everything", caption: "Keep each one on device or in iCloud"),
             "ja": Copy(header: "ライブラリで使い分け", caption: "端末内にもiCloudにも、用途ごとに整理")
         ]
     ),
     Screenshot(
-        name: "04-viewer",
+        name: "05-viewer",
         copy: [
             "en": Copy(header: "View, copy, share", caption: "Easily copy or share a photo"),
             "ja": Copy(header: "閲覧、コピー、共有", caption: "ビューワーから簡単にコピー")
         ]
     ),
-    Screenshot(name: "05-duplicates", copy: duplicatesCopy)
+    Screenshot(name: "06-duplicates", copy: duplicatesCopy)
 ]
 
 let largeScreenshots = [
@@ -202,7 +211,7 @@ func withShadow(blur: CGFloat, offset: NSSize, alpha: CGFloat, _ draw: () -> Voi
 let hardwareImage = NSImage(contentsOf: scriptDir.appendingPathComponent("Hardware@2x.png"))
 let displayImage = NSImage(contentsOf: scriptDir.appendingPathComponent("Display@2x.png"))
 
-func drawiPhone(raw: NSImage, canvas: NSSize) -> Bool {
+func drawiPhone(raw: NSImage, canvas: NSSize, centerX: CGFloat? = nil) -> Bool {
     guard let hardwareImage, let displayImage,
           let hardwareCG = cgImage(of: hardwareImage), let displayCG = cgImage(of: displayImage),
           let rawCG = cgImage(of: raw), let context = NSGraphicsContext.current?.cgContext else {
@@ -212,7 +221,7 @@ func drawiPhone(raw: NSImage, canvas: NSSize) -> Bool {
     let width: CGFloat = 1095
     let scale = width / CGFloat(hardwareCG.width)
     let height = CGFloat(hardwareCG.height) * scale
-    let deviceRect = NSRect(x: ((canvas.width - width) / 2).rounded(), y: canvas.height - 416 - height,
+    let deviceRect = NSRect(x: ((centerX ?? canvas.width / 2) - width / 2).rounded(), y: canvas.height - 416 - height,
                             width: width, height: height)
     let displaySize = NSSize(width: CGFloat(displayCG.width) * scale, height: CGFloat(displayCG.height) * scale)
     let displayRect = NSRect(x: deviceRect.midX - displaySize.width / 2, y: deviceRect.midY - displaySize.height / 2,
@@ -317,13 +326,21 @@ func drawMac(raw: NSImage, canvas: NSSize) -> Bool {
 
 // MARK: - Composition
 
-func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
-    guard let copy = shot.copy[language] else { return true }
-    let rawURL = device.rawDir(language).appendingPathComponent("\(shot.name).png")
+func loadRaw(_ name: String, language: String, device: Device) -> NSImage? {
+    let rawURL = device.rawDir(language).appendingPathComponent("\(name).png")
     guard let raw = NSImage(contentsOf: rawURL) else {
         print("missing raw capture: \(rawURL.path)")
-        return false
+        return nil
     }
+    return raw
+}
+
+func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
+    guard let copy = shot.copy[language] else { return true }
+    let raws = [shot.pair?.0, shot.pair?.1].compactMap { $0 }
+    let pairRaws = raws.compactMap { loadRaw($0, language: language, device: device) }
+    guard pairRaws.count == raws.count,
+          let raw = pairRaws.first ?? loadRaw(shot.name, language: language, device: device) else { return false }
     let canvas = device.canvasSize
     let pixels = NSSize(width: canvas.width * device.outputScale, height: canvas.height * device.outputScale)
     guard let bitmap = NSBitmapImageRep(
@@ -341,7 +358,12 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
     case .iPhone:
         NSGradient(starting: gradientTop, ending: gradientBottom)?.draw(in: bounds, angle: -90)
         drawHeadline(copy, language: language, device: device, centerFromTop: 220)
-        drawn = drawiPhone(raw: raw, canvas: canvas)
+        if pairRaws.count == 2 {
+            drawn = drawiPhone(raw: pairRaws[0], canvas: canvas, centerX: -20)
+                && drawiPhone(raw: pairRaws[1], canvas: canvas, centerX: 1200)
+        } else {
+            drawn = drawiPhone(raw: raw, canvas: canvas)
+        }
     case .iPad:
         NSGradient(colors: [iPadGradientTop, iPadGradientTop, gradientBottom],
                    atLocations: [0, 0.12, 1], colorSpace: .sRGB)?.draw(in: bounds, angle: -90)

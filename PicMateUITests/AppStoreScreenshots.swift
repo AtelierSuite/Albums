@@ -17,6 +17,8 @@ final class AppStoreScreenshots: XCTestCase {
 
     private struct Shot {
         let name: String
+        var albumStyle: String?
+        var albumColumnCount: Int?
         let steps: [Step]
     }
 
@@ -25,10 +27,12 @@ final class AppStoreScreenshots: XCTestCase {
 
     private static let iPhoneShots = [
         Shot(name: "01-collection", steps: []),
-        Shot(name: "02-nested", steps: [abydos]),
-        Shot(name: "03-libraries", steps: [.back]),
-        Shot(name: "04-viewer", steps: [.openPic(english: "Beach day", japanese: "海の日")]),
-        Shot(name: "05-duplicates", steps: [downloads, .findDuplicates])
+        Shot(name: "02-styles-stacked", albumStyle: "grid", albumColumnCount: 3, steps: []),
+        Shot(name: "02-styles-compact", albumStyle: "carousel.compact", steps: []),
+        Shot(name: "03-nested", steps: [abydos]),
+        Shot(name: "04-libraries", steps: [.back]),
+        Shot(name: "05-viewer", steps: [.openPic(english: "Beach day", japanese: "海の日")]),
+        Shot(name: "06-duplicates", steps: [downloads, .findDuplicates])
     ]
 
     private static let iPadShots = [
@@ -56,7 +60,7 @@ final class AppStoreScreenshots: XCTestCase {
 
     func testScreens() throws {
         for shot in shots {
-            launch()
+            launch(albumStyle: shot.albumStyle, albumColumnCount: shot.albumColumnCount)
             for step in shot.steps {
                 try perform(step)
             }
@@ -75,7 +79,7 @@ final class AppStoreScreenshots: XCTestCase {
 
     // MARK: - Steps
 
-    private func launch() {
+    private func launch(albumStyle: String?, albumColumnCount: Int?) {
         app = XCUIApplication()
         let locale = language == "ja" ? "ja_JP" : "en_US"
         app.launchArguments += [
@@ -83,18 +87,24 @@ final class AppStoreScreenshots: XCTestCase {
             "-AppleLanguages", "(\(language))",
             "-AppleLocale", locale
         ]
+        if let albumStyle {
+            app.launchArguments += ["-ScreenshotAlbumStyle", albumStyle]
+        }
+        if let albumColumnCount {
+            app.launchArguments += ["-ScreenshotAlbumColumnCount", String(albumColumnCount)]
+        }
 #if targetEnvironment(macCatalyst)
         app.launchArguments += ["-AppleInterfaceStyle", "Dark"]
 #endif
         app.launch()
-        let firstAlbum = app.buttons[language == "ja" ? "アビドス" : "Abydos"].firstMatch
-        XCTAssertTrue(firstAlbum.waitForExistence(timeout: 30), "the sample library never appeared")
+        let firstAlbum = app.buttons["album:\(language == "ja" ? "アビドス" : "Abydos")"].firstMatch
+        XCTAssertTrue(firstAlbum.waitForExistence(timeout: 180), "the sample library never appeared")
     }
 
     private func perform(_ step: Step) throws {
         switch step {
         case .openAlbum(let english, let japanese):
-            let album = app.buttons[language == "ja" ? japanese : english].firstMatch
+            let album = app.buttons["album:\(language == "ja" ? japanese : english)"].firstMatch
             XCTAssertTrue(album.waitForExistence(timeout: 10), "missing album \(english)")
             album.tap()
             Thread.sleep(forTimeInterval: 1.5)

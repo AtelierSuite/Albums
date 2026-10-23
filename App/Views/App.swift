@@ -95,18 +95,18 @@ struct IllustMateApp: App {
         .task {
             UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
             #if DEBUG
-            var didSeed = false
             if ScreenshotSeeder.isActive {
                 ScreenshotSeeder.resetNavigation()
                 ScreenshotSeeder.fixWindowSize()
-                didSeed = await ScreenshotSeeder.seedIfNeeded()
+                await ScreenshotSeeder.seedIfNeeded()
+                await ScreenshotSeeder.applyAlbumStyle()
                 Tips.hideAllTipsForTesting()
             }
             #endif
             await libraryManager.loadLibraries()
             AlbumsShortcuts.updateAppShortcutParameters()
             #if DEBUG
-            if didSeed {
+            if ScreenshotSeeder.isActive {
                 navigation.signalDataChanged()
             }
             #endif

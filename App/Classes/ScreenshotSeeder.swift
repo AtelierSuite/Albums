@@ -102,16 +102,27 @@ enum ScreenshotSeeder {
         defaults?.removeObject(forKey: "LastAlbumID")
     }
 
-    static func seedIfNeeded() async -> Bool {
+    static func applyAlbumStyle() async {
+        let style = UserDefaults.standard.string(forKey: "ScreenshotAlbumStyle")
+            ?? AlbumPreferences.defaults.albumViewStyle
+        let dataActor = DataActor.instance(for: PicLibrary.defaultID)
+        var preferences = await dataActor.preferences(forAlbumWithID: "__root__")
+        preferences.albumID = "__root__"
+        preferences.albumViewStyle = style
+        let columnCount = UserDefaults.standard.integer(forKey: "ScreenshotAlbumColumnCount")
+        preferences.albumColumnCount = columnCount > 0 ? columnCount : AlbumPreferences.defaults.albumColumnCount
+        await dataActor.savePreferences(preferences)
+    }
+
+    static func seedIfNeeded() async {
         let seedURL = URL.documentsDirectory.appendingPathComponent("ScreenshotSeed")
         guard let data = try? Data(contentsOf: seedURL.appendingPathComponent("manifest.json")),
-              let manifest = try? JSONDecoder().decode(Manifest.self, from: data) else { return false }
+              let manifest = try? JSONDecoder().decode(Manifest.self, from: data) else { return }
         var seeding = Seeding(seedURL: seedURL, titles: manifest.titles ?? [:])
         for library in manifest.libraries {
             await seeding.seed(library)
         }
         try? FileManager.default.removeItem(at: seedURL)
-        return true
     }
 }
 #endif
