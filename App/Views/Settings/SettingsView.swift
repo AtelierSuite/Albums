@@ -37,6 +37,11 @@ struct SettingsView: View {
 
     private var listContent: some View {
         List {
+            #if !targetEnvironment(macCatalyst)
+            if UIApplication.shared.supportsAlternateIcons {
+                AppIconSection()
+            }
+            #endif
             Section {
                 Toggle(String(localized: "AppLock", table: "More"), isOn: $isAppLockEnabled)
                     .disabled(auth.biometryType == .none)
