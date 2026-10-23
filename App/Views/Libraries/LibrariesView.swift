@@ -281,6 +281,12 @@ extension LibrariesView {
     }
 
     private func refreshICloudAvailability() async {
+        #if DEBUG
+        if ScreenshotSeeder.isActive {
+            isICloudAvailable = true
+            return
+        }
+        #endif
         isICloudAvailable = await SyncManager.shared.canEnableSync()
     }
 
