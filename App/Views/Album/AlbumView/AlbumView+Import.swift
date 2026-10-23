@@ -107,6 +107,16 @@ extension AlbumView {
     private nonisolated static func stage(urls: [URL], for job: ImportJob, albumID: String?) async -> ImportJob {
         var job = job
         for fileURL in urls {
+            if !fileURL.isFileURL {
+                guard let (data, _) = try? await URLSession.shared.data(from: fileURL),
+                      UIImage(data: data) != nil,
+                      let name = try? ImportJobStore.stageData(data, for: job.id, pathExtension: fileURL.pathExtension)
+                else { continue }
+                job.items.append(ImportItem(
+                    source: .stagedFile(name: name, originalFilename: fileURL.lastPathComponent), albumID: albumID
+                ))
+                continue
+            }
             let didStartAccessing = fileURL.startAccessingSecurityScopedResource()
             defer {
                 if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }
