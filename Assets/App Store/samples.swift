@@ -28,7 +28,10 @@ func localized(_ svg: String) -> String {
 /// tighter crop, so the duplicate scanner has something to find.
 func render(_ name: String) -> Data? {
     let parts = name.split(separator: "~").map(String.init)
-    let svgURL = scriptDir.appendingPathComponent("Samples/\(parts[0]).svg")
+    let svgURL = ["Samples", "Samples/Generated"]
+        .map { scriptDir.appendingPathComponent("\($0)/\(parts[0]).svg") }
+        .first { FileManager.default.fileExists(atPath: $0.path) }
+        ?? scriptDir.appendingPathComponent("Samples/\(parts[0]).svg")
     guard let svg = try? String(contentsOf: svgURL, encoding: .utf8),
           let image = NSImage(data: Data(localized(svg).utf8)) else {
         print("could not read \(svgURL.path)")

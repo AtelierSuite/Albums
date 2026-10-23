@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b2a78" stop-opacity="1"/><stop offset="1" stop-color="#ff8a6a" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>
+  <rect x="0" y="0" width="1200" height="1600" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="636.4" cy="580.8" r="249.1" fill="url(#g2)" opacity="1"/>
+  <circle cx="636.4" cy="580.8" r="83" fill="#ffd27a" opacity="1"/>
+  <path d="M0 1600 L0 472.9 L133.6 686.6 L300 744.3 L466 704.4 L600 857 L732.4 612.4 L900 729.7 L1089 626.7 L1200 739.7 L1200 1600 Z" fill="#ca6f61" opacity="1"/>
+  <path d="M535.8 411.7 a46.7 46.7 0 1 1 93.4 0 Z M595.7 411.7 a39.7 39.7 0 1 1 79.4 0 Z M642.8 411.7 a45.3 45.3 0 1 1 90.6 0 Z M553.7 411.7 h168 a24 24 0 0 1 0 28.8 h-168 a24 24 0 0 1 0 -28.8 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M0 1600 L0 1050.1 L169.1 841.1 L400 1025.2 L592.6 932.3 L800 1079.3 L996.1 1049.2 L1200 1042.9 L1200 1600 Z" fill="#7a4554" opacity="1"/>
+  <path d="M0 1600 L0 1329.4 Q120 1236.9 240 1244.6 Q360 1201.2 480 1247.9 Q600 1192.3 720 1256.2 Q840 1202.3 960 1269 Q1080 1144.7 1200 1338.9 L1200 1600 Z" fill="#2a1c46" opacity="1"/>
+</svg>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500">
+  <defs></defs>
+  <rect x="0" y="0" width="1000" height="1500" rx="0" fill="#fdc280" opacity="1"/>
+  <rect x="0" y="0" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M200 200 L0 200 A200 200 0 0 1 200 0 Z" fill="#d2eaf5" opacity="1"/>
+  <rect x="200" y="0" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <circle cx="300" cy="100" r="80" fill="#a6d8e4" opacity="1"/>
+  <circle cx="300" cy="100" r="40" fill="#219ebc" opacity="1"/>
+  <rect x="400" y="0" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M400 200 L500 0 L600 200 Z" fill="#fb8500" opacity="1"/>
+  <rect x="600" y="0" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <circle cx="700" cy="100" r="80" fill="#ffb703" opacity="1"/>
+  <circle cx="700" cy="100" r="40" fill="#8ecae6" opacity="1"/>
+  <rect x="800" y="0" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <circle cx="900" cy="100" r="80" fill="#fb8500" opacity="1"/>
+  <circle cx="900" cy="100" r="40" fill="#8ecae6" opacity="1"/>
+  <rect x="0" y="200" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <path d="M200 400 L0 400 A200 200 0 0 1 200 200 Z" fill="#8ecae6" opacity="1"/>
+  <rect x="200" y="200" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <circle cx="300" cy="300" r="76" fill="#ffe29a" opacity="1"/>
+  <rect x="400" y="200" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <circle cx="500" cy="300" r="76" fill="#fdce99" opacity="1"/>
+  <rect x="600" y="200" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <path d="M600 300 A100 100 0 0 1 800 300 Z" fill="#fb8500" opacity="1"/>
+  <rect x="800" y="200" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <path d="M800 400 L1000 400 A200 200 0 0 0 800 200 Z" fill="#8ecae6" opacity="1"/>
+  <rect x="0" y="400" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <rect x="0" y="412.5" width="200" height="25" rx="0" fill="#ffb703" opacity="1"/>
+  <rect x="0" y="462.5" width="200" height="25" rx="0" fill="#ffb703" opacity="1"/>
+  <rect x="0" y="512.5" width="200" height="25" rx="0" fill="#ffb703" opacity="1"/>
+  <rect x="0" y="562.5" width="200" height="25" rx="0" fill="#ffb703" opacity="1"/>
+  <rect x="200" y="400" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <rect x="200" y="412.5" width="200" height="25" rx="0" fill="#9aacb5" opacity="1"/>
+  <rect x="200" y="462.5" width="200" height="25" rx="0" fill="#9aacb5" opacity="1"/>
+  <rect x="200" y="512.5" width="200" height="25" rx="0" fill="#9aacb5" opacity="1"/>
+  <rect x="200" y="562.5" width="200" height="25" rx="0" fill="#9aacb5" opacity="1"/>
+  <rect x="400" y="400" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M400 600 L500 400 L600 600 Z" fill="#d2eaf5" opacity="1"/>
+  <rect x="600" y="400" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <path d="M600 600 L700 400 L800 600 Z" fill="#023047" opacity="1"/>
+  <rect x="800" y="400" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <path d="M800 500 A100 100 0 0 1 1000 500 Z" fill="#023047" opacity="1"/>
+  <rect x="0" y="600" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <circle cx="100" cy="700" r="80" fill="#219ebc" opacity="1"/>
+  <circle cx="100" cy="700" r="40" fill="#fb8500" opacity="1"/>
+  <rect x="200" y="600" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <circle cx="300" cy="700" r="80" fill="#ffb703" opacity="1"/>
+  <circle cx="300" cy="700" r="40" fill="#023047" opacity="1"/>
+  <rect x="400" y="600" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <circle cx="500" cy="700" r="80" fill="#a6d8e4" opacity="1"/>
+  <circle cx="500" cy="700" r="40" fill="#219ebc" opacity="1"/>
+  <rect x="600" y="600" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M600 800 L700 600 L800 800 Z" fill="#ffe29a" opacity="1"/>
+  <rect x="800" y="600" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <circle cx="900" cy="700" r="80" fill="#023047" opacity="1"/>
+  <circle cx="900" cy="700" r="40" fill="#fb8500" opacity="1"/>
+  <rect x="0" y="800" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M0 800 L200 800 A200 200 0 0 1 0 1000 Z" fill="#219ebc" opacity="1"/>
+  <rect x="200" y="800" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M200 900 A100 100 0 0 1 400 900 Z" fill="#d2eaf5" opacity="1"/>
+  <rect x="400" y="800" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M400 1000 L500 800 L600 1000 Z" fill="#219ebc" opacity="1"/>
+  <rect x="600" y="800" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <circle cx="700" cy="900" r="76" fill="#8ecae6" opacity="1"/>
+  <rect x="800" y="800" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <path d="M800 1000 L900 800 L1000 1000 Z" fill="#8ecae6" opacity="1"/>
+  <rect x="0" y="1000" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <circle cx="100" cy="1100" r="80" fill="#ffb703" opacity="1"/>
+  <circle cx="100" cy="1100" r="40" fill="#023047" opacity="1"/>
+  <rect x="200" y="1000" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M200 1100 A100 100 0 0 1 400 1100 Z" fill="#023047" opacity="1"/>
+  <rect x="400" y="1000" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M600 1200 L400 1200 A200 200 0 0 1 600 1000 Z" fill="#d2eaf5" opacity="1"/>
+  <rect x="600" y="1000" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M600 1100 A100 100 0 0 1 800 1100 Z" fill="#ffe29a" opacity="1"/>
+  <rect x="800" y="1000" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M1000 1000 L800 1000 A200 200 0 0 0 1000 1200 Z" fill="#ffb703" opacity="1"/>
+  <rect x="0" y="1200" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <circle cx="100" cy="1300" r="76" fill="#fb8500" opacity="1"/>
+  <rect x="200" y="1200" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <path d="M200 1200 L400 1200 A200 200 0 0 1 200 1400 Z" fill="#d2eaf5" opacity="1"/>
+  <rect x="400" y="1200" width="200" height="200" rx="0" fill="#023047" opacity="1"/>
+  <path d="M600 1400 L400 1400 A200 200 0 0 1 600 1200 Z" fill="#fb8500" opacity="1"/>
+  <rect x="600" y="1200" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <path d="M600 1400 L700 1200 L800 1400 Z" fill="#8ecae6" opacity="1"/>
+  <rect x="800" y="1200" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <path d="M800 1200 L1000 1200 A200 200 0 0 1 800 1400 Z" fill="#219ebc" opacity="1"/>
+  <rect x="0" y="1400" width="200" height="200" rx="0" fill="#8ecae6" opacity="1"/>
+  <circle cx="100" cy="1500" r="76" fill="#ffb703" opacity="1"/>
+  <rect x="200" y="1400" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <path d="M200 1500 A100 100 0 0 1 400 1500 Z" fill="#ffe29a" opacity="1"/>
+  <rect x="400" y="1400" width="200" height="200" rx="0" fill="#ffb703" opacity="1"/>
+  <circle cx="500" cy="1500" r="76" fill="#fb8500" opacity="1"/>
+  <rect x="600" y="1400" width="200" height="200" rx="0" fill="#219ebc" opacity="1"/>
+  <circle cx="700" cy="1500" r="80" fill="#a6d8e4" opacity="1"/>
+  <circle cx="700" cy="1500" r="40" fill="#219ebc" opacity="1"/>
+  <rect x="800" y="1400" width="200" height="200" rx="0" fill="#fb8500" opacity="1"/>
+  <path d="M1000 1600 L800 1600 A200 200 0 0 1 1000 1400 Z" fill="#fdce99" opacity="1"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2b64" stop-opacity="1"/><stop offset="1" stop-color="#f8a3a8" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffe0b5" stop-opacity="0.6"/><stop offset="1" stop-color="#ffe0b5" stop-opacity="0"/></radialGradient></defs>
+  <rect x="0" y="0" width="1600" height="1200" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="780.9" cy="466.8" r="236" fill="url(#g2)" opacity="1"/>
+  <circle cx="780.9" cy="466.8" r="78.7" fill="#ffe0b5" opacity="1"/>
+  <path d="M0 1200 L0 537.9 L211.2 430 L533.3 553.5 L799.3 565.2 L1066.7 600.6 L1324.1 412.4 L1600 521.4 L1600 1200 Z" fill="#c1808c" opacity="1"/>
+  <path d="M0 1200 L0 561.5 L97.8 566.9 L228.6 704.7 L341.7 668.8 L457.1 645.7 L600 677.7 L685.7 737.7 L796.8 597.1 L914.3 717.3 L984.7 670 L1142.9 714.3 L1215.2 621 L1371.4 703.5 L1450.5 692.3 L1600 652.4 L1600 1200 Z" fill="#8a5e70" opacity="1"/>
+  <path d="M0 1200 L0 817.4 Q133.3 648.2 266.7 858.2 Q400 666 533.3 813.3 Q666.7 762.8 800 899.4 Q933.3 758.9 1066.7 825.3 Q1200 737.7 1333.3 888.7 Q1466.7 723.7 1600 797.5 L1600 1200 Z" fill="#533b54" opacity="1"/>
+  <path d="M0 1200 L0 983.9 L89.4 894.5 L228.6 960.3 L375.5 920.1 L457.1 981.4 L583.4 969.6 L685.7 984.8 L775.3 925.5 L914.3 1010.4 L984.9 929.6 L1142.9 967.7 L1222.7 868.7 L1371.4 957.4 L1504.3 902.2 L1600 953.9 L1600 1200 Z" fill="#1c1838" opacity="1"/>
+</svg>

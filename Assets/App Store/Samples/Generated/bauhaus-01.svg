@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs></defs>
+  <rect x="0" y="0" width="1200" height="1200" rx="0" fill="#b5a6c9" opacity="1"/>
+  <rect x="0" y="0" width="400" height="400" rx="0" fill="#1982c4" opacity="1"/>
+  <path d="M400 400 L0 400 A400 400 0 0 1 400 0 Z" fill="#ff595e" opacity="1"/>
+  <rect x="400" y="0" width="400" height="400" rx="0" fill="#ffca3a" opacity="1"/>
+  <rect x="400" y="25" width="400" height="50" rx="0" fill="#ffeab0" opacity="1"/>
+  <rect x="400" y="125" width="400" height="50" rx="0" fill="#ffeab0" opacity="1"/>
+  <rect x="400" y="225" width="400" height="50" rx="0" fill="#ffeab0" opacity="1"/>
+  <rect x="400" y="325" width="400" height="50" rx="0" fill="#ffeab0" opacity="1"/>
+  <rect x="800" y="0" width="400" height="400" rx="0" fill="#6a4c93" opacity="1"/>
+  <path d="M800 200 A200 200 0 0 1 1200 200 Z" fill="#c3b7d4" opacity="1"/>
+  <rect x="0" y="400" width="400" height="400" rx="0" fill="#6a4c93" opacity="1"/>
+  <circle cx="200" cy="600" r="160" fill="#ff595e" opacity="1"/>
+  <circle cx="200" cy="600" r="80" fill="#6a4c93" opacity="1"/>
+  <rect x="400" y="400" width="400" height="400" rx="0" fill="#ff595e" opacity="1"/>
+  <rect x="400" y="425" width="400" height="50" rx="0" fill="#ffca3a" opacity="1"/>
+  <rect x="400" y="525" width="400" height="50" rx="0" fill="#ffca3a" opacity="1"/>
+  <rect x="400" y="625" width="400" height="50" rx="0" fill="#ffca3a" opacity="1"/>
+  <rect x="400" y="725" width="400" height="50" rx="0" fill="#ffca3a" opacity="1"/>
+  <rect x="800" y="400" width="400" height="400" rx="0" fill="#ffca3a" opacity="1"/>
+  <path d="M800 800 L1000 400 L1200 800 Z" fill="#1982c4" opacity="1"/>
+  <rect x="0" y="800" width="400" height="400" rx="0" fill="#6a4c93" opacity="1"/>
+  <circle cx="200" cy="1000" r="160" fill="#ffca3a" opacity="1"/>
+  <circle cx="200" cy="1000" r="80" fill="#6a4c93" opacity="1"/>
+  <rect x="400" y="800" width="400" height="400" rx="0" fill="#1982c4" opacity="1"/>
+  <rect x="400" y="825" width="400" height="50" rx="0" fill="#8ac926" opacity="1"/>
+  <rect x="400" y="925" width="400" height="50" rx="0" fill="#8ac926" opacity="1"/>
+  <rect x="400" y="1025" width="400" height="50" rx="0" fill="#8ac926" opacity="1"/>
+  <rect x="400" y="1125" width="400" height="50" rx="0" fill="#8ac926" opacity="1"/>
+  <rect x="800" y="800" width="400" height="400" rx="0" fill="#6a4c93" opacity="1"/>
+  <path d="M800 1000 A200 200 0 0 1 1200 1000 Z" fill="#1982c4" opacity="1"/>
+</svg>

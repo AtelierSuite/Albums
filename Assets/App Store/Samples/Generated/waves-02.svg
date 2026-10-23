@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f295b" stop-opacity="1"/><stop offset="1" stop-color="#1d033f" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#693797" stop-opacity="1"/><stop offset="1" stop-color="#4f1485" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a260d9" stop-opacity="1"/><stop offset="1" stop-color="#9244d2" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d69cff" stop-opacity="1"/><stop offset="1" stop-color="#cf8bff" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b08bc9" stop-opacity="1"/><stop offset="1" stop-color="#a277bf" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f295b" stop-opacity="1"/><stop offset="1" stop-color="#1d033f" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#693797" stop-opacity="1"/><stop offset="1" stop-color="#4f1485" stop-opacity="1"/></linearGradient></defs>
+  <rect x="0" y="0" width="1600" height="1200" rx="0" fill="#10002b" opacity="1"/>
+  <path d="M0 1200 L0 120 C280 89.5 520 89.5 800 120 C1080 150.5 1320 150.5 1600 120 L1600 1200 Z" fill="url(#g1)" opacity="1"/>
+  <path d="M0 1200 L0 274.3 C186.7 243.8 346.7 243.8 533.3 274.3 C720 304.8 880 304.8 1066.7 274.3 C1253.3 243.8 1413.3 243.8 1600 274.3 L1600 1200 Z" fill="url(#g2)" opacity="1"/>
+  <path d="M0 1200 L0 428.6 C280 398.1 520 398.1 800 428.6 C1080 459.1 1320 459.1 1600 428.6 L1600 1200 Z" fill="url(#g3)" opacity="1"/>
+  <path d="M0 1200 L0 582.9 C140 552.4 260 552.4 400 582.9 C540 613.4 660 613.4 800 582.9 C940 552.4 1060 552.4 1200 582.9 C1340 613.4 1460 613.4 1600 582.9 L1600 1200 Z" fill="url(#g4)" opacity="1"/>
+  <path d="M0 1200 L0 737.1 C280 767.6 520 767.6 800 737.1 C1080 706.6 1320 706.6 1600 737.1 L1600 1200 Z" fill="url(#g5)" opacity="1"/>
+  <path d="M0 1200 L0 891.4 C186.7 860.9 346.7 860.9 533.3 891.4 C720 921.9 880 921.9 1066.7 891.4 C1253.3 860.9 1413.3 860.9 1600 891.4 L1600 1200 Z" fill="url(#g6)" opacity="1"/>
+  <path d="M0 1200 L0 1045.7 C280 1015.2 520 1015.2 800 1045.7 C1080 1076.2 1320 1076.2 1600 1045.7 L1600 1200 Z" fill="url(#g7)" opacity="1"/>
+</svg>

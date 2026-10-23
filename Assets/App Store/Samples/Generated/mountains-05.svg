@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2b64" stop-opacity="1"/><stop offset="1" stop-color="#f8a3a8" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffe0b5" stop-opacity="0.6"/><stop offset="1" stop-color="#ffe0b5" stop-opacity="0"/></radialGradient></defs>
+  <rect x="0" y="0" width="1200" height="1600" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="867" cy="437.2" r="310.9" fill="url(#g2)" opacity="1"/>
+  <circle cx="867" cy="437.2" r="103.6" fill="#ffe0b5" opacity="1"/>
+  <path d="M0 1600 L0 608.6 L94.9 704.4 L171.4 857 L247.1 612.4 L342.9 729.7 L450.9 626.7 L514.3 739.7 L620 785.5 L685.7 719.8 L774.6 675.8 L857.1 823.2 L975.3 615.7 L1028.6 832.2 L1101 499.1 L1200 750.5 L1200 1600 Z" fill="#c1808c" opacity="1"/>
+  <path d="M314.7 299.5 a45 45 0 1 1 90 0 Z M367.6 299.5 a44.9 44.9 0 1 1 89.8 0 Z M430.7 299.5 a34.6 34.6 0 1 1 69.2 0 Z M330.9 299.5 h168 a24 24 0 0 1 0 28.8 h-168 a24 24 0 0 1 0 -28.8 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M0 1600 L0 1071.8 L267.9 1024.3 L400 1066 L581.2 818.7 L800 983.6 L1036.6 969.7 L1200 1010.3 L1200 1600 Z" fill="#6f4c62" opacity="1"/>
+  <path d="M0 1600 L0 1320.2 L170.3 1222.5 L400 1351 L646.5 1252.6 L800 1307.5 L957 1280.1 L1200 1281.4 L1200 1600 Z" fill="#1c1838" opacity="1"/>
+</svg>

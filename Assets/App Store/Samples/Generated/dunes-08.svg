@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8e3" stop-opacity="1"/><stop offset="1" stop-color="#e8f7f0" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs>
+  <rect x="0" y="0" width="1000" height="1500" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="326.3" cy="590.7" r="249.1" fill="url(#g2)" opacity="1"/>
+  <circle cx="326.3" cy="590.7" r="83" fill="#ffffff" opacity="1"/>
+  <path d="M0 1500 L0 870 C359.4 690 718.8 660 818.8 840 S900 900 1000 780 L1000 1500 Z" fill="#efcba2" opacity="1"/>
+  <path d="M0 1500 L0 1010 C131.6 830 263.2 800 363.2 980 S900 1040 1000 920 L1000 1500 Z" fill="#e1b289" opacity="1"/>
+  <path d="M0 1500 L0 1150 C215.7 970 431.4 940 531.4 1120 S900 1180 1000 1060 L1000 1500 Z" fill="#d0956e" opacity="1"/>
+  <path d="M0 1500 L0 1290 C345.4 1110 690.8 1080 790.8 1260 S900 1320 1000 1200 L1000 1500 Z" fill="#bb734f" opacity="1"/>
+</svg>

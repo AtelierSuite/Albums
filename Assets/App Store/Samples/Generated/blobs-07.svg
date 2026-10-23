@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cdb4db" stop-opacity="1"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#bde0fe" stop-opacity="0.7"/><stop offset="1" stop-color="#bde0fe" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g3" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#cdb4db" stop-opacity="0.7"/><stop offset="1" stop-color="#cdb4db" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g4" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffc8dd" stop-opacity="0.8"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g5" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffc8dd" stop-opacity="0.6"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g6" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffc8dd" stop-opacity="0.7"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g7" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#cdb4db" stop-opacity="0.8"/><stop offset="1" stop-color="#cdb4db" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g8" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#a2d2ff" stop-opacity="0.8"/><stop offset="1" stop-color="#a2d2ff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffdeeb" stop-opacity="1"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g10" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcfe0" stop-opacity="1"/><stop offset="1" stop-color="#ffafcc" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g11" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffdeeb" stop-opacity="1"/><stop offset="1" stop-color="#ffc8dd" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g12" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d7ecfe" stop-opacity="1"/><stop offset="1" stop-color="#bde0fe" stop-opacity="1"/></linearGradient></defs>
+  <rect x="0" y="0" width="1200" height="1200" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="99.4" cy="296.5" r="403" fill="url(#g2)" opacity="1"/>
+  <circle cx="-31.5" cy="-0.9" r="564.2" fill="url(#g3)" opacity="1"/>
+  <circle cx="466.9" cy="446.9" r="536.8" fill="url(#g4)" opacity="1"/>
+  <circle cx="-106.7" cy="387.3" r="570.1" fill="url(#g5)" opacity="1"/>
+  <circle cx="883.6" cy="240" r="462.5" fill="url(#g6)" opacity="1"/>
+  <circle cx="793" cy="1107.5" r="469.5" fill="url(#g7)" opacity="1"/>
+  <circle cx="1163.6" cy="1260.1" r="487.6" fill="url(#g8)" opacity="1"/>
+  <circle cx="693.3" cy="1105.4" r="149.9" fill="url(#g9)" opacity="0.8"/>
+  <circle cx="757.9" cy="754.6" r="235.8" fill="url(#g10)" opacity="0.7"/>
+  <circle cx="406.7" cy="657.2" r="120.4" fill="url(#g11)" opacity="0.8"/>
+  <circle cx="192.3" cy="1005.4" r="184.5" fill="url(#g12)" opacity="0.7"/>
+</svg>

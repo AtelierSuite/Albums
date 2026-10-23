@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8e3" stop-opacity="1"/><stop offset="1" stop-color="#e8f7f0" stop-opacity="1"/></linearGradient>
+    <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs>
+  <rect x="0" y="0" width="1200" height="1600" rx="0" fill="url(#g1)" opacity="1"/>
+  <circle cx="753.5" cy="475.9" r="246.3" fill="url(#g2)" opacity="1"/>
+  <circle cx="753.5" cy="475.9" r="82.1" fill="#ffffff" opacity="1"/>
+  <path d="M0 1600 L0 928 C468.9 736 937.7 704 1057.7 896 S1080 960 1200 832 L1200 1600 Z" fill="#efcba2" opacity="1"/>
+  <path d="M0 1600 L0 1077.3 C327.3 885.3 654.5 853.3 774.5 1045.3 S1080 1109.3 1200 981.3 L1200 1600 Z" fill="#e1b289" opacity="1"/>
+  <path d="M0 1600 L0 1226.7 C431.3 1034.7 862.6 1002.7 982.6 1194.7 S1080 1258.7 1200 1130.7 L1200 1600 Z" fill="#d0956e" opacity="1"/>
+  <path d="M0 1600 L0 1376 C157.9 1184 315.8 1152 435.8 1344 S1080 1408 1200 1280 L1200 1600 Z" fill="#bb734f" opacity="1"/>
+</svg>

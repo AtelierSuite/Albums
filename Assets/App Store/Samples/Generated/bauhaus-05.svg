@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs></defs>
+  <rect x="0" y="0" width="1080" height="1920" rx="0" fill="#f9ad82" opacity="1"/>
+  <rect x="0" y="0" width="360" height="360" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="0" y="22.5" width="360" height="45" rx="0" fill="#c8c9f8" opacity="1"/>
+  <rect x="0" y="112.5" width="360" height="45" rx="0" fill="#c8c9f8" opacity="1"/>
+  <rect x="0" y="202.5" width="360" height="45" rx="0" fill="#c8c9f8" opacity="1"/>
+  <rect x="0" y="292.5" width="360" height="45" rx="0" fill="#c8c9f8" opacity="1"/>
+  <rect x="360" y="0" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <path d="M360 180 A180 180 0 0 1 720 180 Z" fill="#fabd9b" opacity="1"/>
+  <rect x="720" y="0" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <circle cx="900" cy="180" r="144" fill="#3d348b" opacity="1"/>
+  <circle cx="900" cy="180" r="72" fill="#f35b04" opacity="1"/>
+  <rect x="0" y="360" width="360" height="360" rx="0" fill="#3d348b" opacity="1"/>
+  <rect x="0" y="382.5" width="360" height="45" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="0" y="472.5" width="360" height="45" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="0" y="562.5" width="360" height="45" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="0" y="652.5" width="360" height="45" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="360" y="360" width="360" height="360" rx="0" fill="#7678ed" opacity="1"/>
+  <path d="M360 720 L540 360 L720 720 Z" fill="#f18701" opacity="1"/>
+  <rect x="720" y="360" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <circle cx="900" cy="540" r="144" fill="#7678ed" opacity="1"/>
+  <circle cx="900" cy="540" r="72" fill="#f35b04" opacity="1"/>
+  <rect x="0" y="720" width="360" height="360" rx="0" fill="#f18701" opacity="1"/>
+  <rect x="0" y="742.5" width="360" height="45" rx="0" fill="#f7b801" opacity="1"/>
+  <rect x="0" y="832.5" width="360" height="45" rx="0" fill="#f7b801" opacity="1"/>
+  <rect x="0" y="922.5" width="360" height="45" rx="0" fill="#f7b801" opacity="1"/>
+  <rect x="0" y="1012.5" width="360" height="45" rx="0" fill="#f7b801" opacity="1"/>
+  <rect x="360" y="720" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <path d="M360 900 A180 180 0 0 1 720 900 Z" fill="#f18701" opacity="1"/>
+  <rect x="720" y="720" width="360" height="360" rx="0" fill="#3d348b" opacity="1"/>
+  <path d="M720 720 L1080 720 A360 360 0 0 1 720 1080 Z" fill="#f7b801" opacity="1"/>
+  <rect x="0" y="1080" width="360" height="360" rx="0" fill="#f18701" opacity="1"/>
+  <path d="M0 1440 L180 1080 L360 1440 Z" fill="#f9cf99" opacity="1"/>
+  <rect x="360" y="1080" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <path d="M360 1260 A180 180 0 0 1 720 1260 Z" fill="#f18701" opacity="1"/>
+  <rect x="720" y="1080" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <rect x="720" y="1102.5" width="360" height="45" rx="0" fill="#3d348b" opacity="1"/>
+  <rect x="720" y="1192.5" width="360" height="45" rx="0" fill="#3d348b" opacity="1"/>
+  <rect x="720" y="1282.5" width="360" height="45" rx="0" fill="#3d348b" opacity="1"/>
+  <rect x="720" y="1372.5" width="360" height="45" rx="0" fill="#3d348b" opacity="1"/>
+  <rect x="0" y="1440" width="360" height="360" rx="0" fill="#3d348b" opacity="1"/>
+  <path d="M0 1800 L180 1440 L360 1800 Z" fill="#f35b04" opacity="1"/>
+  <rect x="360" y="1440" width="360" height="360" rx="0" fill="#7678ed" opacity="1"/>
+  <rect x="360" y="1462.5" width="360" height="45" rx="0" fill="#f18701" opacity="1"/>
+  <rect x="360" y="1552.5" width="360" height="45" rx="0" fill="#f18701" opacity="1"/>
+  <rect x="360" y="1642.5" width="360" height="45" rx="0" fill="#f18701" opacity="1"/>
+  <rect x="360" y="1732.5" width="360" height="45" rx="0" fill="#f18701" opacity="1"/>
+  <rect x="720" y="1440" width="360" height="360" rx="0" fill="#f7b801" opacity="1"/>
+  <rect x="720" y="1462.5" width="360" height="45" rx="0" fill="#fce399" opacity="1"/>
+  <rect x="720" y="1552.5" width="360" height="45" rx="0" fill="#fce399" opacity="1"/>
+  <rect x="720" y="1642.5" width="360" height="45" rx="0" fill="#fce399" opacity="1"/>
+  <rect x="720" y="1732.5" width="360" height="45" rx="0" fill="#fce399" opacity="1"/>
+  <rect x="0" y="1800" width="360" height="360" rx="0" fill="#3d348b" opacity="1"/>
+  <path d="M0 2160 L180 1800 L360 2160 Z" fill="#b1aed1" opacity="1"/>
+  <rect x="360" y="1800" width="360" height="360" rx="0" fill="#f35b04" opacity="1"/>
+  <path d="M360 2160 L540 1800 L720 2160 Z" fill="#f7b801" opacity="1"/>
+  <rect x="720" y="1800" width="360" height="360" rx="0" fill="#7678ed" opacity="1"/>
+  <path d="M720 1980 A180 180 0 0 1 1080 1980 Z" fill="#f7b801" opacity="1"/>
+</svg>

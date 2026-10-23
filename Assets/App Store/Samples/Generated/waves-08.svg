@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d4d5c" stop-opacity="1"/><stop offset="1" stop-color="#402e3f" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e55e3e" stop-opacity="1"/><stop offset="1" stop-color="#e0421c" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a339" stop-opacity="1"/><stop offset="1" stop-color="#f99216" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8d280" stop-opacity="1"/><stop offset="1" stop-color="#f7ca6a" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b1b9a6" stop-opacity="1"/><stop offset="1" stop-color="#a4ad96" stop-opacity="1"/></linearGradient>
+    <linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d4d5c" stop-opacity="1"/><stop offset="1" stop-color="#402e3f" stop-opacity="1"/></linearGradient></defs>
+  <rect x="0" y="0" width="1080" height="1920" rx="0" fill="#003049" opacity="1"/>
+  <path d="M0 1920 L0 192 C94.5 80.1 175.5 80.1 270 192 C364.5 303.9 445.5 303.9 540 192 C634.5 80.1 715.5 80.1 810 192 C904.5 303.9 985.5 303.9 1080 192 L1080 1920 Z" fill="url(#g1)" opacity="1"/>
+  <path d="M0 1920 L0 480 C189 591.9 351 591.9 540 480 C729 368.1 891 368.1 1080 480 L1080 1920 Z" fill="url(#g2)" opacity="1"/>
+  <path d="M0 1920 L0 768 C126 656.1 234 656.1 360 768 C486 879.9 594 879.9 720 768 C846 656.1 954 656.1 1080 768 L1080 1920 Z" fill="url(#g3)" opacity="1"/>
+  <path d="M0 1920 L0 1056 C189 944.1 351 944.1 540 1056 C729 1167.9 891 1167.9 1080 1056 L1080 1920 Z" fill="url(#g4)" opacity="1"/>
+  <path d="M0 1920 L0 1344 C189 1232.1 351 1232.1 540 1344 C729 1455.9 891 1455.9 1080 1344 L1080 1920 Z" fill="url(#g5)" opacity="1"/>
+  <path d="M0 1920 L0 1632 C126 1743.9 234 1743.9 360 1632 C486 1520.1 594 1520.1 720 1632 C846 1743.9 954 1743.9 1080 1632 L1080 1920 Z" fill="url(#g6)" opacity="1"/>
+</svg>
