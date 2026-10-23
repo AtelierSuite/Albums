@@ -28,7 +28,7 @@ struct PhotoGridEntryView: SwiftUI.View {
                                             .frame(width: cellWidth, height: cellHeight, alignment: .top)
                                             .clipped()
                                     } else {
-                                        Color(.systemGray5)
+                                        Color.clear
                                             .frame(width: cellWidth, height: cellHeight)
                                     }
                                 }
@@ -41,21 +41,18 @@ struct PhotoGridEntryView: SwiftUI.View {
     }
 
     var gridPlaceholder: some SwiftUI.View {
-        ZStack {
-            Color(.systemGray5)
-            VStack(spacing: 4) {
-                Image(systemName: "square.grid.2x2")
-                    .font(.largeTitle)
+        VStack(spacing: 4) {
+            Image(systemName: "square.grid.2x2")
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+            if entry.albumID == nil {
+                Text("PhotoGrid.Placeholder.SelectAlbum", tableName: "Widgets")
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                if entry.albumID == nil {
-                    Text("PhotoGrid.Placeholder.SelectAlbum", tableName: "Widgets")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("PhotoGrid.Placeholder.NoPics", tableName: "Widgets")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+            } else {
+                Text("PhotoGrid.Placeholder.NoPics", tableName: "Widgets")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -72,7 +69,7 @@ struct PhotoGrid: Widget {
         ) { entry in
             PhotoGridEntryView(entry: entry)
                 .containerBackground(for: .widget) {
-                    Color.clear
+                    Color(.systemGray5)
                 }
                 .widgetURL(widgetURL(for: entry))
         }

@@ -24,21 +24,18 @@ struct PhotostandEntryView: SwiftUI.View {
     }
 
     var placeholder: some SwiftUI.View {
-        ZStack {
-            Color(.systemGray5)
-            VStack(spacing: 4) {
-                Image(systemName: "photo.on.rectangle")
-                    .font(.largeTitle)
+        VStack(spacing: 4) {
+            Image(systemName: "photo.on.rectangle")
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+            if entry.albumID == nil {
+                Text("Photostand.Placeholder.SelectAlbum", tableName: "Widgets")
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                if entry.albumID == nil {
-                    Text("Photostand.Placeholder.SelectAlbum", tableName: "Widgets")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("Photostand.Placeholder.NoPics", tableName: "Widgets")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+            } else {
+                Text("Photostand.Placeholder.NoPics", tableName: "Widgets")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -55,7 +52,7 @@ struct Photostand: Widget {
         ) { entry in
             PhotostandEntryView(entry: entry)
                 .containerBackground(for: .widget) {
-                    Color.clear
+                    Color(.systemGray5)
                 }
                 .widgetURL(widgetURL(for: entry))
         }
