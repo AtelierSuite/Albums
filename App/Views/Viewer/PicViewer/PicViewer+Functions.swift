@@ -215,6 +215,11 @@ extension PicViewer {
         }
     }
 
+    var downloadStatusAlignment: Alignment {
+        viewer.displayedImage == nil && viewer.displayedThumbnail == nil && viewer.videoPlayer == nil
+            ? .center : .bottomTrailing
+    }
+
     var videoAspectRatio: CGFloat? {
         guard let thumbnail = viewer.displayedThumbnail,
               thumbnail.size.height > 0 else { return nil }
@@ -236,7 +241,7 @@ extension PicViewer {
                 }
             }
             .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-            .overlay(alignment: .bottomTrailing) {
+            .overlay(alignment: downloadStatusAlignment) {
                 downloadStatusOverlay
             }
         }
@@ -272,7 +277,7 @@ extension PicViewer {
             }
         }
         .transaction { $0.animation = nil }
-        .overlay(alignment: .bottomTrailing) {
+        .overlay(alignment: downloadStatusAlignment) {
             downloadStatusOverlay
         }
         .overlay(alignment: .bottomLeading) {
