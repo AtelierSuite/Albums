@@ -21,13 +21,21 @@ struct GridAlbumEntity: AppEntity {
 }
 
 enum AlbumEntityResolver {
+    static var rootAlbumName: String {
+        String(localized: "Widget.Album.None", table: "Widgets")
+    }
+
     static func suggested(forLibraryID libraryID: String) -> [(id: String, name: String)] {
-        PhotostandDatabase.fetchAllAlbums(inLibraryWithID: libraryID)
-            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
-            .map { (id: $0.id, name: $0.name) }
+        [(id: PhotostandDatabase.rootAlbumID, name: rootAlbumName)] +
+            PhotostandDatabase.fetchAllAlbums(inLibraryWithID: libraryID)
+                .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+                .map { (id: $0.id, name: $0.name) }
     }
 
     static func find(id: String, preferringLibraryID libraryID: String) -> (id: String, libraryID: String, name: String)? {
+        if id == PhotostandDatabase.rootAlbumID {
+            return (id, libraryID, rootAlbumName)
+        }
         if let record = PhotostandDatabase.fetchAlbum(withID: id, inLibraryWithID: libraryID) {
             return (record.id, libraryID, record.name)
         }

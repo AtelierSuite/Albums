@@ -27,6 +27,7 @@ struct PhotostandDatabase {
 
     static let ubiquityContainerID = "iCloud.com.tsubuzaki.IllustMate"
     static let defaultLibraryID = "__default__"
+    static let rootAlbumID = "__root__"
 
     struct AlbumRecord {
         let id: String
@@ -56,6 +57,10 @@ struct PhotostandDatabase {
     private static func openLibrariesDatabase() -> Connection? {
         guard let url = appGroupURL()?.appendingPathComponent("Libraries.db") else { return nil }
         return try? Connection(url.path, readonly: true)
+    }
+
+    private static func albumFilter(_ albumID: String) -> SQLite.Expression<Bool?> {
+        picAlbumId == (albumID == rootAlbumID ? nil : albumID)
     }
 
     private static func livePicsTable(in database: Connection) -> Table {
@@ -118,7 +123,7 @@ struct PhotostandDatabase {
         maxDimension: CGFloat = 800
     ) -> Data? {
         let idQuery = livePicsTable(in: database)
-            .filter(picAlbumId == albumID)
+            .filter(albumFilter(albumID))
             .filter(picMediaType == 0)
             .select(picId)
             .order(Expression<Int>.random())
@@ -137,7 +142,7 @@ struct PhotostandDatabase {
     ) -> [Data] {
         guard let database = openDatabase(forLibraryID: libraryID) else { return [] }
         let idQuery = livePicsTable(in: database)
-            .filter(picAlbumId == albumID)
+            .filter(albumFilter(albumID))
             .filter(picMediaType == 0)
             .select(picId)
             .order(Expression<Int>.random())
@@ -203,7 +208,7 @@ struct PhotostandDatabase {
     static func fetchPicCount(inAlbumWithID albumID: String,
                               inLibraryWithID libraryID: String = defaultLibraryID) -> Int {
         guard let database = openDatabase(forLibraryID: libraryID) else { return 0 }
-        let query = livePicsTable(in: database).filter(picAlbumId == albumID).filter(picMediaType == 0)
+        let query = livePicsTable(in: database).filter(albumFilter(albumID)).filter(picMediaType == 0)
         return (try? database.scalar(query.count)) ?? 0
     }
 }

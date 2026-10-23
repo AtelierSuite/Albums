@@ -80,7 +80,7 @@ struct PhotoGrid: Widget {
     }
 
     private func widgetURL(for entry: PhotoGridEntry) -> URL? {
-        guard let albumID = entry.albumID else { return nil }
+        guard let albumID = entry.albumID, albumID != PhotostandDatabase.rootAlbumID else { return nil }
         return URL(string: "picmate://album/\(albumID)")
     }
 }
