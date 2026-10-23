@@ -10,6 +10,15 @@ struct PhotosAssetViewer: View {
     @EnvironmentObject var navigation: NavigationManager
     @Environment(PictureInPictureManager.self) var pipManager
 
+    @AppStorage(viewerFitToScreenKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var fitToScreen: Bool = false
+    @AppStorage(viewerBackgroundTypeKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var backgroundType: ViewerBackgroundType = .immersive
+    @AppStorage(viewerShowResolutionKey,
+                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
+    var showResolutionByDefault: Bool = true
+
     let asset: PHAsset
 
     @Environment(\.displayScale) var displayScale
@@ -61,15 +70,24 @@ struct PhotosAssetViewer: View {
             viewSize = newSize
         }
         .background {
-            if let backgroundImage = currentImage {
-                Image(uiImage: backgroundImage)
-                    .resizable()
-                    .scaledToFill()
-                    .blur(radius: 40)
-                    .overlay {
-                        Color(colorScheme == .dark ? .black : .white)
-                            .opacity(0.3)
-                    }
+            switch backgroundType {
+            case .immersive:
+                if let backgroundImage = currentImage {
+                    Image(uiImage: backgroundImage)
+                        .resizable()
+                        .scaledToFill()
+                        .blur(radius: 40)
+                        .overlay {
+                            Color(colorScheme == .dark ? .black : .white)
+                                .opacity(0.3)
+                        }
+                        .ignoresSafeArea()
+                }
+            case .followSystem:
+                Color(uiColor: .systemBackground)
+                    .ignoresSafeArea()
+            case .dark:
+                Color.black
                     .ignoresSafeArea()
             }
         }
@@ -114,6 +132,9 @@ struct PhotosAssetViewer: View {
             }
         }
         .toolbar(isLandscape ? .hidden : .automatic, for: .bottomBar)
+        .onAppear {
+            showImageSize = showResolutionByDefault
+        }
         .task(id: currentAsset.localIdentifier) {
             isFullImageLoaded = false
             videoPlayer?.pause()

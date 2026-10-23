@@ -50,23 +50,32 @@ extension PhotosAssetViewer {
             HStack(spacing: 0.0) {
                 if photosViewer.allAssets.count > 1 {
                     PhotosAssetCarouselStripVertical()
-                        .padding(.vertical, -8.0)
+                        .padding(.vertical, fitToScreen ? 0.0 : -8.0)
                 }
                 imageContent
             }
-            .padding(8.0)
-            .padding(.leading, 40.0)
+            .padding(fitToScreen ? 0.0 : 8.0)
+            .padding(.leading, fitToScreen ? 0.0 : 40.0)
         } else {
             VStack(alignment: .center, spacing: 0.0) {
                 imageContent
 
                 if photosViewer.allAssets.count > 1 {
                     PhotosAssetCarouselStrip()
-                        .padding(.horizontal, -20.0)
+                        .padding(.top, fitToScreen ? 12.0 : 0.0)
+                        .padding(.horizontal, fitToScreen ? 0.0 : -20.0)
                 }
             }
-            .padding([.top, .horizontal], 20.0)
+            .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
         }
+    }
+
+    var imageCornerRadius: CGFloat {
+        fitToScreen ? 0.0 : 8.0
+    }
+
+    var imageShadowOpacity: CGFloat {
+        fitToScreen ? 0.0 : 0.2
     }
 
     @ViewBuilder
@@ -89,19 +98,19 @@ extension PhotosAssetViewer {
                 if let videoPlayer {
                     VideoPlayerView(player: videoPlayer)
                         .aspectRatio(videoAspectRatio, contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: 8.0))
+                        .clipShape(.rect(cornerRadius: imageCornerRadius))
                 } else if let thumbnail {
                     Image(uiImage: thumbnail)
                         .resizable()
                         .scaledToFit()
-                        .clipShape(.rect(cornerRadius: 8.0))
+                        .clipShape(.rect(cornerRadius: imageCornerRadius))
                 }
             }
-            .shadow(color: .black.opacity(0.2), radius: 4.0, x: 0.0, y: 4.0)
+            .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, isLandscape ? 4 : 20)
-        .padding(.bottom, isLandscape ? 0 : 20)
+        .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
+        .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .zIndex(1)
         .onTapGesture {
             withAnimation(.smooth.speed(2)) {
@@ -117,14 +126,14 @@ extension PhotosAssetViewer {
                     Image(uiImage: thumbnail)
                         .resizable()
                         .scaledToFit()
-                        .clipShape(.rect(cornerRadius: 8.0))
+                        .clipShape(.rect(cornerRadius: imageCornerRadius))
                         .opacity(isFullImageLoaded ? 0 : 1)
                 }
                 if let fullImage, isFullImageLoaded {
                     Image(uiImage: fullImage)
                         .resizable()
                         .scaledToFit()
-                        .clipShape(.rect(cornerRadius: 8.0))
+                        .clipShape(.rect(cornerRadius: imageCornerRadius))
                 }
             }
 
@@ -143,9 +152,9 @@ extension PhotosAssetViewer {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, isLandscape ? 4 : 20)
-        .padding(.bottom, isLandscape ? 0 : 20)
-        .shadow(color: .black.opacity(0.2), radius: 4.0, x: 0.0, y: 4.0)
+        .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
+        .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
+        .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
         .zIndex(1)
         .offset(displayOffset)
         .scaleEffect(CGSize(width: magnification, height: magnification),
