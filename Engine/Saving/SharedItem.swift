@@ -41,7 +41,10 @@ public enum SharedItem: Sendable {
             return await fileCopy(from: provider, type: .movie).map { .video($0) }
         }
         if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-            return await data(from: provider, type: .image).map { .image($0) }
+            if let data = await data(from: provider, type: .image), UIImage(data: data) != nil {
+                return .image(data)
+            }
+            return await imageObjectData(from: provider).map { .image($0) }
         }
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier),
            let url = await url(from: provider),
@@ -57,6 +60,18 @@ public enum SharedItem: Sendable {
         await withCheckedContinuation { continuation in
             _ = provider.loadObject(ofClass: URL.self) { url, _ in
                 continuation.resume(returning: url)
+            }
+        }
+    }
+
+    // Apps like X share an in-memory UIImage, whose data representation isn't decodable image data.
+    @MainActor
+    private static func imageObjectData(from provider: NSItemProvider) async -> Data? {
+        guard provider.canLoadObject(ofClass: UIImage.self) else { return nil }
+        return await withCheckedContinuation { continuation in
+            _ = provider.loadObject(ofClass: UIImage.self) { image, _ in
+                let image = image as? UIImage
+                continuation.resume(returning: image?.jpegData(compressionQuality: 0.95) ?? image?.pngData())
             }
         }
     }

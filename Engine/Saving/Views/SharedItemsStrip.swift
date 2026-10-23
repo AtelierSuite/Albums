@@ -19,7 +19,7 @@ public struct SharedItemsStrip: View {
                                 .resizable()
                                 .scaledToFill()
                         } else {
-                            Image(systemName: "video.fill")
+                            Image(systemName: item.imageData == nil ? "video.fill" : "photo")
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .background(.secondary.opacity(0.2))
