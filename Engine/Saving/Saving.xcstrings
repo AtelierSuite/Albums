@@ -347,7 +347,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保存済みかもしれません"
+            "value" : "すでに存在するかもしれません"
           }
         },
         "ko" : {
