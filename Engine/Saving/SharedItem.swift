@@ -41,10 +41,7 @@ public enum SharedItem: Sendable {
             return await fileCopy(from: provider, type: .movie).map { .video($0) }
         }
         if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-            if let data = await data(from: provider, type: .image), UIImage(data: data) != nil {
-                return .image(data)
-            }
-            return await imageObjectData(from: provider).map { .image($0) }
+            return await imageData(from: provider).map { .image($0) }
         }
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier),
            let url = await url(from: provider),
@@ -64,14 +61,35 @@ public enum SharedItem: Sendable {
         }
     }
 
-    // Apps like X share an in-memory UIImage, whose data representation isn't decodable image data.
     @MainActor
-    private static func imageObjectData(from provider: NSItemProvider) async -> Data? {
-        guard provider.canLoadObject(ofClass: UIImage.self) else { return nil }
-        return await withCheckedContinuation { continuation in
-            _ = provider.loadObject(ofClass: UIImage.self) { image, _ in
-                let image = image as? UIImage
-                continuation.resume(returning: image?.jpegData(compressionQuality: 0.95) ?? image?.pngData())
+    private static func imageData(from provider: NSItemProvider) async -> Data? {
+        let types = provider.registeredTypeIdentifiers
+            .compactMap { UTType($0) }
+            .filter { $0.conforms(to: .image) && $0 != .image } + [.image]
+        var firstData: Data?
+        for type in types {
+            guard let data = await data(from: provider, type: type) else { continue }
+            if UIImage(data: data) != nil { return data }
+            firstData = firstData ?? data
+        }
+        if let data = await itemImageData(from: provider) {
+            return data
+        }
+        return firstData
+    }
+
+    // Apps like X register an image type backed by a UIImage or file URL whose data representation isn't image data.
+    @MainActor
+    private static func itemImageData(from provider: NSItemProvider) async -> Data? {
+        await withCheckedContinuation { continuation in
+            provider.loadItem(forTypeIdentifier: UTType.image.identifier) { item, _ in
+                let data: Data? = switch item {
+                case let image as UIImage: image.jpegData(compressionQuality: 0.95) ?? image.pngData()
+                case let url as URL: try? Data(contentsOf: url)
+                case let data as Data: data
+                default: nil
+                }
+                continuation.resume(returning: data.flatMap { UIImage(data: $0) != nil ? $0 : nil })
             }
         }
     }

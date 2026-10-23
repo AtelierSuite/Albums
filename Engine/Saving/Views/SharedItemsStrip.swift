@@ -13,9 +13,9 @@ public struct SharedItemsStrip: View {
             HStack(spacing: 8.0) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, item in
                     Group {
-                        if let data = item.imageData, let image = UIImage(data: data)?
-                            .preparingThumbnail(of: CGSize(width: 240.0, height: 240.0)) {
-                            Image(uiImage: image)
+                        if let data = item.imageData, let image = UIImage(data: data) {
+                            let thumbnail = image.preparingThumbnail(of: CGSize(width: 240.0, height: 240.0)) ?? image
+                            Image(uiImage: thumbnail)
                                 .resizable()
                                 .scaledToFill()
                         } else {
