@@ -20,8 +20,8 @@ struct AppIconSection: View {
                         .accessibilityAddTraits(icon == selectedIcon ? .isSelected : [])
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 14)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 16)
             }
             .scrollIndicators(.hidden)
             .listRowInsets(EdgeInsets())
@@ -54,7 +54,7 @@ struct AppIconTile: View {
     let isSelected: Bool
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 2) {
             Image(icon.previewImageName)
                 .resizable()
                 .scaledToFit()
