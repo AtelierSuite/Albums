@@ -40,16 +40,28 @@ public enum SharedItem: Sendable {
         if provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
             return await fileCopy(from: provider, type: .movie).map { .video($0) }
         }
-        if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-            return await imageData(from: provider).map { .image($0) }
+        if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier),
+           let data = await imageData(from: provider) {
+            return .image(data)
         }
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier),
            let url = await url(from: provider),
-           let (data, _) = try? await URLSession.shared.data(from: url),
+           let data = await contents(of: url),
            UIImage(data: data) != nil {
             return .image(data)
         }
         return nil
+    }
+
+    private static func contents(of url: URL) async -> Data? {
+        guard url.isFileURL else {
+            return try? await URLSession.shared.data(from: url).0
+        }
+        let didStartAccessing = url.startAccessingSecurityScopedResource()
+        defer {
+            if didStartAccessing { url.stopAccessingSecurityScopedResource() }
+        }
+        return try? Data(contentsOf: url)
     }
 
     @MainActor
