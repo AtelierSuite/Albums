@@ -28,8 +28,8 @@ struct DuplicateWarningView: View {
             .navigationTitle(String(localized: "Duplicates.Title", table: "Saving", bundle: .engine))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(role: .close) {
                         session.cancel()
                     }
                 }

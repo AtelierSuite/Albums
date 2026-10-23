@@ -135,18 +135,18 @@ struct PhotosCollectionGrid: View {
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine))
         .toolbar {
-            if folder == nil {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { session.cancel() }
-                }
-            }
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     newAlbumName = ""
                     isCreatingAlbum = true
                 } label: {
                     Label(String(localized: "Photos.NewAlbum", table: "Saving", bundle: .engine),
                           systemImage: "rectangle.stack.badge.plus")
+                }
+            }
+            if folder == nil {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(role: .close) { session.cancel() }
                 }
             }
         }
