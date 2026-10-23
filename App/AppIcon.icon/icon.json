@@ -1,43 +1,41 @@
 {
-  "features" : [
+  "features": [
     "specular-location"
   ],
-  "fill" : {
-    "automatic-gradient" : "srgb:0.36078,0.21569,0.83137,1.00000"
+  "fill": {
+    "automatic-gradient": "srgb:0.36078,0.21569,0.83137,1.00000"
   },
-  "groups" : [
+  "groups": [
     {
-      "blur-material" : 1,
-      "hidden" : false,
-      "layers" : [
+      "blur-material": 1,
+      "layers": [
         {
-          "fill-specializations" : [
+          "fill-specializations": [
             {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
               }
             }
           ],
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "Nucleus.svg",
-          "name" : "Nucleus",
-          "position-specializations" : [
+          "glass": true,
+          "image-name": "Nucleus.svg",
+          "name": "Nucleus",
+          "position-specializations": [
             {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
                   0,
                   0
                 ]
               }
             },
             {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.1,
-                "translation-in-points" : [
+              "idiom": "square",
+              "value": {
+                "scale": 1.1,
+                "translation-in-points": [
                   0,
                   0
                 ]
@@ -46,296 +44,710 @@
           ]
         }
       ],
-      "position-specializations" : [
+      "position-specializations": [
         {
-          "idiom" : "square",
-          "value" : {
-            "scale" : 0.43,
-            "translation-in-points" : [
-              0,
-              -7.45
-            ]
-          }
-        }
-      ],
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.6
-      },
-      "specular" : "inside",
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.6
-      }
-    },
-    {
-      "blend-mode" : "normal",
-      "blur-material" : 0,
-      "layers" : [
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "North.svg",
-          "name" : "North",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "North East.svg",
-          "name" : "North East",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "East.svg",
-          "name" : "East",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South East.svg",
-          "name" : "South East",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South.svg",
-          "name" : "South",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "South West.svg",
-          "name" : "South West",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "West.svg",
-          "name" : "West",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "glass" : true,
-          "hidden" : false,
-          "image-name" : "North West.svg",
-          "name" : "North West",
-          "opacity" : 0.95,
-          "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 1.15,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
-        }
-      ],
-      "lighting" : "individual",
-      "position-specializations" : [
-        {
-          "idiom" : "square",
-          "value" : {
-            "scale" : 1.08,
-            "translation-in-points" : [
+          "idiom": "square",
+          "value": {
+            "scale": 0.43,
+            "translation-in-points": [
               0,
               0
             ]
           }
         }
       ],
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.4
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.6
       },
-      "specular" : "inside",
-      "translucency-specializations" : [
+      "specular": "inside",
+      "translucency": {
+        "enabled": true,
+        "value": 0.6
+      }
+    },
+    {
+      "blend-mode": "normal",
+      "blur-material": 1,
+      "layers": [
         {
-          "value" : {
-            "enabled" : true,
-            "value" : 0.5
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.97255,0.81569,0.67843,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P00.svg",
+          "name": "R1P00",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.98824,0.92941,0.67843,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P01.svg",
+          "name": "R1P01",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.73333,0.91373,0.73333,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P02.svg",
+          "name": "R1P02",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.74118,0.91765,0.98824,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P03.svg",
+          "name": "R1P03",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.66275,0.80392,0.98431,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P04.svg",
+          "name": "R1P04",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.74902,0.76863,0.98431,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P05.svg",
+          "name": "R1P05",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.90588,0.66667,0.96471,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P06.svg",
+          "name": "R1P06",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.96471,0.69804,0.68627,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R1P07.svg",
+          "name": "R1P07",
+          "opacity": 0.85,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "position-specializations": [
+        {
+          "idiom": "square",
+          "value": {
+            "scale": 1.08,
+            "translation-in-points": [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.4
+      },
+      "specular": "inside",
+      "translucency-specializations": [
+        {
+          "value": {
+            "enabled": true,
+            "value": 0.5
           }
         },
         {
-          "appearance" : "tinted",
-          "value" : {
-            "enabled" : true,
-            "value" : 0.75
+          "appearance": "tinted",
+          "value": {
+            "enabled": true,
+            "value": 0.75
+          }
+        }
+      ]
+    },
+    {
+      "blend-mode": "normal",
+      "blur-material": 1,
+      "layers": [
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.94118,0.59216,0.28235,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P01.svg",
+          "name": "R0P01",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.40784,0.80784,0.40392,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P03.svg",
+          "name": "R0P03",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.24706,0.56078,0.96863,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P05.svg",
+          "name": "R0P05",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.79216,0.26275,0.91765,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P07.svg",
+          "name": "R0P07",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "position-specializations": [
+        {
+          "idiom": "square",
+          "value": {
+            "scale": 1.08,
+            "translation-in-points": [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.4
+      },
+      "specular": "inside",
+      "translucency-specializations": [
+        {
+          "value": {
+            "enabled": true,
+            "value": 0.5
+          }
+        },
+        {
+          "appearance": "tinted",
+          "value": {
+            "enabled": true,
+            "value": 0.75
+          }
+        }
+      ]
+    },
+    {
+      "blend-mode": "normal",
+      "blur-material": 1,
+      "layers": [
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.92157,0.32549,0.30588,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P00.svg",
+          "name": "R0P00",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.97255,0.84706,0.28627,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P02.svg",
+          "name": "R0P02",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.42745,0.81569,0.97647,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P04.svg",
+          "name": "R0P04",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.43922,0.48627,0.96863,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "R0P06.svg",
+          "name": "R0P06",
+          "opacity": 0.92,
+          "position-specializations": [
+            {
+              "value": {
+                "scale": 1,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "idiom": "square",
+              "value": {
+                "scale": 1.15,
+                "translation-in-points": [
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "position-specializations": [
+        {
+          "idiom": "square",
+          "value": {
+            "scale": 1.08,
+            "translation-in-points": [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.4
+      },
+      "specular": "inside",
+      "translucency-specializations": [
+        {
+          "value": {
+            "enabled": true,
+            "value": 0.5
+          }
+        },
+        {
+          "appearance": "tinted",
+          "value": {
+            "enabled": true,
+            "value": 0.75
           }
         }
       ]
     }
   ],
-  "supported-platforms" : {
-    "circles" : [
+  "supported-platforms": {
+    "circles": [
       "watchOS"
     ],
-    "squares" : "shared"
+    "squares": "shared"
   }
 }
