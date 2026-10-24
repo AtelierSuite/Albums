@@ -85,22 +85,20 @@ enum PicOriginalExporter {
         }
     }
 
+    // suggestedFileName runs synchronously on the main thread at drag start, so only local
+    // files may be touched here. On macOS, reading a not-yet-downloaded iCloud original blocks
+    // until the whole file downloads, and the ubiquity container lookup itself can block.
     static func suggestedImageFilename(forPicID id: String, name: String) -> String {
         let stem = filenameStem(from: name)
-        let collectionID = DataActor.shared.collectionID
-        let candidates = [
-            DataActor.shared.imagesDirectoryURL().appendingPathComponent(id),
-            OriginalsManager.shared.cloudImageOriginalURL(forPicID: id, in: collectionID)
-        ].compactMap { $0 }
-        for url in candidates {
-            if let source = CGImageSourceCreateWithURL(url as CFURL, nil),
-               let uti = CGImageSourceGetType(source),
-               let type = UTType(uti as String),
-               let ext = type.preferredFilenameExtension {
-                return "\(stem).\(ext)"
-            }
+        let url = DataActor.shared.imagesDirectoryURL().appendingPathComponent(id)
+        if FileManager.default.fileExists(atPath: url.path),
+           let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+           let uti = CGImageSourceGetType(source),
+           let type = UTType(uti as String),
+           let ext = type.preferredFilenameExtension {
+            return "\(stem).\(ext)"
         }
-        return stem
+        return fallbackFilename(stem: stem, name: name)
     }
 
     static func suggestedVideoFilename(forPicID id: String, name: String) -> String {
@@ -111,11 +109,12 @@ enum PicOriginalExporter {
             let ext = (match as NSString).pathExtension
             if !ext.isEmpty { return "\(stem).\(ext)" }
         }
-        let collectionID = DataActor.shared.collectionID
-        if let ext = OriginalsManager.shared.cloudVideoOriginalExtension(forPicID: id, in: collectionID) {
-            return "\(stem).\(ext)"
-        }
-        return stem
+        return fallbackFilename(stem: stem, name: name)
+    }
+
+    private static func fallbackFilename(stem: String, name: String) -> String {
+        let ext = (name as NSString).pathExtension
+        return ext.isEmpty ? stem : "\(stem).\(ext)"
     }
 
     private static func temporaryURL(base: String, ext: String) -> URL {
