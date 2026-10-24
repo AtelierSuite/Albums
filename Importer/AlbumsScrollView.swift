@@ -8,6 +8,7 @@ struct AlbumsScrollView<Header: View>: View {
     var parentAlbum: Album?
     @Binding var isSearching: Bool
     var focusSearchOnAppear: Bool = false
+    var reloadID: String?
     @State var albums: [Album] = []
     @State var searchResults: [Album]?
     @State var isAlbumsLoaded: Bool = false
@@ -25,13 +26,14 @@ struct AlbumsScrollView<Header: View>: View {
     }
 
     init(title: LocalizedStringKey, session: SaveSession, parentAlbum: Album? = nil,
-         isSearching: Binding<Bool>, focusSearchOnAppear: Bool = false,
+         isSearching: Binding<Bool>, focusSearchOnAppear: Bool = false, reloadID: String? = nil,
          @ViewBuilder header: @escaping () -> Header) {
         self.title = title
         self.session = session
         self.parentAlbum = parentAlbum
         self._isSearching = isSearching
         self.focusSearchOnAppear = focusSearchOnAppear
+        self.reloadID = reloadID
         self.header = header
     }
 
@@ -67,20 +69,14 @@ struct AlbumsScrollView<Header: View>: View {
             if focusSearchOnAppear {
                 isSearchPresented = true
             }
-            Task {
-                do {
-                    let albums = try await DataActor.shared.albumsWithCounts(
-                        in: parentAlbum, sortedBy: albumSort
-                    )
-                    await MainActor.run {
-                        self.albums = albums
-                        isAlbumsLoaded = true
-                    }
-                    await AlbumCoverCache.shared.loadCovers(for: albums)
-                } catch {
-                    debugPrint(error.localizedDescription)
-                }
-            }
+            Task { await loadAlbums() }
+        }
+        .onChange(of: reloadID) {
+            searchText = ""
+            searchResults = nil
+            albums = []
+            isAlbumsLoaded = false
+            Task { await loadAlbums() }
         }
         .onChange(of: searchText) { _, newValue in
             isSearching = !newValue.isEmpty
@@ -113,6 +109,19 @@ struct AlbumsScrollView<Header: View>: View {
         .searchable(text: $searchText, isPresented: $isSearchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
+    }
+
+    private func loadAlbums() async {
+        do {
+            let albums = try await DataActor.shared.albumsWithCounts(
+                in: parentAlbum, sortedBy: albumSort
+            )
+            self.albums = albums
+            isAlbumsLoaded = true
+            await AlbumCoverCache.shared.loadCovers(for: albums)
+        } catch {
+            debugPrint(error.localizedDescription)
+        }
     }
 }
 

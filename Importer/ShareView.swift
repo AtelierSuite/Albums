@@ -33,20 +33,13 @@ struct ShareView: View {
                     AlbumsScrollView(title: "ViewTitle.Importer",
                                      session: session,
                                      isSearching: $isSearching,
-                                     focusSearchOnAppear: openSearchWhenSharing) {
+                                     focusSearchOnAppear: openSearchWhenSharing,
+                                     reloadID: libraryID) {
                         if libraries.count > 1 {
                             libraryChips
                         }
                     }
-                        .id(libraryID)
                         .safeAreaBar(edge: .bottom) { importButton }
-                        .toolbar {
-                            if libraries.count > 1 {
-                                ToolbarItem(placement: .topBarLeading) {
-                                    libraryMenu
-                                }
-                            }
-                        }
                         .navigationDestination(for: ViewPath.self) { viewPath in
                             if case .album(let album) = viewPath {
                                 AlbumsScrollView(title: LocalizedStringKey(album.name),
@@ -72,13 +65,6 @@ struct ShareView: View {
                 await save(to: album)
             }
         }
-        .onChange(of: libraryID) { _, newLibraryID in
-            DataActor.switchLibrary(to: newLibraryID)
-            CoverCacheActor.switchLibrary(to: newLibraryID)
-            AlbumCoverCache.shared.removeAllImages()
-            isSearching = false
-            viewPath = []
-        }
         .onChange(of: viewPath) { _, newPath in
             if quickImport, case .album(let album) = newPath.last, album.albumCount() == 0 {
                 Task { await save(to: album) }
@@ -86,62 +72,57 @@ struct ShareView: View {
         }
     }
 
-    private var libraryMenu: some View {
-        Menu {
-            Picker(selection: $libraryID) {
-                ForEach(libraries) { library in
-                    Text(displayName(for: library))
-                        .tag(library.id)
-                }
-            } label: {
-                Text("Importer.Library", tableName: "Import")
-            }
-            .pickerStyle(.inline)
-        } label: {
-            Label {
-                Text(currentLibraryName)
-            } icon: {
-                Image(systemName: "square.stack.3d.up")
-            }
-            .labelStyle(.titleAndIcon)
-        }
-    }
-
     private var libraryChips: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 8.0) {
-                ForEach(libraries) { library in
-                    if library.id == libraryID {
-                        libraryChip(for: library)
-                            .buttonStyle(.glassProminent)
-                            .accessibilityAddTraits(.isSelected)
-                    } else {
-                        libraryChip(for: library)
-                            .buttonStyle(.glass)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                GlassEffectContainer(spacing: 8.0) {
+                    HStack(spacing: 8.0) {
+                        ForEach(libraries) { library in
+                            if library.id == libraryID {
+                                libraryChip(for: library, proxy: proxy)
+                                    .buttonStyle(.glassProminent)
+                                    .accessibilityAddTraits(.isSelected)
+                            } else {
+                                libraryChip(for: library, proxy: proxy)
+                                    .buttonStyle(.glass)
+                            }
+                        }
                     }
                 }
+                .padding(.horizontal, 20.0)
+                .padding(.vertical, 4.0)
             }
-            .padding(.horizontal, 20.0)
-            .padding(.vertical, 4.0)
+            .scrollIndicators(.hidden)
+            .scrollClipDisabled()
+            .onAppear {
+                proxy.scrollTo(libraryID, anchor: .center)
+            }
         }
-        .scrollIndicators(.hidden)
-        .scrollClipDisabled()
         .padding(.top, 8.0)
     }
 
-    private func libraryChip(for library: PicLibrary) -> some View {
+    private func libraryChip(for library: PicLibrary, proxy: ScrollViewProxy) -> some View {
         Button {
-            libraryID = library.id
+            select(library)
+            withAnimation(.smooth) {
+                proxy.scrollTo(library.id, anchor: .center)
+            }
         } label: {
-            Label(displayName(for: library), systemImage: "square.stack.3d.up")
-                .labelStyle(.titleAndIcon)
+            Text(displayName(for: library))
                 .lineLimit(1)
         }
         .buttonBorderShape(.capsule)
+        .id(library.id)
     }
 
-    private var currentLibraryName: String {
-        libraries.first(where: { $0.id == libraryID }).map(displayName(for:)) ?? ""
+    private func select(_ library: PicLibrary) {
+        guard library.id != libraryID else { return }
+        DataActor.switchLibrary(to: library.id)
+        CoverCacheActor.switchLibrary(to: library.id)
+        AlbumCoverCache.shared.removeAllImages()
+        isSearching = false
+        viewPath = []
+        libraryID = library.id
     }
 
     private func displayName(for library: PicLibrary) -> String {
