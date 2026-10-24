@@ -84,7 +84,7 @@ public final class SaveSession {
     private func finish() {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
-        guard defaults?.object(forKey: "ShareSheetShowAnimation") as? Bool ?? true else {
+        guard defaults?.object(forKey: "ShareSheetShowAnimation") as? Bool ?? false else {
             close()
             return
         }

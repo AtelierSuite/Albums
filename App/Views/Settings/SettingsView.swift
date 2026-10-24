@@ -14,7 +14,7 @@ struct SettingsView: View {
     @AppStorage("ShareSheetOpenSearch", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
     var openSearchWhenSharing: Bool = false
     @AppStorage("ShareSheetShowAnimation", store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate"))
-    var showAnimationWhenSaving: Bool = true
+    var showAnimationWhenSaving: Bool = false
     @AppStorage("ShareSheetQuickImport",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var quickImport: Bool = false
     @AppStorage("ShareSheetDefaultAlbum",
