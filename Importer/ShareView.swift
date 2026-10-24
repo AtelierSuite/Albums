@@ -33,7 +33,11 @@ struct ShareView: View {
                     AlbumsScrollView(title: "ViewTitle.Importer",
                                      session: session,
                                      isSearching: $isSearching,
-                                     focusSearchOnAppear: openSearchWhenSharing)
+                                     focusSearchOnAppear: openSearchWhenSharing) {
+                        if libraries.count > 1 {
+                            libraryChips
+                        }
+                    }
                         .id(libraryID)
                         .safeAreaBar(edge: .bottom) { importButton }
                         .toolbar {
@@ -101,6 +105,39 @@ struct ShareView: View {
             }
             .labelStyle(.titleAndIcon)
         }
+    }
+
+    private var libraryChips: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 8.0) {
+                ForEach(libraries) { library in
+                    if library.id == libraryID {
+                        libraryChip(for: library)
+                            .buttonStyle(.glassProminent)
+                            .accessibilityAddTraits(.isSelected)
+                    } else {
+                        libraryChip(for: library)
+                            .buttonStyle(.glass)
+                    }
+                }
+            }
+            .padding(.horizontal, 20.0)
+            .padding(.vertical, 4.0)
+        }
+        .scrollIndicators(.hidden)
+        .scrollClipDisabled()
+        .padding(.top, 8.0)
+    }
+
+    private func libraryChip(for library: PicLibrary) -> some View {
+        Button {
+            libraryID = library.id
+        } label: {
+            Label(displayName(for: library), systemImage: "square.stack.3d.up")
+                .labelStyle(.titleAndIcon)
+                .lineLimit(1)
+        }
+        .buttonBorderShape(.capsule)
     }
 
     private var currentLibraryName: String {

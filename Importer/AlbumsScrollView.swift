@@ -1,7 +1,7 @@
 import Engine
 import SwiftUI
 
-struct AlbumsScrollView: View {
+struct AlbumsScrollView<Header: View>: View {
 
     var title: LocalizedStringKey
     var session: SaveSession
@@ -13,6 +13,7 @@ struct AlbumsScrollView: View {
     @State var isAlbumsLoaded: Bool = false
     @State var searchText: String = ""
     @State var isSearchPresented: Bool = false
+    @ViewBuilder var header: () -> Header
 
     @AppStorage(wrappedValue: AlbumViewStyle.mosaicGrid, "AlbumViewStyle",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: AlbumViewStyle
@@ -23,8 +24,22 @@ struct AlbumsScrollView: View {
         searchResults ?? albums
     }
 
+    init(title: LocalizedStringKey, session: SaveSession, parentAlbum: Album? = nil,
+         isSearching: Binding<Bool>, focusSearchOnAppear: Bool = false,
+         @ViewBuilder header: @escaping () -> Header) {
+        self.title = title
+        self.session = session
+        self.parentAlbum = parentAlbum
+        self._isSearching = isSearching
+        self.focusSearchOnAppear = focusSearchOnAppear
+        self.header = header
+    }
+
     var body: some View {
         ScrollView(.vertical) {
+            if searchResults == nil {
+                header()
+            }
             if isAlbumsLoaded {
                 if displayedAlbums.isEmpty {
                     if searchResults != nil && !searchText.isEmpty {
@@ -98,5 +113,15 @@ struct AlbumsScrollView: View {
         .searchable(text: $searchText, isPresented: $isSearchPresented,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
+    }
+}
+
+extension AlbumsScrollView where Header == EmptyView {
+    init(title: LocalizedStringKey, session: SaveSession, parentAlbum: Album? = nil,
+         isSearching: Binding<Bool>, focusSearchOnAppear: Bool = false) {
+        self.init(title: title, session: session, parentAlbum: parentAlbum,
+                  isSearching: isSearching, focusSearchOnAppear: focusSearchOnAppear) {
+            EmptyView()
+        }
     }
 }
