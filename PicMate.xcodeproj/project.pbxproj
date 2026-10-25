@@ -11,9 +11,9 @@
 		32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		4FD400684B5592EC7AAC1B91 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8985FAD43D565C373AF23DCD /* SQLite */; };
-		C2FA00012F9A000100C2FA01 /* C2PA in Frameworks */ = {isa = PBXBuildFile; productRef = C2FA00032F9A000100C2FA01 /* C2PA */; };
 		92E52CFA44C5ABBC3B7DDE70 /* Save to Photos.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A6B15AF95D716B1706E55908 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		C2FA00012F9A000100C2FA01 /* C2PA in Frameworks */ = {isa = PBXBuildFile; productRef = C2FA00032F9A000100C2FA01 /* C2PA */; };
 		C972C07C039BBA0840300BA6 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		CE38A9F588BB5C358A001834 /* Save to Last Used.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D738D4F7816DD37629FC1DA3 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
@@ -1774,15 +1774,15 @@
 			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
 		};
-		E4E717D12F5F0DC6000C13CB /* SQLite */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
-			productName = SQLite;
-		};
 		C2FA00032F9A000100C2FA01 /* C2PA */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */;
 			productName = C2PA;
+		};
+		E4E717D12F5F0DC6000C13CB /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
