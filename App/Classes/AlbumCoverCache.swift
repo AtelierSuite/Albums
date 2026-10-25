@@ -9,6 +9,12 @@ final class AlbumCoverCache {
         let primary: Image?
         let secondary: Image?
         let tertiary: Image?
+        let id = UUID()
+    }
+
+    struct InvalidationToken: Equatable, Sendable {
+        fileprivate let epoch: Int
+        fileprivate let generation: Int
     }
 
     nonisolated(unsafe) private let cache = NSCache<NSString, CoverImagesBox>()
@@ -18,7 +24,11 @@ final class AlbumCoverCache {
 
     /// Coalesces rapid version increments so SwiftUI doesn't re-evaluate every
     /// observing view once per loaded cover.
-    private var versionBumpPending = false
+    @ObservationIgnored private var versionBumpPending = false
+
+    @ObservationIgnored private var epoch = 0
+    @ObservationIgnored private var generations: [String: Int] = [:]
+    @ObservationIgnored private var inFlightLoads: [String: Task<Void, Never>] = [:]
 
     init() {
         cache.countLimit = 200
@@ -28,11 +38,12 @@ final class AlbumCoverCache {
         cache.object(forKey: id as NSString)?.value
     }
 
-    nonisolated func setImages(_ images: CoverImages, forAlbumID id: String) {
-        cache.setObject(CoverImagesBox(images), forKey: id as NSString)
+    func invalidationToken(forAlbumID id: String) -> InvalidationToken {
+        InvalidationToken(epoch: epoch, generation: generations[id, default: 0])
     }
 
-    func setImagesAndNotify(_ images: CoverImages, forAlbumID id: String) {
+    private func store(_ images: CoverImages, forAlbumID id: String, token: InvalidationToken) {
+        guard token == invalidationToken(forAlbumID: id) else { return }
         cache.setObject(CoverImagesBox(images), forKey: id as NSString)
         scheduleVersionBump()
     }
@@ -50,12 +61,17 @@ final class AlbumCoverCache {
     }
 
     func removeAllImages() {
+        epoch += 1
+        generations.removeAll()
+        inFlightLoads.removeAll()
         cache.removeAllObjects()
         pendingDiskDeletions.removeAll()
         version += 1
     }
 
     func removeImages(forAlbumID id: String) {
+        generations[id, default: 0] += 1
+        inFlightLoads[id] = nil
         cache.removeObject(forKey: id as NSString)
         pendingDiskDeletions.insert(id)
         version += 1
@@ -69,39 +85,66 @@ final class AlbumCoverCache {
 
     /// Album IDs whose disk cache entries are being deleted asynchronously.
     /// `loadCover` skips the disk cache for these to avoid reloading stale data.
-    private var pendingDiskDeletions: Set<String> = []
+    @ObservationIgnored private var pendingDiskDeletions: Set<String> = []
 
-    nonisolated func loadCover(for album: Album) async {
-        guard images(forAlbumID: album.id) == nil else { return }
+    func loadCover(for album: Album) async {
+        let albumID = album.id
+        guard images(forAlbumID: albumID) == nil else { return }
+        if let running = inFlightLoads[albumID] {
+            await running.value
+            return
+        }
+        let token = invalidationToken(forAlbumID: albumID)
+        let skipDiskCache = pendingDiskDeletions.contains(albumID)
+        let task = Task {
+            let images = await Self.fetchCover(for: album, skipDiskCache: skipDiskCache)
+            store(images, forAlbumID: albumID, token: token)
+        }
+        inFlightLoads[albumID] = task
+        await task.value
+        if inFlightLoads[albumID] == task {
+            inFlightLoads[albumID] = nil
+        }
+    }
 
+    @concurrent private nonisolated static func fetchCover(for album: Album, skipDiskCache: Bool) async -> CoverImages {
         let albumID = album.id
         let hasCover = album.hasCoverPhoto
         let versionKey = album.identifiableString()
 
-        let skipDiskCache = await MainActor.run { pendingDiskDeletions.contains(albumID) }
         if !skipDiskCache,
            let cached = await CoverCacheActor.shared.cachedCover(
             forAlbumWithID: albumID, versionKey: versionKey
            ) {
-            let coverImages = decodeCoverImages(
+            return decodeCoverImages(
                 primary: cached.primary,
                 secondary: cached.secondary,
                 tertiary: cached.tertiary
             )
-            setImages(coverImages, forAlbumID: albumID)
-            await MainActor.run { scheduleVersionBump() }
-            return
         }
 
-        let thumbnails = await DataActor.shared.representativeThumbnails(
-            forAlbumWithID: albumID, limit: 3
+        let dataBlobs = await coverDataBlobs(for: album, hasCover: hasCover, using: DataActor.shared)
+
+        await CoverCacheActor.shared.storeCover(
+            primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2],
+            forAlbumWithID: albumID, versionKey: versionKey
         )
 
+        return decodeCoverImages(
+            primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2]
+        )
+    }
+
+    private nonisolated static func coverDataBlobs(
+        for album: Album, hasCover: Bool, using dataActor: DataActor
+    ) async -> [Data?] {
+        let thumbnails = await dataActor.representativeThumbnails(
+            forAlbumWithID: album.id, limit: 3
+        )
         var coverData: Data?
         if hasCover {
-            coverData = await DataActor.shared.albumCoverData(forAlbumWithID: albumID)
+            coverData = await dataActor.albumCoverData(forAlbumWithID: album.id)
         }
-
         var dataBlobs: [Data?] = []
         if hasCover, let coverData {
             dataBlobs.append(coverData)
@@ -111,19 +154,7 @@ final class AlbumCoverCache {
             dataBlobs.append(data)
         }
         while dataBlobs.count < 3 { dataBlobs.append(nil) }
-
-        await CoverCacheActor.shared.storeCover(
-            primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2],
-            forAlbumWithID: albumID, versionKey: versionKey
-        )
-
-        let coverImages = decodeCoverImages(
-            primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2]
-        )
-        setImages(coverImages, forAlbumID: albumID)
-        await MainActor.run {
-            scheduleVersionBump()
-        }
+        return dataBlobs
     }
 
     /// Loads covers for a list of albums progressively, processing them in small
@@ -170,39 +201,29 @@ final class AlbumCoverCache {
         }
     }
 
-    private nonisolated func loadCover(for album: Album, using dataActor: DataActor) async {
-        guard images(forAlbumID: album.id) == nil else { return }
+    private func loadCover(for album: Album, using dataActor: DataActor) async {
         let albumID = album.id
-        let thumbnails = await dataActor.representativeThumbnails(forAlbumWithID: albumID, limit: 3)
-        var coverData: Data?
-        if album.hasCoverPhoto {
-            coverData = await dataActor.albumCoverData(forAlbumWithID: albumID)
-        }
-        var dataBlobs: [Data?] = []
-        if album.hasCoverPhoto, let coverData {
-            dataBlobs.append(coverData)
-        }
-        for data in thumbnails {
-            if dataBlobs.count >= 3 { break }
-            dataBlobs.append(data)
-        }
-        while dataBlobs.count < 3 { dataBlobs.append(nil) }
-        let coverImages = decodeCoverImages(
-            primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2]
-        )
-        setImages(coverImages, forAlbumID: albumID)
-        await MainActor.run { scheduleVersionBump() }
+        guard images(forAlbumID: albumID) == nil else { return }
+        let token = invalidationToken(forAlbumID: albumID)
+        let hasCover = album.hasCoverPhoto
+        let dataBlobs = await Self.coverDataBlobs(for: album, hasCover: hasCover, using: dataActor)
+        let images = await Self.decodeCoverImagesOffMain(dataBlobs)
+        store(images, forAlbumID: albumID, token: token)
+    }
+
+    @concurrent private nonisolated static func decodeCoverImagesOffMain(_ dataBlobs: [Data?]) async -> CoverImages {
+        decodeCoverImages(primary: dataBlobs[0], secondary: dataBlobs[1], tertiary: dataBlobs[2])
     }
 
     /// Decodes raw JPEG Data blobs into SwiftUI Images.
     /// Forces pixel decompression off the main thread so the render pass doesn't stall.
-    private nonisolated func decodeCoverImages(
+    private nonisolated static func decodeCoverImages(
         primary: Data?, secondary: Data?, tertiary: Data?
     ) -> CoverImages {
         CoverImages(
-            primary: primary.flatMap { Self.decodedImage(from: $0) },
-            secondary: secondary.flatMap { Self.decodedImage(from: $0) },
-            tertiary: tertiary.flatMap { Self.decodedImage(from: $0) }
+            primary: primary.flatMap { decodedImage(from: $0) },
+            secondary: secondary.flatMap { decodedImage(from: $0) },
+            tertiary: tertiary.flatMap { decodedImage(from: $0) }
         )
     }
 
