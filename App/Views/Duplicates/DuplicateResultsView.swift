@@ -101,7 +101,8 @@ struct DuplicateGroupSection: View {
                         DuplicateDetailCard(
                             pic: pic,
                             dataActor: dataActor,
-                            isSelectedForDeletion: selectedForDeletion.contains(pic.id)
+                            isSelectedForDeletion: selectedForDeletion.contains(pic.id),
+                            isKept: !selectedForDeletion.isEmpty && !selectedForDeletion.contains(pic.id)
                         ) {
                             withAnimation(.smooth.speed(2.0)) {
                                 if selectedForDeletion.contains(pic.id) {

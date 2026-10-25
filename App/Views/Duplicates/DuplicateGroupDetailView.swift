@@ -6,6 +6,7 @@ struct DuplicateDetailCard: View {
     let pic: Pic
     var dataActor: DataActor
     let isSelectedForDeletion: Bool
+    let isKept: Bool
     let onToggle: () -> Void
 
     @State private var imageSize: String?
@@ -14,11 +15,16 @@ struct DuplicateDetailCard: View {
     var body: some View {
         Button { onToggle() } label: {
             VStack(spacing: 6.0) {
-                PicLabel(pic: pic)
+                PicLabel(pic: pic, showsPinBadge: pic.isPinned)
                     .frame(width: 120.0, height: 120.0)
                     .clipShape(.rect(cornerRadius: 10.0))
                     .overlay(alignment: .bottomTrailing) {
                         SelectionOverlay(isSelectedForDeletion)
+                    }
+                    .overlay(alignment: .topLeading) {
+                        if isKept {
+                            DuplicateKeepBadge()
+                        }
                     }
 
                 VStack(spacing: 2.0) {
