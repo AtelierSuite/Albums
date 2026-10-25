@@ -3,17 +3,14 @@ import SwiftUI
 struct DuplicateKeepBadge: View {
 
     var body: some View {
-        HStack(spacing: 3.0) {
-            Image(systemName: "checkmark.shield.fill")
-            Text("Duplicates.Keep", tableName: "Photos")
-        }
-        .font(.caption2.weight(.semibold))
-        .foregroundStyle(.white)
-        .padding(.horizontal, 7.0)
-        .padding(.vertical, 3.0)
-        .glassEffect(.regular.tint(.green), in: .capsule)
-        .padding(6.0)
-        .transition(.scale(scale: 0.6).combined(with: .opacity))
+        Text("Duplicates.Keep", tableName: "Photos")
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 7.0)
+            .padding(.vertical, 3.0)
+            .glassEffect(.regular.tint(.green), in: .capsule)
+            .padding(6.0)
+            .transition(.scale(scale: 0.6).combined(with: .opacity))
     }
 }
 
