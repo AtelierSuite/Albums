@@ -5,12 +5,12 @@ import ImageIO
 extension DataActor {
     private var picListColumns: [Expressible] {
         [picId, picName, picAlbumId, picDateAdded, picThumbnailData,
-         picMediaType, picDuration, picFilePath, picPinnedAt, picThumbnailAspectRatio]
+         picMediaType, picDuration, picFilePath, picPinnedAt, picThumbnailAspectRatio, picAIContent]
     }
 
     private var picSkeletonColumns: [Expressible] {
         [picId, picName, picAlbumId, picDateAdded, picMediaType, picDuration, picFilePath, picPinnedAt,
-         picThumbnailAspectRatio]
+         picThumbnailAspectRatio, picAIContent]
     }
 
     public func pics() throws -> [Pic] {

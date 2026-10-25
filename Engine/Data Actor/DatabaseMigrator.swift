@@ -129,6 +129,23 @@ public struct DatabaseMigrator: Sendable {
             """)
     }
 
+    // MARK: - Content Credentials
+
+    public static func migrateContentCredentials(_ database: Connection, picsTable: Table) {
+        let existingColumns = (try? database.safeRows("PRAGMA table_info(\"pics\")"))?
+            .compactMap { $0[1] as? String } ?? []
+        if !existingColumns.contains("content_credentials") {
+            _ = try? database.run(picsTable.addColumn(Expression<String?>("content_credentials")))
+        }
+        if !existingColumns.contains("content_credentials_version") {
+            _ = try? database.run(picsTable.addColumn(Expression<Int>("content_credentials_version"),
+                                                      defaultValue: 0))
+        }
+        if !existingColumns.contains("ai_content") {
+            _ = try? database.run(picsTable.addColumn(Expression<Int?>("ai_content")))
+        }
+    }
+
     // MARK: - Search Indexes
 
     public static func createSearchIndexes(_ database: Connection) {
