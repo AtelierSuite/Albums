@@ -244,6 +244,9 @@ extension PicViewer {
             .overlay(alignment: downloadStatusAlignment) {
                 downloadStatusOverlay
             }
+            .overlay(alignment: .topLeading) {
+                aiContentOverlay
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
@@ -279,6 +282,11 @@ extension PicViewer {
         .transaction { $0.animation = nil }
         .overlay(alignment: downloadStatusAlignment) {
             downloadStatusOverlay
+        }
+        .overlay(alignment: .topLeading) {
+            if displayedOrientationEdit.isIdentity {
+                aiContentOverlay
+            }
         }
         .overlay(alignment: .bottomLeading) {
             if showImageSize, displayedOrientationEdit.isIdentity,
