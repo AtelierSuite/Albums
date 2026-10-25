@@ -602,6 +602,7 @@
 				E4614D0A2ACA86ED00D751FB /* Embed Foundation Extensions */,
 				E4614D1F2ACAFCF200D751FB /* ShellScript */,
 				CB3FAC6B7C8422195C3FE19D /* Embed Frameworks */,
+				C2FA0D5B2FA0000100C2FA01 /* Remove C2PAC Stub */,
 			);
 			buildRules = (
 			);
@@ -821,6 +822,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		C2FA0D5B2FA0000100C2FA01 /* Remove C2PAC Stub */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/C2PAC.framework",
+			);
+			name = "Remove C2PAC Stub";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rm -rf \"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/C2PAC.framework\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
