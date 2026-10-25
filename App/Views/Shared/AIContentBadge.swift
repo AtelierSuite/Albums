@@ -2,12 +2,7 @@ import Engine
 import SwiftUI
 
 extension AIContentKind {
-    var systemImage: String {
-        switch self {
-        case .generated: "sparkles"
-        case .assisted: "wand.and.sparkles"
-        }
-    }
+    var systemImage: String { "sparkles" }
 
     var label: LocalizedStringResource {
         switch self {
