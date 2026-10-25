@@ -3,12 +3,10 @@ import SwiftUI
 struct DuplicateKeepBadge: View {
 
     var body: some View {
-        Label {
-            Text("Duplicates.Keep", tableName: "Photos")
-        } icon: {
+        HStack(spacing: 3.0) {
             Image(systemName: "checkmark.shield.fill")
+            Text("Duplicates.Keep", tableName: "Photos")
         }
-        .labelStyle(.titleAndIcon)
         .font(.caption2.weight(.semibold))
         .foregroundStyle(.white)
         .padding(.horizontal, 7.0)
