@@ -19,10 +19,10 @@ struct AIContentBadge: View {
 
     var body: some View {
         Image(systemName: kind.systemImage)
-            .font(.system(size: isCompact ? 7.0 : 10.0, weight: .semibold))
+            .font(.system(size: isCompact ? 7.0 : 10.0, weight: .medium))
             .foregroundStyle(.white)
             .frame(width: isCompact ? 14.0 : 22.0, height: isCompact ? 14.0 : 22.0)
-            .background(.black.opacity(0.6), in: .circle)
+            .glassEffect(.regular.tint(.indigo), in: .circle)
             .padding(isCompact ? 2.0 : 4.0)
             .accessibilityElement()
             .accessibilityLabel(Text(kind.label))
