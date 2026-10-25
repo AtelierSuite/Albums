@@ -16,6 +16,7 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
     public var pinnedAt: Date?
     public var dateDeleted: Date?
     public var thumbnailAspectRatio: Double?
+    public var aiContent: AIContentKind?
 
     public var isVideo: Bool { mediaType == .video }
     public var isPinned: Bool { pinnedAt != nil }

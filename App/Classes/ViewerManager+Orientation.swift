@@ -112,6 +112,9 @@ extension ViewerManager {
         }.value
         guard let edited else { return nil }
         let collectionID = session.collectionID
+        await ContentCredentialsScanner.shared.ensureScanned(
+            picID: picID, imageData: baseData, in: DataActor.instance(for: collectionID)
+        )
         let cloudOutcome = await OriginalsManager.shared.replaceCloudImageOriginal(
             picID: picID, with: edited, in: collectionID
         )

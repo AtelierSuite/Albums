@@ -11,6 +11,7 @@
 		32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		4FD400684B5592EC7AAC1B91 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8985FAD43D565C373AF23DCD /* SQLite */; };
+		C2FA00012F9A000100C2FA01 /* C2PA in Frameworks */ = {isa = PBXBuildFile; productRef = C2FA00032F9A000100C2FA01 /* C2PA */; };
 		92E52CFA44C5ABBC3B7DDE70 /* Save to Photos.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A6B15AF95D716B1706E55908 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		C972C07C039BBA0840300BA6 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
@@ -403,6 +404,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */,
+				C2FA00012F9A000100C2FA01 /* C2PA in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +618,9 @@
 				E4A15DB32F49EE8F00CD6892 /* App */,
 			);
 			name = PicMate;
+			packageProductDependencies = (
+				C2FA00032F9A000100C2FA01 /* C2PA */,
+			);
 			productName = PicMate;
 			productReference = E4614CE32ACA86C900D751FB /* PicMate.app */;
 			productType = "com.apple.product-type.application";
@@ -720,6 +725,7 @@
 			mainGroup = E4614CDA2ACA86C900D751FB;
 			packageReferences = (
 				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */,
+				C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4614CE42ACA86C900D751FB /* Products */;
@@ -1732,6 +1738,14 @@
 				minimumVersion = 0.15.3;
 			};
 		};
+		C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/contentauth/c2pa-swift";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.0.15;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1744,6 +1758,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
 			productName = SQLite;
+		};
+		C2FA00032F9A000100C2FA01 /* C2PA */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */;
+			productName = C2PA;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

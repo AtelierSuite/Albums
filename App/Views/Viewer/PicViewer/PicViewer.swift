@@ -31,6 +31,8 @@ struct PicViewer: View {
     @State var showDownloadFailedPopover: Bool = false
     @State var isRenamePicPresented: Bool = false
     @State var isConfirmingDeletePic: Bool = false
+    @State var isInfoPresented: Bool = false
+    @State var displayedAIContent: AIContentKind?
     @State var renamePicText: String = ""
     @State var displayedPicName: String = ""
     @State var isDisplayedPicPinned: Bool = false
@@ -207,18 +209,22 @@ struct PicViewer: View {
                             showInAlbum()
                         }
                     }
+                    infoButton
                     Divider()
                     deleteButton
                 }
             }
         }
         .toolbar(isLandscape ? .hidden : .automatic, for: .bottomBar)
+        .modifier(PicInfoPresenter(isPresented: $isInfoPresented, aiContent: $displayedAIContent,
+                                   pixelSize: displayedPixelSize, albumName: containingAlbumName))
         .onAppear {
             showImageSize = showResolutionByDefault
         }
         .task(id: viewer.displayedPicID) {
             displayedPicName = viewer.displayedPic?.name ?? pic.name
             isDisplayedPicPinned = viewer.displayedPic?.isPinned ?? pic.isPinned
+            displayedAIContent = viewer.displayedPic?.aiContent ?? pic.aiContent
             containingAlbumName = nil
             videoResolution = nil
             if let albumID = viewer.displayedPic?.containingAlbumID ?? pic.containingAlbumID {

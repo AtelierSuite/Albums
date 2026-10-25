@@ -53,6 +53,9 @@ public actor DataActor {
     public let picFilePath = Expression<String?>("file_path")
     public let picPinnedAt = Expression<Double?>("pinned_at")
     public let picThumbnailAspectRatio = Expression<Double?>("thumbnail_aspect_ratio")
+    public let picContentCredentials = Expression<String?>("content_credentials")
+    public let picContentCredentialsVersion = Expression<Int>("content_credentials_version")
+    public let picAIContent = Expression<Int?>("ai_content")
 
     public let prefAlbumId = Expression<String>("album_id")
     public let prefAlbumSort = Expression<String>("album_sort")
@@ -154,6 +157,7 @@ public actor DataActor {
             DatabaseMigrator.migratePinsColumn(database, picsTable: picsTable)
             DatabaseMigrator.migrateRecentlyDeleted(database, picsTable: picsTable)
             DatabaseMigrator.migrateThumbnailAspectRatio(database, picsTable: picsTable)
+            DatabaseMigrator.migrateContentCredentials(database, picsTable: picsTable)
             try database.run(tombstonesTable.create(ifNotExists: true) { table in
                 table.column(tombstoneId, primaryKey: true)
                 table.column(tombstoneRecordType)
@@ -294,6 +298,7 @@ public actor DataActor {
         let pinnedAt = (try? row.get(picPinnedAt)) ?? nil
         let dateDeleted = (try? row.get(picDateDeleted)) ?? nil
         let aspectRatio = (try? row.get(picThumbnailAspectRatio)) ?? nil
+        let aiContent = (try? row.get(picAIContent)) ?? nil
         let pic = Pic(id: id, name: name,
                        containingAlbumID: albumId ?? nil,
                        dateAdded: dateAdded,
@@ -304,6 +309,7 @@ public actor DataActor {
         pic.pinnedAt = pinnedAt.map { Date(timeIntervalSince1970: $0) }
         pic.dateDeleted = dateDeleted.map { Date(timeIntervalSince1970: $0) }
         pic.thumbnailAspectRatio = aspectRatio
+        pic.aiContent = aiContent.flatMap(AIContentKind.init(rawValue:))
         return pic
     }
 

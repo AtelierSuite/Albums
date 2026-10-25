@@ -49,6 +49,7 @@ struct PicLabel: View {
     var onAspectRatio: ((CGFloat) -> Void)?
 
     @State var isThumbnailReadyToPresent: Bool
+    @State var aiContent: AIContentKind?
     @State var thumbnail: Image?
     @State var fadesInThumbnail: Bool
 
@@ -63,6 +64,7 @@ struct PicLabel: View {
         _isThumbnailReadyToPresent = State(initialValue: cached != nil)
         _thumbnail = State(initialValue: cached.map { Image(uiImage: $0) })
         _fadesInThumbnail = State(initialValue: cached == nil)
+        _aiContent = State(initialValue: pic.aiContent)
     }
 
     var body: some View {
@@ -94,6 +96,12 @@ struct PicLabel: View {
                 reportAspectRatio(for: cached)
                 thumbnail = Image(uiImage: cached)
                 isThumbnailReadyToPresent = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .picContentCredentialsDidChange)) { notification in
+                guard notification.object as? String == pic.id else { return }
+                let kind = (notification.userInfo?["aiContent"] as? Int).flatMap(AIContentKind.init(rawValue:))
+                pic.aiContent = kind
+                aiContent = kind
             }
     }
 
@@ -139,6 +147,11 @@ struct PicLabel: View {
                         .padding(.vertical, usesCompactBadges ? 1.0 : 2.0)
                         .background(.black.opacity(0.6), in: .capsule)
                         .padding(usesCompactBadges ? 2.0 : 4.0)
+                }
+            }
+            .overlay(alignment: .bottomLeading) {
+                if let aiContent {
+                    AIContentBadge(kind: aiContent, isCompact: usesCompactBadges)
                 }
             }
             .overlay(alignment: .topTrailing) {
