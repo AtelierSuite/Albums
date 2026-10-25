@@ -18,15 +18,21 @@ struct IntelligentSortResultsView: View {
 
     @State private var isConfirmingMove: Bool = false
 
-    private var needsReview: [EntitySuggestion] {
-        sortManager.suggestions.filter { ($0.topMatch?.confidence ?? .none) == .none }
+    private let suggestionGroups: [SuggestionGroup]
+    private let needsReview: [EntitySuggestion]
+
+    init(sortManager: IntelligentSortManager) {
+        self.sortManager = sortManager
+        let suggestions = sortManager.suggestions
+        self.needsReview = suggestions.filter { ($0.topMatch?.confidence ?? .none) == .none }
+        self.suggestionGroups = Self.groups(for: suggestions)
     }
 
-    private var suggestionGroups: [SuggestionGroup] {
+    private static func groups(for suggestions: [EntitySuggestion]) -> [SuggestionGroup] {
         var order: [String] = []
         var grouped: [String: [EntitySuggestion]] = [:]
         var names: [String: String] = [:]
-        for suggestion in sortManager.suggestions {
+        for suggestion in suggestions {
             guard let top = suggestion.topMatch, top.confidence != .none else { continue }
             if grouped[top.albumID] == nil {
                 order.append(top.albumID)
@@ -82,7 +88,7 @@ struct IntelligentSortResultsView: View {
         List {
             ForEach(suggestionGroups) { group in
                 Section {
-                    carousel(for: group.items)
+                    SuggestionCarousel(items: group.items, dataActor: sortManager.dataActor)
                     Button(String(localized: "Sort.AcceptAllInGroup", table: "Photos")) {
                         withAnimation(.smooth.speed(2.0)) {
                             for item in group.items {
@@ -110,7 +116,7 @@ struct IntelligentSortResultsView: View {
             }
             if !needsReview.isEmpty {
                 Section {
-                    carousel(for: needsReview)
+                    SuggestionCarousel(items: needsReview, dataActor: sortManager.dataActor)
                 } header: {
                     Text("Sort.NeedsReview", tableName: "Photos")
                 }
@@ -177,12 +183,20 @@ struct IntelligentSortResultsView: View {
             Button("Shared.No", role: .cancel) {}
         }
     }
+}
 
-    private func carousel(for items: [EntitySuggestion]) -> some View {
+// MARK: - Suggestion Carousel
+
+struct SuggestionCarousel: View {
+
+    let items: [EntitySuggestion]
+    let dataActor: DataActor
+
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .top, spacing: 12.0) {
+            LazyHStack(alignment: .top, spacing: 12.0) {
                 ForEach(items) { suggestion in
-                    SuggestionCard(suggestion: suggestion, dataActor: sortManager.dataActor)
+                    SuggestionCard(suggestion: suggestion, dataActor: dataActor)
                 }
             }
             .padding(.vertical, 4.0)
@@ -335,6 +349,12 @@ struct MedoidThumbnail: View {
 
     @State private var image: UIImage?
 
+    init(picID: String, dataActor: DataActor) {
+        self.picID = picID
+        self.dataActor = dataActor
+        _image = State(initialValue: ThumbnailCache.shared.image(forKey: picID))
+    }
+
     var body: some View {
         Rectangle()
             .fill(.primary.opacity(0.05))
@@ -346,9 +366,21 @@ struct MedoidThumbnail: View {
                 }
             }
             .task(id: picID) {
-                if let data = await dataActor.thumbnailData(forPicWithID: picID) {
-                    image = UIImage(data: data)
+                if let cached = ThumbnailCache.shared.image(forKey: picID) {
+                    image = cached
+                    return
                 }
+                guard let data = await dataActor.thumbnailData(forPicWithID: picID),
+                      let prepared = await Self.prepare(data) else { return }
+                ThumbnailCache.shared.setImage(prepared, forKey: picID)
+                guard !Task.isCancelled else { return }
+                image = prepared
             }
+    }
+
+    @concurrent
+    nonisolated private static func prepare(_ data: Data) async -> UIImage? {
+        guard let image = UIImage(data: data) else { return nil }
+        return await image.byPreparingForDisplay()
     }
 }
