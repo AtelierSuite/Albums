@@ -14,7 +14,8 @@ extension AlbumCover {
         @State private var primaryImage: Image?
         @State private var secondaryImage: Image?
         @State private var tertiaryImage: Image?
-        @State private var isLoaded = false
+        @State private var loadedCoverID: UUID?
+        @State private var loadedToken: AlbumCoverCache.InvalidationToken?
 
         var body: some View {
             AlbumCover(name: album.name,
@@ -27,22 +28,13 @@ extension AlbumCover {
                        isDownloading: isDownloading,
                        style: style)
             .onChange(of: AlbumCoverCache.shared.version) {
-                if AlbumCoverCache.shared.images(forAlbumID: album.id) == nil {
-                    guard isLoaded else { return }
-                    isLoaded = false
-                    primaryImage = nil
-                    secondaryImage = nil
-                    tertiaryImage = nil
-                    // Reload this single cover (e.g. after eviction or invalidation)
-                    Task {
-                        await AlbumCoverCache.shared.loadCover(for: album)
-                    }
-                } else {
-                    loadFromCache()
+                guard !loadFromCache(), let loadedToken,
+                      loadedToken != AlbumCoverCache.shared.invalidationToken(forAlbumID: album.id) else { return }
+                Task {
+                    await AlbumCoverCache.shared.loadCover(for: album)
                 }
             }
             .onChange(of: album.identifiableString()) {
-                isLoaded = false
                 loadFromCache()
             }
             .onAppear {
@@ -52,15 +44,14 @@ extension AlbumCover {
 
         @discardableResult
         private func loadFromCache() -> Bool {
-            guard !isLoaded else { return true }
-            if let cached = AlbumCoverCache.shared.images(forAlbumID: album.id) {
-                primaryImage = cached.primary
-                secondaryImage = cached.secondary
-                tertiaryImage = cached.tertiary
-                isLoaded = true
-                return true
-            }
-            return false
+            guard let cached = AlbumCoverCache.shared.images(forAlbumID: album.id) else { return false }
+            guard cached.id != loadedCoverID else { return true }
+            primaryImage = cached.primary
+            secondaryImage = cached.secondary
+            tertiaryImage = cached.tertiary
+            loadedCoverID = cached.id
+            loadedToken = AlbumCoverCache.shared.invalidationToken(forAlbumID: album.id)
+            return true
         }
     }
 }
