@@ -33,7 +33,7 @@ extension DataActor {
     public func pic(forID picID: String) -> Pic? {
         let query = picsTable
             .filter(picId == picID)
-            .select(picId, picName, picAlbumId, picDateAdded, picThumbnailData)
+            .select(picId, picName, picAlbumId, picDateAdded, picThumbnailData, picPinnedAt)
         guard let row = try? database.pluck(query) else { return nil }
         return picFrom(row: row)
     }
