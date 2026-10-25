@@ -18,6 +18,7 @@ class PhotosDuplicateScanManager {
     var scanPhase: ScanPhase = .idle
 
     var duplicateGroups: [PhotosDuplicateGroup] = []
+    var autoSelection: [UUID: Set<String>] = [:]
 
     var hammingThreshold: Double = 8
 
@@ -29,13 +30,17 @@ class PhotosDuplicateScanManager {
     }
 
     // swiftlint:disable:next function_body_length
-    func scan(in collection: PHAssetCollection) async {
+    func scan(
+        in collection: PHAssetCollection,
+        autoSelect: DuplicateAutoSelectOptions = DuplicateAutoSelectOptions()
+    ) async {
         withAnimation(.smooth.speed(2.0)) {
             isScanning = true
             scanPhase = .computingHashes
         }
         scanProgress = 0
         duplicateGroups = []
+        autoSelection = [:]
 
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
@@ -95,6 +100,7 @@ class PhotosDuplicateScanManager {
             return earliestA < earliestB
         }
 
+        autoSelection = autoSelection(for: resultGroups, options: autoSelect)
         duplicateGroups = resultGroups
         withAnimation(.smooth.speed(2.0)) {
             scanPhase = .done
@@ -108,6 +114,38 @@ class PhotosDuplicateScanManager {
             updated.assets.removeAll { deletedIDs.contains($0.localIdentifier) }
             return updated.assets.count >= 2 ? updated : nil
         }
+    }
+
+    // MARK: - Auto-Select
+
+    private func autoSelection(
+        for groups: [PhotosDuplicateGroup],
+        options: DuplicateAutoSelectOptions
+    ) -> [UUID: Set<String>] {
+        guard options.criterion != .none else { return [:] }
+        var selection: [UUID: Set<String>] = [:]
+        for group in groups {
+            let candidates = group.assets.map { asset in
+                DuplicateCandidate(
+                    id: asset.localIdentifier,
+                    date: asset.creationDate ?? .distantPast,
+                    pixelCount: asset.pixelWidth * asset.pixelHeight,
+                    fileSize: options.criterion == .keepLargestFile ? Self.fileSize(of: asset) : 0,
+                    isProtected: asset.isFavorite
+                )
+            }
+            let ids = DuplicateAutoSelector.idsToSelect(from: candidates, options: options)
+            if !ids.isEmpty {
+                selection[group.id] = ids
+            }
+        }
+        return selection
+    }
+
+    // "fileSize" is an undocumented PHAssetResource key.
+    private static func fileSize(of asset: PHAsset) -> Int64 {
+        PHAssetResource.assetResources(for: asset).first
+            .flatMap { $0.value(forKey: "fileSize") as? Int64 } ?? 0
     }
 
     // MARK: - Image Loading

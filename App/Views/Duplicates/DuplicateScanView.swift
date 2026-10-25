@@ -8,6 +8,9 @@ struct DuplicateScanView: View {
     var scanScope: DuplicateScanManager.ScanScope
     var collectionID: String?
 
+    @AppStorage("DuplicatesAutoSelectCriterion") var autoSelectCriterion: DuplicateAutoSelectCriterion = .none
+    @AppStorage("DuplicatesAutoSelectPrefersProtected") var autoSelectPrefersProtected: Bool = true
+
     @State var scanManager: DuplicateScanManager
 
     init(scanScope: DuplicateScanManager.ScanScope, collectionID: String? = nil) {
@@ -41,7 +44,7 @@ struct DuplicateScanView: View {
                     if !scanManager.isScanning && scanManager.scanPhase == .idle {
                         Button {
                             Task {
-                                await scanManager.scan(scope: scanScope)
+                                await scanManager.scan(scope: scanScope, autoSelect: autoSelectOptions)
                             }
                         } label: {
                             Label(
@@ -65,7 +68,7 @@ struct DuplicateScanView: View {
 #if DEBUG
         .task {
             if ScreenshotSeeder.isActive && ScreenshotSeeder.findsDuplicates {
-                await scanManager.scan(scope: scanScope)
+                await scanManager.scan(scope: scanScope, autoSelect: autoSelectOptions)
             }
         }
 #endif
@@ -91,7 +94,33 @@ struct DuplicateScanView: View {
             } header: {
                 Text("Duplicates.Settings", tableName: "Photos")
             }
+            Section {
+                Picker(selection: $autoSelectCriterion) {
+                    ForEach(DuplicateAutoSelectCriterion.allCases) { criterion in
+                        Text(criterion.titleKey)
+                            .tag(criterion)
+                    }
+                } label: {
+                    Text("Duplicates.AutoSelect.Rule", tableName: "Photos")
+                }
+                .accessibilityIdentifier("duplicateAutoSelectRule")
+                if autoSelectCriterion != .none {
+                    Toggle(isOn: $autoSelectPrefersProtected) {
+                        Text("Duplicates.AutoSelect.PreferPinned", tableName: "Photos")
+                    }
+                }
+            } header: {
+                Text("Duplicates.AutoSelect", tableName: "Photos")
+            } footer: {
+                if autoSelectCriterion != .none {
+                    Text("Duplicates.AutoSelect.Footer", tableName: "Photos")
+                }
+            }
         }
+    }
+
+    private var autoSelectOptions: DuplicateAutoSelectOptions {
+        DuplicateAutoSelectOptions(criterion: autoSelectCriterion, prefersProtected: autoSelectPrefersProtected)
     }
 
     private var scanProgressContent: some View {

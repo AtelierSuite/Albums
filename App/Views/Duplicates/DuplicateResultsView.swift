@@ -8,6 +8,11 @@ struct DuplicateResultsView: View {
     @State var selectedForDeletion: [UUID: Set<String>] = [:]
     @State var isConfirmingDeleteAll: Bool = false
 
+    init(scanManager: DuplicateScanManager) {
+        self.scanManager = scanManager
+        self._selectedForDeletion = State(initialValue: scanManager.autoSelection)
+    }
+
     var allSelectedIDs: Set<String> {
         selectedForDeletion.values.reduce(into: Set<String>()) { $0.formUnion($1) }
     }
