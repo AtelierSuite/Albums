@@ -21,12 +21,8 @@ struct PicInfoSheet: View {
                     } label: {
                         Text("Info.DateAdded", tableName: "ContentCredentials")
                     }
-                    if let pixelSize, pixelSize.width > 0.0 {
-                        LabeledContent {
-                            Text(verbatim: "\(Int(pixelSize.width)) × \(Int(pixelSize.height))")
-                        } label: {
-                            Text("Info.Dimensions", tableName: "ContentCredentials")
-                        }
+                    if let pixelSize, pixelSize.width > 0.0, pixelSize.height > 0.0 {
+                        PicDimensionsRow(pixelSize: pixelSize)
                     }
                     if let albumName {
                         LabeledContent {
