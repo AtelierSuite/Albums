@@ -208,20 +208,37 @@ struct ContentCredentialsValidationLabel: View {
 
     var validation: ContentCredentials.Validation
 
-    var content: (key: String, systemImage: String, color: Color) {
+    var key: LocalizedStringKey {
         switch validation {
-        case .trusted: ("Validation.Trusted", "checkmark.seal.fill", .green)
-        case .untrustedSigner: ("Validation.UntrustedSigner", "questionmark.diamond.fill", .orange)
-        case .modified: ("Validation.Modified", "exclamationmark.triangle.fill", .red)
-        case .invalid: ("Validation.Invalid", "xmark.seal.fill", .red)
+        case .trusted: "Validation.Trusted"
+        case .untrustedSigner: "Validation.UntrustedSigner"
+        case .modified: "Validation.Modified"
+        case .invalid: "Validation.Invalid"
+        }
+    }
+
+    var systemImage: String {
+        switch validation {
+        case .trusted: "checkmark.seal.fill"
+        case .untrustedSigner: "questionmark.diamond.fill"
+        case .modified: "exclamationmark.triangle.fill"
+        case .invalid: "xmark.seal.fill"
+        }
+    }
+
+    var color: Color {
+        switch validation {
+        case .trusted: .green
+        case .untrustedSigner: .orange
+        case .modified, .invalid: .red
         }
     }
 
     var body: some View {
         HStack(spacing: 6.0) {
-            Image(systemName: content.systemImage)
-                .foregroundStyle(content.color)
-            Text(LocalizedStringKey(content.key), tableName: "ContentCredentials")
+            Image(systemName: systemImage)
+                .foregroundStyle(color)
+            Text(key, tableName: "ContentCredentials")
         }
         .fixedSize()
     }
