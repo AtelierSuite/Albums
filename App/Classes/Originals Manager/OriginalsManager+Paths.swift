@@ -69,34 +69,4 @@ extension OriginalsManager {
         if let size = values?.fileSize { return Int64(size) }
         return nil
     }
-
-    nonisolated func cloudImageOriginalURL(forPicID id: String, in collectionID: String) -> URL? {
-        cloudOriginalsSubdirectory(named: "Images", in: collectionID)?
-            .appendingPathComponent(id)
-    }
-
-    nonisolated func cloudVideoOriginalExtension(forPicID id: String, in collectionID: String) -> String? {
-        guard let directory = cloudOriginalsSubdirectory(named: "Videos", in: collectionID),
-              let entries = try? FileManager.default.contentsOfDirectory(atPath: directory.path) else {
-            return nil
-        }
-        for entry in entries {
-            var name = entry
-            if name.hasPrefix("."), name.hasSuffix(".icloud") {
-                name = String(name.dropFirst().dropLast(".icloud".count))
-            }
-            if (name as NSString).deletingPathExtension == id {
-                let ext = (name as NSString).pathExtension
-                return ext.isEmpty ? nil : ext
-            }
-        }
-        return nil
-    }
-
-    private nonisolated func cloudOriginalsSubdirectory(named name: String, in collectionID: String) -> URL? {
-        FileManager.default.url(forUbiquityContainerIdentifier: Self.containerID)?
-            .appendingPathComponent("Originals", isDirectory: true)
-            .appendingPathComponent(collectionID, isDirectory: true)
-            .appendingPathComponent(name, isDirectory: true)
-    }
 }
