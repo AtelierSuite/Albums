@@ -1,6 +1,46 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Albums Backup" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albums-Backup"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albums Backup"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albumsバックアップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albums 백업"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albums 备份"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Albums 備份"
+          }
+        }
+      }
+    },
     "CFBundleDisplayName" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -134,37 +174,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Für das Durchsuchen und Importieren von Bildern aus deinen Alben wird Zugriff auf deine Fotomediathek benötigt."
+            "value" : "Albums benötigt Zugriff auf deine Fotomediathek, um Bilder aus deinen Alben zu durchsuchen und zu importieren."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Allow access to Photos to browse and import images from your albums."
+            "value" : "Albums needs access to your Photos library to browse and import images from your albums."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "画像をインポートする際に写真ライブラリにアクセスします。"
+            "value" : "アルバム内の画像を閲覧・インポートするために、Albumsは写真ライブラリへのアクセスを必要とします。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "앨범에서 이미지를 탐색하고 가져오려면 사진 보관함 접근 권한이 필요합니다."
+            "value" : "Albums에서 앨범의 이미지를 탐색하고 가져오려면 사진 보관함 접근 권한이 필요합니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "允许访问照片图库，以便浏览和导入相册中的图片。"
+            "value" : "Albums 需要访问你的照片图库，以便浏览和导入相册中的图片。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "允許存取照片圖庫，以便瀏覽和匯入相簿中的圖片。"
+            "value" : "Albums 需要存取你的照片圖庫，以便瀏覽和匯入相簿中的圖片。"
           }
         }
       }
@@ -206,46 +246,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Albums"
-          }
-        }
-      }
-    },
-    "PicMate Backup" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albums-Backup"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albums Backup"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albumsバックアップ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albums 백업"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albums 备份"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Albums 備份"
           }
         }
       }
