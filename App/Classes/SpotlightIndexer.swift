@@ -269,7 +269,7 @@ actor SpotlightIndexer {
         return hash
     }
 
-    private static func databaseExists(forLibraryID libraryID: String) -> Bool {
+    static func databaseExists(forLibraryID libraryID: String) -> Bool {
         guard let appGroupURL = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: "group.com.tsubuzaki.IllustMate"
         ) else { return false }

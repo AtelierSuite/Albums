@@ -59,6 +59,7 @@ struct IllustMateApp: App {
             }
         }
         .modifier(SpotlightModifier())
+        .modifier(ContentCredentialsModifier())
         .modifier(ImportRecoveryModifier())
         .environment(importManager)
         .environmentObject(navigation)
