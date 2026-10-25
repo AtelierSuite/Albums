@@ -1,5 +1,6 @@
 import Engine
 import Foundation
+import ImageIO
 import SwiftUI
 import UIKit
 
@@ -17,6 +18,7 @@ class DuplicateScanManager {
     var scanPhase: ScanPhase = .idle
 
     var duplicateGroups: [DuplicateGroup] = []
+    var autoSelection: [UUID: Set<String>] = [:]
 
     var hammingThreshold: Double = 8
 
@@ -47,13 +49,14 @@ class DuplicateScanManager {
     }
 
     // swiftlint:disable:next function_body_length
-    func scan(scope: ScanScope) async {
+    func scan(scope: ScanScope, autoSelect: DuplicateAutoSelectOptions = DuplicateAutoSelectOptions()) async {
         withAnimation(.smooth.speed(2.0)) {
             isScanning = true
             scanPhase = .computingHashes
         }
         scanProgress = 0
         duplicateGroups = []
+        autoSelection = [:]
 
         let dataActor = self.dataActor
         let allScopedIDs: [String]
@@ -109,6 +112,7 @@ class DuplicateScanManager {
             return earliestA < earliestB
         }
 
+        autoSelection = await autoSelection(for: resultGroups, options: autoSelect)
         duplicateGroups = resultGroups
         withAnimation(.smooth.speed(2.0)) {
             scanPhase = .done
@@ -122,6 +126,48 @@ class DuplicateScanManager {
             updated.pics.removeAll { deletedIDs.contains($0.id) }
             return updated.pics.count >= 2 ? updated : nil
         }
+    }
+
+    // MARK: - Auto-Select
+
+    private func autoSelection(
+        for groups: [DuplicateGroup],
+        options: DuplicateAutoSelectOptions
+    ) async -> [UUID: Set<String>] {
+        guard options.criterion != .none else { return [:] }
+        let dataActor = self.dataActor
+        var selection: [UUID: Set<String>] = [:]
+        for group in groups {
+            var candidates: [DuplicateCandidate] = []
+            for pic in group.pics {
+                var pixelCount = 0
+                var fileSize: Int64 = 0
+                if options.criterion.needsImageMetadata,
+                   let data = await dataActor.imageData(forPicWithID: pic.id) {
+                    fileSize = Int64(data.count)
+                    pixelCount = Self.pixelCount(of: data)
+                }
+                candidates.append(DuplicateCandidate(
+                    id: pic.id, date: pic.dateAdded, pixelCount: pixelCount,
+                    fileSize: fileSize, isProtected: pic.isPinned
+                ))
+            }
+            let ids = DuplicateAutoSelector.idsToSelect(from: candidates, options: options)
+            if !ids.isEmpty {
+                selection[group.id] = ids
+            }
+        }
+        return selection
+    }
+
+    private static func pixelCount(of data: Data) -> Int {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let width = properties[kCGImagePropertyPixelWidth] as? Int,
+              let height = properties[kCGImagePropertyPixelHeight] as? Int else {
+            return 0
+        }
+        return width * height
     }
 
     // MARK: - Union-Find Grouping

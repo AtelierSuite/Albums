@@ -6,6 +6,7 @@ struct PhotosDuplicateDetailCard: View {
 
     let asset: PHAsset
     let isSelectedForDeletion: Bool
+    let isKept: Bool
     let onToggle: () -> Void
 
     @State private var thumbnail: UIImage?
@@ -27,6 +28,16 @@ struct PhotosDuplicateDetailCard: View {
                 .clipShape(.rect(cornerRadius: 10.0))
                 .overlay(alignment: .bottomTrailing) {
                     SelectionOverlay(isSelectedForDeletion)
+                }
+                .overlay(alignment: .topTrailing) {
+                    if asset.isFavorite {
+                        DuplicateFavoriteBadge()
+                    }
+                }
+                .overlay(alignment: .topLeading) {
+                    if isKept {
+                        DuplicateKeepBadge()
+                    }
                 }
 
                 VStack(spacing: 2.0) {

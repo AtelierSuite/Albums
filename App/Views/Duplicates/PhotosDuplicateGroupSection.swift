@@ -19,7 +19,9 @@ struct PhotosDuplicateGroupSection: View {
                     ForEach(group.assets, id: \.localIdentifier) { asset in
                         PhotosDuplicateDetailCard(
                             asset: asset,
-                            isSelectedForDeletion: selectedForDeletion.contains(asset.localIdentifier)
+                            isSelectedForDeletion: selectedForDeletion.contains(asset.localIdentifier),
+                            isKept: !selectedForDeletion.isEmpty
+                                && !selectedForDeletion.contains(asset.localIdentifier)
                         ) {
                             withAnimation(.smooth.speed(2.0)) {
                                 if selectedForDeletion.contains(asset.localIdentifier) {
