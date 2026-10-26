@@ -908,84 +908,43 @@
         }
       }
     },
-    "Albums.Style.Carousel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Karussellansicht"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carousel View"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カルーセル表示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "캐러셀 보기"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "轮播显示"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "輪播顯示"
-          }
-        }
-      }
-    },
     "Albums.Style.Carousel.Compact" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kompaktes Karussell"
+            "value" : "Kompakt"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compact Carousel"
+            "value" : "Compact"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コンパクトカルーセル"
+            "value" : "コンパクト"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "간결한 캐러셀"
+            "value" : "간결"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "紧凑轮播"
+            "value" : "紧凑"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "緊湊輪播"
+            "value" : "緊湊"
           }
         }
       }
@@ -996,37 +955,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einfaches Karussell"
+            "value" : "Einfach"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plain Carousel"
+            "value" : "Plain"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シンプルカルーセル"
+            "value" : "シンプル"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "기본 캐러셀"
+            "value" : "기본"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "简洁轮播"
+            "value" : "简洁"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "簡潔輪播"
+            "value" : "簡潔"
           }
         }
       }
@@ -1037,37 +996,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stapelkarussell"
+            "value" : "Stapel"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stacked Carousel"
+            "value" : "Stacked"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "スタックカルーセル"
+            "value" : "スタック"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "스택 캐러셀"
+            "value" : "스택"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "堆叠轮播"
+            "value" : "堆叠"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "堆疊輪播"
+            "value" : "堆疊"
           }
         }
       }
@@ -1119,37 +1078,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ebenenraster"
+            "value" : "Ebenen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Layered Grid"
+            "value" : "Layered"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "レイヤーグリッド"
+            "value" : "レイヤー"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "레이어 격자"
+            "value" : "레이어"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "层叠网格"
+            "value" : "层叠"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "層疊格狀"
+            "value" : "層疊"
           }
         }
       }
@@ -1160,37 +1119,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mosaikraster"
+            "value" : "Mosaik"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mosaic Grid"
+            "value" : "Mosaic"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "モザイクグリッド"
+            "value" : "モザイク"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "모자이크 격자"
+            "value" : "모자이크"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "拼贴网格"
+            "value" : "拼贴"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "拼貼格狀"
+            "value" : "拼貼"
           }
         }
       }
@@ -1201,37 +1160,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Einfaches Raster"
+            "value" : "Einfach"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plain Grid"
+            "value" : "Plain"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シンプルグリッド"
+            "value" : "シンプル"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "기본 격자"
+            "value" : "기본"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "简洁网格"
+            "value" : "简洁"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "簡潔格狀"
+            "value" : "簡潔"
           }
         }
       }
@@ -1242,37 +1201,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stapelraster"
+            "value" : "Stapel"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stacked Grid"
+            "value" : "Stacked"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "スタックグリッド"
+            "value" : "スタック"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "스택 격자"
+            "value" : "스택"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "堆叠网格"
+            "value" : "堆叠"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "堆疊格狀"
+            "value" : "堆疊"
           }
         }
       }
@@ -1283,37 +1242,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Listenansicht"
+            "value" : "Liste"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "List View"
+            "value" : "List"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リスト表示"
+            "value" : "リスト"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "목록 보기"
+            "value" : "목록"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列表显示"
+            "value" : "列表"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "列表顯示"
+            "value" : "列表"
           }
         }
       }
@@ -1355,6 +1314,88 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "瀑布流顯示"
+          }
+        }
+      }
+    },
+    "Albums.Style.Section.Carousel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karussell"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carousel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カルーセル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캐러셀"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "轮播"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輪播"
+          }
+        }
+      }
+    },
+    "Albums.Style.Section.Grid" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raster"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グリッド"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "격자"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网格"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "格狀"
           }
         }
       }

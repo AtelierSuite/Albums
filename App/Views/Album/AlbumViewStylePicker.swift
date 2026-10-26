@@ -8,12 +8,12 @@ struct AlbumViewStylePicker: View {
         Picker(String(localized: "Albums.Style", table: "Albums"),
                systemImage: "paintbrush",
                selection: $selection.animation(.smooth.speed(2.0))) {
-            Section {
+            Section(String(localized: "Albums.Style.Section.Grid", table: "Albums")) {
                 ForEach(AlbumViewStyle.gridStyles, id: \.self) { style in
                     label(for: style)
                 }
             }
-            Section {
+            Section(String(localized: "Albums.Style.Section.Carousel", table: "Albums")) {
                 ForEach(AlbumViewStyle.carouselStyles, id: \.self) { style in
                     label(for: style)
                 }
@@ -26,7 +26,7 @@ struct AlbumViewStylePicker: View {
     }
 
     func label(for style: AlbumViewStyle) -> some View {
-        Label(title(for: style), systemImage: systemImage(for: style))
+        Text(title(for: style))
             .tag(style)
     }
 
@@ -40,19 +40,6 @@ struct AlbumViewStylePicker: View {
         case .plainCarousel: String(localized: "Albums.Style.Carousel.Plain", table: "Albums")
         case .compactCarousel: String(localized: "Albums.Style.Carousel.Compact", table: "Albums")
         case .list: String(localized: "Albums.Style.List", table: "Albums")
-        }
-    }
-
-    func systemImage(for style: AlbumViewStyle) -> String {
-        switch style {
-        case .mosaicGrid: "square.grid.2x2"
-        case .stackedGrid: "square.stack"
-        case .layeredGrid: "square.stack.3d.up"
-        case .plainGrid: "square"
-        case .stackedCarousel: "rectangle.on.rectangle"
-        case .plainCarousel: "rectangle.split.3x1"
-        case .compactCarousel: "capsule"
-        case .list: "list.bullet"
         }
     }
 }
