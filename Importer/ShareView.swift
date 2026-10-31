@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ShareView: View {
 
+    static let lastLibraryKey = "ShareSheetLastCollectionID"
+
     var session: SaveSession
 
     @State var viewPath: [ViewPath] = []
@@ -59,6 +61,12 @@ struct ShareView: View {
         .task {
             libraries = await LibrariesActor.shared.allLibraries()
                 .sorted { displayName(for: $0).localizedStandardCompare(displayName(for: $1)) == .orderedAscending }
+            if !libraries.contains(where: { $0.id == libraryID }) {
+                let fallbackID = PicLibrary.persistedCurrentID
+                if let fallback = libraries.first(where: { $0.id == fallbackID }) ?? libraries.first {
+                    select(fallback)
+                }
+            }
             if hasDefaultAlbum, !session.items.isEmpty {
                 let albumID = defaultAlbumID == "__collection__" ? nil : defaultAlbumID
                 let album: Album? = if let albumID { await DataActor.shared.album(for: albumID) } else { nil }
@@ -123,6 +131,8 @@ struct ShareView: View {
         isSearching = false
         viewPath = []
         libraryID = library.id
+        UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")?
+            .set(library.id, forKey: Self.lastLibraryKey)
     }
 
     private func displayName(for library: PicLibrary) -> String {
