@@ -5,7 +5,8 @@ struct PhotoGridEntry: TimelineEntry {
     let date: Date
     let albumID: String?
     let albumName: String?
-    let images: [Data]
+    let libraryID: String?
+    let pics: [PhotostandDatabase.WidgetPic]
     let columns: Int
     let rows: Int
 }
@@ -15,25 +16,28 @@ struct PhotoGridProvider: AppIntentTimelineProvider {
 
     func placeholder(in context: Context) -> PhotoGridEntry {
         let (columns, rows) = gridSize(for: context.family)
-        return PhotoGridEntry(date: .now, albumID: nil, albumName: nil, images: [], columns: columns, rows: rows)
+        return PhotoGridEntry(date: .now, albumID: nil, albumName: nil, libraryID: nil, pics: [],
+                              columns: columns, rows: rows)
     }
 
     func snapshot(for configuration: SelectAlbumForGridIntent, in context: Context) async -> PhotoGridEntry {
         let (columns, rows) = gridSize(for: context.family)
         guard let album = configuration.album else {
-            return PhotoGridEntry(date: .now, albumID: nil, albumName: nil, images: [], columns: columns, rows: rows)
+            return PhotoGridEntry(date: .now, albumID: nil, albumName: nil, libraryID: nil, pics: [],
+                              columns: columns, rows: rows)
         }
         let libraryID = configuration.library?.id ?? album.libraryID
         let count = columns * rows
         let maxDim = gridMaxDimension(for: context.family)
-        let images = PhotostandDatabase.fetchRandomPicDataMultiple(
+        let pics = PhotostandDatabase.fetchRandomPics(
             inAlbumWithID: album.id, inLibraryWithID: libraryID, count: count, maxDimension: maxDim
         )
         return PhotoGridEntry(
             date: .now,
             albumID: album.id,
             albumName: album.name,
-            images: images,
+            libraryID: libraryID,
+            pics: pics,
             columns: columns,
             rows: rows
         )
@@ -47,7 +51,8 @@ struct PhotoGridProvider: AppIntentTimelineProvider {
                 date: .now,
                 albumID: nil,
                 albumName: nil,
-                images: [],
+                libraryID: nil,
+                pics: [],
                 columns: columns,
                 rows: rows
             )
@@ -64,7 +69,8 @@ struct PhotoGridProvider: AppIntentTimelineProvider {
                 date: .now,
                 albumID: album.id,
                 albumName: album.name,
-                images: [],
+                libraryID: libraryID,
+                pics: [],
                 columns: columns,
                 rows: rows
             )
@@ -74,17 +80,18 @@ struct PhotoGridProvider: AppIntentTimelineProvider {
         let maxDim = gridMaxDimension(for: context.family)
 
         // Single entry refreshed every 24 hours to stay within memory limits
-        let images: [Data] = autoreleasepool {
-            PhotostandDatabase.fetchRandomPicDataMultiple(
+        let pics: [PhotostandDatabase.WidgetPic] = autoreleasepool {
+            PhotostandDatabase.fetchRandomPics(
                 inAlbumWithID: album.id, inLibraryWithID: libraryID, count: count, maxDimension: maxDim
             )
         }
-        Self.log.notice("PhotoGrid timeline: fetched \(images.count) image(s) for \(album.id, privacy: .public)")
+        Self.log.notice("PhotoGrid timeline: fetched \(pics.count) image(s) for \(album.id, privacy: .public)")
         let entry = PhotoGridEntry(
             date: .now,
             albumID: album.id,
             albumName: album.name,
-            images: images,
+            libraryID: libraryID,
+            pics: pics,
             columns: columns,
             rows: rows
         )
