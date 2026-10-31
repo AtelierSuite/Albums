@@ -39,6 +39,11 @@ struct PhotostandDatabase {
         let name: String
     }
 
+    struct WidgetPic {
+        let id: String
+        let imageData: Data
+    }
+
     private static func appGroupURL() -> URL? {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID)
     }
@@ -106,22 +111,22 @@ struct PhotostandDatabase {
         return AlbumRecord(id: rowId, name: name)
     }
 
-    static func fetchRandomPicData(
+    static func fetchRandomPic(
         inAlbumWithID albumID: String,
         inLibraryWithID libraryID: String = defaultLibraryID,
         maxDimension: CGFloat = 800
-    ) -> Data? {
+    ) -> WidgetPic? {
         guard let database = openDatabase(forLibraryID: libraryID) else { return nil }
-        return fetchRandomPicData(using: database, albumID: albumID,
-                                  libraryID: libraryID, maxDimension: maxDimension)
+        return fetchRandomPic(using: database, albumID: albumID,
+                              libraryID: libraryID, maxDimension: maxDimension)
     }
 
-    static func fetchRandomPicData(
+    static func fetchRandomPic(
         using database: Connection,
         albumID: String,
         libraryID: String = defaultLibraryID,
         maxDimension: CGFloat = 800
-    ) -> Data? {
+    ) -> WidgetPic? {
         let idQuery = livePicsTable(in: database)
             .filter(albumFilter(albumID))
             .filter(picMediaType == 0)
@@ -130,16 +135,17 @@ struct PhotostandDatabase {
             .limit(1)
         guard let idRow = try? database.pluck(idQuery),
               let randomId = try? idRow.get(picId),
-              let data = rawPicData(forID: randomId, using: database, libraryID: libraryID) else { return nil }
-        return UIImage.downsampledForWidget(data: data, maxDimension: maxDimension)
+              let data = rawPicData(forID: randomId, using: database, libraryID: libraryID),
+              let imageData = UIImage.downsampledForWidget(data: data, maxDimension: maxDimension) else { return nil }
+        return WidgetPic(id: randomId, imageData: imageData)
     }
 
-    static func fetchRandomPicDataMultiple(
+    static func fetchRandomPics(
         inAlbumWithID albumID: String,
         inLibraryWithID libraryID: String = defaultLibraryID,
         count: Int,
         maxDimension: CGFloat = 800
-    ) -> [Data] {
+    ) -> [WidgetPic] {
         guard let database = openDatabase(forLibraryID: libraryID) else { return [] }
         let idQuery = livePicsTable(in: database)
             .filter(albumFilter(albumID))
@@ -151,8 +157,11 @@ struct PhotostandDatabase {
         let ids = rows.compactMap { try? $0.get(picId) }
         return ids.compactMap { id in
             autoreleasepool {
-                guard let data = rawPicData(forID: id, using: database, libraryID: libraryID) else { return nil }
-                return UIImage.downsampledForWidget(data: data, maxDimension: maxDimension)
+                guard let data = rawPicData(forID: id, using: database, libraryID: libraryID),
+                      let imageData = UIImage.downsampledForWidget(data: data, maxDimension: maxDimension) else {
+                    return nil
+                }
+                return WidgetPic(id: id, imageData: imageData)
             }
         }
     }

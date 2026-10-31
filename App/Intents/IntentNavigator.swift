@@ -8,6 +8,7 @@ final class IntentNavigator {
     enum Destination: Equatable {
         case library(id: String)
         case album(id: String, libraryID: String)
+        case pic(id: String, albumID: String?, libraryID: String)
     }
 
     var pendingDestination: Destination?

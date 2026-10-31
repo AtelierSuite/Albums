@@ -69,8 +69,12 @@ extension AlbumView {
         guard let request = navigation.picRevealRequest,
               request.albumID == currentAlbum?.id,
               hasFetchedPics,
-              pics.contains(where: { $0.id == request.picID }) else { return }
+              let pic = pics.first(where: { $0.id == request.picID }) else { return }
         navigation.picRevealRequest = nil
+        if request.opensViewer {
+            openPic(pic, in: pics)
+            return
+        }
         Task {
             withAnimation(.smooth.speed(2.0)) {
                 highlightedPicID = request.picID

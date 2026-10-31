@@ -7,8 +7,8 @@ struct PhotostandEntryView: SwiftUI.View {
 
     var body: some SwiftUI.View {
         Group {
-            if let imageData = entry.imageData,
-               let uiImage = UIImage(data: imageData) {
+            if let pic = entry.pic,
+               let uiImage = UIImage(data: pic.imageData) {
                 GeometryReader { geometry in
                     Image(uiImage: uiImage)
                         .resizable()
@@ -54,16 +54,12 @@ struct Photostand: Widget {
                 .containerBackground(for: .widget) {
                     Color(.systemGray5)
                 }
-                .widgetURL(widgetURL(for: entry))
+                .widgetURL(URL.widgetDestination(albumID: entry.albumID, libraryID: entry.libraryID,
+                                                 picID: entry.pic?.id))
         }
         .configurationDisplayName(Text("Photostand.DisplayName", tableName: "Widgets"))
         .description(Text("Photostand.Description", tableName: "Widgets"))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
-    }
-
-    private func widgetURL(for entry: PhotostandEntry) -> URL? {
-        guard let albumID = entry.albumID, albumID != PhotostandDatabase.rootAlbumID else { return nil }
-        return URL(string: "picmate://album/\(albumID)")
     }
 }
