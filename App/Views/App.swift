@@ -160,11 +160,8 @@ struct IllustMateApp: App {
         .onOpenURL { url in
             if url.pathExtension == "pics" {
                 importedURL = url
-            } else if url.scheme == "picmate", url.host == "album",
-                      let albumID = url.pathComponents.dropFirst().first {
-                Task {
-                    await open(.album(id: albumID, libraryID: libraryManager.currentLibrary.id))
-                }
+            } else if url.scheme == "picmate", url.host == "album" {
+                handleAlbumURL(url)
             }
             if url.scheme == "picmate", url.host == "internals" {
                 isShowingInternals = true
@@ -405,6 +402,18 @@ extension IllustMateApp {
         }
     }
 
+    func handleAlbumURL(_ url: URL) {
+        guard let albumID = url.pathComponents.dropFirst().first else { return }
+        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        let libraryID = queryItems.first { $0.name == "library" }?.value ?? libraryManager.currentLibrary.id
+        if let picID = queryItems.first(where: { $0.name == "pic" })?.value {
+            let containingAlbumID = albumID == "__root__" ? nil : albumID
+            IntentNavigator.shared.open(.pic(id: picID, albumID: containingAlbumID, libraryID: libraryID))
+        } else {
+            IntentNavigator.shared.open(.album(id: albumID, libraryID: libraryID))
+        }
+    }
+
     func open(_ destination: IntentNavigator.Destination) async {
         switch destination {
         case .library(let libraryID):
@@ -416,6 +425,12 @@ extension IllustMateApp {
             showLibrary(library)
             try? await Task.sleep(for: .milliseconds(250))
             navigation.push(.album(album: album), for: .collection)
+        case .pic(let picID, let albumID, let libraryID):
+            guard let library = await LibrariesActor.shared.library(for: libraryID) else { return }
+            showLibrary(library)
+            try? await Task.sleep(for: .milliseconds(250))
+            await navigation.showInAlbum(picID: picID, albumID: albumID,
+                                         libraryID: library.id, opensViewer: true)
         }
     }
 

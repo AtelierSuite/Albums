@@ -6,6 +6,7 @@ struct PicRevealRequest: Equatable, Sendable {
     let id = UUID()
     let picID: String
     let albumID: String?
+    var opensViewer: Bool = false
 }
 
 @MainActor
@@ -51,7 +52,7 @@ class NavigationManager: ObservableObject {
         }
     }
 
-    func showInAlbum(picID: String, albumID: String?, libraryID: String) async {
+    func showInAlbum(picID: String, albumID: String?, libraryID: String, opensViewer: Bool = false) async {
         var albumPath: [ViewPath] = []
         if let albumID {
             let albums = await DataActor.shared.albumPath(forAlbumWithID: albumID)
@@ -62,7 +63,7 @@ class NavigationManager: ObservableObject {
         } else {
             collectionTabPath = albumPath
         }
-        picRevealRequest = PicRevealRequest(picID: picID, albumID: albumID)
+        picRevealRequest = PicRevealRequest(picID: picID, albumID: albumID, opensViewer: opensViewer)
     }
 
     func saveLibraryLocation() {
