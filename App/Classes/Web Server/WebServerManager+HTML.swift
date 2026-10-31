@@ -1,10 +1,8 @@
 import Engine
 import Foundation
 
-// swiftlint:disable file_length
 extension WebServerManager {
 
-    // swiftlint:disable line_length
     static let mainPageHTML: String = """
     <!DOCTYPE html>
     <html lang="en">
@@ -802,6 +800,4 @@ extension WebServerManager {
     </body>
     </html>
     """
-    // swiftlint:enable line_length
 }
-// swiftlint:enable file_length

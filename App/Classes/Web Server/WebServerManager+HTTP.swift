@@ -225,7 +225,6 @@ enum HTTPRequestParser {
         return nil
     }
 
-    // swiftlint:disable:next function_body_length cyclomatic_complexity
     static func parseMultipartFormData(body: Data, boundary: String) -> [MultipartFile] {
         let boundaryData = Data("--\(boundary)".utf8)
         let crlfCrlf = Data("\r\n\r\n".utf8)

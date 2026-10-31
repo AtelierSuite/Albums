@@ -223,7 +223,7 @@ class WebServerManager {
                         nil, 0,
                         NI_NUMERICHOST
                     )
-                    address = String( // swiftlint:disable:this optional_data_string_conversion
+                    address = String(
                         decoding: hostname.map { UInt8(bitPattern: $0) }.prefix(while: { $0 != 0 }),
                         as: UTF8.self
                     )

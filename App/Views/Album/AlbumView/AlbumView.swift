@@ -4,7 +4,6 @@ import PhotosUI
 import SwiftUI
 import UniformTypeIdentifiers
 
-// swiftlint:disable:next type_body_length
 struct AlbumView: View {
 
     @Environment(\.colorScheme) var colorScheme

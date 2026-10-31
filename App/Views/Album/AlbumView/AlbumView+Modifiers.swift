@@ -14,7 +14,6 @@ struct AlbumViewSheets: ViewModifier {
     let onBrowseAlbumsDismiss: () -> Void
     let onImportDismiss: () -> Void
 
-    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content
             .alert("ViewTitle.Albums.Create", isPresented: $isAddingAlbum) {

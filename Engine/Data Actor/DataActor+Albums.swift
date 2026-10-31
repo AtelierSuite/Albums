@@ -15,11 +15,9 @@ extension DataActor {
         let sql: String
         let bindings: [Binding?]
         if let albumID = album?.id {
-            // swiftlint:disable:next line_length
             sql = "SELECT id, name, cover_photo IS NOT NULL, parent_album_id, date_created FROM albums WHERE parent_album_id = ?"
             bindings = [albumID as Binding?]
         } else {
-            // swiftlint:disable:next line_length
             sql = "SELECT id, name, cover_photo IS NOT NULL, parent_album_id, date_created FROM albums WHERE parent_album_id IS NULL"
             bindings = []
         }
@@ -45,7 +43,6 @@ extension DataActor {
         let placeholders = ids.map { _ in "?" }.joined(separator: ", ")
 
         var albumCounts: [String: Int] = [:]
-        // swiftlint:disable:next line_length
         let albumCountSQL = "SELECT parent_album_id, COUNT(*) FROM albums WHERE parent_album_id IN (\(placeholders)) GROUP BY parent_album_id"
         if let stmt = try? database.safeRows(albumCountSQL, bindings) {
             for row in stmt {
@@ -57,7 +54,6 @@ extension DataActor {
         }
 
         var picCounts: [String: Int] = [:]
-        // swiftlint:disable:next line_length
         let picCountSQL = "SELECT containing_album_id, COUNT(*) FROM pics WHERE containing_album_id IN (\(placeholders)) AND date_deleted IS NULL GROUP BY containing_album_id"
         if let stmt = try? database.safeRows(picCountSQL, bindings) {
             for row in stmt {

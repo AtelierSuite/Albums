@@ -29,7 +29,6 @@ class PhotosDuplicateScanManager {
         case done
     }
 
-    // swiftlint:disable:next function_body_length
     func scan(
         in collection: PHAssetCollection,
         autoSelect: DuplicateAutoSelectOptions = DuplicateAutoSelectOptions()

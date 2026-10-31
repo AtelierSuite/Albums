@@ -111,7 +111,6 @@ actor LibraryMoveManager {
 
     // MARK: - Pipeline
 
-    // swiftlint:disable:next function_parameter_count
     private func performMove(
         albumPlan: [(AlbumMoveRecord, String?)],
         prefsPlan: [AlbumPreferences],
@@ -190,7 +189,6 @@ actor LibraryMoveManager {
         let movedCloud: Bool
     }
 
-    // swiftlint:disable:next function_parameter_count
     private func relocatePic(
         _ record: PicMoveRecord, sourceID: String, destinationID: String,
         sourceIsICloud: Bool, destIsICloud: Bool,

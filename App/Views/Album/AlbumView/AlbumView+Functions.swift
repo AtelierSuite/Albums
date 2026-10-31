@@ -157,7 +157,6 @@ extension AlbumView {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     func sortPicsByProminentColor(_ pics: [Pic]) async -> [Pic] {
         let picIDs = pics.map(\.id)
         var colorsMap = await PColorActor.shared.cachedColors(forPicIDs: picIDs)

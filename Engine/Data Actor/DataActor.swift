@@ -80,7 +80,6 @@ public actor DataActor {
     public let migrationAppVersion = Expression<String>("app_version")
     public let migrationCompleted = Expression<Bool>("completed")
 
-    // swiftlint:disable:next function_body_length
     public init(collectionID: String) {
         self.collectionID = collectionID
         let databaseFileName = "Collection.db"

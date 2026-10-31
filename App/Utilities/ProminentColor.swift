@@ -3,7 +3,6 @@ import UIKit
 
 enum ProminentColor {
 
-    // swiftlint:disable function_body_length
     /// Calculates the primary, accent, and contrasting colors from thumbnail image data.
     /// Primary is the most prominent color overall; accent is the most prominent
     /// higher-saturation color that isn't the primary; contrasting is the next one after it.
@@ -104,5 +103,4 @@ enum ProminentColor {
 
         return PicColors(primary: primary, accent: accent, contrasting: contrasting)
     }
-    // swiftlint:enable function_body_length
 }

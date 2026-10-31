@@ -16,7 +16,6 @@ extension DataActor {
         let pattern = "%\(escapedLikePattern(searchText))%"
         var albumNames: [String: String] = [:]
 
-        // swiftlint:disable line_length
         let albumSQL = """
             SELECT a.id, a.name, a.cover_photo IS NOT NULL, a.parent_album_id, a.date_created, parent.name
             FROM albums a LEFT JOIN albums parent ON parent.id = a.parent_album_id
@@ -29,7 +28,6 @@ extension DataActor {
             LEFT JOIN albums a ON a.id = p.containing_album_id
             ORDER BY p.name COLLATE NOCASE
             """
-        // swiftlint:enable line_length
 
         let albums = try database.safeRows(albumSQL, [pattern, Int64(albumLimit)]).map { row -> Album in
             let parentID = row[3] as? String

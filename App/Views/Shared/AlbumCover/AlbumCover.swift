@@ -184,7 +184,6 @@ struct AlbumCover: View {
         .transition(.opacity.animation(.smooth.speed(2)))
     }
 
-    // swiftlint:disable function_parameter_count
     private func drawRotatedCard(
         context: GraphicsContext,
         size: CGSize,
@@ -231,7 +230,6 @@ struct AlbumCover: View {
             inner.draw(resolved, in: drawRect)
         }
     }
-    // swiftlint:enable function_parameter_count
 
 }
 
