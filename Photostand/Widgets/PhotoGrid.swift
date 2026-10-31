@@ -7,7 +7,7 @@ struct PhotoGridEntryView: SwiftUI.View {
 
     var body: some SwiftUI.View {
         Group {
-            if entry.images.isEmpty {
+            if entry.pics.isEmpty {
                 gridPlaceholder
             } else {
                 GeometryReader { geometry in
@@ -19,14 +19,16 @@ struct PhotoGridEntryView: SwiftUI.View {
                             HStack(spacing: 0) {
                                 ForEach(0..<entry.columns, id: \.self) { col in
                                     let index = row * entry.columns + col
-                                    if index < entry.images.count,
-                                       let uiImage = UIImage(data: entry.images[index]) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .widgetAccentedRenderingMode(.fullColor)
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: cellWidth, height: cellHeight, alignment: .top)
-                                            .clipped()
+                                    if index < entry.pics.count,
+                                       let uiImage = UIImage(data: entry.pics[index].imageData) {
+                                        cell(for: entry.pics[index]) {
+                                            Image(uiImage: uiImage)
+                                                .resizable()
+                                                .widgetAccentedRenderingMode(.fullColor)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: cellWidth, height: cellHeight, alignment: .top)
+                                                .clipped()
+                                        }
                                     } else {
                                         Color.clear
                                             .frame(width: cellWidth, height: cellHeight)
@@ -37,6 +39,16 @@ struct PhotoGridEntryView: SwiftUI.View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    func cell(for pic: PhotostandDatabase.WidgetPic,
+              @ViewBuilder content: () -> some SwiftUI.View) -> some SwiftUI.View {
+        if let url = URL.widgetDestination(albumID: entry.albumID, libraryID: entry.libraryID, picID: pic.id) {
+            Link(destination: url, label: content)
+        } else {
+            content()
         }
     }
 
@@ -71,16 +83,11 @@ struct PhotoGrid: Widget {
                 .containerBackground(for: .widget) {
                     Color(.systemGray5)
                 }
-                .widgetURL(widgetURL(for: entry))
+                .widgetURL(URL.widgetDestination(albumID: entry.albumID, libraryID: entry.libraryID))
         }
         .configurationDisplayName(Text("PhotoGrid.DisplayName", tableName: "Widgets"))
         .description(Text("PhotoGrid.Description", tableName: "Widgets"))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
-    }
-
-    private func widgetURL(for entry: PhotoGridEntry) -> URL? {
-        guard let albumID = entry.albumID, albumID != PhotostandDatabase.rootAlbumID else { return nil }
-        return URL(string: "picmate://album/\(albumID)")
     }
 }
