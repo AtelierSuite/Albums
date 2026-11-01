@@ -235,6 +235,29 @@ private struct ZoomHitShape: Shape {
     }
 }
 
+private struct ZoomHiddenModifier: ViewModifier {
+
+    let isZoomed: Bool
+    let edge: Edge
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(isZoomed ? 0.0 : 1.0)
+            .offset(x: isZoomed ? hiddenOffset.width : 0.0, y: isZoomed ? hiddenOffset.height : 0.0)
+            .allowsHitTesting(!isZoomed)
+            .animation(.smooth(duration: 0.3), value: isZoomed)
+    }
+
+    private var hiddenOffset: CGSize {
+        switch edge {
+        case .top: CGSize(width: 0.0, height: -24.0)
+        case .bottom: CGSize(width: 0.0, height: 24.0)
+        case .leading: CGSize(width: -24.0, height: 0.0)
+        case .trailing: CGSize(width: 24.0, height: 0.0)
+        }
+    }
+}
+
 private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
 
     var onBegan: (CGPoint) -> Void
@@ -344,6 +367,10 @@ private struct ZoomPanGesture: UIGestureRecognizerRepresentable {
 }
 
 extension View {
+    func hiddenWhileZoomed(_ isZoomed: Bool, toward edge: Edge) -> some View {
+        modifier(ZoomHiddenModifier(isZoomed: isZoomed, edge: edge))
+    }
+
     func zoomable(scale: Binding<CGFloat>, contentSize: CGSize, viewport: CGRect, resetID: some Hashable,
                   onTap: @escaping () -> Void) -> some View {
         modifier(ZoomableModifier(scale: scale, contentSize: contentSize, viewport: viewport,

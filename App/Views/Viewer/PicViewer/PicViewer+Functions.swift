@@ -11,6 +11,7 @@ extension PicViewer {
                 if viewer.allPics.count > 1 {
                     PicCarouselStripVertical()
                         .padding(.vertical, fitToScreen ? 0.0 : -8.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .leading)
                 }
                 imageContent
                     .zIndex(1)
@@ -26,6 +27,7 @@ extension PicViewer {
                     PicCarouselStrip()
                         .padding(.top, fitToScreen ? 12.0 : 0.0)
                         .padding(.horizontal, fitToScreen ? 0.0 : -20.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .bottom)
                 }
             }
             .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
@@ -291,7 +293,7 @@ extension PicViewer {
             }
         }
         .overlay(alignment: .bottomLeading) {
-            if showImageSize, displayedOrientationEdit.isIdentity,
+            if showImageSize, magnification == 1.0, displayedOrientationEdit.isIdentity,
                let displayedImage = viewer.displayedImage {
                 HStack(alignment: .center, spacing: 2.0) {
                     Text(verbatim: "\(Int(displayedImage.size.width * displayedImage.scale))")
