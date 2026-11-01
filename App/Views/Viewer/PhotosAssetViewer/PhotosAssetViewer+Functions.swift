@@ -136,6 +136,11 @@ extension PhotosAssetViewer {
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
                 }
             }
+            .onGeometryChange(for: CGSize.self) { proxy in
+                proxy.size
+            } action: { newSize in
+                photoContainerSize = newSize
+            }
 
             if showImageSize, let displayedImage = fullImage {
                 HStack(alignment: .center, spacing: 2.0) {
@@ -155,15 +160,14 @@ extension PhotosAssetViewer {
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-        .zIndex(1)
-        .offset(displayOffset)
-        .scaleEffect(CGSize(width: magnification, height: magnification),
-                     anchor: magnificationAnchor)
-        .onTapGesture {
+        .zoomable(scale: $magnification,
+                  contentSize: aspectFitSize(currentImage?.size ?? .zero, in: photoContainerSize),
+                  resetID: currentAsset.localIdentifier) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()
             }
         }
+        .zIndex(1)
     }
 
     func togglePictureInPicture() {

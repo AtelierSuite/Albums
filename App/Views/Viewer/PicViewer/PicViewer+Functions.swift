@@ -314,15 +314,21 @@ extension PicViewer {
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-        .zIndex(1)
-        .offset(displayOffset)
-        .scaleEffect(CGSize(width: magnification, height: magnification),
-                     anchor: magnificationAnchor)
-        .onTapGesture {
+        .zoomable(scale: $magnification, contentSize: fittedPhotoSize,
+                  resetID: [AnyHashable(viewer.displayedPicID), AnyHashable(displayedOrientationEdit)]) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()
             }
         }
+        .zIndex(1)
+    }
+
+    var fittedPhotoSize: CGSize {
+        let edit = displayedOrientationEdit.normalized
+        let imageSize = displayedImageSize
+        let displayedSize = edit.swapsDimensions
+            ? CGSize(width: imageSize.height, height: imageSize.width) : imageSize
+        return aspectFitSize(displayedSize, in: photoContainerSize)
     }
 
     func deleteDisplayedPic() {

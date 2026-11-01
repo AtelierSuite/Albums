@@ -28,8 +28,7 @@ struct PhotosAssetViewer: View {
     @State var isFullImageLoaded: Bool = false
     @State var showImageSize: Bool = true
     @State var magnification: CGFloat = 1.0
-    @State var magnificationAnchor: UnitPoint = .center
-    @State var displayOffset: CGSize = .zero
+    @State var photoContainerSize: CGSize = .zero
     @State var viewSize: CGSize = .zero
     @State var videoPlayer: AVPlayer?
     @State var videoExportURL: URL?
@@ -163,26 +162,6 @@ struct PhotosAssetViewer: View {
             }
             return .handled
         }
-#else
-        .gesture(
-            MagnifyGesture()
-                .onChanged { gesture in
-                    if gesture.magnification > 1.0 {
-                        magnification = gesture.magnification
-                        magnificationAnchor = gesture.startAnchor
-                    } else {
-                        magnification = 1.0
-                    }
-                }
-                .onEnded { _ in
-                    doWithAnimation {
-                        magnification = 1.0
-                        displayOffset = .zero
-                    } completion: {
-                        magnificationAnchor = .center
-                    }
-                }
-        )
 #endif
     }
 }

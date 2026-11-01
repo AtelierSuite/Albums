@@ -23,9 +23,7 @@ struct PicViewer: View {
 
     var pic: Pic
 
-    @State var displayOffset: CGSize = .zero
     @State var magnification: CGFloat = 1.0
-    @State var magnificationAnchor: UnitPoint = .center
     @State var containingAlbumName: String?
     @State var showImageSize: Bool = true
     @State var showDownloadFailedPopover: Bool = false
@@ -252,25 +250,6 @@ struct PicViewer: View {
                 }
             }
         }
-        .gesture(
-            MagnifyGesture()
-                .onChanged { gesture in
-                    if gesture.magnification > 1.0 {
-                        magnification = gesture.magnification
-                        magnificationAnchor = gesture.startAnchor
-                    } else {
-                        magnification = 1.0
-                    }
-                }
-                .onEnded { _ in
-                    doWithAnimation {
-                        magnification = 1.0
-                        displayOffset = .zero
-                    } completion: {
-                        magnificationAnchor = .center
-                    }
-                }
-        )
 #if targetEnvironment(macCatalyst)
         .focusable()
         .onKeyPress(.leftArrow) {
