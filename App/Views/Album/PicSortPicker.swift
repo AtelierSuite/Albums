@@ -5,18 +5,24 @@ struct PicSortPicker: View {
     @Binding var selection: PicSortType
 
     var body: some View {
-        Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $selection) {
-            Text("Shared.Sort.DateAdded.Ascending")
-                .tag(PicSortType.dateAddedAscending)
-            Text("Shared.Sort.DateAdded.Descending")
-                .tag(PicSortType.dateAddedDescending)
-            Text("Shared.Sort.Name.Ascending")
-                .tag(PicSortType.nameAscending)
-            Text("Shared.Sort.Name.Descending")
-                .tag(PicSortType.nameDescending)
+        SortMenu(
+            field: Binding {
+                selection.field
+            } set: {
+                selection = PicSortType(field: $0, isAscending: selection.isAscending)
+            },
+            isAscending: Binding {
+                selection.isAscending
+            } set: {
+                selection = PicSortType(field: selection.field, isAscending: $0)
+            }
+        ) {
+            Text("Shared.Sort.DateAdded")
+                .tag(PicSortField.dateAdded)
+            Text("Shared.Sort.Name")
+                .tag(PicSortField.name)
             Text("Shared.Sort.ProminentColor")
-                .tag(PicSortType.prominentColor)
+                .tag(PicSortField.prominentColor)
         }
-        .pickerStyle(.menu)
     }
 }

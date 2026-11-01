@@ -18,17 +18,6 @@
       },
       "shouldTranslate" : false
     },
-    "(%lld)" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : ""
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -60,6 +49,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$lld/%2$lld"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "(%lld)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
           }
         }
       },
@@ -3791,47 +3791,6 @@
         }
       }
     },
-    "Shared.SelectAll" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alle auswählen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select All"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべてを選択"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "전체 선택"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "全选"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "全選"
-          }
-        }
-      }
-    },
     "Shared.SelectAPhoto" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3910,6 +3869,47 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選擇一張圖片以預覽。"
+          }
+        }
+      }
+    },
+    "Shared.SelectAll" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle auswählen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてを選択"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 선택"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全选"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全選"
           }
         }
       }
@@ -4165,324 +4165,282 @@
         }
       }
     },
-    "Shared.Sort.DateAdded.Ascending" : {
+    "Shared.Sort.Ascending" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hinzugefügt am (aufsteigend)"
+            "value" : "Aufsteigend"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Date Added (Ascending)"
+            "value" : "Ascending"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "追加日（昇順）"
+            "value" : "昇順"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "추가된 날짜 (오름차순)"
+            "value" : "오름차순"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加日期（升序）"
+            "value" : "升序"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入日期（升序）"
+            "value" : "升冪"
           }
         }
       }
     },
-    "Shared.Sort.DateAdded.Descending" : {
+    "Shared.Sort.DateAdded" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hinzugefügt am (absteigend)"
+            "value" : "Hinzugefügt am"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Date Added (Descending)"
+            "value" : "Date Added"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "追加日（降順）"
+            "value" : "追加日"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "추가된 날짜 (내림차순)"
+            "value" : "추가된 날짜"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加日期（降序）"
+            "value" : "添加日期"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "加入日期（降序）"
+            "value" : "加入日期"
           }
         }
       }
     },
-    "Shared.Sort.DateCreated.Ascending" : {
+    "Shared.Sort.DateCreated" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erstellt am (aufsteigend)"
+            "value" : "Erstellt am"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Date Created (Ascending)"
+            "value" : "Date Created"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "作成日（昇順）"
+            "value" : "作成日"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "생성된 날짜 (오름차순)"
+            "value" : "생성된 날짜"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建日期（升序）"
+            "value" : "创建日期"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "建立日期（升序）"
+            "value" : "建立日期"
           }
         }
       }
     },
-    "Shared.Sort.DateCreated.Descending" : {
+    "Shared.Sort.Descending" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erstellt am (absteigend)"
+            "value" : "Absteigend"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Date Created (Descending)"
+            "value" : "Descending"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "作成日（降順）"
+            "value" : "降順"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "생성된 날짜 (내림차순)"
+            "value" : "내림차순"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建日期（降序）"
+            "value" : "降序"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "建立日期（降序）"
+            "value" : "降冪"
           }
         }
       }
     },
-    "Shared.Sort.Name.Ascending" : {
+    "Shared.Sort.Name" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name (aufsteigend)"
+            "value" : "Name"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name (Ascending)"
+            "value" : "Name"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前（昇順）"
+            "value" : "名前"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이름 (오름차순)"
+            "value" : "이름"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名称（升序）"
+            "value" : "名称"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名稱（升序）"
+            "value" : "名稱"
           }
         }
       }
     },
-    "Shared.Sort.Name.Descending" : {
+    "Shared.Sort.Order" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name (absteigend)"
+            "value" : "Reihenfolge"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Name (Descending)"
+            "value" : "Order"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名前（降順）"
+            "value" : "順序"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이름 (내림차순)"
+            "value" : "순서"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名称（降序）"
+            "value" : "顺序"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "名稱（降序）"
+            "value" : "順序"
           }
         }
       }
     },
-    "Shared.Sort.PicCount.Ascending" : {
-      "extractionState" : "manual",
+    "Shared.Sort.PicCount" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bilderanzahl (aufsteigend)"
+            "value" : "Bilderanzahl"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pic Count (Ascending)"
+            "value" : "Pic Count"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アルバムと画像数（昇順）"
+            "value" : "アルバムと画像数"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사진 수 (오름차순)"
+            "value" : "사진 수"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "图片数量（升序）"
+            "value" : "图片数量"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "圖片數量（升序）"
-          }
-        }
-      }
-    },
-    "Shared.Sort.PicCount.Descending" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bilderanzahl (absteigend)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pic Count (Descending)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アルバムと画像数（降順）"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사진 수 (내림차순)"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "图片数量（降序）"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "圖片數量（降序）"
+            "value" : "圖片數量"
           }
         }
       }

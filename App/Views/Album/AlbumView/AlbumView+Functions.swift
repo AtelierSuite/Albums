@@ -145,11 +145,12 @@ extension AlbumView {
                 return try await DataActor.shared.picSkeletonsByName(
                     in: currentAlbum, order: .reverse
                 )
-            case .prominentColor:
+            case .prominentColor, .prominentColorDescending:
                 let pics = try await DataActor.shared.pics(
                     in: currentAlbum, order: .reverse
                 )
-                return await sortPicsByProminentColor(pics)
+                let sorted = await sortPicsByProminentColor(pics)
+                return picSortType.isAscending ? sorted : sorted.reversed()
             }
         } catch {
             debugPrint(error.localizedDescription)
