@@ -23,6 +23,10 @@ struct PicSortPicker: View {
                 .tag(PicSortField.name)
             Text("Shared.Sort.ProminentColor")
                 .tag(PicSortField.prominentColor)
+            Text("Shared.Sort.Size")
+                .tag(PicSortField.size)
+            Text("Shared.Sort.AspectRatio")
+                .tag(PicSortField.aspectRatio)
         }
     }
 }
