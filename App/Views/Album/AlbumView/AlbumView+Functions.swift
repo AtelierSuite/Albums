@@ -145,16 +145,44 @@ extension AlbumView {
                 return try await DataActor.shared.picSkeletonsByName(
                     in: currentAlbum, order: .reverse
                 )
-            case .prominentColor:
+            case .prominentColor, .prominentColorDescending:
                 let pics = try await DataActor.shared.pics(
                     in: currentAlbum, order: .reverse
                 )
-                return await sortPicsByProminentColor(pics)
+                let sorted = await sortPicsByProminentColor(pics)
+                return picSortType.isAscending ? sorted : sorted.reversed()
+            case .sizeAscending, .sizeDescending:
+                let pics = try await DataActor.shared.picSkeletons(
+                    in: currentAlbum, order: .reverse
+                )
+                let counts = await PicPixelCountCache.shared.pixelCounts(for: pics)
+                return sortPics(pics, ascending: picSortType.isAscending) { counts[$0.id] }
+            case .aspectRatioAscending, .aspectRatioDescending:
+                let pics = try await DataActor.shared.picSkeletons(
+                    in: currentAlbum, order: .reverse
+                )
+                return sortPics(pics, ascending: picSortType.isAscending) { $0.thumbnailAspectRatio }
             }
         } catch {
             debugPrint(error.localizedDescription)
             return []
         }
+    }
+
+    func sortPics<Value: Comparable>(
+        _ pics: [Pic], ascending: Bool, by value: (Pic) -> Value?
+    ) -> [Pic] {
+        var known: [(pic: Pic, value: Value)] = []
+        var unknown: [Pic] = []
+        for pic in pics {
+            if let picValue = value(pic) {
+                known.append((pic, picValue))
+            } else {
+                unknown.append(pic)
+            }
+        }
+        let sorted = known.sorted { ascending ? $0.value < $1.value : $0.value > $1.value }
+        return sorted.map(\.pic) + unknown
     }
 
     func sortPicsByProminentColor(_ pics: [Pic]) async -> [Pic] {

@@ -21,13 +21,17 @@ struct PhotosPicSortPicker: View {
     @Binding var selection: PhotosPicSortType
 
     var body: some View {
-        Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $selection) {
-            Text("Shared.Sort.DateCreated.Ascending")
-                .tag(PhotosPicSortType.dateCreatedAscending)
-            Text("Shared.Sort.DateCreated.Descending")
-                .tag(PhotosPicSortType.dateCreatedDescending)
+        SortMenu(
+            field: .constant(0),
+            isAscending: Binding {
+                selection.isAscending
+            } set: {
+                selection = $0 ? .dateCreatedAscending : .dateCreatedDescending
+            }
+        ) {
+            Text("Shared.Sort.DateCreated")
+                .tag(0)
         }
-        .pickerStyle(.menu)
     }
 }
 

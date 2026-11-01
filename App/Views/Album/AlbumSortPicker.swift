@@ -6,16 +6,47 @@ struct AlbumSortPicker: View {
     @Binding var selection: SortType
 
     var body: some View {
-        Picker("Shared.Sort", systemImage: "arrow.up.arrow.down", selection: $selection) {
-            Text("Shared.Sort.Name.Ascending")
-                .tag(SortType.nameAscending)
-            Text("Shared.Sort.Name.Descending")
-                .tag(SortType.nameDescending)
-            Text("Shared.Sort.PicCount.Ascending")
-                .tag(SortType.sizeAscending)
-            Text("Shared.Sort.PicCount.Descending")
-                .tag(SortType.sizeDescending)
+        SortMenu(
+            field: Binding {
+                selection.field
+            } set: {
+                selection = SortType(field: $0, isAscending: selection.isAscending)
+            },
+            isAscending: Binding {
+                selection.isAscending
+            } set: {
+                selection = SortType(field: selection.field, isAscending: $0)
+            }
+        ) {
+            Text("Shared.Sort.Name")
+                .tag(AlbumSortField.name)
+            Text("Shared.Sort.PicCount")
+                .tag(AlbumSortField.picCount)
         }
-        .pickerStyle(.menu)
+    }
+}
+
+enum AlbumSortField: Hashable {
+    case name
+    case picCount
+}
+
+extension SortType {
+    init(field: AlbumSortField, isAscending: Bool) {
+        switch field {
+        case .name: self = isAscending ? .nameAscending : .nameDescending
+        case .picCount: self = isAscending ? .sizeAscending : .sizeDescending
+        }
+    }
+
+    var field: AlbumSortField {
+        switch self {
+        case .nameAscending, .nameDescending: .name
+        case .sizeAscending, .sizeDescending: .picCount
+        }
+    }
+
+    var isAscending: Bool {
+        self == .nameAscending || self == .sizeAscending
     }
 }
