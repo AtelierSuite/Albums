@@ -10,11 +10,13 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
 
     @Binding var scale: CGFloat
     let contentSize: CGSize
+    let viewport: CGRect
     let resetID: ResetID
     let onTap: () -> Void
 
     @State private var offset: CGSize = .zero
     @State private var containerSize: CGSize = .zero
+    @State private var containerFrame: CGRect = .zero
     @State private var pinchStart: PinchStart?
     @State private var panStart: PanStart?
 
@@ -34,13 +36,17 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
             .scaleEffect(scale)
             .offset(offset)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .clipShape(ZoomClipShape(isClipping: scale > minimumZoomScale))
-            .contentShape(.rect)
+            .contentShape(ZoomHitShape(isExpanded: scale > minimumZoomScale))
             .onGeometryChange(for: CGSize.self) { proxy in
                 proxy.size
             } action: { newSize in
                 containerSize = newSize
                 offset = clampedOffset(offset, scale: scale)
+            }
+            .onGeometryChange(for: CGRect.self) { proxy in
+                proxy.frame(in: .global)
+            } action: { newFrame in
+                containerFrame = newFrame
             }
             .gesture(
                 ExclusiveGesture(SpatialTapGesture(count: 2), TapGesture())
@@ -157,28 +163,57 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
         return min(max(fillScale, minimumDoubleTapZoomScale), maximumZoomScale)
     }
 
-    private func offsetLimits(scale: CGFloat) -> CGSize {
-        CGSize(width: max(0.0, (contentSize.width * scale - containerSize.width) / 2.0),
-               height: max(0.0, (contentSize.height * scale - containerSize.height) / 2.0))
+    private var localViewport: CGRect {
+        guard viewport.width > 0.0, viewport.height > 0.0 else {
+            return CGRect(origin: .zero, size: containerSize)
+        }
+        return viewport.offsetBy(dx: -containerFrame.minX, dy: -containerFrame.minY)
+    }
+
+    private func offsetRanges(scale: CGFloat) -> (x: ClosedRange<CGFloat>, y: ClosedRange<CGFloat>) {
+        let viewport = localViewport
+        return (offsetRange(length: contentSize.width * scale, container: containerSize.width,
+                            viewportMin: viewport.minX, viewportMax: viewport.maxX),
+                offsetRange(length: contentSize.height * scale, container: containerSize.height,
+                            viewportMin: viewport.minY, viewportMax: viewport.maxY))
+    }
+
+    private func offsetRange(length: CGFloat, container: CGFloat,
+                             viewportMin: CGFloat, viewportMax: CGFloat) -> ClosedRange<CGFloat> {
+        let center = container / 2.0
+        let viewportLength = viewportMax - viewportMin
+        if length >= viewportLength {
+            return (viewportMax - length / 2.0 - center)...(viewportMin + length / 2.0 - center)
+        }
+        let span = viewportLength - container
+        let progress = span > 0.0 ? min(max((length - container) / span, 0.0), 1.0) : 0.0
+        let centered = progress * ((viewportMin + viewportMax) / 2.0 - center)
+        return centered...centered
     }
 
     private func clampedOffset(_ proposed: CGSize, scale: CGFloat) -> CGSize {
-        let limits = offsetLimits(scale: scale)
-        return CGSize(width: min(max(proposed.width, -limits.width), limits.width),
-                      height: min(max(proposed.height, -limits.height), limits.height))
+        let ranges = offsetRanges(scale: scale)
+        return CGSize(width: min(max(proposed.width, ranges.x.lowerBound), ranges.x.upperBound),
+                      height: min(max(proposed.height, ranges.y.lowerBound), ranges.y.upperBound))
     }
 
     private func rubberBandedOffset(_ proposed: CGSize, scale: CGFloat) -> CGSize {
-        let limits = offsetLimits(scale: scale)
-        return CGSize(width: rubberBand(proposed.width, limit: limits.width, dimension: containerSize.width),
-                      height: rubberBand(proposed.height, limit: limits.height, dimension: containerSize.height))
+        let ranges = offsetRanges(scale: scale)
+        return CGSize(width: rubberBand(proposed.width, within: ranges.x, dimension: containerSize.width),
+                      height: rubberBand(proposed.height, within: ranges.y, dimension: containerSize.height))
     }
 
-    private func rubberBand(_ value: CGFloat, limit: CGFloat, dimension: CGFloat) -> CGFloat {
-        let overshoot = abs(value) - limit
-        guard overshoot > 0.0, dimension > 0.0 else { return value }
-        let damped = (1.0 - 1.0 / (overshoot * 0.55 / dimension + 1.0)) * dimension
-        return (limit + damped) * (value < 0.0 ? -1.0 : 1.0)
+    private func rubberBand(_ value: CGFloat, within range: ClosedRange<CGFloat>, dimension: CGFloat) -> CGFloat {
+        guard dimension > 0.0 else { return value }
+        func damped(_ overshoot: CGFloat) -> CGFloat {
+            (1.0 - 1.0 / (overshoot * 0.55 / dimension + 1.0)) * dimension
+        }
+        if value < range.lowerBound {
+            return range.lowerBound - damped(range.lowerBound - value)
+        } else if value > range.upperBound {
+            return range.upperBound + damped(value - range.upperBound)
+        }
+        return value
     }
 
     private func rubberBandedScale(_ proposed: CGFloat) -> CGFloat {
@@ -191,12 +226,12 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     }
 }
 
-private struct ZoomClipShape: Shape {
+private struct ZoomHitShape: Shape {
 
-    var isClipping: Bool
+    var isExpanded: Bool
 
     func path(in rect: CGRect) -> Path {
-        Path(isClipping ? rect : rect.insetBy(dx: -100_000.0, dy: -100_000.0))
+        Path(isExpanded ? rect.insetBy(dx: -100_000.0, dy: -100_000.0) : rect)
     }
 }
 
@@ -266,12 +301,12 @@ private struct ZoomPanGesture: UIGestureRecognizerRepresentable {
         let recognizer = UIPanGestureRecognizer()
         recognizer.delegate = context.coordinator
         recognizer.maximumNumberOfTouches = 1
-        context.coordinator.isEnabled = isEnabled
+        recognizer.isEnabled = isEnabled
         return recognizer
     }
 
     func updateUIGestureRecognizer(_ recognizer: UIPanGestureRecognizer, context: Context) {
-        context.coordinator.isEnabled = isEnabled
+        recognizer.isEnabled = isEnabled
     }
 
     func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context: Context) {
@@ -291,25 +326,40 @@ private struct ZoomPanGesture: UIGestureRecognizerRepresentable {
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
 
-        var isEnabled = false
-
-        func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-            isEnabled
-        }
-
         func gestureRecognizer(
             _ gestureRecognizer: UIGestureRecognizer,
             shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
         ) -> Bool {
-            true
+            otherGestureRecognizer is UIPinchGestureRecognizer
+        }
+
+        // The zoom navigation transition's interactive dismiss pan would otherwise win and pop the viewer.
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            !(otherGestureRecognizer is UIPinchGestureRecognizer)
         }
     }
 }
 
 extension View {
-    func zoomable(scale: Binding<CGFloat>, contentSize: CGSize, resetID: some Hashable,
+    func zoomable(scale: Binding<CGFloat>, contentSize: CGSize, viewport: CGRect, resetID: some Hashable,
                   onTap: @escaping () -> Void) -> some View {
-        modifier(ZoomableModifier(scale: scale, contentSize: contentSize, resetID: resetID, onTap: onTap))
+        modifier(ZoomableModifier(scale: scale, contentSize: contentSize, viewport: viewport,
+                                  resetID: resetID, onTap: onTap))
+    }
+
+    func trackingViewport(_ viewport: Binding<CGRect>) -> some View {
+        background {
+            Color.clear
+                .ignoresSafeArea()
+                .onGeometryChange(for: CGRect.self) { proxy in
+                    proxy.frame(in: .global)
+                } action: { newFrame in
+                    viewport.wrappedValue = newFrame
+                }
+        }
     }
 }
 

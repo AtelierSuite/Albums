@@ -13,12 +13,14 @@ extension PicViewer {
                         .padding(.vertical, fitToScreen ? 0.0 : -8.0)
                 }
                 imageContent
+                    .zIndex(1)
             }
             .padding(fitToScreen ? 0.0 : 8.0)
             .padding(.leading, fitToScreen ? 0.0 : 40.0)
         } else {
             VStack(alignment: .center, spacing: 0.0) {
                 imageContent
+                    .zIndex(1)
 
                 if viewer.allPics.count > 1 {
                     PicCarouselStrip()
@@ -59,7 +61,7 @@ extension PicViewer {
         } action: { newWidth in
             swipeContentWidth = newWidth
         }
-        .gesture(HorizontalSwipeGesture(onChanged: trackSwipe) { translation, predicted, velocity in
+        .gesture(HorizontalSwipeGesture(isEnabled: magnification == 1.0, onChanged: trackSwipe) { translation, predicted, velocity in
             endSwipeTracking(translation: translation, predictedTranslation: predicted, velocity: velocity)
         })
     }
@@ -314,7 +316,7 @@ extension PicViewer {
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-        .zoomable(scale: $magnification, contentSize: fittedPhotoSize,
+        .zoomable(scale: $magnification, contentSize: fittedPhotoSize, viewport: viewport,
                   resetID: [AnyHashable(viewer.displayedPicID), AnyHashable(displayedOrientationEdit)]) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()

@@ -41,6 +41,7 @@ struct PicViewer: View {
     @State var swipeContentWidth: CGFloat = 0.0
     @State var pendingSwipeTarget: Int?
     @State var photoContainerSize: CGSize = .zero
+    @State var viewport: CGRect = .zero
 
     var isLandscape: Bool {
         verticalSizeClass == .compact
@@ -62,6 +63,7 @@ struct PicViewer: View {
     var body: some View {
         mainContent
         .frame(maxHeight: .infinity)
+        .trackingViewport($viewport)
         .background {
             SwipeBackGestureDisabler()
                 .frame(width: 0.0, height: 0.0)

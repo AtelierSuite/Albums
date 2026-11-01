@@ -53,12 +53,14 @@ extension PhotosAssetViewer {
                         .padding(.vertical, fitToScreen ? 0.0 : -8.0)
                 }
                 imageContent
+                    .zIndex(1)
             }
             .padding(fitToScreen ? 0.0 : 8.0)
             .padding(.leading, fitToScreen ? 0.0 : 40.0)
         } else {
             VStack(alignment: .center, spacing: 0.0) {
                 imageContent
+                    .zIndex(1)
 
                 if photosViewer.allAssets.count > 1 {
                     PhotosAssetCarouselStrip()
@@ -162,6 +164,7 @@ extension PhotosAssetViewer {
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
         .zoomable(scale: $magnification,
                   contentSize: aspectFitSize(currentImage?.size ?? .zero, in: photoContainerSize),
+                  viewport: viewport,
                   resetID: currentAsset.localIdentifier) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()

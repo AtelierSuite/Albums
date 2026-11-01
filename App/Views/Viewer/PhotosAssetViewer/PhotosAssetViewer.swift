@@ -29,6 +29,7 @@ struct PhotosAssetViewer: View {
     @State var showImageSize: Bool = true
     @State var magnification: CGFloat = 1.0
     @State var photoContainerSize: CGSize = .zero
+    @State var viewport: CGRect = .zero
     @State var viewSize: CGSize = .zero
     @State var videoPlayer: AVPlayer?
     @State var videoExportURL: URL?
@@ -63,6 +64,7 @@ struct PhotosAssetViewer: View {
     var body: some View {
         mainContent
         .frame(maxHeight: .infinity)
+        .trackingViewport($viewport)
         .onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: { newSize in

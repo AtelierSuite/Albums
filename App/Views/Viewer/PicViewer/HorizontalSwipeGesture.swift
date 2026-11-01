@@ -33,6 +33,7 @@ final class HorizontalPanRecognizer: UIPanGestureRecognizer {
 
 struct HorizontalSwipeGesture: UIGestureRecognizerRepresentable {
 
+    var isEnabled: Bool = true
     var onChanged: (CGFloat) -> Void
     var onEnded: (CGFloat, CGFloat, CGFloat) -> Void
 
@@ -45,7 +46,12 @@ struct HorizontalSwipeGesture: UIGestureRecognizerRepresentable {
         recognizer.delegate = context.coordinator
         recognizer.cancelsTouchesInView = false
         recognizer.maximumNumberOfTouches = 1
+        recognizer.isEnabled = isEnabled
         return recognizer
+    }
+
+    func updateUIGestureRecognizer(_ recognizer: HorizontalPanRecognizer, context: Context) {
+        recognizer.isEnabled = isEnabled
     }
 
     func handleUIGestureRecognizerAction(_ recognizer: HorizontalPanRecognizer, context: Context) {
