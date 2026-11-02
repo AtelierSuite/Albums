@@ -11,19 +11,23 @@ extension PicViewer {
                 if viewer.allPics.count > 1 {
                     PicCarouselStripVertical()
                         .padding(.vertical, fitToScreen ? 0.0 : -8.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .leading)
                 }
                 imageContent
+                    .zIndex(1)
             }
             .padding(fitToScreen ? 0.0 : 8.0)
             .padding(.leading, fitToScreen ? 0.0 : 40.0)
         } else {
             VStack(alignment: .center, spacing: 0.0) {
                 imageContent
+                    .zIndex(1)
 
                 if viewer.allPics.count > 1 {
                     PicCarouselStrip()
                         .padding(.top, fitToScreen ? 12.0 : 0.0)
                         .padding(.horizontal, fitToScreen ? 0.0 : -20.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .bottom)
                 }
             }
             .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
@@ -59,7 +63,7 @@ extension PicViewer {
         } action: { newWidth in
             swipeContentWidth = newWidth
         }
-        .gesture(HorizontalSwipeGesture(onChanged: trackSwipe) { translation, predicted, velocity in
+        .gesture(HorizontalSwipeGesture(isEnabled: magnification == 1.0, onChanged: trackSwipe) { translation, predicted, velocity in
             endSwipeTracking(translation: translation, predictedTranslation: predicted, velocity: velocity)
         })
     }
@@ -289,7 +293,7 @@ extension PicViewer {
             }
         }
         .overlay(alignment: .bottomLeading) {
-            if showImageSize, displayedOrientationEdit.isIdentity,
+            if showImageSize, magnification == 1.0, displayedOrientationEdit.isIdentity,
                let displayedImage = viewer.displayedImage {
                 HStack(alignment: .center, spacing: 2.0) {
                     Text(verbatim: "\(Int(displayedImage.size.width * displayedImage.scale))")
@@ -314,15 +318,21 @@ extension PicViewer {
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-        .zIndex(1)
-        .offset(displayOffset)
-        .scaleEffect(CGSize(width: magnification, height: magnification),
-                     anchor: magnificationAnchor)
-        .onTapGesture {
+        .zoomable(scale: $magnification, contentSize: fittedPhotoSize, viewport: viewport,
+                  resetID: [AnyHashable(viewer.displayedPicID), AnyHashable(displayedOrientationEdit)]) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()
             }
         }
+        .zIndex(1)
+    }
+
+    var fittedPhotoSize: CGSize {
+        let edit = displayedOrientationEdit.normalized
+        let imageSize = displayedImageSize
+        let displayedSize = edit.swapsDimensions
+            ? CGSize(width: imageSize.height, height: imageSize.width) : imageSize
+        return aspectFitSize(displayedSize, in: photoContainerSize)
     }
 
     func deleteDisplayedPic() {

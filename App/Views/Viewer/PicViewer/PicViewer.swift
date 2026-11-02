@@ -23,9 +23,7 @@ struct PicViewer: View {
 
     var pic: Pic
 
-    @State var displayOffset: CGSize = .zero
     @State var magnification: CGFloat = 1.0
-    @State var magnificationAnchor: UnitPoint = .center
     @State var containingAlbumName: String?
     @State var showImageSize: Bool = true
     @State var showDownloadFailedPopover: Bool = false
@@ -43,6 +41,7 @@ struct PicViewer: View {
     @State var swipeContentWidth: CGFloat = 0.0
     @State var pendingSwipeTarget: Int?
     @State var photoContainerSize: CGSize = .zero
+    @State var viewport: CGRect = .zero
 
     var isLandscape: Bool {
         verticalSizeClass == .compact
@@ -64,6 +63,7 @@ struct PicViewer: View {
     var body: some View {
         mainContent
         .frame(maxHeight: .infinity)
+        .trackingViewport($viewport)
         .background {
             SwipeBackGestureDisabler()
                 .frame(width: 0.0, height: 0.0)
@@ -252,25 +252,6 @@ struct PicViewer: View {
                 }
             }
         }
-        .gesture(
-            MagnifyGesture()
-                .onChanged { gesture in
-                    if gesture.magnification > 1.0 {
-                        magnification = gesture.magnification
-                        magnificationAnchor = gesture.startAnchor
-                    } else {
-                        magnification = 1.0
-                    }
-                }
-                .onEnded { _ in
-                    doWithAnimation {
-                        magnification = 1.0
-                        displayOffset = .zero
-                    } completion: {
-                        magnificationAnchor = .center
-                    }
-                }
-        )
 #if targetEnvironment(macCatalyst)
         .focusable()
         .onKeyPress(.leftArrow) {

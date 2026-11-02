@@ -51,19 +51,23 @@ extension PhotosAssetViewer {
                 if photosViewer.allAssets.count > 1 {
                     PhotosAssetCarouselStripVertical()
                         .padding(.vertical, fitToScreen ? 0.0 : -8.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .leading)
                 }
                 imageContent
+                    .zIndex(1)
             }
             .padding(fitToScreen ? 0.0 : 8.0)
             .padding(.leading, fitToScreen ? 0.0 : 40.0)
         } else {
             VStack(alignment: .center, spacing: 0.0) {
                 imageContent
+                    .zIndex(1)
 
                 if photosViewer.allAssets.count > 1 {
                     PhotosAssetCarouselStrip()
                         .padding(.top, fitToScreen ? 12.0 : 0.0)
                         .padding(.horizontal, fitToScreen ? 0.0 : -20.0)
+                        .hiddenWhileZoomed(magnification > 1.0, toward: .bottom)
                 }
             }
             .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
@@ -136,8 +140,13 @@ extension PhotosAssetViewer {
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
                 }
             }
+            .onGeometryChange(for: CGSize.self) { proxy in
+                proxy.size
+            } action: { newSize in
+                photoContainerSize = newSize
+            }
 
-            if showImageSize, let displayedImage = fullImage {
+            if showImageSize, magnification == 1.0, let displayedImage = fullImage {
                 HStack(alignment: .center, spacing: 2.0) {
                     Text(verbatim: "\(Int(displayedImage.size.width * displayedImage.scale))")
                     Text(verbatim: "×")
@@ -155,15 +164,15 @@ extension PhotosAssetViewer {
         .padding(.top, fitToScreen ? 0.0 : (isLandscape ? 4.0 : 20.0))
         .padding(.bottom, fitToScreen || isLandscape ? 0.0 : 20.0)
         .shadow(color: .black.opacity(imageShadowOpacity), radius: 4.0, x: 0.0, y: 4.0)
-        .zIndex(1)
-        .offset(displayOffset)
-        .scaleEffect(CGSize(width: magnification, height: magnification),
-                     anchor: magnificationAnchor)
-        .onTapGesture {
+        .zoomable(scale: $magnification,
+                  contentSize: aspectFitSize(currentImage?.size ?? .zero, in: photoContainerSize),
+                  viewport: viewport,
+                  resetID: currentAsset.localIdentifier) {
             withAnimation(.smooth.speed(2)) {
                 showImageSize.toggle()
             }
         }
+        .zIndex(1)
     }
 
     func togglePictureInPicture() {
