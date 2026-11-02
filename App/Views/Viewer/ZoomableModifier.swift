@@ -57,12 +57,17 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
                         }
                     }
             )
-            .gesture(ZoomPinchGesture(onBegan: beginPinch, onChanged: changePinch, onEnded: endPinch))
+            .gesture(ZoomPinchGesture(blocksDismissal: blocksDismissal,
+                                      onBegan: beginPinch, onChanged: changePinch, onEnded: endPinch))
             .gesture(ZoomPanGesture(isEnabled: scale > minimumZoomScale,
                                     onChanged: changePan, onEnded: endPan))
             .onChange(of: resetID) {
                 resetZoom(animated: false)
             }
+    }
+
+    private var blocksDismissal: Bool {
+        scale > minimumZoomScale || (pinchStart?.scale ?? minimumZoomScale) > minimumZoomScale
     }
 
     private var center: CGPoint {
@@ -260,6 +265,7 @@ private struct ZoomHiddenModifier: ViewModifier {
 
 private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
 
+    var blocksDismissal: Bool
     var onBegan: (CGPoint) -> Void
     var onChanged: (CGFloat, CGPoint) -> Void
     var onEnded: (CGPoint) -> Void
@@ -271,7 +277,12 @@ private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
     func makeUIGestureRecognizer(context: Context) -> UIPinchGestureRecognizer {
         let recognizer = UIPinchGestureRecognizer()
         recognizer.delegate = context.coordinator
+        context.coordinator.blocksDismissal = blocksDismissal
         return recognizer
+    }
+
+    func updateUIGestureRecognizer(_ recognizer: UIPinchGestureRecognizer, context: Context) {
+        context.coordinator.blocksDismissal = blocksDismissal
     }
 
     func handleUIGestureRecognizerAction(_ recognizer: UIPinchGestureRecognizer, context: Context) {
@@ -300,12 +311,25 @@ private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
 
         var touchCount = 0
+        var blocksDismissal = false
 
         func gestureRecognizer(
             _ gestureRecognizer: UIGestureRecognizer,
             shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
         ) -> Bool {
             true
+        }
+
+        // The zoom navigation transition's dismiss pan also tracks two-finger pinches, so it would pop the viewer while zooming out.
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            guard blocksDismissal,
+                  otherGestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPinchGestureRecognizer
+            else { return false }
+            return !(otherGestureRecognizer.delegate is ZoomPanGesture.Coordinator)
+                && !(otherGestureRecognizer is HorizontalPanRecognizer)
         }
     }
 }
