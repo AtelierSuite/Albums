@@ -11,11 +11,16 @@ struct SwipeBackGestureDisabler: UIViewControllerRepresentable {
 private final class GestureDisablingController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        setPopGesturesEnabled(false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        setPopGesturesEnabled(true)
+    }
+
+    private func setPopGesturesEnabled(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = isEnabled
     }
 }
