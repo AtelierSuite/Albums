@@ -131,13 +131,6 @@ struct PicViewer: View {
             }
             Button("Shared.Cancel", role: .cancel) { }
         }
-        .confirmationDialog("Shared.DeleteConfirmation.Pic", isPresented: $isConfirmingDeletePic,
-                            titleVisibility: .visible) {
-            Button("Shared.Delete", role: .destructive) {
-                deleteDisplayedPic()
-            }
-            Button("Shared.Cancel", role: .cancel) { }
-        }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack(spacing: 2.0) {
@@ -212,6 +205,13 @@ struct PicViewer: View {
                     infoButton
                     Divider()
                     deleteButton
+                }
+                .confirmationDialog("Shared.DeleteConfirmation.Pic", isPresented: $isConfirmingDeletePic,
+                                    titleVisibility: .visible) {
+                    Button("Shared.Delete", role: .destructive) {
+                        deleteDisplayedPic()
+                    }
+                    Button("Shared.Cancel", role: .cancel) { }
                 }
             }
         }
