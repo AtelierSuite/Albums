@@ -21,6 +21,7 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     @State private var panStart: PanStart?
 
     private struct PinchStart {
+        var initialScale: CGFloat
         var scale: CGFloat
         var offset: CGSize
         var location: CGPoint
@@ -67,7 +68,7 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     }
 
     private var blocksDismissal: Bool {
-        scale > minimumZoomScale || (pinchStart?.scale ?? minimumZoomScale) > minimumZoomScale
+        scale > minimumZoomScale || (pinchStart?.initialScale ?? minimumZoomScale) > minimumZoomScale
     }
 
     private var center: CGPoint {
@@ -75,7 +76,8 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     }
 
     private func beginPinch(at location: CGPoint) {
-        pinchStart = PinchStart(scale: scale, offset: offset, location: location)
+        pinchStart = PinchStart(initialScale: pinchStart?.initialScale ?? scale,
+                                scale: scale, offset: offset, location: location)
         panStart = nil
     }
 
@@ -321,14 +323,13 @@ private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
             true
         }
 
-        // The zoom navigation transition's dismiss pan also tracks two-finger pinches, so it would pop the viewer while zooming out.
+        // The zoom navigation transition dismisses on pinch-in with private recognizers that aren't
+        // UIPinchGestureRecognizer subclasses, so every foreign recognizer has to wait while zoomed.
         func gestureRecognizer(
             _ gestureRecognizer: UIGestureRecognizer,
             shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
         ) -> Bool {
-            guard blocksDismissal,
-                  otherGestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPinchGestureRecognizer
-            else { return false }
+            guard blocksDismissal else { return false }
             return !(otherGestureRecognizer.delegate is ZoomPanGesture.Coordinator)
                 && !(otherGestureRecognizer is HorizontalPanRecognizer)
         }
