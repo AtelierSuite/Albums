@@ -197,6 +197,7 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     }
 
     private func clampedOffset(_ proposed: CGSize, scale: CGFloat) -> CGSize {
+        guard scale > minimumZoomScale else { return .zero }
         let ranges = offsetRanges(scale: scale)
         return CGSize(width: min(max(proposed.width, ranges.x.lowerBound), ranges.x.upperBound),
                       height: min(max(proposed.height, ranges.y.lowerBound), ranges.y.upperBound))
