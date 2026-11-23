@@ -13,13 +13,14 @@ enum Drop: Transferable {
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation { Drop.album($0) }
         ProxyRepresentation { Drop.pic($0) }
-        ProxyRepresentation { Drop.file($0) }
+        // Browsers also offer the image's web URL, which may need auth (e.g. Pixiv), so prefer the dragged bytes.
         FileRepresentation(importedContentType: .image) { received in
             Drop.file(try tempCopy(of: received.file))
         }
         FileRepresentation(importedContentType: .movie) { received in
             Drop.file(try tempCopy(of: received.file))
         }
+        ProxyRepresentation { Drop.file($0) }
         ProxyRepresentation { Drop.importedPhoto($0) }
     }
 
