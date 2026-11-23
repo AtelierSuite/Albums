@@ -17,7 +17,7 @@ struct AlbumDropModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .dropDestination(for: Drop.self) { items, _ in
+            .dropDestination(forDrops: { items in
                 var fileURLs: [URL] = []
                 var drops: [Drop] = []
                 for item in items {
@@ -33,8 +33,7 @@ struct AlbumDropModifier: ViewModifier {
                 if !fileURLs.isEmpty, let onDropFiles {
                     onDropFiles(fileURLs, album)
                 }
-                return true
-            }
+            })
     }
 }
 
