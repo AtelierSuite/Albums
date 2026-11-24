@@ -337,8 +337,8 @@ struct AlbumView: View {
                 .scrollEdgeEffectStyle(.soft, for: .all)
             }
         }
-        .dropDestination(for: Drop.self) { items, _ in
+        .dropDestination(forDrops: { items in
             importDrops(items)
-        }
+        })
     }
 }
