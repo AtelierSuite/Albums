@@ -1,5 +1,6 @@
 import AppKit
 
+@MainActor
 enum MainMenuBuilder {
 
     static func build() -> NSMenu {

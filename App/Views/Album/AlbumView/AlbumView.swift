@@ -94,13 +94,28 @@ struct AlbumView: View {
             .navigationTitle(navigationTitleText)
             .navigationSubtitle(Text(verbatim: navigationSubtitleText))
             .searchable(text: $searchText, prompt: Text("Albums.Search.Library.Prompt", tableName: "Albums"))
-            .modifier(AlbumViewOptionsFocusModifier(options: AlbumViewOptions(
-                albumStyle: $albumStyleState,
-                albumSort: $albumSortState,
-                picSort: $picSortType,
-                picStyle: $picViewStyle,
-                hideSectionHeaders: $hideSectionHeaders
+            .modifier(AlbumViewOptionsFocusModifier(options: viewOptions))
+            #if os(macOS)
+            .modifier(MacAlbumMenuModifier(actions: AlbumMenuActions(
+                options: viewOptions,
+                createAlbum: { isAddingAlbum = true },
+                importPhotos: { isPhotosPickerPresented = true },
+                importVideos: { isVideosPickerPresented = true },
+                browseAlbums: { isBrowsingAlbums = true },
+                selectFolder: { isBrowsingFolders = true },
+                importFiles: { presentFileImporter() }
             )))
+            #endif
+    }
+
+    var viewOptions: AlbumViewOptions {
+        AlbumViewOptions(
+            albumStyle: $albumStyleState,
+            albumSort: $albumSortState,
+            picSort: $picSortType,
+            picStyle: $picViewStyle,
+            hideSectionHeaders: $hideSectionHeaders
+        )
     }
 
     var contentWithReveal: some View {
