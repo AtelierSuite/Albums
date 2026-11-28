@@ -4,7 +4,6 @@ import Foundation
 enum MacGestureTracker {
 
     enum Kind {
-        case zoomPinch
         case gridPinch
     }
 

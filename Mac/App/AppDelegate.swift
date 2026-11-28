@@ -39,6 +39,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         mainWindowController?.showWindow(nil)
     }
 
+    @objc func zoomIn(_ sender: Any?) {
+        NotificationCenter.default.post(name: .viewerZoomCommand, object: ViewerZoomCommand.zoomIn)
+    }
+
+    @objc func zoomOut(_ sender: Any?) {
+        NotificationCenter.default.post(name: .viewerZoomCommand, object: ViewerZoomCommand.zoomOut)
+    }
+
+    @objc func zoomToActualSize(_ sender: Any?) {
+        NotificationCenter.default.post(name: .viewerZoomCommand, object: ViewerZoomCommand.actualSize)
+    }
+
     @objc func showSettings(_ sender: Any?) {
         if settingsWindowController == nil {
             settingsWindowController = SettingsWindowController(model: model)

@@ -21,6 +21,9 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
     @State private var containerFrame: CGRect = .zero
     @State private var pinchStart: PinchStart?
     @State private var panStart: PanStart?
+    #if os(macOS)
+    @Environment(\.appearsActive) private var appearsActive
+    #endif
 
     private struct PinchStart {
         var initialScale: CGFloat
@@ -60,13 +63,28 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
                         }
                     }
             )
+            #if os(macOS)
+            .gesture(ZoomPinchGesture(isPinching: pinchStart != nil,
+                                      onBegan: beginPinch, onChanged: changePinch, onEnded: endPinch))
+            #else
             .gesture(ZoomPinchGesture(blocksDismissal: blocksDismissal,
                                       onBegan: beginPinch, onChanged: changePinch, onEnded: endPinch))
+            #endif
             .gesture(ZoomPanGesture(isEnabled: scale > minimumZoomScale,
                                     onChanged: changePan, onEnded: endPan))
             .onChange(of: resetID) {
                 resetZoom(animated: false)
             }
+            #if os(macOS)
+            .onReceive(NotificationCenter.default.publisher(for: .viewerZoomCommand)) { notification in
+                guard appearsActive, let command = notification.object as? ViewerZoomCommand else { return }
+                switch command {
+                case .zoomIn: zoom(by: 1.5)
+                case .zoomOut: zoom(by: 1.0 / 1.5)
+                case .actualSize: resetZoom(animated: true)
+                }
+            }
+            #endif
     }
 
     private var blocksDismissal: Bool {
@@ -154,6 +172,22 @@ struct ZoomableModifier<ResetID: Hashable>: ViewModifier {
             offset = clampedOffset(zoomed, scale: target)
         }
     }
+
+    #if os(macOS)
+    private func zoom(by factor: CGFloat) {
+        let target = min(max(scale * factor, minimumZoomScale), maximumZoomScale)
+        guard target >= zoomSnapThreshold else {
+            resetZoom(animated: true)
+            return
+        }
+        let applied = target / scale
+        withAnimation(.smooth(duration: 0.3)) {
+            scale = target
+            offset = clampedOffset(CGSize(width: offset.width * applied, height: offset.height * applied),
+                                   scale: target)
+        }
+    }
+    #endif
 
     private func resetZoom(animated: Bool) {
         pinchStart = nil
@@ -397,7 +431,7 @@ private struct ZoomPanGesture: UIGestureRecognizerRepresentable {
 #else
 private struct ZoomPinchGesture: Gesture {
 
-    var blocksDismissal: Bool
+    var isPinching: Bool
     var onBegan: (CGPoint) -> Void
     var onChanged: (CGFloat, CGPoint) -> Void
     var onEnded: (CGPoint) -> Void
@@ -405,16 +439,25 @@ private struct ZoomPinchGesture: Gesture {
     var body: some Gesture {
         MagnifyGesture(minimumScaleDelta: 0.0)
             .onChanged { value in
-                if MacGestureTracker.begin(.zoomPinch) {
+                if !isPinching {
                     onBegan(value.startLocation)
                 }
                 onChanged(value.magnification, value.startLocation)
             }
             .onEnded { value in
-                MacGestureTracker.end(.zoomPinch)
                 onEnded(value.startLocation)
             }
     }
+}
+
+enum ViewerZoomCommand {
+    case zoomIn
+    case zoomOut
+    case actualSize
+}
+
+extension Notification.Name {
+    static let viewerZoomCommand = Notification.Name("ViewerZoomCommand")
 }
 
 private struct ZoomPanGesture: Gesture {
