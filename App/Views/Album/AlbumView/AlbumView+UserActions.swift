@@ -201,6 +201,8 @@ extension AlbumView {
             } else {
                 viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
             }
+#elseif os(macOS)
+            ViewerWindowController.open(.pic(selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
 #else
             viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
 #endif

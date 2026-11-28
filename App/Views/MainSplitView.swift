@@ -106,6 +106,16 @@ struct MainSplitView: View {
         } else {
             threeColumnSplit
         }
+#elseif os(macOS)
+        NavigationSplitView {
+            sidebar
+                .navigationSplitViewColumnWidth(min: 180.0, ideal: 220.0, max: 280.0)
+        } detail: {
+            content
+                .background {
+                    WindowTitleUpdater(title: columnTitle)
+                }
+        }
 #else
         threeColumnSplit
 #endif
@@ -119,17 +129,7 @@ struct MainSplitView: View {
             content
                 .navigationSplitViewColumnWidth(min: 300.0, ideal: 375.0, max: 500.0)
         } detail: {
-            #if os(macOS)
             detail
-                .background {
-                    WindowTitleUpdater(title: columnTitle)
-                }
-                .toolbar {
-                    SwiftUI.ToolbarSpacer(.flexible)
-                }
-            #else
-            detail
-            #endif
         }
     }
 

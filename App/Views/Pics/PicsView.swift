@@ -40,6 +40,8 @@ struct PicsView: View {
                             } else {
                                 viewer.setDisplay(pic, in: pics, allowsPinning: false) { }
                             }
+#elseif os(macOS)
+                            ViewerWindowController.open(.pic(selectedID: pic.id, siblingIDs: pics.map(\.id)))
 #else
                             viewer.setDisplay(pic, in: pics, allowsPinning: false) { }
 #endif

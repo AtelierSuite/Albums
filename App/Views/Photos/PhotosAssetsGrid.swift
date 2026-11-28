@@ -176,6 +176,9 @@ struct PhotosAssetsGridLayout: View {
                     } else {
                         photosViewer.setDisplay(asset, in: siblings)
                     }
+#elseif os(macOS)
+                    ViewerWindowController.open(.photo(selectedID: asset.localIdentifier,
+                                                       siblingIDs: siblings.map(\.localIdentifier)))
 #else
                     photosViewer.setDisplay(asset, in: siblings)
 #endif
