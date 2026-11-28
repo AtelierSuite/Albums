@@ -111,6 +111,9 @@ struct PicViewer: View {
             }
         }
         .navigationTitle(displayedPicName)
+        #if os(macOS)
+        .navigationSubtitle(containingAlbumName ?? "")
+        #endif
         .navigationBarTitleDisplayMode(.inline)
         .alert("ViewTitle.Pics.Rename", isPresented: $isRenamePicPresented) {
             TextField(displayedPicName, text: $renamePicText)
@@ -132,6 +135,7 @@ struct PicViewer: View {
             Button("Shared.Cancel", role: .cancel) { }
         }
         .toolbar {
+            #if !os(macOS)
             ToolbarItem(placement: .principal) {
                 VStack(spacing: 2.0) {
                     Button {
@@ -151,11 +155,8 @@ struct PicViewer: View {
                             .lineLimit(1)
                     }
                 }
-                #if os(macOS)
-                .fixedSize()
-                #endif
             }
-            .titleBackgroundHiddenOnMac()
+            #endif
             if pipManager.isPossible, viewer.displayedPic?.isVideo != true {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Shared.PictureInPicture",

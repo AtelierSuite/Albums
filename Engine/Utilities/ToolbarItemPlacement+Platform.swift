@@ -26,14 +26,3 @@ extension ToolbarItemPlacement {
         #endif
     }
 }
-
-extension ToolbarContent {
-    @ToolbarContentBuilder
-    public func titleBackgroundHiddenOnMac() -> some ToolbarContent {
-        #if os(macOS)
-        sharedBackgroundVisibility(.hidden)
-        #else
-        self
-        #endif
-    }
-}
