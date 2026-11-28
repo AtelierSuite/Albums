@@ -1,5 +1,4 @@
 import Photos
-import UIKit
 
 public struct DuplicateMatch: Identifiable, Sendable {
     public let id: Int
@@ -18,7 +17,7 @@ public enum DuplicateChecker {
         let incoming: [Incoming] = items.enumerated().compactMap { index, item in
             guard let data = item.imageData,
                   let thumbnail = Pic.makeThumbnail(data),
-                  let image = UIImage(data: thumbnail),
+                  let image = PlatformImage(data: thumbnail),
                   let hash = DHash.compute(from: image) else { return nil }
             return Incoming(index: index, hash: hash, thumbnail: thumbnail)
         }
@@ -70,7 +69,7 @@ public enum DuplicateChecker {
         for (picID, _) in picAlbumIDs where hashes[picID] == nil {
             guard ContinuousClock.now < deadline else { break }
             if let data = await dataActor.thumbnailData(forPicWithID: picID),
-               let image = UIImage(data: data),
+               let image = PlatformImage(data: data),
                let hash = DHash.compute(from: image) {
                 hashes[picID] = hash
                 await hashActor.storeHash(hash, forPicWithID: picID)
@@ -118,7 +117,7 @@ public enum DuplicateChecker {
                 seen.insert(identifier)
                 guard let thumbnail = await PhotosSaver.localThumbnailData(forAssetWithIdentifier: identifier,
                                                                            length: 120),
-                      let image = UIImage(data: thumbnail),
+                      let image = PlatformImage(data: thumbnail),
                       let hash = DHash.compute(from: image) else { continue }
                 candidates.append(Candidate(hash: hash, location: title) { thumbnail })
             }

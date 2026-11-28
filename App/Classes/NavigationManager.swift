@@ -1,6 +1,8 @@
 import Engine
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct PicRevealRequest: Equatable, Sendable {
     let id = UUID()

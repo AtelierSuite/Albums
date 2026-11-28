@@ -6,7 +6,7 @@ final class ImportBackgroundTaskController {
 
     nonisolated static let identifierPrefix = "com.tsubuzaki.IllustMate.import"
 
-#if !targetEnvironment(macCatalyst)
+#if os(iOS)
     private var task: BGContinuedProcessingTask?
     private var lastCompleted: Int = 0
     private var lastTotal: Int = 0

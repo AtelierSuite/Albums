@@ -56,17 +56,17 @@ struct LibraryCoverPickerView: View {
             .navigationTitle(String(localized: "Libraries.Cover.Title", table: "Libraries"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .close) {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     Button(role: .confirm) {
                         save(selectedPicIDs)
                     }
                 }
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItem(placement: .sheetBottom) {
                     Button(String(localized: "Libraries.Cover.Reset", table: "Libraries")) {
                         save([])
                     }
@@ -113,7 +113,7 @@ struct LibraryCoverPickerCell: View {
     var dataActor: DataActor
     var isSelected: Bool
 
-    @State private var image: UIImage?
+    @State private var image: PlatformImage?
 
     var body: some View {
         Rectangle()
@@ -121,7 +121,7 @@ struct LibraryCoverPickerCell: View {
             .aspectRatio(1.0, contentMode: .fit)
             .overlay {
                 if let image {
-                    Image(uiImage: image)
+                    Image(platformImage: image)
                         .resizable()
                         .scaledToFill()
                 }
@@ -134,7 +134,7 @@ struct LibraryCoverPickerCell: View {
             .task(id: pic.id) {
                 let picID = pic.id
                 let data = await dataActor.thumbnailData(forPicWithID: picID)
-                image = data.flatMap { UIImage(data: $0) }
+                image = data.flatMap { PlatformImage(data: $0) }
             }
     }
 }

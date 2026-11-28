@@ -1,8 +1,9 @@
+import Engine
 import SwiftUI
 
 struct LibraryCover: View {
 
-    var images: [UIImage]
+    var images: [PlatformImage]
     var placeholderSystemImage: String
     var length: CGFloat
 
@@ -53,8 +54,8 @@ struct LibraryCover: View {
         (length - spacing) / 2.0
     }
 
-    private func tile(_ image: UIImage, width: CGFloat, height: CGFloat) -> some View {
-        Image(uiImage: image)
+    private func tile(_ image: PlatformImage, width: CGFloat, height: CGFloat) -> some View {
+        Image(platformImage: image)
             .resizable()
             .scaledToFill()
             .frame(width: width, height: height)

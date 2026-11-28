@@ -9,7 +9,7 @@ struct PhotosDuplicateDetailCard: View {
     let isKept: Bool
     let onToggle: () -> Void
 
-    @State private var thumbnail: UIImage?
+    @State private var thumbnail: PlatformImage?
     @State private var fileSize: String?
 
     var body: some View {
@@ -19,7 +19,7 @@ struct PhotosDuplicateDetailCard: View {
                     Rectangle()
                         .fill(.primary.opacity(0.05))
                     if let thumbnail {
-                        Image(uiImage: thumbnail)
+                        Image(platformImage: thumbnail)
                             .resizable()
                             .scaledToFill()
                     }

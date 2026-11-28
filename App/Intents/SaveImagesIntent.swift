@@ -1,6 +1,8 @@
 import AppIntents
 import Engine
+#if canImport(UIKit)
 import UIKit
+#endif
 import UniformTypeIdentifiers
 
 struct SaveImagesIntent: AppIntent {
@@ -46,7 +48,7 @@ struct SaveImagesIntent: AppIntent {
                 try file.data.write(to: url)
                 temporaryURLs.append(url)
                 items.append(.video(url))
-            } else if UIImage(data: file.data) != nil {
+            } else if PlatformImage(data: file.data) != nil {
                 items.append(.image(file.data))
             }
         }

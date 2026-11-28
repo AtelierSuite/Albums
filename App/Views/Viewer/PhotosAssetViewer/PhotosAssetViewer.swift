@@ -1,3 +1,4 @@
+import Engine
 import AVKit
 import Photos
 import SwiftUI
@@ -23,8 +24,8 @@ struct PhotosAssetViewer: View {
 
     @Environment(\.displayScale) var displayScale
 
-    @State var thumbnail: UIImage?
-    @State var fullImage: UIImage?
+    @State var thumbnail: PlatformImage?
+    @State var fullImage: PlatformImage?
     @State var isFullImageLoaded: Bool = false
     @State var showImageSize: Bool = true
     @State var magnification: CGFloat = 1.0
@@ -42,7 +43,7 @@ struct PhotosAssetViewer: View {
         photosViewer.displayedAsset ?? asset
     }
 
-    var currentImage: UIImage? {
+    var currentImage: PlatformImage? {
         fullImage ?? thumbnail
     }
 
@@ -50,7 +51,7 @@ struct PhotosAssetViewer: View {
         if let image = currentImage, let cgImage = image.cgImage {
             Image(cgImage, scale: image.scale, label: Text(""))
         } else {
-            Image(uiImage: UIImage())
+            Image(platformImage: PlatformImage())
         }
     }
 
@@ -74,7 +75,7 @@ struct PhotosAssetViewer: View {
             switch backgroundType {
             case .immersive:
                 if let backgroundImage = currentImage {
-                    Image(uiImage: backgroundImage)
+                    Image(platformImage: backgroundImage)
                         .resizable()
                         .scaledToFill()
                         .blur(radius: 40)
@@ -150,7 +151,7 @@ struct PhotosAssetViewer: View {
                 await loadFullImage()
             }
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .focusable()
         .onKeyPress(.leftArrow) {
             withAnimation(.smooth.speed(2)) {

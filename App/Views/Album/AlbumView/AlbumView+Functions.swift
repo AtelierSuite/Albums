@@ -288,12 +288,13 @@ extension AlbumView {
         }
     }
 
-    private nonisolated static func makeBlurredBackground(from data: Data) -> UIImage? {
-        guard let sourceImage = UIImage(data: data) else { return nil }
+    private nonisolated static func makeBlurredBackground(from data: Data) -> PlatformImage? {
+        guard let sourceImage = PlatformImage(data: data) else { return nil }
         // Downscale to a small size since this is just a blurry background
         let targetSize = CGSize(width: 64, height: 64)
         let scaledImage = sourceImage.scalePreservingAspectRatio(targetSize: targetSize)
-        guard let ciImage = CIImage(image: scaledImage) else { return nil }
+        guard let scaledCGImage = scaledImage.cgImage else { return nil }
+        let ciImage = CIImage(cgImage: scaledCGImage)
         let filter = CIFilter.gaussianBlur()
         filter.inputImage = ciImage
         filter.radius = 10
@@ -304,6 +305,6 @@ extension AlbumView {
         guard let cgImage = context.createCGImage(croppedOutput, from: croppedOutput.extent) else {
             return nil
         }
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
 }

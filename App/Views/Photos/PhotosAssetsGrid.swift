@@ -1,3 +1,4 @@
+import Engine
 import Photos
 import SwiftUI
 
@@ -72,14 +73,11 @@ struct PhotosAssetsGridLayout: View {
     var loadMore: () -> Void
 
     @Environment(PhotosViewerManager.self) var photosViewer
-    @Environment(\.openWindow) var openWindow
 
     @AppStorage(photosPicColumnCountKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int = 4
     @AppStorage(photosPicViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: ViewStyle = .grid
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     @State private var gridWidth: CGFloat = 0.0
 
@@ -113,12 +111,12 @@ struct PhotosAssetsGridLayout: View {
         columnCount = count
     }
 
-    private func cachedThumbnail(at index: Int) -> UIImage? {
+    private func cachedThumbnail(at index: Int) -> PlatformImage? {
         guard index < assets.count else { return nil }
         return PhotosAssetLabel.cachedThumbnail(for: assets[index])
     }
 
-    private func loadThumbnail(at index: Int) async -> UIImage? {
+    private func loadThumbnail(at index: Int) async -> PlatformImage? {
         guard index < assets.count else { return nil }
         return await PhotosAssetLabel.thumbnail(for: assets[index])
     }
@@ -167,14 +165,9 @@ struct PhotosAssetsGridLayout: View {
         Group {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 Button {
-#if targetEnvironment(macCatalyst)
-                    if openPicsInNewWindow {
-                        openWindow(value: ViewerWindowValue.photo(
-                            selectedID: asset.localIdentifier,
-                            siblingIDs: siblings.map(\.localIdentifier)))
-                    } else {
-                        photosViewer.setDisplay(asset, in: siblings)
-                    }
+#if os(macOS)
+                    ViewerWindowController.open(.photo(selectedID: asset.localIdentifier,
+                                                       siblingIDs: siblings.map(\.localIdentifier)))
 #else
                     photosViewer.setDisplay(asset, in: siblings)
 #endif
@@ -196,7 +189,7 @@ struct PhotosAssetsGridLayout: View {
         .contextMenu {
             PhotosAssetContextMenu(asset: asset)
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .buttonStyle(.borderless)
 #else
         .buttonStyle(.plain)
@@ -230,7 +223,7 @@ struct PhotosAssetContextMenu: View {
                     if let result {
                         DispatchQueue.main.async {
                             UIPasteboard.general.image = result
-                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            Haptics.notify(.success)
                             MainActor.assumeIsolated {
                                 CopiedToast.showCopied()
                             }
@@ -292,7 +285,7 @@ struct PhotosAssetLabel: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    @State private var thumbnail: UIImage?
+    @State private var thumbnail: PlatformImage?
     @State private var requestID: PHImageRequestID?
 
     init(asset: PHAsset, maintainsAspectRatio: Bool = false) {
@@ -305,11 +298,11 @@ struct PhotosAssetLabel: View {
         "PHAsset:\(asset.localIdentifier)"
     }
 
-    static func cachedThumbnail(for asset: PHAsset) -> UIImage? {
+    static func cachedThumbnail(for asset: PHAsset) -> PlatformImage? {
         ThumbnailCache.shared.image(forKey: cacheKey(for: asset))
     }
 
-    static func thumbnail(for asset: PHAsset) async -> UIImage? {
+    static func thumbnail(for asset: PHAsset) async -> PlatformImage? {
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
         options.isNetworkAccessAllowed = false
@@ -366,7 +359,7 @@ struct PhotosAssetLabel: View {
         GeometryReader { metrics in
             ZStack {
                 if let thumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFill()
                         .transition(.opacity.animation(.smooth.speed(2)))

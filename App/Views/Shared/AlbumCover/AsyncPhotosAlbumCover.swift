@@ -66,7 +66,7 @@ extension AlbumCover {
                 manager.requestImage(for: asset, targetSize: targetSize,
                                      contentMode: .aspectFill, options: options) { uiImage, _ in
                     if let uiImage {
-                        let image = Image(uiImage: uiImage)
+                        let image = Image(platformImage: uiImage)
                         DispatchQueue.main.async {
                             switch index {
                             case 0: self.primaryImage = image

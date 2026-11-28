@@ -109,7 +109,7 @@ extension AlbumView {
         for fileURL in urls {
             if !fileURL.isFileURL {
                 guard let (data, _) = try? await URLSession.shared.data(from: fileURL),
-                      UIImage(data: data) != nil,
+                      PlatformImage(data: data) != nil,
                       let name = try? ImportJobStore.stageData(data, for: job.id, pathExtension: fileURL.pathExtension)
                 else { continue }
                 job.items.append(ImportItem(

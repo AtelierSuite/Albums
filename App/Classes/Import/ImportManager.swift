@@ -3,7 +3,9 @@ import Foundation
 import Photos
 import PhotosUI
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 @MainActor
 @Observable
@@ -204,7 +206,7 @@ final class ImportManager {
         pickerItems[job.id] = nil
         invalidateCovers(for: job)
         lastFinishedJobID = job.id
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        Haptics.notify(.success)
         let importedCount = progress.importedPicIDs.count
         let albumName = job.destinationAlbumName
         Task {

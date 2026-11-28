@@ -1,6 +1,9 @@
+import Engine
 import Accelerate
 import CoreGraphics
+#if canImport(UIKit)
 import UIKit
+#endif
 import Vision
 
 enum EntityVision {
@@ -16,7 +19,7 @@ enum EntityVision {
     static let minimumCropFloor: CGFloat = 64.0
 
     static func featurePrint(fromThumbnailData data: Data) -> Result? {
-        guard let image = UIImage(data: data), let cgImage = image.cgImage else { return nil }
+        guard let image = PlatformImage(data: data), let cgImage = image.cgImage else { return nil }
         return featurePrint(from: cgImage)
     }
 

@@ -23,12 +23,12 @@ struct LibraryManagerSheet: View {
                 .navigationTitle(String(localized: "Libraries.Title", table: "Libraries"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
+                    ToolbarItem(placement: .sheetLeading) {
                         Button(role: .close) {
                             dismiss()
                         }
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .sheetTrailing) {
                         Button {
                             isCreatingLibrary = true
                             newLibraryName = ""
@@ -50,12 +50,14 @@ struct LibraryManagerSheet: View {
                         .environmentObject(navigation)
                         .environment(concurrency)
                         .environment(imageMigration)
+                        .macSheetSizing()
                 }
                 .sheet(isPresented: $isEditingPhotos) {
                     PhotosLibrarySheet(dismissAll: {
                         isEditingPhotos = false
                         dismiss()
                     })
+                    .macSheetSizing()
                 }
         }
         .phonePresentationDetents([.medium, .large])

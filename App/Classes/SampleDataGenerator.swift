@@ -1,7 +1,9 @@
 import CoreGraphics
 import Engine
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 enum SampleDataGenerator {
 
@@ -119,7 +121,7 @@ enum SampleDataGenerator {
             drawRandomShape(in: context, width: width, height: height)
         }
         guard let cgImage = context.makeImage() else { return Data() }
-        return UIImage(cgImage: cgImage).data()
+        return PlatformImage(cgImage: cgImage).data()
     }
 
     private static func drawMeshGradient(in context: CGContext, width: Int, height: Int,

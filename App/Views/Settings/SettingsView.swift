@@ -1,7 +1,6 @@
 import Engine
 import SwiftUI
 
-let settingsWindowID = "settings"
 
 struct SettingsView: View {
 
@@ -19,8 +18,6 @@ struct SettingsView: View {
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var quickImport: Bool = false
     @AppStorage("ShareSheetDefaultAlbum",
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var defaultAlbumID: String = ""
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
     @AppStorage(viewerFitToScreenKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var fitToScreen: Bool = false
     @AppStorage(viewerBackgroundTypeKey,
@@ -37,11 +34,9 @@ struct SettingsView: View {
 
     private var listContent: some View {
         List {
-            #if !targetEnvironment(macCatalyst)
             if UIApplication.shared.supportsAlternateIcons {
                 AppIconSection()
             }
-            #endif
             Section {
                 Toggle(String(localized: "AppLock", table: "More"), isOn: $isAppLockEnabled)
                     .disabled(auth.biometryType == .none)
@@ -62,15 +57,8 @@ struct SettingsView: View {
                         .tag(ViewerBackgroundType.dark)
                 }
                 Toggle(String(localized: "Viewer.ShowResolution", table: "More"), isOn: $showResolutionByDefault)
-                #if targetEnvironment(macCatalyst)
-                Toggle(String(localized: "Window.OpenPicsInNewWindow", table: "More"), isOn: $openPicsInNewWindow)
-                #endif
             } header: {
                 Text("Viewer", tableName: "More")
-            } footer: {
-                #if targetEnvironment(macCatalyst)
-                Text("Window.OpenPicsInNewWindow.Description", tableName: "More")
-                #endif
             }
             Section {
                 Toggle(String(localized: "ShareSheet.OpenSearch", table: "More"), isOn: $openSearchWhenSharing)
@@ -138,7 +126,7 @@ struct SettingsView: View {
             }
         }
         .tint(.accent)
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .navigationTitle("")
 #else
         .navigationTitle("ViewTitle.Settings")
@@ -159,7 +147,7 @@ struct SettingsView: View {
         NavigationStack(path: $navigation.settingsTabPath) {
             listContent
                 .toolbar {
-#if !targetEnvironment(macCatalyst)
+#if os(iOS)
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(role: .close) {
                             dismiss()

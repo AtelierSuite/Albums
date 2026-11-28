@@ -1,5 +1,8 @@
+import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct ImageMigrationView: View {
 
@@ -82,8 +85,8 @@ struct ImageMigrationView: View {
         RoundedRectangle(cornerRadius: 20.0)
             .fill(.quaternary)
             .overlay {
-                if let displayedThumbnail, let image = UIImage(data: displayedThumbnail) {
-                    Image(uiImage: image)
+                if let displayedThumbnail, let image = PlatformImage(data: displayedThumbnail) {
+                    Image(platformImage: image)
                         .resizable()
                         .scaledToFill()
                 } else {

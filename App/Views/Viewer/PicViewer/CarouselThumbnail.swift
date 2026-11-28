@@ -6,7 +6,7 @@ struct CarouselThumbnail: View {
     let pic: Pic
     let isSelected: Bool
 
-    @State private var thumbnail: UIImage?
+    @State private var thumbnail: PlatformImage?
 
     var body: some View {
         Rectangle()
@@ -14,7 +14,7 @@ struct CarouselThumbnail: View {
             .frame(width: 48.0, height: 48.0)
             .overlay {
                 if let thumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFill()
                 }
@@ -41,7 +41,7 @@ struct CarouselThumbnail: View {
                 } else {
                     thumbData = await DataActor.shared.thumbnailData(forPicWithID: picID)
                 }
-                if let thumbData, let uiImage = UIImage(data: thumbData),
+                if let thumbData, let uiImage = PlatformImage(data: thumbData),
                    let prepared = await uiImage.byPreparingForDisplay() {
                     guard !Task.isCancelled else { return }
                     ThumbnailCache.shared.setImage(prepared, forKey: picID)

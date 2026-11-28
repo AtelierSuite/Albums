@@ -56,10 +56,18 @@ struct SectionHeader<Buttons: View, Content: View>: View {
             Spacer(minLength: 0)
             buttons()
             if Content.self != EmptyView.self {
-#if targetEnvironment(macCatalyst)
-                Menu("Shared.More") {
+#if os(macOS)
+                Menu {
                     trailingViews()
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .imageScale(.large)
                 }
+                .menuStyle(.button)
+                .buttonStyle(.borderless)
+                .menuIndicator(.hidden)
+                .fixedSize()
+                .focusEffectDisabled()
                 .accessibilityIdentifier("sectionMenu")
 #else
                 Menu {

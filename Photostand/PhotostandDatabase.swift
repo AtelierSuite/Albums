@@ -1,6 +1,5 @@
 import Foundation
 @preconcurrency import SQLite
-import UIKit
 
 struct PhotostandDatabase {
     static let appGroupID = "group.com.tsubuzaki.IllustMate"
@@ -136,7 +135,7 @@ struct PhotostandDatabase {
         guard let idRow = try? database.pluck(idQuery),
               let randomId = try? idRow.get(picId),
               let data = rawPicData(forID: randomId, using: database, libraryID: libraryID),
-              let imageData = UIImage.downsampledForWidget(data: data, maxDimension: maxDimension) else { return nil }
+              let imageData = WidgetImage.downsampled(data: data, maxDimension: maxDimension) else { return nil }
         return WidgetPic(id: randomId, imageData: imageData)
     }
 
@@ -158,7 +157,7 @@ struct PhotostandDatabase {
         return ids.compactMap { id in
             autoreleasepool {
                 guard let data = rawPicData(forID: id, using: database, libraryID: libraryID),
-                      let imageData = UIImage.downsampledForWidget(data: data, maxDimension: maxDimension) else {
+                      let imageData = WidgetImage.downsampled(data: data, maxDimension: maxDimension) else {
                     return nil
                 }
                 return WidgetPic(id: id, imageData: imageData)

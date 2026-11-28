@@ -1,10 +1,13 @@
+import Engine
 import SwiftUI
 
 #if os(macOS)
 import AppKit
 typealias XPColor = NSColor
 #else
+#if canImport(UIKit)
 import UIKit
+#endif
 typealias XPColor = UIColor
 #endif
 
@@ -33,7 +36,7 @@ extension Color {
         var hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, alpha: CGFloat = 0
         #if os(macOS)
         primaryXP.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        let secondaryXP = NSColor(calibratedHue: (h + 0.1).truncatingRemainder(dividingBy: 1.0),
+        let secondaryXP = NSColor(calibratedHue: (hue + 0.1).truncatingRemainder(dividingBy: 1.0),
                                   saturation: saturation,
                                   brightness: brightness,
                                   alpha: alpha)

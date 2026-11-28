@@ -55,6 +55,7 @@ struct PhotosAlbumContentView: View {
         .sheet(isPresented: $isDuplicateCheckerPresented) {
             PhotosDuplicateScanView(collection: collection)
                 .phonePresentationDetents([.medium, .large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
         }
         .onChange(of: isDuplicateCheckerPresented) { _, isPresented in

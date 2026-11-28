@@ -8,13 +8,10 @@ struct AlbumView: View {
 
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.scenePhase) var scenePhase
-    @Environment(\.openWindow) var openWindow
     @EnvironmentObject var navigation: NavigationManager
     @EnvironmentObject var libraryManager: LibraryManager
     @Environment(ViewerManager.self) var viewer
 
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
     @AppStorage(picViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var picViewStyle: ViewStyle = .grid
 
@@ -46,7 +43,6 @@ struct AlbumView: View {
     @State var isBrowsingAlbums: Bool = false
     @State var isBrowsingFolders: Bool = false
     @State var isFileImporterPresented: Bool = false
-    @State var isFileImportSheetPresented: Bool = false
     @State var isPhotosPickerPresented: Bool = false
     @State var isVideosPickerPresented: Bool = false
     @State var selectedPhotoItems: [PhotosPickerItem] = []
@@ -59,7 +55,7 @@ struct AlbumView: View {
 
     @State var totalAlbumCount: Int = 0
     @State var recentlyDeletedCount: Int = 0
-    @State var backgroundImage: UIImage?
+    @State var backgroundImage: PlatformImage?
     @State var lastRefreshTime: Date = .distantPast
     @State var searchText: String = ""
     @State var searchResults: LibrarySearchResults?
@@ -94,13 +90,27 @@ struct AlbumView: View {
             .navigationTitle(navigationTitleText)
             .navigationSubtitle(Text(verbatim: navigationSubtitleText))
             .searchable(text: $searchText, prompt: Text("Albums.Search.Library.Prompt", tableName: "Albums"))
-            .modifier(AlbumViewOptionsFocusModifier(options: AlbumViewOptions(
-                albumStyle: $albumStyleState,
-                albumSort: $albumSortState,
-                picSort: $picSortType,
-                picStyle: $picViewStyle,
-                hideSectionHeaders: $hideSectionHeaders
+            #if os(macOS)
+            .modifier(MacAlbumMenuModifier(actions: AlbumMenuActions(
+                options: viewOptions,
+                createAlbum: { isAddingAlbum = true },
+                importPhotos: { isPhotosPickerPresented = true },
+                importVideos: { isVideosPickerPresented = true },
+                browseAlbums: { isBrowsingAlbums = true },
+                selectFolder: { isBrowsingFolders = true },
+                importFiles: { presentFileImporter() }
             )))
+            #endif
+    }
+
+    var viewOptions: AlbumViewOptions {
+        AlbumViewOptions(
+            albumStyle: $albumStyleState,
+            albumSort: $albumSortState,
+            picSort: $picSortType,
+            picStyle: $picViewStyle,
+            hideSectionHeaders: $hideSectionHeaders
+        )
     }
 
     var contentWithReveal: some View {
@@ -147,7 +157,6 @@ struct AlbumView: View {
                 isVideosPickerPresented: $isVideosPickerPresented,
                 selectedVideoItems: $selectedVideoItems,
                 isFileImporterPresented: $isFileImporterPresented,
-                isFileImportSheetPresented: $isFileImportSheetPresented,
                 onPhotosSelected: { importSelectedPhotos($0) },
                 onVideosSelected: { importSelectedVideos($0) },
                 onFilesImported: { importLoadedFiles($0) }
@@ -161,6 +170,7 @@ struct AlbumView: View {
                     }
                 }
                 .phonePresentationDetents([.medium, .large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .onChange(of: isDuplicateCheckerPresented) { _, isPresented in
@@ -177,6 +187,7 @@ struct AlbumView: View {
                     }
                 }
                 .phonePresentationDetents([.medium, .large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .onChange(of: isIntelligentSortPresented) { _, isPresented in
@@ -282,7 +293,7 @@ struct AlbumView: View {
         ZStack {
             if let backgroundImage {
                 Canvas { context, size in
-                    let image = context.resolve(Image(uiImage: backgroundImage))
+                    let image = context.resolve(Image(platformImage: backgroundImage))
                     let imageSize = image.size
                     let scale = max(size.width / imageSize.width,
                                     size.height / imageSize.height)

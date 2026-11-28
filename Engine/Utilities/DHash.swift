@@ -1,10 +1,10 @@
-import UIKit
+import CoreGraphics
 
 public enum DHash: Sendable {
 
     /// Computes a 64-bit difference hash for the given image.
     /// Resizes to 9x8 grayscale, then compares each pixel to its right neighbor.
-    public static func compute(from image: UIImage) -> UInt64? {
+    public static func compute(from image: PlatformImage) -> UInt64? {
         guard let cgImage = image.cgImage else { return nil }
 
         let width = 9

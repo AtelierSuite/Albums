@@ -52,12 +52,12 @@ struct PicViewer: View {
         return viewer.origin != .album(id: displayedPic.containingAlbumID)
     }
 
-    var currentImage: UIImage? {
+    var currentImage: PlatformImage? {
         viewer.displayedImage ?? viewer.displayedThumbnail
     }
 
     var shareImage: Image {
-        Image(uiImage: currentImage ?? UIImage())
+        Image(platformImage: currentImage ?? PlatformImage())
     }
 
     var body: some View {
@@ -75,7 +75,7 @@ struct PicViewer: View {
                     Canvas { [edit = displayedOrientationEdit.normalized] context, size in
                         context.addFilter(.blur(radius: 40))
                         context.addFilter(.brightness(colorScheme == .dark ? -0.5 : 0.1))
-                        let image = Image(uiImage: backgroundImage)
+                        let image = Image(platformImage: backgroundImage)
                         let imageSize = backgroundImage.size
                         let drawnSize = edit.swapsDimensions
                             ? CGSize(width: imageSize.height, height: imageSize.width) : imageSize
@@ -111,6 +111,9 @@ struct PicViewer: View {
             }
         }
         .navigationTitle(displayedPicName)
+        #if os(macOS)
+        .navigationSubtitle(containingAlbumName ?? "")
+        #endif
         .navigationBarTitleDisplayMode(.inline)
         .alert("ViewTitle.Pics.Rename", isPresented: $isRenamePicPresented) {
             TextField(displayedPicName, text: $renamePicText)
@@ -132,6 +135,7 @@ struct PicViewer: View {
             Button("Shared.Cancel", role: .cancel) { }
         }
         .toolbar {
+            #if !os(macOS)
             ToolbarItem(placement: .principal) {
                 VStack(spacing: 2.0) {
                     Button {
@@ -152,6 +156,7 @@ struct PicViewer: View {
                     }
                 }
             }
+            #endif
             if pipManager.isPossible, viewer.displayedPic?.isVideo != true {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Shared.PictureInPicture",
@@ -252,7 +257,7 @@ struct PicViewer: View {
                 }
             }
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .focusable()
         .onKeyPress(.leftArrow) {
             viewer.navigateToPrevious()

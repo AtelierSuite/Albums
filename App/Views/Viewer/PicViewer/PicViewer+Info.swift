@@ -51,6 +51,7 @@ struct PicInfoPresenter: ViewModifier {
                 if let displayedPic = viewer.displayedPic {
                     PicInfoSheet(pic: displayedPic, pixelSize: pixelSize, albumName: albumName)
                         .presentationDetents([.medium, .large])
+                        .macSheetSizing()
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .picContentCredentialsDidChange)) { notification in

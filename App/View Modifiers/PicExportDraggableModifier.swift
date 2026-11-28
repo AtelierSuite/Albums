@@ -28,7 +28,7 @@ struct PicDragPreview: View {
 
     var body: some View {
         if let image = ThumbnailCache.shared.image(forKey: picID) {
-            Image(uiImage: image)
+            Image(platformImage: image)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 120.0, maxHeight: 120.0)

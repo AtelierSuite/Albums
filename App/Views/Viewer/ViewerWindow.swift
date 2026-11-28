@@ -2,8 +2,6 @@ import Engine
 import Photos
 import SwiftUI
 
-let openPicsInNewWindowKey = "OpenPicsInNewWindow"
-
 enum ViewerWindowValue: Codable, Hashable {
     case pic(selectedID: String, siblingIDs: [String])
     case photo(selectedID: String, siblingIDs: [String])
@@ -12,6 +10,7 @@ enum ViewerWindowValue: Codable, Hashable {
 struct ViewerWindowContent: View {
 
     let value: ViewerWindowValue
+    var onDisplayedIDChange: ((String) -> Void)?
 
     @State private var viewer = ViewerManager(allowsShowInAlbum: false)
     @State private var photosViewer = PhotosViewerManager()
@@ -37,11 +36,27 @@ struct ViewerWindowContent: View {
                     }
                 }
             }
+            #if os(macOS)
+            .toolbarBackgroundVisibility(.hidden, for: .windowToolbar)
+            #endif
         }
         .environment(viewer)
         .environment(photosViewer)
         .task {
             await load()
+        }
+        #if os(macOS)
+        .modifier(ViewerNavigateCommandHandler(viewer: viewer, photosViewer: photosViewer))
+        #endif
+        .onChange(of: viewer.displayedPicID) { _, id in
+            if !id.isEmpty {
+                onDisplayedIDChange?(id)
+            }
+        }
+        .onChange(of: photosViewer.displayedAsset?.localIdentifier) { _, id in
+            if let id {
+                onDisplayedIDChange?(id)
+            }
         }
     }
 
@@ -71,3 +86,28 @@ struct ViewerWindowContent: View {
         return ids.compactMap { byID[$0] }
     }
 }
+
+#if os(macOS)
+private struct ViewerNavigateCommandHandler: ViewModifier {
+
+    let viewer: ViewerManager
+    let photosViewer: PhotosViewerManager
+
+    @Environment(\.appearsActive) private var appearsActive
+
+    func body(content: Content) -> some View {
+        content
+            .onReceive(NotificationCenter.default.publisher(for: .viewerNavigateCommand)) { notification in
+                guard appearsActive, let command = notification.object as? ViewerNavigateCommand else { return }
+                switch command {
+                case .previous:
+                    viewer.navigateToPrevious()
+                    photosViewer.navigateToPrevious()
+                case .next:
+                    viewer.navigateToNext()
+                    photosViewer.navigateToNext()
+                }
+            }
+    }
+}
+#endif

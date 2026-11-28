@@ -4,7 +4,9 @@ import Engine
 import Photos
 import PhotosUI
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 import UniformTypeIdentifiers
 
 nonisolated enum ImportItemLoader {
@@ -107,7 +109,7 @@ nonisolated enum ImportItemLoader {
                 from: url, filename: originalFilename, duration: nil, item: item, into: dataActor
             )
         }
-        guard let data = try? Data(contentsOf: url), UIImage(data: data) != nil else { return nil }
+        guard let data = try? Data(contentsOf: url), PlatformImage(data: data) != nil else { return nil }
         return await dataActor.createPic(
             originalFilename, data: data, inAlbumWithID: item.albumID, dateAdded: item.dateAdded
         )

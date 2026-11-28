@@ -7,7 +7,7 @@ extension AlbumView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         if isSelectingPics {
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     startOrStopSelectingPics()
@@ -84,7 +84,7 @@ extension AlbumView {
                 }
                 ToolbarSpacer(.fixed, placement: .topBarTrailing)
             }
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(String(localized: "Duplicates.FindDuplicates", table: "Photos"),
                        systemImage: "photo.stack") {

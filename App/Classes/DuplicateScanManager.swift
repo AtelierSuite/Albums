@@ -2,7 +2,9 @@ import Engine
 import Foundation
 import ImageIO
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct DuplicateGroup: Identifiable {
     let id = UUID()
@@ -76,7 +78,7 @@ class DuplicateScanManager {
         // Hash the synced thumbnail, not the original (which sync may evict or never download).
         for picID in uncachedIDs {
             if let data = await dataActor.thumbnailData(forPicWithID: picID),
-               let image = UIImage(data: data),
+               let image = PlatformImage(data: data),
                let hash = DHash.compute(from: image) {
                 await HashActor.shared.storeHash(hash, forPicWithID: picID)
             }

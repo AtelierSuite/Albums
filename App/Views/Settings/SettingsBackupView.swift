@@ -235,15 +235,15 @@ struct SettingsBackupView: View {
                 )
             }
             withAnimation(.smooth.speed(2.0)) { phase = .completed }
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            Haptics.notify(.success)
         } catch let error as BackupError {
             failureTitle = title(for: error)
             withAnimation(.smooth.speed(2.0)) { phase = .failed }
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            Haptics.notify(.error)
         } catch {
             failureTitle = .custom(LocalizedStringKey(error.localizedDescription))
             withAnimation(.smooth.speed(2.0)) { phase = .failed }
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            Haptics.notify(.error)
         }
     }
 

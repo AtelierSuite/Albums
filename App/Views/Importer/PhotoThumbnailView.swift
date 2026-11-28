@@ -1,3 +1,4 @@
+import Engine
 import Photos
 import SwiftUI
 
@@ -8,13 +9,13 @@ struct PhotoThumbnailView: View {
     let size: CGSize
 
     @Environment(\.displayScale) private var displayScale
-    @State private var image: UIImage?
+    @State private var image: PlatformImage?
     @State private var requestID: PHImageRequestID?
 
     var body: some View {
         Group {
             if let image {
-                Image(uiImage: image)
+                Image(platformImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } else {

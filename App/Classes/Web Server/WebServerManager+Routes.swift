@@ -1,6 +1,8 @@
 import Engine
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 extension WebServerManager {
 
@@ -221,7 +223,7 @@ extension WebServerManager {
 
         var uploadedCount = 0
         for file in files {
-            guard UIImage(data: file.data) != nil else { continue }
+            guard PlatformImage(data: file.data) != nil else { continue }
             let filename: String
             if file.filename.isEmpty {
                 filename = Pic.newFilename()

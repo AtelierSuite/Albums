@@ -22,8 +22,6 @@ struct MainSplitView: View {
     @State var isSettingsPresented: Bool = false
     @State var isLibraryManagerPresented: Bool = false
 
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     var body: some View {
         splitView
@@ -82,6 +80,7 @@ struct MainSplitView: View {
         }
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView()
+                .macSheetSizing()
         }
         .sheet(isPresented: $isLibraryManagerPresented) {
             LibraryManagerSheet()
@@ -89,20 +88,20 @@ struct MainSplitView: View {
                 .environmentObject(navigation)
                 .environment(concurrency)
                 .environment(imageMigration)
+                .macSheetSizing()
         }
     }
 
     @ViewBuilder var splitView: some View {
-#if targetEnvironment(macCatalyst)
-        if openPicsInNewWindow {
-            NavigationSplitView {
-                sidebar
-                    .navigationSplitViewColumnWidth(min: 150.0, ideal: 200.0, max: 250.0)
-            } detail: {
-                content
-            }
-        } else {
-            threeColumnSplit
+#if os(macOS)
+        NavigationSplitView {
+            sidebar
+                .navigationSplitViewColumnWidth(min: 180.0, ideal: 220.0, max: 280.0)
+        } detail: {
+            content
+                .background {
+                    WindowTitleUpdater(title: columnTitle)
+                }
         }
 #else
         threeColumnSplit
@@ -120,6 +119,21 @@ struct MainSplitView: View {
             detail
         }
     }
+
+    #if os(macOS)
+    var columnTitle: String {
+        switch selectedView {
+        case .albums: String(localized: "ViewTitle.Albums")
+        case .pics: String(localized: "ViewTitle.Pics")
+        case .album(let album): album.name
+        case .photosAlbum(let wrapper): wrapper.collection.localizedTitle ?? ""
+        case .photosFolder(let wrapper): wrapper.collectionList.localizedTitle ?? ""
+        default: isPhotosModeEnabled
+            ? String(localized: "ViewTitle.Photos")
+            : libraryManager.displayName(for: libraryManager.currentLibrary)
+        }
+    }
+    #endif
 
     var sidebar: some View {
         List(selection: $selectedView) {
@@ -154,7 +168,7 @@ struct MainSplitView: View {
                             }
                         }
                     }
-#if !targetEnvironment(macCatalyst)
+#if os(iOS)
                     Button {
                         isSettingsPresented = true
                     } label: {
@@ -208,9 +222,6 @@ struct MainSplitView: View {
                 }
             }
         .listStyle(.sidebar)
-#if targetEnvironment(macCatalyst)
-        .environment(\.defaultMinListRowHeight, 32.0)
-#endif
     }
 
     var content: some View {
@@ -273,13 +284,13 @@ struct SidebarAlbumIcon: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } else {
-                Image(uiImage: UIImage(named: "Album.Generic")!)
+                Image(platformImage: PlatformImage(named: "Album.Generic")!)
                     .resizable()
             }
         }
-#if targetEnvironment(macCatalyst)
-        .frame(width: 28.0, height: 28.0)
-        .clipShape(.rect(cornerRadius: 6.0))
+#if os(macOS)
+        .frame(width: 18.0, height: 18.0)
+        .clipShape(.rect(cornerRadius: 4.0))
 #else
         .frame(width: 32.0, height: 32.0)
         .clipShape(.rect(cornerRadius: 7.0))

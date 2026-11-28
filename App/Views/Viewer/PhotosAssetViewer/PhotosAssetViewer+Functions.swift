@@ -1,3 +1,4 @@
+import Engine
 import AVKit
 import Photos
 import SwiftUI
@@ -36,7 +37,7 @@ extension PhotosAssetViewer {
             Button("Shared.Copy", systemImage: "doc.on.doc") {
                 if let image = currentImage {
                     UIPasteboard.general.image = image
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    Haptics.notify(.success)
                     CopiedToast.showCopied()
                 }
             }
@@ -71,6 +72,9 @@ extension PhotosAssetViewer {
                 }
             }
             .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
+            #if os(macOS)
+            .padding(.bottom, 16.0)
+            #endif
         }
     }
 
@@ -104,7 +108,7 @@ extension PhotosAssetViewer {
                         .aspectRatio(videoAspectRatio, contentMode: .fit)
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
                 } else if let thumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
@@ -127,14 +131,14 @@ extension PhotosAssetViewer {
         ZStack(alignment: .bottomLeading) {
             ZStack {
                 if let thumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
                         .opacity(isFullImageLoaded ? 0 : 1)
                 }
                 if let fullImage, isFullImageLoaded {
-                    Image(uiImage: fullImage)
+                    Image(platformImage: fullImage)
                         .resizable()
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: imageCornerRadius))

@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct LabsFileEntry: Identifiable, Hashable {
 
@@ -123,6 +125,23 @@ private struct LabsFileEntryRow: View {
     }
 }
 
+#if os(macOS)
+private struct DocumentExporter: View {
+
+    let url: URL
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        Color.clear
+            .frame(width: 1.0, height: 1.0)
+            .onAppear {
+                NSWorkspace.shared.activateFileViewerSelecting([url])
+                dismiss()
+            }
+    }
+}
+#else
 private struct DocumentExporter: UIViewControllerRepresentable {
 
     let url: URL
@@ -133,3 +152,4 @@ private struct DocumentExporter: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 }
+#endif

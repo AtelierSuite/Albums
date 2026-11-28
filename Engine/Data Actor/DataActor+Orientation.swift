@@ -1,6 +1,6 @@
 import Foundation
 @preconcurrency import SQLite
-import UIKit
+import CoreGraphics
 
 public struct PicOriginalReplacement: Sendable {
     public let thumbnailData: Data?
@@ -73,8 +73,8 @@ extension DataActor {
     ) {
         guard let thumbnail,
               let coverData = albumCoverData(forAlbumWithID: albumID),
-              let coverImage = UIImage(data: coverData),
-              let thumbnailImage = UIImage(data: thumbnail),
+              let coverImage = PlatformImage(data: coverData),
+              let thumbnailImage = PlatformImage(data: thumbnail),
               coverImage.size.height > 0, thumbnailImage.size.height > 0 else { return }
         let coverAspect = coverImage.size.width / coverImage.size.height
         let thumbnailAspect = thumbnailImage.size.width / thumbnailImage.size.height

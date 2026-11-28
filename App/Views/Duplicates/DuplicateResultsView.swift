@@ -48,7 +48,7 @@ struct DuplicateResultsView: View {
             .listStyle(.insetGrouped)
             .listSectionSpacing(.compact)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     Button(
                         String(
                             localized: "Duplicates.DeleteAllSelected.\(allSelectedIDs.count)",

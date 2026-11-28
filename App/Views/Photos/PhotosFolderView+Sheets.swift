@@ -1,3 +1,4 @@
+import Engine
 import Photos
 import SwiftUI
 
@@ -66,7 +67,7 @@ extension PhotosFolderView {
                 .padding(20.0)
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .cancel) {
                         albumToRename = nil
                         renameText = ""
@@ -91,7 +92,7 @@ extension PhotosFolderView {
                 fetchContent()
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .cancel) {
                         albumToMove = nil
                     }

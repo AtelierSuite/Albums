@@ -1,5 +1,9 @@
+import CoreGraphics
 import Engine
+import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 enum ProminentColor {
 
@@ -7,7 +11,7 @@ enum ProminentColor {
     /// Primary is the most prominent color overall; accent is the most prominent
     /// higher-saturation color that isn't the primary; contrasting is the next one after it.
     static func calculate(from thumbnailData: Data) -> PicColors? {
-        guard let image = UIImage(data: thumbnailData),
+        guard let image = PlatformImage(data: thumbnailData),
               let cgImage = image.cgImage else { return nil }
 
         // Downsample to a small size for fast processing

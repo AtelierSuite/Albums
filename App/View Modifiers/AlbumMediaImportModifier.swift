@@ -7,7 +7,6 @@ struct AlbumMediaImportModifier: ViewModifier {
     @Binding var isVideosPickerPresented: Bool
     @Binding var selectedVideoItems: [PhotosPickerItem]
     @Binding var isFileImporterPresented: Bool
-    @Binding var isFileImportSheetPresented: Bool
     var onPhotosSelected: ([PhotosPickerItem]) -> Void
     var onVideosSelected: ([PhotosPickerItem]) -> Void
     var onFilesImported: ([(filename: String, data: Data)]) -> Void
@@ -24,7 +23,6 @@ struct AlbumMediaImportModifier: ViewModifier {
                           photoLibrary: .shared())
             .modifier(FileImportModifier(
                 isFileImporterPresented: $isFileImporterPresented,
-                isFileImportSheetPresented: $isFileImportSheetPresented,
                 onFilesImported: onFilesImported
             ))
             .onChange(of: selectedPhotoItems) { _, newValue in

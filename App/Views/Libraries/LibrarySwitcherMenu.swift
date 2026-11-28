@@ -57,6 +57,11 @@ struct LibrarySwitcherMenu: View {
                       systemImage: "square.stack.3d.up")
             }
         }
+        #if os(macOS)
+        .menuStyle(.button)
+        .buttonStyle(.borderless)
+        .fixedSize()
+        #endif
         .popoverTip(LibrariesTip(), arrowEdge: .top)
     }
 }

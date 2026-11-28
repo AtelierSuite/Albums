@@ -73,7 +73,7 @@ struct PhotosAssetGridView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(isImporting || isImportCompleted)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .sheetTrailing) {
                 if !isImporting && !isImportCompleted {
                     Button {
                         if selectedAssets.count == assets.count {

@@ -1,7 +1,9 @@
 import Engine
 import Foundation
 import Photos
+#if canImport(UIKit)
 import UIKit
+#endif
 import SwiftUI
 
 enum ViewPath: Hashable {

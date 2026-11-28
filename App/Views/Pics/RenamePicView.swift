@@ -38,7 +38,7 @@ struct RenamePicView: View {
                 .padding(20.0)
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .cancel) {
                         newPicName = ""
                         dismiss()
@@ -48,7 +48,7 @@ struct RenamePicView: View {
             .navigationTitle("ViewTitle.Pics.Rename")
             .navigationBarTitleDisplayMode(.inline)
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .defaultFocus($focusedField, .newPicName)
 #else
         .onAppear {

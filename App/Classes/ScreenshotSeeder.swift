@@ -1,6 +1,9 @@
 #if DEBUG
 import Engine
+import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 enum ScreenshotSeeder {
 
@@ -112,17 +115,6 @@ enum ScreenshotSeeder {
     }
 
     @MainActor
-    static func fixWindowSize() {
-        #if targetEnvironment(macCatalyst)
-        let size = CGSize(width: 1280, height: 800)
-        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
-            scene.sizeRestrictions?.minimumSize = size
-            scene.sizeRestrictions?.maximumSize = size
-            scene.requestGeometryUpdate(.Mac(systemFrame: CGRect(origin: CGPoint(x: 80, y: 80), size: size)))
-        }
-        #endif
-    }
-
     static func resetNavigation() {
         let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
         defaults?.set(PicLibrary.defaultID, forKey: "CurrentCollectionID")

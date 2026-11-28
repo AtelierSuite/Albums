@@ -231,7 +231,10 @@ final class AlbumCoverCache {
     /// By drawing through UIGraphicsImageRenderer, the backing CGImage is forced
     /// to decode immediately rather than lazily during the first render on the main thread.
     private nonisolated static func decodedImage(from data: Data) -> Image? {
-        guard let uiImage = UIImage(data: data) else { return nil }
+        guard let uiImage = PlatformImage(data: data) else { return nil }
+        #if os(macOS)
+        return Image(platformImage: uiImage)
+        #else
         let format = UIGraphicsImageRendererFormat()
         format.scale = uiImage.scale
         format.opaque = true
@@ -239,7 +242,8 @@ final class AlbumCoverCache {
         let decoded = renderer.image { _ in
             uiImage.draw(at: .zero)
         }
-        return Image(uiImage: decoded)
+        return Image(platformImage: decoded)
+        #endif
     }
 }
 

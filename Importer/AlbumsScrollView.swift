@@ -105,9 +105,16 @@ struct AlbumsScrollView<Header: View>: View {
             }
         }
         .scrollEdgeEffectStyle(.soft, for: .bottom)
+        #if os(macOS)
+        .safeAreaBar(edge: .top) {
+            SaveSheetHeader(title: Text(title), showsBack: parentAlbum != nil, searchText: $searchText,
+                            searchPrompt: Text("Albums.Search.Prompt", tableName: "Albums"),
+                            onClose: parentAlbum == nil ? { session.cancel() } : nil)
+        }
+        #endif
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, isPresented: $isSearchPresented,
-                    placement: .navigationBarDrawer(displayMode: .always),
+                    placement: .persistentDrawer,
                     prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
     }
 

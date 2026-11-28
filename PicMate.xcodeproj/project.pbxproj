@@ -7,15 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A58912E61CD609B892CAB5C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 960E6D93C6533FCBE0B8573D /* Cocoa.framework */; };
 		1D46AE0D8742F764AD3086C8 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F2BE14E2DB8B0E2467BD8D6 /* Save to Last Used.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4A544B56A5AF37A93EB7637A /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		4FD400684B5592EC7AAC1B91 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8985FAD43D565C373AF23DCD /* SQLite */; };
+		717253B774AD755FED4FD896 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		71890D4254B62C8ED86F4FCB /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A6D8349175875430DFD0B13 /* Save to Photos.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92E52CFA44C5ABBC3B7DDE70 /* Save to Photos.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9F42FAE0F7A3DC547098315C /* Save to Photos.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A6B15AF95D716B1706E55908 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
+		B897406B5F635F05673D5265 /* C2PA in Frameworks */ = {isa = PBXBuildFile; productRef = 00162EDB08922350ACB5F370 /* C2PA */; };
+		C1599215BD07066D58C0808C /* Photostand.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4E717BC2F5F09CA000C13CB /* Photostand.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C2FA00012F9A000100C2FA01 /* C2PA in Frameworks */ = {isa = PBXBuildFile; productRef = C2FA00032F9A000100C2FA01 /* C2PA */; };
 		C972C07C039BBA0840300BA6 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		CE38A9F588BB5C358A001834 /* Save to Last Used.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D37AFEE3E0DD183AB79FE6AC /* Save to Albums.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4D6F05E2F4D4DF1006965BD /* Save to Albums.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D738D4F7816DD37629FC1DA3 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3EAF4F021334CADD9AF51 /* Engine.framework */; };
 		E4614D062ACA86ED00D751FB /* Share with PicMate.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4D6F0602F4D4DF1006965BD /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6F05F2F4D4DF1006965BD /* UniformTypeIdentifiers.framework */; };
@@ -24,6 +32,7 @@
 		E4E717C02F5F09CA000C13CB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E717BF2F5F09CA000C13CB /* SwiftUI.framework */; };
 		E4E717CB2F5F09CB000C13CB /* Photostand.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4E717BC2F5F09CA000C13CB /* Photostand.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4E717D22F5F0DC6000C13CB /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = E4E717D12F5F0DC6000C13CB /* SQLite */; };
+		F3AC860CA5BCF782F967134B /* Share with PicMate.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +49,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
 			remoteInfo = Engine;
+		};
+		45F8558685BCD535BA7420D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 523AC691388D6A6A757F3C9A;
+			remoteInfo = "Save to Last Used";
+		};
+		469154A86A83DE973E8DA1FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4614CFB2ACA86EC00D751FB;
+			remoteInfo = "Share with PicMate";
 		};
 		49BF9E659C1CA882924FF7C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -62,6 +85,13 @@
 			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
 			remoteInfo = Engine;
 		};
+		831B98763CB6E4485CB28580 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4E717BB2F5F09CA000C13CB;
+			remoteInfo = Photostand;
+		};
 		9E581B2EB1693FE54DD50DDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
@@ -83,6 +113,13 @@
 			remoteGlobalIDString = E4614CFB2ACA86EC00D751FB;
 			remoteInfo = Importer;
 		};
+		E4C782DACB5DB2C9AA6B4EAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DDE70E504B28B90D16F332C;
+			remoteInfo = Engine;
+		};
 		E4D6F06A2F4D4DF1006965BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
@@ -97,6 +134,20 @@
 			remoteGlobalIDString = E4E717BB2F5F09CA000C13CB;
 			remoteInfo = PhotostandExtension;
 		};
+		E773A2708689A5C43A99F0ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4D6F05D2F4D4DF1006965BD;
+			remoteInfo = "Save to Albums";
+		};
+		F94A776906AECD383AC235BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68BDC48DEF3253812332CF54;
+			remoteInfo = "Save to Photos";
+		};
 		FE87E2C8AC83FDCCD5964F21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4614CDB2ACA86C900D751FB /* Project object */;
@@ -107,6 +158,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		8AF65D934F970328C9A66EC5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				71890D4254B62C8ED86F4FCB /* Engine.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB3FAC6B7C8422195C3FE19D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -116,6 +178,21 @@
 				32131E241E1D08E4D8CB4069 /* Engine.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA46D9954AFF804C694CC600 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F3AC860CA5BCF782F967134B /* Share with PicMate.appex in Embed Foundation Extensions */,
+				D37AFEE3E0DD183AB79FE6AC /* Save to Albums.appex in Embed Foundation Extensions */,
+				8A6D8349175875430DFD0B13 /* Save to Photos.appex in Embed Foundation Extensions */,
+				3F2BE14E2DB8B0E2467BD8D6 /* Save to Last Used.appex in Embed Foundation Extensions */,
+				C1599215BD07066D58C0808C /* Photostand.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E4614D0A2ACA86ED00D751FB /* Embed Foundation Extensions */ = {
@@ -137,8 +214,10 @@
 
 /* Begin PBXFileReference section */
 		134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to Last Used.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F5B2A2914AEC30A4698DE7 /* Albums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B3EAF4F021334CADD9AF51 /* Engine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Engine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		552E3C943E41315B74C4BDC6 /* PicMateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicMateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		960E6D93C6533FCBE0B8573D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		9F42FAE0F7A3DC547098315C /* Save to Photos.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Save to Photos.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4614CE32ACA86C900D751FB /* PicMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4614CFC2ACA86EC00D751FB /* Share with PicMate.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share with PicMate.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,12 +236,48 @@
 			);
 			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
 		};
+		4D1C3A7E9B2F4E6A8C0D1E2F /* Exceptions for "Mac" folder in "Albums for Mac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */;
+		};
+		72A780AE3064F5620ABD85AD /* Exceptions for "Shared" folder in "Albums for Mac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Entitlements.entitlements,
+				"Extensions-Mac.entitlements",
+				Extensions.entitlements,
+			);
+			target = A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */;
+		};
 		B9C40B07340FA55888D2D1E3 /* Exceptions for "Save to Photos" folder in "Save to Photos" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 68BDC48DEF3253812332CF54 /* Save to Photos */;
+		};
+		D3AD8211D74B7BC71CC50FCC /* Exceptions for "App" folder in "Albums for Mac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Album/SelectionPanGesture.swift,
+				Views/Viewer/PicViewer/HorizontalSwipeGesture.swift,
+				Views/Viewer/SwipeBackGestureDisabler.swift,
+				Info.plist,
+				Views/App.swift,
+				"App Icons/AppIcon.Azure.icon",
+				"App Icons/AppIcon.Coral.icon",
+				"App Icons/AppIcon.Honey.icon",
+				"App Icons/AppIcon.Jade.icon",
+				"App Icons/AppIcon.Lagoon.icon",
+				"App Icons/AppIcon.Orchid.icon",
+				"App Icons/AppIcon.PastelRainbow.icon",
+				"App Icons/AppIcon.RainbowHeart.icon",
+				"App Icons/AppIcon.Sunrise.icon",
+			);
+			target = A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */;
 		};
 		E42BDB4E2F4D67A3000F6E10 /* Exceptions for "Importer" folder in "Share with PicMate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -318,6 +433,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		281BC3717F00C5F359D4E4E3 /* PicMateUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = PicMateUITests;
 			sourceTree = "<group>";
 		};
@@ -329,8 +446,18 @@
 			path = "Save to Photos";
 			sourceTree = "<group>";
 		};
+		6ACDEFBD67C8E1F77F22D46D /* Mac */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4D1C3A7E9B2F4E6A8C0D1E2F /* Exceptions for "Mac" folder in "Albums for Mac" target */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
 		A5B1A90FEBFCC8F13E01C388 /* Engine */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Engine;
 			sourceTree = "<group>";
 		};
@@ -350,6 +477,7 @@
 				E4F1A0022F9A000000000002 /* Exceptions for "Shared" folder in "Save to Photos" target */,
 				E4F1A0012F9A000000000001 /* Exceptions for "Shared" folder in "Save to Last Used" target */,
 				E4E717D42F5F0EA6000C13CB /* Exceptions for "Shared" folder in "Photostand" target */,
+				72A780AE3064F5620ABD85AD /* Exceptions for "Shared" folder in "Albums for Mac" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -360,6 +488,7 @@
 				E4A15DF82F49EE8F00CD6892 /* Exceptions for "App" folder in "PicMate" target */,
 				E4A15DF92F49EE8F00CD6892 /* Exceptions for "App" folder in "Share with PicMate" target */,
 				E4D6F07F2F4D5BEF006965BD /* Exceptions for "App" folder in "Save to Albums" target */,
+				D3AD8211D74B7BC71CC50FCC /* Exceptions for "App" folder in "Albums for Mac" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -384,6 +513,16 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3850AB68A675AA8093EACA63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A58912E61CD609B892CAB5C /* Cocoa.framework in Frameworks */,
+				717253B774AD755FED4FD896 /* Engine.framework in Frameworks */,
+				B897406B5F635F05673D5265 /* C2PA in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57CDDAA53822172D4ADAE40C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -454,6 +593,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31B250E8FAD3B607B389701F /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				960E6D93C6533FCBE0B8573D /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
 		7297C6A0963BB4C73587FC41 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +621,7 @@
 				E4614CE42ACA86C900D751FB /* Products */,
 				E46712DF2ADC2B6E006CB15D /* Frameworks */,
 				281BC3717F00C5F359D4E4E3 /* PicMateUITests */,
+				6ACDEFBD67C8E1F77F22D46D /* Mac */,
 			);
 			sourceTree = "<group>";
 		};
@@ -488,6 +636,7 @@
 				27B3EAF4F021334CADD9AF51 /* Engine.framework */,
 				9F42FAE0F7A3DC547098315C /* Save to Photos.appex */,
 				134E6FEF780AFC7B4ACE8469 /* Save to Last Used.appex */,
+				19F5B2A2914AEC30A4698DE7 /* Albums.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -499,6 +648,7 @@
 				E4E717BD2F5F09CA000C13CB /* WidgetKit.framework */,
 				E4E717BF2F5F09CA000C13CB /* SwiftUI.framework */,
 				7297C6A0963BB4C73587FC41 /* iOS */,
+				31B250E8FAD3B607B389701F /* OS X */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -591,6 +741,39 @@
 			productName = Engine;
 			productReference = 27B3EAF4F021334CADD9AF51 /* Engine.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0414DC8BF9B554EC0BEABE66 /* Build configuration list for PBXNativeTarget "Albums for Mac" */;
+			buildPhases = (
+				D1571BAF3FC6A4D6A7EFFB98 /* Sources */,
+				3850AB68A675AA8093EACA63 /* Frameworks */,
+				AA5B676D1BDAF8370A0D521E /* Resources */,
+				8AF65D934F970328C9A66EC5 /* Embed Frameworks */,
+				DA46D9954AFF804C694CC600 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EC791B34A8606E35DA25873B /* PBXTargetDependency */,
+				0A10679CF26B532333D7DB35 /* PBXTargetDependency */,
+				7846993C04B6BF57E701D8F2 /* PBXTargetDependency */,
+				AF504B7BFCDB2C5FE7E69DA5 /* PBXTargetDependency */,
+				3DCB8CD3801BEC2ED5B70BC7 /* PBXTargetDependency */,
+				BBC9812B8E9C54CBB006F77D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6ACDEFBD67C8E1F77F22D46D /* Mac */,
+				E4A15DB32F49EE8F00CD6892 /* App */,
+				E4A15D602F49EE8C00CD6892 /* Shared */,
+			);
+			name = "Albums for Mac";
+			packageProductDependencies = (
+				00162EDB08922350ACB5F370 /* C2PA */,
+			);
+			productName = Albums;
+			productReference = 19F5B2A2914AEC30A4698DE7 /* Albums.app */;
+			productType = "com.apple.product-type.application";
 		};
 		E4614CE22ACA86C900D751FB /* PicMate */ = {
 			isa = PBXNativeTarget;
@@ -724,7 +907,7 @@
 			);
 			mainGroup = E4614CDA2ACA86C900D751FB;
 			packageReferences = (
-				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */,
+				A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -740,6 +923,7 @@
 				E4E717BB2F5F09CA000C13CB /* Photostand */,
 				21819FBCE2349FC3ED09E6FC /* PicMateUITests */,
 				9DDE70E504B28B90D16F332C /* Engine */,
+				A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -753,6 +937,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6F1A7C2B86FBD89443BEBB63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA5B676D1BDAF8370A0D521E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -854,6 +1045,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1571BAF3FC6A4D6A7EFFB98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4614CDF2ACA86C900D751FB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -885,6 +1083,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A10679CF26B532333D7DB35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Share with PicMate";
+			target = E4614CFB2ACA86EC00D751FB /* Share with PicMate */;
+			targetProxy = 469154A86A83DE973E8DA1FE /* PBXContainerItemProxy */;
+		};
 		15CB00A5489B94E273E2EC6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PicMate;
@@ -904,6 +1108,18 @@
 			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
 			targetProxy = FE87E2C8AC83FDCCD5964F21 /* PBXContainerItemProxy */;
 		};
+		3DCB8CD3801BEC2ED5B70BC7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Save to Last Used";
+			target = 523AC691388D6A6A757F3C9A /* Save to Last Used */;
+			targetProxy = 45F8558685BCD535BA7420D5 /* PBXContainerItemProxy */;
+		};
+		7846993C04B6BF57E701D8F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Save to Albums";
+			target = E4D6F05D2F4D4DF1006965BD /* Save to Albums */;
+			targetProxy = E773A2708689A5C43A99F0ED /* PBXContainerItemProxy */;
+		};
 		867FF2447D1FEC83608D7D38 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Save to Photos";
@@ -916,6 +1132,18 @@
 			name = Engine;
 			target = 9DDE70E504B28B90D16F332C /* Engine */;
 			targetProxy = 49BF9E659C1CA882924FF7C3 /* PBXContainerItemProxy */;
+		};
+		AF504B7BFCDB2C5FE7E69DA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Save to Photos";
+			target = 68BDC48DEF3253812332CF54 /* Save to Photos */;
+			targetProxy = F94A776906AECD383AC235BE /* PBXContainerItemProxy */;
+		};
+		BBC9812B8E9C54CBB006F77D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Photostand;
+			target = E4E717BB2F5F09CA000C13CB /* Photostand */;
+			targetProxy = 831B98763CB6E4485CB28580 /* PBXContainerItemProxy */;
 		};
 		C42983F50409AC7259F37EAA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -946,6 +1174,12 @@
 			target = E4E717BB2F5F09CA000C13CB /* Photostand */;
 			targetProxy = E4E717C92F5F09CB000C13CB /* PBXContainerItemProxy */;
 		};
+		EC791B34A8606E35DA25873B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Engine;
+			target = 9DDE70E504B28B90D16F332C /* Engine */;
+			targetProxy = E4C782DACB5DB2C9AA6B4EAA /* PBXContainerItemProxy */;
+		};
 		F58B9730D05A1BE6CA4317FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Engine;
@@ -955,6 +1189,45 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2A66E11DE949627A6538C036 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Mac/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Albums needs access to your Photos library to browse and import images from your albums.";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate;
+				PRODUCT_NAME = Albums;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
 		5958CFEB1608C0D7AA735731 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -977,13 +1250,19 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Engine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -993,6 +1272,45 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		73A2C3C4C343CBCA61AFF4B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = YYM4Z6MU8F;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Mac/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Albums;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Albums needs access to your Photos library to browse and import images from your albums.";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.MacDebug;
+				PRODUCT_NAME = Albums;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
 		};
 		88B13350F755E701C3E0C589 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1016,13 +1334,19 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Engine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -1037,8 +1361,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Photos/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
@@ -1050,13 +1376,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Photos";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.MacDebug.Save-to-Photos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1079,7 +1412,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -1101,7 +1434,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -1276,11 +1609,11 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -1330,11 +1663,11 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -1347,9 +1680,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
 				ENABLE_APP_SANDBOX = YES;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-ShareWith.plist";
@@ -1361,13 +1696,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Share-with-IllustMate";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.MacDebug.Share-with-IllustMate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -1380,9 +1722,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
 				ENABLE_APP_SANDBOX = YES;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-ShareWith.plist";
@@ -1394,13 +1738,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Share-with-IllustMate";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.Share-with-IllustMate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -1414,8 +1765,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
@@ -1426,13 +1779,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-IllustMate";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.MacDebug.Save-to-IllustMate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1448,8 +1808,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Importer/Info-SaveTo.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
@@ -1460,13 +1822,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-IllustMate";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.Save-to-IllustMate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1483,8 +1852,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Photostand/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Photostand;
@@ -1495,11 +1866,21 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Photostand;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.tsubuzaki.IllustMate.MacDebug.Photostand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
@@ -1514,8 +1895,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Photostand/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Photostand;
@@ -1526,11 +1909,21 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.IllustMate.Photostand;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.tsubuzaki.IllustMate.Photostand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
@@ -1544,8 +1937,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Last Used/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
@@ -1557,13 +1952,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Last-Used";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.MacDebug.Save-to-Last-Used";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1579,8 +1981,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Last Used/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Last Used";
@@ -1592,13 +1996,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Last-Used";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.Save-to-Last-Used";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1614,8 +2025,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcon;
 				CODE_SIGN_ENTITLEMENTS = Shared/Extensions.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Shared/Extensions-Mac.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Save to Photos/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Save to Photos";
@@ -1627,13 +2040,20 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tsubuzaki.IllustMate.Save-to-Photos";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.tsubuzaki.IllustMate.Save-to-Photos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1647,6 +2067,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0414DC8BF9B554EC0BEABE66 /* Build configuration list for PBXNativeTarget "Albums for Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A66E11DE949627A6538C036 /* Release */,
+				73A2C3C4C343CBCA61AFF4B4 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		61FEBD42AAA4482BD59A2036 /* Build configuration list for PBXNativeTarget "Save to Last Used" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1731,7 +2160,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */ = {
+		A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
 			requirement = {
@@ -1750,9 +2179,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		00162EDB08922350ACB5F370 /* C2PA */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C2FA00022F9A000100C2FA01 /* XCRemoteSwiftPackageReference "c2pa-swift" */;
+			productName = C2PA;
+		};
 		8985FAD43D565C373AF23DCD /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
 		};
 		C2FA00032F9A000100C2FA01 /* C2PA */ = {
@@ -1762,7 +2196,7 @@
 		};
 		E4E717D12F5F0DC6000C13CB /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite" */;
+			package = A1B2C3032ACABCDE00D751FB /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */

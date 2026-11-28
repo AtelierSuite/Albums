@@ -72,7 +72,7 @@ struct AlbumViewSheets: ViewModifier {
                         isBrowsingAlbums = false
                     }
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
+                        ToolbarItem(placement: .sheetTrailing) {
                             Button(role: .cancel) {
                                 isBrowsingAlbums = false
                             }
@@ -80,6 +80,7 @@ struct AlbumViewSheets: ViewModifier {
                     }
                 }
                 .phonePresentationDetents([.large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .sheet(isPresented: $isBrowsingFolders) {
@@ -90,7 +91,7 @@ struct AlbumViewSheets: ViewModifier {
                         isBrowsingFolders = false
                     }
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
+                        ToolbarItem(placement: .sheetTrailing) {
                             Button(role: .cancel) {
                                 isBrowsingFolders = false
                             }
@@ -98,6 +99,7 @@ struct AlbumViewSheets: ViewModifier {
                     }
                 }
                 .phonePresentationDetents([.large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .sheet(isPresented: $isImportingPhotos) {

@@ -190,7 +190,7 @@ struct RecentlyDeletedView: View {
     }
 
     private var actionPlacement: ToolbarItemPlacement {
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
         .topBarTrailing
 #else
         .bottomBar

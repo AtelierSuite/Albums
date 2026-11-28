@@ -60,47 +60,22 @@ final class AppStoreScreenshots: XCTestCase {
 
     func testScreens() throws {
         for shot in shots {
-#if targetEnvironment(macCatalyst)
-            // Synthesized clicks don't reach the app's SwiftUI controls on Mac Catalyst, so the app stages each shot itself.
-            launch(shot, arguments: stagingArguments(for: shot.steps))
-            Thread.sleep(forTimeInterval: shot.steps.contains { if case .findDuplicates = $0 { true } else { false } } ? 12 : 4)
-#else
-            launch(shot, arguments: [])
+            launch(shot)
             for step in shot.steps {
                 try perform(step)
             }
             Thread.sleep(forTimeInterval: 2)
-#endif
             try save(shot.name)
         }
     }
 
     private var shots: [Shot] {
-#if targetEnvironment(macCatalyst)
-        Self.iPadShots
-#else
         UIDevice.current.userInterfaceIdiom == .pad ? Self.iPadShots : Self.iPhoneShots
-#endif
     }
 
     // MARK: - Steps
 
-    private func stagingArguments(for steps: [Step]) -> [String] {
-        steps.flatMap { step -> [String] in
-            switch step {
-            case .openAlbum(let english, let japanese):
-                ["-ScreenshotOpenAlbum", language == "ja" ? japanese : english]
-            case .openPic(let english, let japanese):
-                ["-ScreenshotOpenPic", language == "ja" ? japanese : english]
-            case .findDuplicates:
-                ["-ScreenshotFindDuplicates", "YES"]
-            case .back:
-                []
-            }
-        }
-    }
-
-    private func launch(_ shot: Shot, arguments: [String]) {
+    private func launch(_ shot: Shot) {
         app = XCUIApplication()
         let locale = language == "ja" ? "ja_JP" : "en_US"
         app.launchArguments += [
@@ -108,23 +83,14 @@ final class AppStoreScreenshots: XCTestCase {
             "-AppleLanguages", "(\(language))",
             "-AppleLocale", locale
         ]
-        app.launchArguments += arguments
         if let albumStyle = shot.albumStyle {
             app.launchArguments += ["-ScreenshotAlbumStyle", albumStyle]
         }
         if let albumColumnCount = shot.albumColumnCount {
             app.launchArguments += ["-ScreenshotAlbumColumnCount", String(albumColumnCount)]
         }
-#if targetEnvironment(macCatalyst)
-        app.launchArguments += ["-AppleInterfaceStyle", "Dark"]
-#endif
         app.launch()
-#if targetEnvironment(macCatalyst)
-        let ready = app.descendants(matching: .any)
-            .matching(NSPredicate(format: "identifier BEGINSWITH 'pic:'")).firstMatch
-#else
         let ready = app.buttons["album:\(language == "ja" ? "アビドス" : "Abydos")"].firstMatch
-#endif
         XCTAssertTrue(ready.waitForExistence(timeout: 180), "the sample library never appeared")
     }
 
@@ -185,15 +151,6 @@ final class AppStoreScreenshots: XCTestCase {
 
     private func capture() -> UIImage {
         let screen = XCUIScreen.main.screenshot().image
-#if targetEnvironment(macCatalyst)
-        // XCUIElement.screenshot() fails with "Image creation failed" on Mac Catalyst.
-        let frame = app.windows.firstMatch.frame
-        let crop = CGRect(x: frame.minX * screen.scale, y: frame.minY * screen.scale,
-                          width: frame.width * screen.scale, height: frame.height * screen.scale)
-        if let cropped = screen.cgImage?.cropping(to: crop.integral) {
-            return UIImage(cgImage: cropped, scale: screen.scale, orientation: .up)
-        }
-#endif
         return screen
     }
 }

@@ -1,6 +1,8 @@
 import Engine
 import Photos
+#if canImport(UIKit)
 import UIKit
+#endif
 
 @MainActor @Observable
 final class LibraryCoverCache {
@@ -9,7 +11,7 @@ final class LibraryCoverCache {
     nonisolated static let maximumCoverCount = 4
 
     struct Summary: Sendable {
-        let images: [UIImage]
+        let images: [PlatformImage]
         let picCount: Int
         let albumCount: Int
     }
@@ -45,7 +47,7 @@ final class LibraryCoverCache {
         if thumbnails.isEmpty {
             thumbnails = await dataActor.recentThumbnails(limit: maximumCoverCount)
         }
-        let images = thumbnails.prefix(maximumCoverCount).compactMap { UIImage(data: $0) }
+        let images = thumbnails.prefix(maximumCoverCount).compactMap { PlatformImage(data: $0) }
         return Summary(images: images,
                        picCount: await dataActor.picCount(),
                        albumCount: await dataActor.albumCount())
@@ -62,7 +64,7 @@ final class LibraryCoverCache {
             recentAssets.append(asset)
             if index + 1 >= maximumCoverCount { stop.pointee = true }
         }
-        var images: [UIImage] = []
+        var images: [PlatformImage] = []
         for asset in recentAssets {
             if let image = await requestImage(for: asset, targetLength: targetLength) {
                 images.append(image)
@@ -72,7 +74,7 @@ final class LibraryCoverCache {
         return Summary(images: images, picCount: assets.count, albumCount: albumCount)
     }
 
-    private nonisolated static func requestImage(for asset: PHAsset, targetLength: CGFloat) async -> UIImage? {
+    private nonisolated static func requestImage(for asset: PHAsset, targetLength: CGFloat) async -> PlatformImage? {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.resizeMode = .fast

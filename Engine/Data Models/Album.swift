@@ -1,7 +1,7 @@
 import CoreTransferable
 import Foundation
 import SwiftUI
-import UIKit
+import CoreGraphics
 import UniformTypeIdentifiers
 
 public final class Album: Identifiable, Hashable, @unchecked Sendable {
@@ -53,15 +53,15 @@ public final class Album: Identifiable, Hashable, @unchecked Sendable {
         return childPicCount ?? childPics?.count ?? 0
     }
 
-    public func cover() -> UIImage {
-        if let coverPhoto, let uiImage = UIImage(data: coverPhoto) {
-            return uiImage
+    public func cover() -> PlatformImage {
+        if let coverPhoto, let image = PlatformImage(data: coverPhoto) {
+            return image
         }
-        return UIImage(named: "Album.Generic")!
+        return PlatformImage(named: "Album.Generic")!
     }
 
     public static func makeCover(_ data: Data?) -> Data? {
-        if let data, let sourceImage = UIImage(data: data) {
+        if let data, let sourceImage = PlatformImage(data: data) {
             return sourceImage.jpegThumbnail(of: 160.0)
         }
         return nil

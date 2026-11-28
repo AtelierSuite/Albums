@@ -123,6 +123,23 @@ struct PhotosCollectionGrid: View {
             .padding(20.0)
         }
         .scrollEdgeEffectStyle(.soft, for: .bottom)
+        #if os(macOS)
+        .safeAreaBar(edge: .top) {
+            SaveSheetHeader(title: Text(folder?.localizedTitle
+                                        ?? String(localized: "Destination.Photos", table: "Saving", bundle: .engine)),
+                            showsBack: folder != nil, searchText: $searchText,
+                            searchPrompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine),
+                            onClose: folder == nil ? { session.cancel() } : nil) {
+                Button {
+                    newAlbumName = ""
+                    isCreatingAlbum = true
+                } label: {
+                    Image(systemName: "rectangle.stack.badge.plus")
+                }
+                .help(String(localized: "Photos.NewAlbum", table: "Saving", bundle: .engine))
+            }
+        }
+        #endif
         .overlay {
             if displayedCollections.isEmpty {
                 ContentUnavailableView(String(localized: "Photos.Empty", table: "Saving", bundle: .engine),
@@ -132,7 +149,7 @@ struct PhotosCollectionGrid: View {
         .navigationTitle(folder?.localizedTitle ?? String(localized: "Destination.Photos", table: "Saving",
                                                           bundle: .engine))
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always),
+        .searchable(text: $searchText, placement: .persistentDrawer,
                     prompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -174,7 +191,7 @@ struct PhotosCollectionGrid: View {
                 selectedTitles[identifier] = album.localizedTitle ?? ""
             }
         }
-        UISelectionFeedbackGenerator().selectionChanged()
+        Haptics.selectionChanged()
     }
 
     private func createAlbum() {
@@ -196,7 +213,7 @@ struct PhotosCollectionCell: View {
     var collection: PhotosCollection
     var isSelected: Bool
 
-    @State private var cover: UIImage?
+    @State private var cover: PlatformImage?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6.0) {
@@ -204,7 +221,7 @@ struct PhotosCollectionCell: View {
                 .aspectRatio(1.0, contentMode: .fit)
                 .overlay {
                     if let cover {
-                        Image(uiImage: cover)
+                        Image(platformImage: cover)
                             .resizable()
                             .scaledToFill()
                     } else {
@@ -249,5 +266,15 @@ public struct NothingToSaveView: View {
                       title: String(localized: "Saving.NoItems.Title", table: "Saving", bundle: .engine),
                       message: String(localized: "Saving.NoItems.Message", table: "Saving", bundle: .engine),
                       systemImage: "photo.badge.exclamationmark")
+    }
+}
+
+extension SearchFieldPlacement {
+    public static var persistentDrawer: SearchFieldPlacement {
+        #if os(iOS)
+        .navigationBarDrawer(displayMode: .always)
+        #else
+        .automatic
+        #endif
     }
 }

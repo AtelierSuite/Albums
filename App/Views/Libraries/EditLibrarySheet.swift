@@ -158,12 +158,12 @@ struct EditLibrarySheet: View {
             .navigationTitle(String(localized: "Libraries.Edit.Title", table: "Libraries"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .close) {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     Button(role: .confirm) {
                         let trimmed = editedName.trimmingCharacters(in: .whitespaces)
                         if !trimmed.isEmpty && trimmed != library.name {
@@ -240,10 +240,12 @@ struct EditLibrarySheet: View {
                 SettingsBackupView(destinationURL: backupFolderURL,
                                    collectionID: library.id,
                                    libraryName: libraryManager.displayName(for: library))
+                .macSheetSizing()
             }
         }
         .sheet(isPresented: $isDuplicateCheckerPresented) {
             DuplicateScanView(scanScope: .entireCollection, collectionID: library.id)
+                .macSheetSizing()
         }
         .alert(Text("Troubleshooting.ClearCache.Confirm.Title", tableName: "More"),
                isPresented: $isConfirmingClearCache) {

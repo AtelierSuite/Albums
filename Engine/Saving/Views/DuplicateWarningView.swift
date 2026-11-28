@@ -25,6 +25,12 @@ struct DuplicateWarningView: View {
                     Text("Duplicates.Message", tableName: "Saving", bundle: .engine)
                 }
             }
+            #if os(macOS)
+            .safeAreaBar(edge: .top) {
+                SaveSheetHeader(title: Text("Duplicates.Title", tableName: "Saving", bundle: .engine),
+                                onClose: { session.cancel() })
+            }
+            #endif
             .navigationTitle(String(localized: "Duplicates.Title", table: "Saving", bundle: .engine))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -72,8 +78,8 @@ struct DuplicateWarningView: View {
 
     private func thumbnail(_ data: Data?) -> some View {
         Group {
-            if let data, let image = UIImage(data: data) {
-                Image(uiImage: image)
+            if let data, let image = PlatformImage(data: data) {
+                Image(platformImage: image)
                     .resizable()
                     .scaledToFill()
             } else {

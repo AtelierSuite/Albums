@@ -57,7 +57,7 @@ struct DuplicateDetailCard: View {
                 formatter.countStyle = .file
                 fileSize = formatter.string(fromByteCount: Int64(byteCount))
 
-                if let image = UIImage(data: data) {
+                if let image = PlatformImage(data: data) {
                     let pixelWidth = Int(image.size.width * image.scale)
                     let pixelHeight = Int(image.size.height * image.scale)
                     imageSize = "\(pixelWidth) × \(pixelHeight)"
