@@ -107,7 +107,7 @@ struct AlbumsScrollView<Header: View>: View {
         .scrollEdgeEffectStyle(.soft, for: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, isPresented: $isSearchPresented,
-                    placement: .navigationBarDrawer(displayMode: .always),
+                    placement: .persistentDrawer,
                     prompt: Text("Albums.Search.Prompt", tableName: "Albums"))
     }
 

@@ -8,9 +8,9 @@ struct PhotostandEntryView: SwiftUI.View {
     var body: some SwiftUI.View {
         Group {
             if let pic = entry.pic,
-               let uiImage = UIImage(data: pic.imageData) {
+               let image = WidgetImage.image(from: pic.imageData) {
                 GeometryReader { geometry in
-                    Image(uiImage: uiImage)
+                    image
                         .resizable()
                         .widgetAccentedRenderingMode(.fullColor)
                         .aspectRatio(contentMode: .fill)
@@ -52,7 +52,7 @@ struct Photostand: Widget {
         ) { entry in
             PhotostandEntryView(entry: entry)
                 .containerBackground(for: .widget) {
-                    Color(.systemGray5)
+                    Color.widgetBackground
                 }
                 .widgetURL(URL.widgetDestination(albumID: entry.albumID, libraryID: entry.libraryID,
                                                  picID: entry.pic?.id))

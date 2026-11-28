@@ -132,7 +132,7 @@ struct PhotosCollectionGrid: View {
         .navigationTitle(folder?.localizedTitle ?? String(localized: "Destination.Photos", table: "Saving",
                                                           bundle: .engine))
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchText, placement: .searchFieldPlacement,
+        .searchable(text: $searchText, placement: .persistentDrawer,
                     prompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -252,8 +252,8 @@ public struct NothingToSaveView: View {
     }
 }
 
-private extension SearchFieldPlacement {
-    static var searchFieldPlacement: SearchFieldPlacement {
+extension SearchFieldPlacement {
+    public static var persistentDrawer: SearchFieldPlacement {
         #if os(iOS)
         .navigationBarDrawer(displayMode: .always)
         #else

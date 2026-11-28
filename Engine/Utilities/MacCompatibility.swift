@@ -79,7 +79,6 @@ extension NSColor {
     public static var secondarySystemBackground: NSColor { .controlBackgroundColor }
     public static var systemGroupedBackground: NSColor { .windowBackgroundColor }
     public static var secondarySystemGroupedBackground: NSColor { .controlBackgroundColor }
-    public static var secondarySystemFill: NSColor { .quaternaryLabelColor }
     public static var systemGray5: NSColor { .quaternarySystemFill }
     public static var systemGray6: NSColor { .quinarySystemFill }
     public static var label: NSColor { .labelColor }

@@ -20,9 +20,9 @@ struct PhotoGridEntryView: SwiftUI.View {
                                 ForEach(0..<entry.columns, id: \.self) { col in
                                     let index = row * entry.columns + col
                                     if index < entry.pics.count,
-                                       let uiImage = UIImage(data: entry.pics[index].imageData) {
+                                       let image = WidgetImage.image(from: entry.pics[index].imageData) {
                                         cell(for: entry.pics[index]) {
-                                            Image(uiImage: uiImage)
+                                            image
                                                 .resizable()
                                                 .widgetAccentedRenderingMode(.fullColor)
                                                 .aspectRatio(contentMode: .fill)
@@ -81,7 +81,7 @@ struct PhotoGrid: Widget {
         ) { entry in
             PhotoGridEntryView(entry: entry)
                 .containerBackground(for: .widget) {
-                    Color(.systemGray5)
+                    Color.widgetBackground
                 }
                 .widgetURL(URL.widgetDestination(albumID: entry.albumID, libraryID: entry.libraryID))
         }
