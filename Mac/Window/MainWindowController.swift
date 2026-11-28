@@ -5,7 +5,7 @@ import SwiftUI
 final class MainWindowController: NSWindowController {
 
     init(model: AppModel) {
-        let hostingController = NSHostingController(rootView: MacRootView().environment(model))
+        let hostingController = NSHostingController(rootView: MacRootView().appLockCover().environment(model))
         hostingController.sceneBridgingOptions = [.toolbars]
         let window = NSWindow(contentViewController: hostingController)
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]

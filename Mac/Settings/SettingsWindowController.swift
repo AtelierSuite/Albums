@@ -22,7 +22,7 @@ final class SettingsWindowController: NSWindowController {
             AttributionsSettingsPane()
         })
         for pane in panes {
-            let hostingController = NSHostingController(rootView: AnyView(pane.content.environment(model)))
+            let hostingController = NSHostingController(rootView: AnyView(pane.content.appLockCover().environment(model)))
             hostingController.sizingOptions = .intrinsicContentSize
             hostingController.title = pane.title
             let item = NSTabViewItem(viewController: hostingController)

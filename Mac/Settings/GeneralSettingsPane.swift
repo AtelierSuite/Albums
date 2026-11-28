@@ -20,7 +20,7 @@ struct GeneralSettingsPane: View {
             LabeledContent(String(localized: "Security", table: "More")) {
                 VStack(alignment: .leading, spacing: 6.0) {
                     Toggle(String(localized: "AppLock", table: "More"), isOn: $isAppLockEnabled)
-                        .disabled(auth.biometryType == .none)
+                        .disabled(!auth.canAuthenticate)
                     SettingsNote(text: String(localized: "AppLock.Description", table: "More"))
                 }
             }
