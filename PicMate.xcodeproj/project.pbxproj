@@ -689,7 +689,6 @@
 				3850AB68A675AA8093EACA63 /* Frameworks */,
 				AA5B676D1BDAF8370A0D521E /* Resources */,
 				8AF65D934F970328C9A66EC5 /* Embed Frameworks */,
-				B0D185D0970B977C3B99A317 /* Remove C2PAC Stub */,
 			);
 			buildRules = (
 			);
@@ -929,25 +928,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B0D185D0970B977C3B99A317 /* Remove C2PAC Stub */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/C2PAC.framework",
-			);
-			name = "Remove C2PAC Stub";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "rm -rf \"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/C2PAC.framework\"\n";
-		};
 		C2FA0D5B2FA0000100C2FA01 /* Remove C2PAC Stub */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
