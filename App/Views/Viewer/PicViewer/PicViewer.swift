@@ -151,6 +151,10 @@ struct PicViewer: View {
                             .lineLimit(1)
                     }
                 }
+                #if os(macOS)
+                .fixedSize()
+                .padding(.horizontal, 8.0)
+                #endif
             }
             if pipManager.isPossible, viewer.displayedPic?.isVideo != true {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -252,7 +256,7 @@ struct PicViewer: View {
                 }
             }
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS) || targetEnvironment(macCatalyst)
         .focusable()
         .onKeyPress(.leftArrow) {
             viewer.navigateToPrevious()

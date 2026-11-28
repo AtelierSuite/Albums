@@ -36,7 +36,7 @@ struct SettingsView: View {
     @State var allAlbums: [Album] = []
 
     private var listContent: some View {
-        List {
+        SettingsContainer {
             #if !targetEnvironment(macCatalyst)
             if UIApplication.shared.supportsAlternateIcons {
                 AppIconSection()
@@ -138,7 +138,7 @@ struct SettingsView: View {
             }
         }
         .tint(.accent)
-#if targetEnvironment(macCatalyst)
+#if os(macOS) || targetEnvironment(macCatalyst)
         .navigationTitle("")
 #else
         .navigationTitle("ViewTitle.Settings")
@@ -159,7 +159,7 @@ struct SettingsView: View {
         NavigationStack(path: $navigation.settingsTabPath) {
             listContent
                 .toolbar {
-#if !targetEnvironment(macCatalyst)
+#if os(iOS) && !targetEnvironment(macCatalyst)
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(role: .close) {
                             dismiss()
@@ -185,5 +185,23 @@ struct SettingsView: View {
         } catch {
             debugPrint(error.localizedDescription)
         }
+    }
+}
+
+private struct SettingsContainer<Content: View>: View {
+
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        #if os(macOS)
+        Form {
+            content
+        }
+        .formStyle(.grouped)
+        #else
+        List {
+            content
+        }
+        #endif
     }
 }

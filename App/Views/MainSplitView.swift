@@ -119,9 +119,34 @@ struct MainSplitView: View {
             content
                 .navigationSplitViewColumnWidth(min: 300.0, ideal: 375.0, max: 500.0)
         } detail: {
+            #if os(macOS)
             detail
+                .background {
+                    WindowTitleUpdater(title: columnTitle)
+                }
+                .toolbar {
+                    SwiftUI.ToolbarSpacer(.flexible)
+                }
+            #else
+            detail
+            #endif
         }
     }
+
+    #if os(macOS)
+    var columnTitle: String {
+        switch selectedView {
+        case .albums: String(localized: "ViewTitle.Albums")
+        case .pics: String(localized: "ViewTitle.Pics")
+        case .album(let album): album.name
+        case .photosAlbum(let wrapper): wrapper.collection.localizedTitle ?? ""
+        case .photosFolder(let wrapper): wrapper.collectionList.localizedTitle ?? ""
+        default: isPhotosModeEnabled
+            ? String(localized: "ViewTitle.Photos")
+            : libraryManager.displayName(for: libraryManager.currentLibrary)
+        }
+    }
+    #endif
 
     var sidebar: some View {
         List(selection: $selectedView) {
@@ -156,7 +181,7 @@ struct MainSplitView: View {
                             }
                         }
                     }
-#if !targetEnvironment(macCatalyst)
+#if os(iOS) && !targetEnvironment(macCatalyst)
                     Button {
                         isSettingsPresented = true
                     } label: {
@@ -282,6 +307,9 @@ struct SidebarAlbumIcon: View {
 #if targetEnvironment(macCatalyst)
         .frame(width: 28.0, height: 28.0)
         .clipShape(.rect(cornerRadius: 6.0))
+#elseif os(macOS)
+        .frame(width: 18.0, height: 18.0)
+        .clipShape(.rect(cornerRadius: 4.0))
 #else
         .frame(width: 32.0, height: 32.0)
         .clipShape(.rect(cornerRadius: 7.0))

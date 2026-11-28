@@ -61,6 +61,19 @@ struct SectionHeader<Buttons: View, Content: View>: View {
                     trailingViews()
                 }
                 .accessibilityIdentifier("sectionMenu")
+#elseif os(macOS)
+                Menu {
+                    trailingViews()
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .imageScale(.large)
+                }
+                .menuStyle(.button)
+                .buttonStyle(.borderless)
+                .menuIndicator(.hidden)
+                .fixedSize()
+                .focusEffectDisabled()
+                .accessibilityIdentifier("sectionMenu")
 #else
                 Menu {
                     trailingViews()

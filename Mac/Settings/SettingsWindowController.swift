@@ -6,10 +6,11 @@ final class SettingsWindowController: NSWindowController {
 
     init(model: AppModel) {
         let hostingController = NSHostingController(rootView: SettingsView().environment(model))
-        hostingController.sceneBridgingOptions = [.toolbars, .title]
+        hostingController.sceneBridgingOptions = [.toolbars]
         let window = NSWindow(contentViewController: hostingController)
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         window.setContentSize(NSSize(width: 600.0, height: 640.0))
+        window.title = String(localized: "ViewTitle.Settings")
         window.setFrameAutosaveName("SettingsWindow")
         super.init(window: window)
     }
