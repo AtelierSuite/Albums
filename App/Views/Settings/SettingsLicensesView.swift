@@ -20,7 +20,7 @@ struct SettingsLicensesView: View {
     }
 }
 
-private struct Dependency: Identifiable {
+struct Dependency: Identifiable {
     let id: String
     let name: String
     let licenseText: String
