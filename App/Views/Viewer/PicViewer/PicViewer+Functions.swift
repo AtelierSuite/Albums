@@ -77,8 +77,8 @@ extension PicViewer {
         }
     }
 
-    func neighborPreview(_ image: UIImage, at index: Int) -> some View {
-        Image(uiImage: image)
+    func neighborPreview(_ image: PlatformImage, at index: Int) -> some View {
+        Image(platformImage: image)
             .resizable()
             .scaledToFit()
             .clipShape(.rect(cornerRadius: imageCornerRadius))
@@ -238,7 +238,7 @@ extension PicViewer {
                         .aspectRatio(videoAspectRatio ?? 16.0 / 9.0, contentMode: .fit)
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
                 } else if let thumbnail = viewer.displayedThumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: imageCornerRadius))
@@ -270,14 +270,14 @@ extension PicViewer {
     var photoContent: some View {
         ZStack {
             if let thumbnail = viewer.displayedThumbnail {
-                Image(uiImage: thumbnail)
+                Image(platformImage: thumbnail)
                     .resizable()
                     .scaledToFit()
                     .clipShape(.rect(cornerRadius: imageCornerRadius))
                     .opacity(viewer.displayedImage == nil ? 1 : 0)
             }
             if let fullImage = viewer.displayedImage {
-                Image(uiImage: fullImage)
+                Image(platformImage: fullImage)
                     .resizable()
                     .scaledToFit()
                     .clipShape(.rect(cornerRadius: imageCornerRadius))

@@ -1,5 +1,8 @@
+import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct MasonryItem: Identifiable {
     let id: String
@@ -130,7 +133,7 @@ struct MasonryGrid<Cell: View, MorphCell: View>: View {
             self.pinch?.animationsInFlight -= 1
             commitPinchIfSettled(scroller: scroller)
         }
-        UISelectionFeedbackGenerator().selectionChanged()
+        Haptics.selectionChanged()
     }
 
     private func endPinch(scroller: PinchZoomScroller) {

@@ -1,6 +1,9 @@
 #if DEBUG
 import Engine
+import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 enum ScreenshotSeeder {
 

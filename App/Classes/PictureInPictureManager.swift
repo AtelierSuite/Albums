@@ -1,3 +1,4 @@
+import Engine
 import AVFoundation
 import AVKit
 import CoreMedia
@@ -46,7 +47,7 @@ class PictureInPictureManager: NSObject {
         #endif
     }
 
-    func start(with image: UIImage, restore: @escaping @MainActor () -> Void) {
+    func start(with image: PlatformImage, restore: @escaping @MainActor () -> Void) {
         guard pipController != nil, player != nil, !isActive else { return }
 
         onRestore = restore
@@ -121,7 +122,7 @@ class PictureInPictureManager: NSObject {
 
     // MARK: - Video Creation
 
-    private nonisolated static func createVideo(from image: UIImage) -> URL? {
+    private nonisolated static func createVideo(from image: PlatformImage) -> URL? {
         guard let cgImage = uprightCGImage(from: image) else { return nil }
 
         let width = cgImage.width
@@ -179,7 +180,7 @@ class PictureInPictureManager: NSObject {
         return writer.status == .completed ? outputURL : nil
     }
 
-    private nonisolated static func uprightCGImage(from image: UIImage) -> CGImage? {
+    private nonisolated static func uprightCGImage(from image: PlatformImage) -> CGImage? {
         guard image.imageOrientation != .up else { return image.cgImage }
         let format = UIGraphicsImageRendererFormat()
         format.scale = image.scale

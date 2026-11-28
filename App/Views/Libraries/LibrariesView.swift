@@ -200,7 +200,7 @@ struct LibrariesView: View {
         }
     }
 
-    private func rowLabel(title: String, images: [UIImage], placeholderSystemImage: String,
+    private func rowLabel(title: String, images: [PlatformImage], placeholderSystemImage: String,
                           summary: LibraryCoverCache.Summary?) -> some View {
         HStack(spacing: 12.0) {
             LibraryCover(images: images, placeholderSystemImage: placeholderSystemImage,

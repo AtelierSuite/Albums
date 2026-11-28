@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 private let minimumZoomScale: CGFloat = 1.0
 private let maximumZoomScale: CGFloat = 6.0
@@ -266,6 +268,7 @@ private struct ZoomHiddenModifier: ViewModifier {
     }
 }
 
+#if os(iOS)
 private struct ZoomPinchGesture: UIGestureRecognizerRepresentable {
 
     var blocksDismissal: Bool
@@ -391,6 +394,46 @@ private struct ZoomPanGesture: UIGestureRecognizerRepresentable {
         }
     }
 }
+#else
+private struct ZoomPinchGesture: Gesture {
+
+    var blocksDismissal: Bool
+    var onBegan: (CGPoint) -> Void
+    var onChanged: (CGFloat, CGPoint) -> Void
+    var onEnded: (CGPoint) -> Void
+
+    var body: some Gesture {
+        MagnifyGesture(minimumScaleDelta: 0.0)
+            .onChanged { value in
+                if MacGestureTracker.begin(.zoomPinch) {
+                    onBegan(value.startLocation)
+                }
+                onChanged(value.magnification, value.startLocation)
+            }
+            .onEnded { value in
+                MacGestureTracker.end(.zoomPinch)
+                onEnded(value.startLocation)
+            }
+    }
+}
+
+private struct ZoomPanGesture: Gesture {
+
+    var isEnabled: Bool
+    var onChanged: (CGSize) -> Void
+    var onEnded: (CGSize) -> Void
+
+    var body: some Gesture {
+        DragGesture(minimumDistance: isEnabled ? 1.0 : .greatestFiniteMagnitude)
+            .onChanged { value in
+                onChanged(value.translation)
+            }
+            .onEnded { value in
+                onEnded(value.velocity)
+            }
+    }
+}
+#endif
 
 extension View {
     func hiddenWhileZoomed(_ isZoomed: Bool, toward edge: Edge) -> some View {

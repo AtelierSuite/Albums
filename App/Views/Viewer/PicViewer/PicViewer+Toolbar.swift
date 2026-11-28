@@ -57,7 +57,7 @@ extension PicViewer {
             Button("Shared.Copy", systemImage: "doc.on.doc") {
                 if let image = currentImage {
                     UIPasteboard.general.image = image
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    Haptics.notify(.success)
                     CopiedToast.showCopied()
                 }
             }

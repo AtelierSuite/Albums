@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 import UIKit
 
@@ -6,8 +7,8 @@ struct PinchZoomCanvas: UIViewRepresentable {
     var session: PinchZoomSession
     var progress: CGFloat
     var focusY: CGFloat
-    var cachedImage: (Int) -> UIImage?
-    var loadImage: (Int) async -> UIImage?
+    var cachedImage: (Int) -> PlatformImage?
+    var loadImage: (Int) async -> PlatformImage?
 
     func makeUIView(context: Context) -> PinchZoomCanvasView {
         PinchZoomCanvasView()
@@ -22,8 +23,8 @@ struct PinchZoomCanvas: UIViewRepresentable {
 
 final class PinchZoomCanvasView: UIView {
 
-    var cachedImage: (Int) -> UIImage? = { _ in nil }
-    var loadImage: (Int) async -> UIImage? = { _ in nil }
+    var cachedImage: (Int) -> PlatformImage? = { _ in nil }
+    var loadImage: (Int) async -> PlatformImage? = { _ in nil }
 
     private var cells: [Int: CALayer] = [:]
     private var ghosts: [Int: CALayer] = [:]

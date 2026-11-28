@@ -1,3 +1,4 @@
+import Engine
 import Photos
 import SwiftUI
 
@@ -8,7 +9,7 @@ struct PhotosCarouselThumbnail: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    @State private var thumbnail: UIImage?
+    @State private var thumbnail: PlatformImage?
     @State private var requestID: PHImageRequestID?
 
     var body: some View {
@@ -17,7 +18,7 @@ struct PhotosCarouselThumbnail: View {
             .frame(width: 48.0, height: 48.0)
             .overlay {
                 if let thumbnail {
-                    Image(uiImage: thumbnail)
+                    Image(platformImage: thumbnail)
                         .resizable()
                         .scaledToFill()
                 }

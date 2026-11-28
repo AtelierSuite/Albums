@@ -171,9 +171,9 @@ struct PicsGrid<Content: View>: View {
             Button("Shared.Copy", systemImage: "doc.on.doc") {
                 Task {
                     if let data = await DataActor.shared.imageData(forPicWithID: pic.id),
-                       let image = UIImage(data: data) {
+                       let image = PlatformImage(data: data) {
                         UIPasteboard.general.image = image
-                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        Haptics.notify(.success)
                         CopiedToast.showCopied()
                     }
                 }
@@ -249,7 +249,7 @@ struct PicsGrid<Content: View>: View {
             anchorIndex = current
             paintedRange = current...current
             setSelected(current, paintSelected)
-            UISelectionFeedbackGenerator().selectionChanged()
+            Haptics.selectionChanged()
             return
         }
         let newRange = min(anchor, current)...max(anchor, current)
@@ -266,7 +266,7 @@ struct PicsGrid<Content: View>: View {
             setSelected(index, paintSelected)
         }
         paintedRange = newRange
-        UISelectionFeedbackGenerator().selectionChanged()
+        Haptics.selectionChanged()
     }
 }
 
@@ -284,12 +284,12 @@ extension PicsGrid {
             + (0..<visiblePlaceholders).map { MasonryItem(id: "placeholder-\($0)", aspectRatio: 1.0) }
     }
 
-    func cachedThumbnail(at index: Int) -> UIImage? {
+    func cachedThumbnail(at index: Int) -> PlatformImage? {
         guard index < pics.count else { return nil }
         return ThumbnailCache.shared.image(forKey: pics[index].id)
     }
 
-    func loadThumbnail(at index: Int) async -> UIImage? {
+    func loadThumbnail(at index: Int) async -> PlatformImage? {
         guard index < pics.count else { return nil }
         return await ThumbnailCache.shared.thumbnail(for: pics[index])
     }
@@ -321,7 +321,7 @@ struct PicShareable: Transferable {
     static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(exportedContentType: .png) { shareable in
             if let data = await DataActor.shared.imageData(forPicWithID: shareable.picID),
-               let image = UIImage(data: data),
+               let image = PlatformImage(data: data),
                let pngData = image.pngData() {
                 return pngData
             }
@@ -333,12 +333,12 @@ struct PicShareable: Transferable {
 struct PicPreview: View {
     let picID: String
 
-    @State private var image: UIImage?
+    @State private var image: PlatformImage?
 
     var body: some View {
         Group {
             if let image {
-                Image(uiImage: image)
+                Image(platformImage: image)
                     .resizable()
                     .scaledToFit()
             } else {
@@ -349,7 +349,7 @@ struct PicPreview: View {
         }
         .task {
             if let thumbData = await DataActor.shared.thumbnailData(forPicWithID: picID),
-               let uiImage = UIImage(data: thumbData) {
+               let uiImage = PlatformImage(data: thumbData) {
                 image = uiImage
             }
         }

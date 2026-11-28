@@ -1,5 +1,8 @@
+import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct PinchToResizeColumnsModifier: ViewModifier {
 
@@ -26,7 +29,7 @@ struct PinchToResizeColumnsModifier: ViewModifier {
                         withAnimation(.smooth.speed(2.0)) {
                             columnCount = target
                         }
-                        UISelectionFeedbackGenerator().selectionChanged()
+                        Haptics.selectionChanged()
                     }
                     .onEnded { _ in
                         startColumnCount = nil

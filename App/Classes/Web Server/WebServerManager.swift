@@ -1,6 +1,8 @@
 import Foundation
 import Network
+#if canImport(UIKit)
 import UIKit
+#endif
 
 @MainActor @Observable
 class WebServerManager {

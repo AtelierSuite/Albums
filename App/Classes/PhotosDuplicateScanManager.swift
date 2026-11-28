@@ -2,7 +2,9 @@ import Engine
 import Foundation
 import Photos
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct PhotosDuplicateGroup: Identifiable {
     let id = UUID()
@@ -149,7 +151,7 @@ class PhotosDuplicateScanManager {
 
     // MARK: - Image Loading
 
-    private func loadImage(for asset: PHAsset) async -> UIImage? {
+    private func loadImage(for asset: PHAsset) async -> PlatformImage? {
         await withCheckedContinuation { continuation in
             let options = PHImageRequestOptions()
             options.deliveryMode = .highQualityFormat

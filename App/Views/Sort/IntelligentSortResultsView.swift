@@ -1,6 +1,8 @@
 import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 struct SuggestionGroup: Identifiable {
     let albumID: String
@@ -347,7 +349,7 @@ struct MedoidThumbnail: View {
     let picID: String
     var dataActor: DataActor
 
-    @State private var image: UIImage?
+    @State private var image: PlatformImage?
 
     init(picID: String, dataActor: DataActor) {
         self.picID = picID
@@ -360,7 +362,7 @@ struct MedoidThumbnail: View {
             .fill(.primary.opacity(0.05))
             .overlay {
                 if let image {
-                    Image(uiImage: image)
+                    Image(platformImage: image)
                         .resizable()
                         .scaledToFill()
                 }
@@ -379,8 +381,8 @@ struct MedoidThumbnail: View {
     }
 
     @concurrent
-    nonisolated private static func prepare(_ data: Data) async -> UIImage? {
-        guard let image = UIImage(data: data) else { return nil }
+    nonisolated private static func prepare(_ data: Data) async -> PlatformImage? {
+        guard let image = PlatformImage(data: data) else { return nil }
         return await image.byPreparingForDisplay()
     }
 }

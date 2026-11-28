@@ -1,8 +1,11 @@
+import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 enum PinchZoomRenderer<Cell: View> {
-    case images(cached: (Int) -> UIImage?, load: (Int) async -> UIImage?)
+    case images(cached: (Int) -> PlatformImage?, load: (Int) async -> PlatformImage?)
     case views((Int) -> Cell)
 }
 
@@ -133,8 +136,8 @@ extension PinchZoomGrid where Cell == EmptyView {
          spacing: CGFloat = 2.0,
          cropsToTop: Bool = false,
          onColumnCountChange: ((Int) -> Void)?,
-         cachedImage: @escaping (Int) -> UIImage?,
-         loadImage: @escaping (Int) async -> UIImage?,
+         cachedImage: @escaping (Int) -> PlatformImage?,
+         loadImage: @escaping (Int) async -> PlatformImage?,
          @ViewBuilder content: @escaping () -> Content) {
         self.init(columnCount: columnCount,
                   itemCount: itemCount,
@@ -388,8 +391,8 @@ private struct PinchZoomLayers: View {
     @AnimatableIgnored var session: PinchZoomSession
     var progress: CGFloat
     var focusY: CGFloat
-    @AnimatableIgnored var cachedImage: (Int) -> UIImage?
-    @AnimatableIgnored var loadImage: (Int) async -> UIImage?
+    @AnimatableIgnored var cachedImage: (Int) -> PlatformImage?
+    @AnimatableIgnored var loadImage: (Int) async -> PlatformImage?
 
     var body: some View {
         PinchZoomCanvas(session: session,
@@ -401,6 +404,7 @@ private struct PinchZoomLayers: View {
     }
 }
 
+#if os(iOS)
 @MainActor
 struct PinchZoomScroller {
 
@@ -493,3 +497,4 @@ struct PinchZoomGesture: UIGestureRecognizerRepresentable {
         }
     }
 }
+#endif

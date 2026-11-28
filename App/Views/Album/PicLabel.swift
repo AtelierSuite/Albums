@@ -3,23 +3,23 @@ import SwiftUI
 
 final class ThumbnailCache: @unchecked Sendable {
     static let shared = ThumbnailCache()
-    private let cache = NSCache<NSString, UIImage>()
+    private let cache = NSCache<NSString, PlatformImage>()
 
     init() {
         cache.countLimit = 500
         cache.totalCostLimit = 100 * 1024 * 1024
     }
 
-    func image(forKey key: String) -> UIImage? {
+    func image(forKey key: String) -> PlatformImage? {
         cache.object(forKey: key as NSString)
     }
 
-    func setImage(_ image: UIImage, forKey key: String) {
+    func setImage(_ image: PlatformImage, forKey key: String) {
         let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
         cache.setObject(image, forKey: key as NSString, cost: cost)
     }
 
-    func thumbnail(for pic: Pic) async -> UIImage? {
+    func thumbnail(for pic: Pic) async -> PlatformImage? {
         let picID = pic.id
         if let cached = image(forKey: picID) {
             return cached
@@ -30,12 +30,12 @@ final class ThumbnailCache: @unchecked Sendable {
     }
 
     @concurrent
-    nonisolated private static func loadThumbnail(picID: String, data: Data?) async -> UIImage? {
+    nonisolated private static func loadThumbnail(picID: String, data: Data?) async -> PlatformImage? {
         var data = data
         if data == nil {
             data = await DataActor.shared.thumbnailData(forPicWithID: picID)
         }
-        guard let data, let image = UIImage(data: data) else { return nil }
+        guard let data, let image = PlatformImage(data: data) else { return nil }
         return await image.byPreparingForDisplay()
     }
 }
@@ -62,7 +62,7 @@ struct PicLabel: View {
         self.onAspectRatio = onAspectRatio
         let cached = ThumbnailCache.shared.image(forKey: pic.id)
         _isThumbnailReadyToPresent = State(initialValue: cached != nil)
-        _thumbnail = State(initialValue: cached.map { Image(uiImage: $0) })
+        _thumbnail = State(initialValue: cached.map { Image(platformImage: $0) })
         _fadesInThumbnail = State(initialValue: cached == nil)
         _aiContent = State(initialValue: pic.aiContent)
     }
@@ -77,7 +77,7 @@ struct PicLabel: View {
                 if let cached = ThumbnailCache.shared.image(forKey: picID) {
                     reportAspectRatio(for: cached)
                     if thumbnail == nil {
-                        thumbnail = Image(uiImage: cached)
+                        thumbnail = Image(platformImage: cached)
                         isThumbnailReadyToPresent = true
                     }
                     return
@@ -86,7 +86,7 @@ struct PicLabel: View {
                 guard !Task.isCancelled else { return }
                 if let prepared {
                     reportAspectRatio(for: prepared)
-                    thumbnail = Image(uiImage: prepared)
+                    thumbnail = Image(platformImage: prepared)
                 }
                 isThumbnailReadyToPresent = true
             }
@@ -94,7 +94,7 @@ struct PicLabel: View {
                 guard notification.object as? String == pic.id,
                       let cached = ThumbnailCache.shared.image(forKey: pic.id) else { return }
                 reportAspectRatio(for: cached)
-                thumbnail = Image(uiImage: cached)
+                thumbnail = Image(platformImage: cached)
                 isThumbnailReadyToPresent = true
             }
             .onReceive(NotificationCenter.default.publisher(for: .picContentCredentialsDidChange)) { notification in
@@ -169,7 +169,7 @@ struct PicLabel: View {
             }
     }
 
-    private func reportAspectRatio(for image: UIImage) {
+    private func reportAspectRatio(for image: PlatformImage) {
         guard maintainsAspectRatio, image.size.height > 0.0 else { return }
         onAspectRatio?(image.size.width / image.size.height)
     }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if targetEnvironment(macCatalyst)
 extension EnvironmentValues {
     @Entry var sheetContainerSize: CGSize = .zero
 }
@@ -125,6 +126,8 @@ private struct SheetResizeGrip: View {
     }
 }
 
+#endif
+
 extension View {
     @ViewBuilder
     func readsSheetContainerSize() -> some View {
@@ -139,12 +142,16 @@ extension View {
     func macSheetSizing() -> some View {
         #if targetEnvironment(macCatalyst)
         modifier(MacSheetSizing())
+        #elseif os(macOS)
+        frame(minWidth: 520.0, idealWidth: 760.0, maxWidth: .infinity,
+              minHeight: 440.0, idealHeight: 640.0, maxHeight: .infinity)
         #else
         self
         #endif
     }
 }
 
+#if targetEnvironment(macCatalyst)
 private struct PresentedSheetSizeApplier: UIViewRepresentable {
     let size: CGSize
 
@@ -173,3 +180,4 @@ private struct PresentedSheetSizeApplier: UIViewRepresentable {
         }
     }
 }
+#endif

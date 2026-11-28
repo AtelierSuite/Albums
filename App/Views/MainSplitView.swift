@@ -275,7 +275,7 @@ struct SidebarAlbumIcon: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } else {
-                Image(uiImage: UIImage(named: "Album.Generic")!)
+                Image(platformImage: PlatformImage(named: "Album.Generic")!)
                     .resizable()
             }
         }

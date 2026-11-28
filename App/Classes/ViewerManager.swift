@@ -22,8 +22,8 @@ class ViewerManager {
 
     var displayedPicID: String = ""
     var displayedPic: Pic?
-    var displayedThumbnail: UIImage?
-    var displayedImage: UIImage?
+    var displayedThumbnail: PlatformImage?
+    var displayedImage: PlatformImage?
     var isFullImageLoaded: Bool = false
     var downloadingOriginalPicID: String?
     var downloadProgress: Double?
@@ -49,7 +49,7 @@ class ViewerManager {
 
     var orientationEdits: [String: PicOrientationEdit] = [:]
 
-    @ObservationIgnored var imageCache: [String: UIImage] = [:]
+    @ObservationIgnored var imageCache: [String: PlatformImage] = [:]
     @ObservationIgnored var orientationSessions: [String: OrientationEditSession] = [:]
     @ObservationIgnored private var prefetchTasks: [String: Task<Void, Never>] = [:]
     @ObservationIgnored private let downloadMonitor = CloudDownloadMonitor()
@@ -80,12 +80,12 @@ class ViewerManager {
         imageCache = imageCache.filter { orientationSessions[$0.key] != nil }
     }
 
-    func previewImage(at index: Int) -> UIImage? {
+    func previewImage(at index: Int) -> PlatformImage? {
         guard index >= 0, index < allPics.count else { return nil }
         let pic = allPics[index]
         return imageCache[pic.id]
             ?? ThumbnailCache.shared.image(forKey: pic.id)
-            ?? pic.thumbnailData.flatMap { UIImage(data: $0) }
+            ?? pic.thumbnailData.flatMap { PlatformImage(data: $0) }
     }
 
     func removeDisplayedPicAndShowNeighbor() -> Bool {
@@ -124,8 +124,8 @@ class ViewerManager {
         Self.incrementPicOpenCount()
 
         // Show thumbnail immediately to open viewer without delay
-        let thumbnail: UIImage? = ThumbnailCache.shared.image(forKey: pic.id)
-            ?? pic.thumbnailData.flatMap { UIImage(data: $0) }
+        let thumbnail: PlatformImage? = ThumbnailCache.shared.image(forKey: pic.id)
+            ?? pic.thumbnailData.flatMap { PlatformImage(data: $0) }
 
         displayedThumbnail = thumbnail
         displayedPic = pic
@@ -169,8 +169,8 @@ class ViewerManager {
         currentIndex = index
         let pic = allPics[index]
 
-        let thumbnail: UIImage? = ThumbnailCache.shared.image(forKey: pic.id)
-            ?? pic.thumbnailData.flatMap { UIImage(data: $0) }
+        let thumbnail: PlatformImage? = ThumbnailCache.shared.image(forKey: pic.id)
+            ?? pic.thumbnailData.flatMap { PlatformImage(data: $0) }
 
         displayedThumbnail = thumbnail
         displayedPic = pic
@@ -254,7 +254,7 @@ class ViewerManager {
 
     private func loadFullImage(for picID: String) {
         Task(priority: .userInitiated) {
-            var loadedImage: UIImage?
+            var loadedImage: PlatformImage?
             var data = await DataActor.shared.imageData(forPicWithID: picID)
             if data == nil {
                 if self.displayedPicID == picID {
@@ -281,7 +281,7 @@ class ViewerManager {
                     }
                 }
             }
-            if let data, let image = await UIImage(data: data)?.byPreparingForDisplay() {
+            if let data, let image = await PlatformImage(data: data)?.byPreparingForDisplay() {
                 loadedImage = image
             }
             self.imageCache[picID] = loadedImage
@@ -305,7 +305,7 @@ class ViewerManager {
             let picID = pic.id
             let task = Task.detached(priority: .utility) {
                 if let data = await DataActor.shared.imageData(forPicWithID: picID),
-                   let image = await UIImage(data: data)?.byPreparingForDisplay() {
+                   let image = await PlatformImage(data: data)?.byPreparingForDisplay() {
                     _ = await MainActor.run {
                         self.imageCache[picID] = image
                         self.prefetchTasks.removeValue(forKey: picID)

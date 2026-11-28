@@ -1,6 +1,8 @@
 import Engine
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 extension Notification.Name {
     static let picThumbnailDidChange = Notification.Name("PicThumbnailDidChange")
@@ -93,9 +95,9 @@ extension ViewerManager {
                 continue
             }
             let generation = session.generation
-            var image: UIImage?
+            var image: PlatformImage?
             if let data = session.writtenData {
-                image = await UIImage(data: data)?.byPreparingForDisplay()
+                image = await PlatformImage(data: data)?.byPreparingForDisplay()
             }
             guard let current = orientationSessions[picID], current.generation == generation,
                   ContinuousClock.now - current.lastEditAt >= Self.orientationSaveDelay else { continue }
@@ -144,14 +146,14 @@ extension ViewerManager {
         if displayedPic?.id == picID {
             displayedPic?.thumbnailData = thumbnailData
         }
-        if let thumbnailData, let thumbnail = await UIImage(data: thumbnailData)?.byPreparingForDisplay() {
+        if let thumbnailData, let thumbnail = await PlatformImage(data: thumbnailData)?.byPreparingForDisplay() {
             ThumbnailCache.shared.setImage(thumbnail, forKey: picID)
         }
         NotificationCenter.default.post(name: .picThumbnailDidChange, object: picID)
     }
 
     private func revertOrientation(for picID: String, to written: PicOrientationEdit) {
-        UINotificationFeedbackGenerator().notificationOccurred(.error)
+        Haptics.notify(.error)
         let current = orientationEdit(for: picID)
         var difference = (written.quarterTurns - current.normalized.quarterTurns) % 4
         if difference > 2 { difference -= 4 }
@@ -164,7 +166,7 @@ extension ViewerManager {
         orientationSessions[picID]?.lastEditAt = .now
     }
 
-    private func finishOrientationSession(for picID: String, image: UIImage?, didWrite: Bool) {
+    private func finishOrientationSession(for picID: String, image: PlatformImage?, didWrite: Bool) {
         orientationSessions[picID] = nil
         var transaction = Transaction()
         transaction.disablesAnimations = true

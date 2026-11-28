@@ -157,7 +157,7 @@ struct RestoreBackupView: View {
                         isImporting = false
                         isCompleted = true
                         navigation.dataVersion += 1
-                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        Haptics.notify(.success)
                         UIApplication.shared.isIdleTimerDisabled = false
                     }
                 } catch {
@@ -166,7 +166,7 @@ struct RestoreBackupView: View {
                         errorMessage = message
                         isImporting = false
                         isError = true
-                        UINotificationFeedbackGenerator().notificationOccurred(.error)
+                        Haptics.notify(.error)
                         UIApplication.shared.isIdleTimerDisabled = false
                     }
                 }

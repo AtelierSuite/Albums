@@ -59,7 +59,7 @@ struct AlbumView: View {
 
     @State var totalAlbumCount: Int = 0
     @State var recentlyDeletedCount: Int = 0
-    @State var backgroundImage: UIImage?
+    @State var backgroundImage: PlatformImage?
     @State var lastRefreshTime: Date = .distantPast
     @State var searchText: String = ""
     @State var searchResults: LibrarySearchResults?
@@ -284,7 +284,7 @@ struct AlbumView: View {
         ZStack {
             if let backgroundImage {
                 Canvas { context, size in
-                    let image = context.resolve(Image(uiImage: backgroundImage))
+                    let image = context.resolve(Image(platformImage: backgroundImage))
                     let imageSize = image.size
                     let scale = max(size.width / imageSize.width,
                                     size.height / imageSize.height)
