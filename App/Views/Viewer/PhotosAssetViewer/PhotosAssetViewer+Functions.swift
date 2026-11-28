@@ -72,6 +72,9 @@ extension PhotosAssetViewer {
                 }
             }
             .padding([.top, .horizontal], fitToScreen ? 0.0 : 20.0)
+            #if os(macOS)
+            .padding(.bottom, 16.0)
+            #endif
         }
     }
 
