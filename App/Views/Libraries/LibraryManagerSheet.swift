@@ -50,12 +50,14 @@ struct LibraryManagerSheet: View {
                         .environmentObject(navigation)
                         .environment(concurrency)
                         .environment(imageMigration)
+                        .macSheetSizing()
                 }
                 .sheet(isPresented: $isEditingPhotos) {
                     PhotosLibrarySheet(dismissAll: {
                         isEditingPhotos = false
                         dismiss()
                     })
+                    .macSheetSizing()
                 }
         }
         .phonePresentationDetents([.medium, .large])

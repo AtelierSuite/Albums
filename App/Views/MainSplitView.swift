@@ -82,6 +82,7 @@ struct MainSplitView: View {
         }
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView()
+                .macSheetSizing()
         }
         .sheet(isPresented: $isLibraryManagerPresented) {
             LibraryManagerSheet()
@@ -89,6 +90,7 @@ struct MainSplitView: View {
                 .environmentObject(navigation)
                 .environment(concurrency)
                 .environment(imageMigration)
+                .macSheetSizing()
         }
     }
 

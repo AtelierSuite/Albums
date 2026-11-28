@@ -240,10 +240,12 @@ struct EditLibrarySheet: View {
                 SettingsBackupView(destinationURL: backupFolderURL,
                                    collectionID: library.id,
                                    libraryName: libraryManager.displayName(for: library))
+                .macSheetSizing()
             }
         }
         .sheet(isPresented: $isDuplicateCheckerPresented) {
             DuplicateScanView(scanScope: .entireCollection, collectionID: library.id)
+                .macSheetSizing()
         }
         .alert(Text("Troubleshooting.ClearCache.Confirm.Title", tableName: "More"),
                isPresented: $isConfirmingClearCache) {

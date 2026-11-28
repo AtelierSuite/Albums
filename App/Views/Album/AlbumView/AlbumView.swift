@@ -161,6 +161,7 @@ struct AlbumView: View {
                     }
                 }
                 .phonePresentationDetents([.medium, .large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .onChange(of: isDuplicateCheckerPresented) { _, isPresented in
@@ -177,6 +178,7 @@ struct AlbumView: View {
                     }
                 }
                 .phonePresentationDetents([.medium, .large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .onChange(of: isIntelligentSortPresented) { _, isPresented in

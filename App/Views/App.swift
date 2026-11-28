@@ -191,6 +191,7 @@ struct IllustMateApp: App {
             if let importedURL {
                 RestoreBackupView(backupURL: importedURL)
                     .environmentObject(navigation)
+                    .macSheetSizing()
             } else {
                 ProgressView()
             }
@@ -206,6 +207,7 @@ struct IllustMateApp: App {
                         }
                     }
             }
+            .macSheetSizing()
         }
         .sheet(isPresented: $isSeedingData) {
             StatusView(type: .inProgress,
@@ -228,6 +230,7 @@ struct IllustMateApp: App {
                 lastWelcomedVersion = welcomeVersion
                 isShowingWelcome = false
             }
+            .macSheetSizing()
         }
     }
 
@@ -280,6 +283,7 @@ struct IllustMateApp: App {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: showLockCover)
+            .readsSheetContainerSize()
             .onChange(of: scenePhase) { _, newValue in
                 if newValue == .background {
                     WidgetCenter.shared.reloadTimelines(ofKind: "Photostand")
@@ -350,6 +354,7 @@ struct IllustMateApp: App {
                     .environment(pipManager)
                     .environment(webServer)
                     .environment(imageMigration)
+                    .readsSheetContainerSize()
             }
         }
 
@@ -365,6 +370,7 @@ struct IllustMateApp: App {
                 .environment(pipManager)
                 .environment(webServer)
                 .environment(imageMigration)
+                .readsSheetContainerSize()
         }
         .defaultSize(width: 540.0, height: 640.0)
 #endif

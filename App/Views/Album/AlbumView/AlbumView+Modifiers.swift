@@ -80,6 +80,7 @@ struct AlbumViewSheets: ViewModifier {
                     }
                 }
                 .phonePresentationDetents([.large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .sheet(isPresented: $isBrowsingFolders) {
@@ -98,6 +99,7 @@ struct AlbumViewSheets: ViewModifier {
                     }
                 }
                 .phonePresentationDetents([.large])
+                .macSheetSizing()
                 .interactiveDismissDisabled()
             }
             .sheet(isPresented: $isImportingPhotos) {

@@ -12,6 +12,7 @@ struct FileImportModifier: ViewModifier {
             .sheet(isPresented: $isFileImportSheetPresented) {
                 FileImportSheet(allowedContentTypes: [.image, .movie],
                                         onFilesImported: onFilesImported)
+                    .macSheetSizing()
             }
             #else
             .fileImporter(

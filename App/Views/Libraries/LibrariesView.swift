@@ -83,6 +83,7 @@ struct LibrariesView: View {
                 .phonePresentationDetents([.large])
                 .presentationDragIndicator(.hidden)
                 .navigationTransition(.zoom(sourceID: "settings", in: sheetNamespace))
+                .macSheetSizing()
         }
         .sheet(item: $libraryToEdit) { library in
             EditLibrarySheet(library: library, dismissAll: {
@@ -92,14 +93,17 @@ struct LibrariesView: View {
             .environmentObject(navigation)
             .environment(concurrency)
             .environment(imageMigration)
+            .macSheetSizing()
         }
         .sheet(item: $libraryForCoverPicker) { library in
             LibraryCoverPickerView(library: library) {
                 Task { await LibraryCoverCache.shared.reload([library]) }
             }
+            .macSheetSizing()
         }
         .sheet(isPresented: $isEditingPhotos) {
             PhotosLibrarySheet()
+                .macSheetSizing()
         }
         .alert(String(localized: "Libraries.New", table: "Libraries"),
                isPresented: Binding(
