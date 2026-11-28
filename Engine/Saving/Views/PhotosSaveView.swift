@@ -123,6 +123,23 @@ struct PhotosCollectionGrid: View {
             .padding(20.0)
         }
         .scrollEdgeEffectStyle(.soft, for: .bottom)
+        #if os(macOS)
+        .safeAreaBar(edge: .top) {
+            SaveSheetHeader(title: Text(folder?.localizedTitle
+                                        ?? String(localized: "Destination.Photos", table: "Saving", bundle: .engine)),
+                            showsBack: folder != nil, searchText: $searchText,
+                            searchPrompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine),
+                            onClose: folder == nil ? { session.cancel() } : nil) {
+                Button {
+                    newAlbumName = ""
+                    isCreatingAlbum = true
+                } label: {
+                    Image(systemName: "rectangle.stack.badge.plus")
+                }
+                .help(String(localized: "Photos.NewAlbum", table: "Saving", bundle: .engine))
+            }
+        }
+        #endif
         .overlay {
             if displayedCollections.isEmpty {
                 ContentUnavailableView(String(localized: "Photos.Empty", table: "Saving", bundle: .engine),

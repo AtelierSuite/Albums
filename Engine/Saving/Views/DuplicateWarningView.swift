@@ -25,6 +25,12 @@ struct DuplicateWarningView: View {
                     Text("Duplicates.Message", tableName: "Saving", bundle: .engine)
                 }
             }
+            #if os(macOS)
+            .safeAreaBar(edge: .top) {
+                SaveSheetHeader(title: Text("Duplicates.Title", tableName: "Saving", bundle: .engine),
+                                onClose: { session.cancel() })
+            }
+            #endif
             .navigationTitle(String(localized: "Duplicates.Title", table: "Saving", bundle: .engine))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
