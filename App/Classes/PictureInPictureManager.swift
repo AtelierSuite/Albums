@@ -40,7 +40,7 @@ class PictureInPictureManager: NSObject {
         pipController = AVPictureInPictureController(playerLayer: playerLayer)
         pipController?.delegate = self
         pipController?.requiresLinearPlayback = true
-        #if targetEnvironment(macCatalyst)
+        #if targetEnvironment(macCatalyst) || os(macOS)
         pipController?.setValue(2, forKey: "controlsStyle")
         #else
         pipController?.setValue(1, forKey: "controlsStyle")
@@ -53,6 +53,7 @@ class PictureInPictureManager: NSObject {
         onRestore = restore
         isPreparing = true
 
+        #if os(iOS)
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playback, mode: .moviePlayback)
@@ -60,6 +61,7 @@ class PictureInPictureManager: NSObject {
         } catch {
             debugPrint("PiP: Failed to configure audio session: \(error)")
         }
+        #endif
 
         Task.detached(priority: .userInitiated) {
             guard let videoURL = Self.createVideo(from: image) else {
@@ -113,11 +115,13 @@ class PictureInPictureManager: NSObject {
         playerLooper = nil
         UIApplication.shared.isIdleTimerDisabled = false
 
+        #if os(iOS)
         do {
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         } catch {
             debugPrint("PiP: Failed to deactivate audio session: \(error)")
         }
+        #endif
     }
 
     // MARK: - Video Creation
@@ -181,12 +185,16 @@ class PictureInPictureManager: NSObject {
     }
 
     private nonisolated static func uprightCGImage(from image: PlatformImage) -> CGImage? {
+        #if os(macOS)
+        return image.cgImage
+        #else
         guard image.imageOrientation != .up else { return image.cgImage }
         let format = UIGraphicsImageRendererFormat()
         format.scale = image.scale
         return UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
             image.draw(at: .zero)
         }.cgImage
+        #endif
     }
 
     private nonisolated static func createPixelBuffer(
@@ -268,6 +276,45 @@ extension PictureInPictureManager: AVPictureInPictureControllerDelegate {
 
 // MARK: - SwiftUI Wrapper
 
+#if os(macOS)
+struct PictureInPictureLayerView: NSViewRepresentable {
+    let pipManager: PictureInPictureManager
+
+    func makeNSView(context: Context) -> PictureInPictureHostView {
+        let container = PictureInPictureHostView(pipManager: pipManager)
+        container.wantsLayer = true
+        container.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
+        let playerLayer = pipManager.playerLayer
+        playerLayer.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
+        container.layer?.addSublayer(playerLayer)
+        return container
+    }
+
+    func updateNSView(_ nsView: PictureInPictureHostView, context: Context) {}
+}
+
+class PictureInPictureHostView: NSView {
+    private let pipManager: PictureInPictureManager
+
+    init(pipManager: PictureInPictureManager) {
+        self.pipManager = pipManager
+        super.init(frame: .zero)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError() }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if window != nil {
+            Task { @MainActor in
+                pipManager.layerDidMoveToWindow()
+            }
+        }
+    }
+}
+#else
+
 struct PictureInPictureLayerView: UIViewRepresentable {
     let pipManager: PictureInPictureManager
 
@@ -305,3 +352,4 @@ class PictureInPictureHostView: UIView {
         }
     }
 }
+#endif

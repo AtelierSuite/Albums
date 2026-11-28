@@ -199,7 +199,6 @@
 		D3AD8211D74B7BC71CC50FCC /* Exceptions for "App" folder in "Albums for Mac" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Classes/PictureInPictureManager.swift,
 				Views/Album/SelectionPanGesture.swift,
 				Views/Viewer/PicViewer/HorizontalSwipeGesture.swift,
 				Views/Shared/PinchZoomCanvas.swift,
