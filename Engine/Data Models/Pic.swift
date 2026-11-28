@@ -1,7 +1,7 @@
 import AVFoundation
 import CoreTransferable
 import Foundation
-import UIKit
+import CoreGraphics
 import UniformTypeIdentifiers
 
 public final class Pic: Identifiable, Hashable, @unchecked Sendable {
@@ -46,9 +46,9 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
         return "\(id)-\(thumbnailSize)"
     }
 
-    public func thumbnail() -> UIImage? {
+    public func thumbnail() -> PlatformImage? {
         if let thumbnailData {
-            return UIImage(data: thumbnailData)
+            return PlatformImage(data: thumbnailData)
         }
         return nil
     }
@@ -61,7 +61,7 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
     }
 
     public static func makeThumbnail(_ data: Data?) -> Data? {
-        if let data, let sourceImage = UIImage(data: data) {
+        if let data, let sourceImage = PlatformImage(data: data) {
             return sourceImage.jpegThumbnail(of: 120.0)
         }
         return nil
@@ -76,7 +76,7 @@ public final class Pic: Identifiable, Hashable, @unchecked Sendable {
               case let cgImage = result.image else {
             return nil
         }
-        return UIImage(cgImage: cgImage).jpegData(compressionQuality: 0.7)
+        return PlatformImage(cgImage: cgImage).jpegData(compressionQuality: 0.7)
     }
 
     public static func newVideoFilename() -> String {

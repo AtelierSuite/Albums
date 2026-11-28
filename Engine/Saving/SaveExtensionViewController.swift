@@ -1,3 +1,4 @@
+#if os(iOS)
 import SwiftUI
 import UIKit
 
@@ -37,3 +38,4 @@ open class SaveExtensionViewController: UIViewController {
         }
     }
 }
+#endif

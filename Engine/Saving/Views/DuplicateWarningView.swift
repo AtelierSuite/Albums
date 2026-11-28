@@ -72,8 +72,8 @@ struct DuplicateWarningView: View {
 
     private func thumbnail(_ data: Data?) -> some View {
         Group {
-            if let data, let image = UIImage(data: data) {
-                Image(uiImage: image)
+            if let data, let image = PlatformImage(data: data) {
+                Image(platformImage: image)
                     .resizable()
                     .scaledToFill()
             } else {

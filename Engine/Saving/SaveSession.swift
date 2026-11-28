@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 @MainActor @Observable
 public final class SaveSession {
@@ -36,7 +35,7 @@ public final class SaveSession {
         if matches.isEmpty {
             await perform(items, to: destination)
         } else {
-            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            Haptics.notify(.warning)
             withAnimation(.smooth.speed(2.0)) { phase = .duplicates(matches) }
         }
     }
@@ -82,7 +81,7 @@ public final class SaveSession {
     }
 
     private func finish() {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        Haptics.notify(.success)
         let defaults = UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")
         guard defaults?.object(forKey: "ShareSheetShowAnimation") as? Bool ?? false else {
             close()
@@ -96,7 +95,7 @@ public final class SaveSession {
     }
 
     private func fail(_ message: String) {
-        UINotificationFeedbackGenerator().notificationOccurred(.error)
+        Haptics.notify(.error)
         withAnimation(.smooth.speed(2.0)) { phase = .failed(message) }
     }
 }

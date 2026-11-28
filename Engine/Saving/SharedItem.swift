@@ -1,4 +1,3 @@
-import UIKit
 import UniformTypeIdentifiers
 
 public enum SharedItem: Sendable {
@@ -47,7 +46,7 @@ public enum SharedItem: Sendable {
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier),
            let url = await url(from: provider),
            let data = await contents(of: url),
-           UIImage(data: data) != nil {
+           PlatformImage(data: data) != nil {
             return .image(data)
         }
         return nil
@@ -81,7 +80,7 @@ public enum SharedItem: Sendable {
         var firstData: Data?
         for type in types {
             guard let data = await data(from: provider, type: type) else { continue }
-            if UIImage(data: data) != nil { return data }
+            if PlatformImage(data: data) != nil { return data }
             firstData = firstData ?? data
         }
         if let data = await itemImageData(from: provider) {
@@ -96,12 +95,12 @@ public enum SharedItem: Sendable {
         await withCheckedContinuation { continuation in
             provider.loadItem(forTypeIdentifier: UTType.image.identifier) { item, _ in
                 let data: Data? = switch item {
-                case let image as UIImage: image.jpegData(compressionQuality: 0.95) ?? image.pngData()
+                case let image as PlatformImage: image.jpegData(compressionQuality: 0.95) ?? image.pngData()
                 case let url as URL: try? Data(contentsOf: url)
                 case let data as Data: data
                 default: nil
                 }
-                continuation.resume(returning: data.flatMap { UIImage(data: $0) != nil ? $0 : nil })
+                continuation.resume(returning: data.flatMap { PlatformImage(data: $0) != nil ? $0 : nil })
             }
         }
     }

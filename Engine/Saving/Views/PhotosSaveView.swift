@@ -132,7 +132,7 @@ struct PhotosCollectionGrid: View {
         .navigationTitle(folder?.localizedTitle ?? String(localized: "Destination.Photos", table: "Saving",
                                                           bundle: .engine))
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always),
+        .searchable(text: $searchText, placement: .searchFieldPlacement,
                     prompt: Text("Photos.Search.Prompt", tableName: "Saving", bundle: .engine))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -174,7 +174,7 @@ struct PhotosCollectionGrid: View {
                 selectedTitles[identifier] = album.localizedTitle ?? ""
             }
         }
-        UISelectionFeedbackGenerator().selectionChanged()
+        Haptics.selectionChanged()
     }
 
     private func createAlbum() {
@@ -196,7 +196,7 @@ struct PhotosCollectionCell: View {
     var collection: PhotosCollection
     var isSelected: Bool
 
-    @State private var cover: UIImage?
+    @State private var cover: PlatformImage?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6.0) {
@@ -204,7 +204,7 @@ struct PhotosCollectionCell: View {
                 .aspectRatio(1.0, contentMode: .fit)
                 .overlay {
                     if let cover {
-                        Image(uiImage: cover)
+                        Image(platformImage: cover)
                             .resizable()
                             .scaledToFill()
                     } else {
@@ -249,5 +249,15 @@ public struct NothingToSaveView: View {
                       title: String(localized: "Saving.NoItems.Title", table: "Saving", bundle: .engine),
                       message: String(localized: "Saving.NoItems.Message", table: "Saving", bundle: .engine),
                       systemImage: "photo.badge.exclamationmark")
+    }
+}
+
+private extension SearchFieldPlacement {
+    static var searchFieldPlacement: SearchFieldPlacement {
+        #if os(iOS)
+        .navigationBarDrawer(displayMode: .always)
+        #else
+        .automatic
+        #endif
     }
 }

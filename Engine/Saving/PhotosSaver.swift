@@ -1,5 +1,4 @@
 import Photos
-import UIKit
 
 public enum PhotosCollection: Identifiable, Hashable {
     case album(PHAssetCollection)
@@ -111,7 +110,7 @@ public enum PhotosSaver {
     }
 
     public static func thumbnail(forAssetWithIdentifier identifier: String, length: CGFloat,
-                                 localOnly: Bool = false) async -> UIImage? {
+                                 localOnly: Bool = false) async -> PlatformImage? {
         guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil).firstObject else {
             return nil
         }
