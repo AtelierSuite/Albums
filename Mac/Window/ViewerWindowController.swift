@@ -27,6 +27,7 @@ final class ViewerWindowController: NSWindowController, NSWindowDelegate {
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
         window.toolbarStyle = .unified
         window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
         window.setContentSize(NSSize(width: 960.0, height: 720.0))
         window.contentMinSize = NSSize(width: 480.0, height: 360.0)
         window.isReleasedWhenClosed = false

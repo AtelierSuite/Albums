@@ -37,6 +37,9 @@ struct ViewerWindowContent: View {
                     }
                 }
             }
+            #if os(macOS)
+            .toolbarBackgroundVisibility(.hidden, for: .windowToolbar)
+            #endif
         }
         .environment(viewer)
         .environment(photosViewer)
