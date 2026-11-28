@@ -143,8 +143,7 @@ extension View {
         #if targetEnvironment(macCatalyst)
         modifier(MacSheetSizing())
         #elseif os(macOS)
-        frame(minWidth: 520.0, idealWidth: 760.0, maxWidth: .infinity,
-              minHeight: 440.0, idealHeight: 640.0, maxHeight: .infinity)
+        modifier(ResizableSheetSizing())
         #else
         self
         #endif
