@@ -208,9 +208,7 @@
 			membershipExceptions = (
 				Views/Album/SelectionPanGesture.swift,
 				Views/Viewer/PicViewer/HorizontalSwipeGesture.swift,
-				Views/Shared/PinchZoomCanvas.swift,
 				Views/Viewer/SwipeBackGestureDisabler.swift,
-				"Views/Shared/UIGestureRecognizer+ScrollView.swift",
 				Info.plist,
 				Views/App.swift,
 				"App Icons/AppIcon.Azure.icon",

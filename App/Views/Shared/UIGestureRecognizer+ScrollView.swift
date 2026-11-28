@@ -1,3 +1,4 @@
+#if os(iOS)
 import UIKit
 
 extension UIGestureRecognizer {
@@ -14,3 +15,4 @@ extension UIGestureRecognizer {
         return nil
     }
 }
+#endif
