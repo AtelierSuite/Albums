@@ -5,7 +5,7 @@ import SwiftUI
 extension ToolbarItemPlacement {
     public static var topBarTrailing: ToolbarItemPlacement { .primaryAction }
     public static var topBarLeading: ToolbarItemPlacement { .navigation }
-    public static var bottomBar: ToolbarItemPlacement { .automatic }
+    public static var bottomBar: ToolbarItemPlacement { .primaryAction }
     public static var subtitle: ToolbarItemPlacement { .automatic }
 }
 
