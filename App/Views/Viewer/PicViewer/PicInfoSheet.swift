@@ -38,7 +38,7 @@ struct PicInfoSheet: View {
             .navigationTitle(Text("Info", tableName: "ContentCredentials"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     Button(role: .close) {
                         dismiss()
                     }

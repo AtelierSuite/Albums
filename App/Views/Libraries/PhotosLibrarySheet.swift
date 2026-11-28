@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
@@ -43,7 +44,7 @@ struct PhotosLibrarySheet: View {
             .navigationTitle(String(localized: "PhotosMode", table: "More"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .close) {
                         dismiss()
                     }

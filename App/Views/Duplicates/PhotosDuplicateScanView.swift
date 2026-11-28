@@ -1,3 +1,4 @@
+import Engine
 import Photos
 import SwiftUI
 
@@ -26,14 +27,14 @@ struct PhotosDuplicateScanView: View {
             .navigationTitle("ViewTitle.DuplicateChecker")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     if !scanManager.isScanning {
                         Button(role: .close) {
                             dismiss()
                         }
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     if !scanManager.isScanning && scanManager.scanPhase == .idle {
                         Button {
                             Task {

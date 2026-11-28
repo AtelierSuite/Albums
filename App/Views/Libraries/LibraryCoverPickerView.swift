@@ -56,17 +56,17 @@ struct LibraryCoverPickerView: View {
             .navigationTitle(String(localized: "Libraries.Cover.Title", table: "Libraries"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     Button(role: .close) {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     Button(role: .confirm) {
                         save(selectedPicIDs)
                     }
                 }
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItem(placement: .sheetBottom) {
                     Button(String(localized: "Libraries.Cover.Reset", table: "Libraries")) {
                         save([])
                     }

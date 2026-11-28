@@ -127,7 +127,7 @@ struct IntelligentSortResultsView: View {
         .listStyle(.insetGrouped)
         .listSectionSpacing(.compact)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .sheetTrailing) {
                 Button(role: .confirm) {
                     isConfirmingMove = true
                 }
@@ -137,7 +137,7 @@ struct IntelligentSortResultsView: View {
                 .disabled(sortManager.pendingMoveCount == 0)
             }
             if hasStrongMatches {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItem(placement: .sheetBottom) {
                     Button(String(localized: "Sort.AcceptAllStrong", table: "Photos")) {
                         withAnimation(.smooth.speed(2.0)) {
                             sortManager.acceptAllStrongMatches()
@@ -145,8 +145,8 @@ struct IntelligentSortResultsView: View {
                     }
                 }
             }
-            ToolbarSpacer(.fixed, placement: .bottomBar)
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarSpacer(.fixed, placement: .sheetBottom)
+            ToolbarItem(placement: .sheetBottom) {
                 Button(String(localized: "Sort.DeselectAll", table: "Photos"), role: .destructive) {
                     withAnimation(.smooth.speed(2.0)) {
                         sortManager.deselectAll()

@@ -53,7 +53,7 @@ struct MoveToLibrarySheet: View {
                 .navigationTitle(Text("Move.SelectLibrary"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .sheetTrailing) {
                         Button(role: .cancel) {
                             dismiss()
                         }

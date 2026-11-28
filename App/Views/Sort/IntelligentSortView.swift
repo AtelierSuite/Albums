@@ -1,3 +1,4 @@
+import Engine
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
@@ -32,14 +33,14 @@ struct IntelligentSortView: View {
             .navigationTitle(Text("Sort.Title", tableName: "Photos"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     if !sortManager.isRunning {
                         Button(role: .close) {
                             dismiss()
                         }
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .sheetTrailing) {
                     if !sortManager.isRunning && sortManager.phase == .idle {
                         Button {
                             Task {

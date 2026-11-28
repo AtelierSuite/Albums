@@ -108,7 +108,7 @@ struct RestoreBackupView: View {
             .navigationTitle("ViewTitle.RestoreBackup")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .sheetLeading) {
                     if !isImporting && !isCompleted && !isError {
                         Button(role: .cancel) {
                             dismiss()
