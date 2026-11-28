@@ -20,7 +20,7 @@
 				<integer>1</integer>
 			</dict>
 			<key>NSExtensionServiceAllowsFinderPreviewItem</key>
-			<false/>
+			<true/>
 			<key>NSExtensionServiceAllowsTouchBarItem</key>
 			<false/>
 			<key>NSExtensionServiceFinderPreviewIconName</key>
