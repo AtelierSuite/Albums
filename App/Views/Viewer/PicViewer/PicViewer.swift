@@ -153,9 +153,9 @@ struct PicViewer: View {
                 }
                 #if os(macOS)
                 .fixedSize()
-                .padding(.horizontal, 8.0)
                 #endif
             }
+            .titleBackgroundHiddenOnMac()
             if pipManager.isPossible, viewer.displayedPic?.isVideo != true {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Shared.PictureInPicture",
