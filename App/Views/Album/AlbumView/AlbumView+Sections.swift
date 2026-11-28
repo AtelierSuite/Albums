@@ -6,10 +6,6 @@ extension AlbumView {
         Group {
             if !hideSectionHeaders {
                 Group {
-#if targetEnvironment(macCatalyst)
-                    SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
-                                  count: albums.count)
-#else
                     if UIDevice.current.userInterfaceIdiom == .phone {
                         SectionHeader(title: String(localized: "Albums.Albums", table: "Albums"),
                                       count: albums.count)
@@ -20,7 +16,6 @@ extension AlbumView {
                             AlbumSortPicker(selection: $albumSortState)
                         }
                     }
-#endif
                 }
                 .padding(EdgeInsets(top: 0.0, leading: 20.0, bottom: 6.0, trailing: 20.0))
                 .transition(.opacity.combined(with: .move(edge: .top)))
@@ -81,10 +76,6 @@ extension AlbumView {
         Group {
             if !hideSectionHeaders {
                 Group {
-#if targetEnvironment(macCatalyst)
-                    SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
-                                  count: hasFetchedPicCount ? picCount : pics.count)
-#else
                     if UIDevice.current.userInterfaceIdiom == .phone {
                         SectionHeader(title: String(localized: "Albums.Pics", table: "Albums"),
                                       count: hasFetchedPicCount ? picCount : pics.count)
@@ -108,7 +99,6 @@ extension AlbumView {
                             PicViewStylePicker(selection: $picViewStyle)
                         }
                     }
-#endif
                 }
                 .disabled(isSelectingPics)
                 .opacity(isSelectingPics ? 0.5 : 1.0)

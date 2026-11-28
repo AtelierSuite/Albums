@@ -48,7 +48,7 @@ struct RenamePicView: View {
             .navigationTitle("ViewTitle.Pics.Rename")
             .navigationBarTitleDisplayMode(.inline)
         }
-#if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS)
         .defaultFocus($focusedField, .newPicName)
 #else
         .onAppear {

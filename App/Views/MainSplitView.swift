@@ -22,8 +22,6 @@ struct MainSplitView: View {
     @State var isSettingsPresented: Bool = false
     @State var isLibraryManagerPresented: Bool = false
 
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     var body: some View {
         splitView
@@ -95,18 +93,7 @@ struct MainSplitView: View {
     }
 
     @ViewBuilder var splitView: some View {
-#if targetEnvironment(macCatalyst)
-        if openPicsInNewWindow {
-            NavigationSplitView {
-                sidebar
-                    .navigationSplitViewColumnWidth(min: 150.0, ideal: 200.0, max: 250.0)
-            } detail: {
-                content
-            }
-        } else {
-            threeColumnSplit
-        }
-#elseif os(macOS)
+#if os(macOS)
         NavigationSplitView {
             sidebar
                 .navigationSplitViewColumnWidth(min: 180.0, ideal: 220.0, max: 280.0)
@@ -181,7 +168,7 @@ struct MainSplitView: View {
                             }
                         }
                     }
-#if os(iOS) && !targetEnvironment(macCatalyst)
+#if os(iOS)
                     Button {
                         isSettingsPresented = true
                     } label: {
@@ -235,9 +222,6 @@ struct MainSplitView: View {
                 }
             }
         .listStyle(.sidebar)
-#if targetEnvironment(macCatalyst)
-        .environment(\.defaultMinListRowHeight, 32.0)
-#endif
     }
 
     var content: some View {
@@ -304,10 +288,7 @@ struct SidebarAlbumIcon: View {
                     .resizable()
             }
         }
-#if targetEnvironment(macCatalyst)
-        .frame(width: 28.0, height: 28.0)
-        .clipShape(.rect(cornerRadius: 6.0))
-#elseif os(macOS)
+#if os(macOS)
         .frame(width: 18.0, height: 18.0)
         .clipShape(.rect(cornerRadius: 4.0))
 #else

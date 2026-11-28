@@ -120,9 +120,6 @@ struct PicsGrid<Content: View>: View {
                 onSelect(pic)
             }
             .modifier(PicTransitionSourceModifier(picID: pic.id, namespace: namespace))
-#if targetEnvironment(macCatalyst)
-            .hoverEffect(.highlight)
-#endif
     }
 
     func picCellBase(for pic: Pic, maintainsAspectRatio: Bool) -> some View {

@@ -4,11 +4,7 @@ import SwiftUI
 extension AlbumView {
 
     func presentFileImporter() {
-        #if targetEnvironment(macCatalyst)
-        isFileImportSheetPresented = true
-        #else
         isFileImporterPresented = true
-        #endif
     }
 
     func deleteAlbum(_ album: Album) {
@@ -194,14 +190,7 @@ extension AlbumView {
                 navigation.push(.picViewer(namespace: namespace), for: .collection)
             }
         } else {
-#if targetEnvironment(macCatalyst)
-            if openPicsInNewWindow {
-                openWindow(value: ViewerWindowValue.pic(
-                    selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
-            } else {
-                viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }
-            }
-#elseif os(macOS)
+#if os(macOS)
             ViewerWindowController.open(.pic(selectedID: picCopy.id, siblingIDs: pics.map(\.id)))
 #else
             viewer.setDisplay(picCopy, in: pics, origin: .album(id: currentAlbum?.id)) { }

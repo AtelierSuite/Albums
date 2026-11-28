@@ -98,7 +98,6 @@ struct IllustMateApp: App {
             #if DEBUG
             if ScreenshotSeeder.isActive {
                 ScreenshotSeeder.resetNavigation()
-                ScreenshotSeeder.fixWindowSize()
                 await ScreenshotSeeder.seedIfNeeded()
                 await ScreenshotSeeder.applyAlbumStyle()
                 Tips.hideAllTipsForTesting()
@@ -277,7 +276,6 @@ struct IllustMateApp: App {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: showLockCover)
-            .readsSheetContainerSize()
             .onChange(of: scenePhase) { _, newValue in
                 if newValue == .background {
                     WidgetCenter.shared.reloadTimelines(ofKind: "Photostand")
@@ -331,43 +329,6 @@ struct IllustMateApp: App {
             scheduleICloudSync()
             await SyncManager.shared.backgroundSync()
         }
-#if targetEnvironment(macCatalyst)
-        .commands {
-            MacCommands(viewer: viewer, photosViewer: photosViewer)
-        }
-#endif
-#if targetEnvironment(macCatalyst)
-        WindowGroup(for: ViewerWindowValue.self) { $value in
-            if let value {
-                ViewerWindowContent(value: value)
-                    .environmentObject(navigation)
-                    .environmentObject(libraryManager)
-                    .environment(concurrency)
-                    .environment(photosManager)
-                    .environment(auth)
-                    .environment(pipManager)
-                    .environment(webServer)
-                    .environment(imageMigration)
-                    .readsSheetContainerSize()
-            }
-        }
-
-        WindowGroup("ViewTitle.Settings", id: settingsWindowID) {
-            SettingsView()
-                .environmentObject(navigation)
-                .environmentObject(libraryManager)
-                .environment(viewer)
-                .environment(concurrency)
-                .environment(photosManager)
-                .environment(photosViewer)
-                .environment(auth)
-                .environment(pipManager)
-                .environment(webServer)
-                .environment(imageMigration)
-                .readsSheetContainerSize()
-        }
-        .defaultSize(width: 540.0, height: 640.0)
-#endif
     }
 }
 
@@ -435,68 +396,3 @@ extension IllustMateApp {
     }
 }
 
-#if targetEnvironment(macCatalyst)
-struct MacCommands: Commands {
-
-    var viewer: ViewerManager
-    var photosViewer: PhotosViewerManager
-
-    @Environment(\.openWindow) private var openWindow
-    @FocusedValue(\.albumViewOptions) private var albumViewOptions
-
-    var body: some Commands {
-        CommandGroup(replacing: .appSettings) {
-            Button("ViewTitle.Settings") {
-                openWindow(id: settingsWindowID)
-            }
-            .keyboardShortcut(",", modifiers: .command)
-        }
-        CommandGroup(after: .sidebar) {
-            if let albumViewOptions {
-                Menu(String(localized: "Albums.Albums", table: "Albums")) {
-                    albumOptions(albumViewOptions)
-                }
-                Menu(String(localized: "Albums.Pics", table: "Albums")) {
-                    picOptions(albumViewOptions)
-                }
-                Toggle(String(localized: "Albums.HideHeaders", table: "Albums"),
-                       isOn: albumViewOptions.hideSectionHeaders)
-                Divider()
-            }
-            Button("Command.PreviousPic") {
-                viewer.navigateToPrevious()
-                photosViewer.navigateToPrevious()
-            }
-            .keyboardShortcut(.leftArrow, modifiers: .command)
-            .disabled(!viewer.hasPrevious && !photosViewer.hasPrevious)
-
-            Button("Command.NextPic") {
-                viewer.navigateToNext()
-                photosViewer.navigateToNext()
-            }
-            .keyboardShortcut(.rightArrow, modifiers: .command)
-            .disabled(!viewer.hasNext && !photosViewer.hasNext)
-        }
-    }
-
-    @ViewBuilder
-    private func albumOptions(_ options: AlbumViewOptions) -> some View {
-        AlbumViewStylePicker(selection: options.albumStyle)
-        AlbumSortPicker(selection: options.albumSort)
-    }
-
-    @ViewBuilder
-    private func picOptions(_ options: AlbumViewOptions) -> some View {
-        Picker(String(localized: "Albums.Style", table: "Albums"),
-               selection: options.picStyle.animation(.smooth.speed(2.0))) {
-            Label(String(localized: "Albums.Style.Grid", table: "Albums"),
-                  systemImage: "square.grid.2x2")
-                .tag(ViewStyle.grid)
-            Label(String(localized: "Albums.Style.Masonry", table: "Albums"),
-                  systemImage: "rectangle.3.offgrid")
-                .tag(ViewStyle.masonry)
-        }
-        PicSortPicker(selection: options.picSort)
-    }
-}
-#endif

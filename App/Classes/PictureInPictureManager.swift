@@ -40,7 +40,7 @@ class PictureInPictureManager: NSObject {
         pipController = AVPictureInPictureController(playerLayer: playerLayer)
         pipController?.delegate = self
         pipController?.requiresLinearPlayback = true
-        #if targetEnvironment(macCatalyst) || os(macOS)
+        #if os(macOS)
         pipController?.setValue(2, forKey: "controlsStyle")
         #else
         pipController?.setValue(1, forKey: "controlsStyle")

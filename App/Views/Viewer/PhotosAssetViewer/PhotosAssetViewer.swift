@@ -151,7 +151,7 @@ struct PhotosAssetViewer: View {
                 await loadFullImage()
             }
         }
-#if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS)
         .focusable()
         .onKeyPress(.leftArrow) {
             withAnimation(.smooth.speed(2)) {

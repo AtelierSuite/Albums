@@ -4,12 +4,9 @@ import SwiftUI
 struct PicsView: View {
 
     @Environment(\.scenePhase) var scenePhase
-    @Environment(\.openWindow) var openWindow
     @EnvironmentObject var navigation: NavigationManager
     @Environment(ViewerManager.self) var viewer
 
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
     @AppStorage(picViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var picViewStyle: ViewStyle = .grid
 
@@ -33,14 +30,7 @@ struct PicsView: View {
                                 navigation.push(.picViewer(namespace: namespace), for: .pics)
                             }
                         } else {
-#if targetEnvironment(macCatalyst)
-                            if openPicsInNewWindow {
-                                openWindow(value: ViewerWindowValue.pic(
-                                    selectedID: pic.id, siblingIDs: pics.map(\.id)))
-                            } else {
-                                viewer.setDisplay(pic, in: pics, allowsPinning: false) { }
-                            }
-#elseif os(macOS)
+#if os(macOS)
                             ViewerWindowController.open(.pic(selectedID: pic.id, siblingIDs: pics.map(\.id)))
 #else
                             viewer.setDisplay(pic, in: pics, allowsPinning: false) { }

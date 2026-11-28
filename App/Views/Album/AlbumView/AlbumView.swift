@@ -8,13 +8,10 @@ struct AlbumView: View {
 
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.scenePhase) var scenePhase
-    @Environment(\.openWindow) var openWindow
     @EnvironmentObject var navigation: NavigationManager
     @EnvironmentObject var libraryManager: LibraryManager
     @Environment(ViewerManager.self) var viewer
 
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
     @AppStorage(picViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var picViewStyle: ViewStyle = .grid
 
@@ -46,7 +43,6 @@ struct AlbumView: View {
     @State var isBrowsingAlbums: Bool = false
     @State var isBrowsingFolders: Bool = false
     @State var isFileImporterPresented: Bool = false
-    @State var isFileImportSheetPresented: Bool = false
     @State var isPhotosPickerPresented: Bool = false
     @State var isVideosPickerPresented: Bool = false
     @State var selectedPhotoItems: [PhotosPickerItem] = []
@@ -94,7 +90,6 @@ struct AlbumView: View {
             .navigationTitle(navigationTitleText)
             .navigationSubtitle(Text(verbatim: navigationSubtitleText))
             .searchable(text: $searchText, prompt: Text("Albums.Search.Library.Prompt", tableName: "Albums"))
-            .modifier(AlbumViewOptionsFocusModifier(options: viewOptions))
             #if os(macOS)
             .modifier(MacAlbumMenuModifier(actions: AlbumMenuActions(
                 options: viewOptions,
@@ -162,7 +157,6 @@ struct AlbumView: View {
                 isVideosPickerPresented: $isVideosPickerPresented,
                 selectedVideoItems: $selectedVideoItems,
                 isFileImporterPresented: $isFileImporterPresented,
-                isFileImportSheetPresented: $isFileImportSheetPresented,
                 onPhotosSelected: { importSelectedPhotos($0) },
                 onVideosSelected: { importSelectedVideos($0) },
                 onFilesImported: { importLoadedFiles($0) }

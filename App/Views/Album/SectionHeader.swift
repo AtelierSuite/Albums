@@ -56,12 +56,7 @@ struct SectionHeader<Buttons: View, Content: View>: View {
             Spacer(minLength: 0)
             buttons()
             if Content.self != EmptyView.self {
-#if targetEnvironment(macCatalyst)
-                Menu("Shared.More") {
-                    trailingViews()
-                }
-                .accessibilityIdentifier("sectionMenu")
-#elseif os(macOS)
+#if os(macOS)
                 Menu {
                     trailingViews()
                 } label: {

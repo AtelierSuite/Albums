@@ -257,7 +257,7 @@ struct PicViewer: View {
                 }
             }
         }
-#if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS)
         .focusable()
         .onKeyPress(.leftArrow) {
             viewer.navigateToPrevious()

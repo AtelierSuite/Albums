@@ -73,14 +73,11 @@ struct PhotosAssetsGridLayout: View {
     var loadMore: () -> Void
 
     @Environment(PhotosViewerManager.self) var photosViewer
-    @Environment(\.openWindow) var openWindow
 
     @AppStorage(photosPicColumnCountKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var columnCount: Int = 4
     @AppStorage(photosPicViewStyleKey,
                 store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var style: ViewStyle = .grid
-    @AppStorage(openPicsInNewWindowKey,
-                store: UserDefaults(suiteName: "group.com.tsubuzaki.IllustMate")) var openPicsInNewWindow: Bool = false
 
     @State private var gridWidth: CGFloat = 0.0
 
@@ -168,15 +165,7 @@ struct PhotosAssetsGridLayout: View {
         Group {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 Button {
-#if targetEnvironment(macCatalyst)
-                    if openPicsInNewWindow {
-                        openWindow(value: ViewerWindowValue.photo(
-                            selectedID: asset.localIdentifier,
-                            siblingIDs: siblings.map(\.localIdentifier)))
-                    } else {
-                        photosViewer.setDisplay(asset, in: siblings)
-                    }
-#elseif os(macOS)
+#if os(macOS)
                     ViewerWindowController.open(.photo(selectedID: asset.localIdentifier,
                                                        siblingIDs: siblings.map(\.localIdentifier)))
 #else
@@ -200,7 +189,7 @@ struct PhotosAssetsGridLayout: View {
         .contextMenu {
             PhotosAssetContextMenu(asset: asset)
         }
-#if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS)
         .buttonStyle(.borderless)
 #else
         .buttonStyle(.plain)

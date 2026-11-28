@@ -2,8 +2,6 @@ import Engine
 import Photos
 import SwiftUI
 
-let openPicsInNewWindowKey = "OpenPicsInNewWindow"
-
 enum ViewerWindowValue: Codable, Hashable {
     case pic(selectedID: String, siblingIDs: [String])
     case photo(selectedID: String, siblingIDs: [String])

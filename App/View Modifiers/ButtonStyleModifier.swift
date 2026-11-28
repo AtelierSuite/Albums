@@ -3,7 +3,7 @@ import SwiftUI
 struct ButtonStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-#if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS)
             .buttonStyle(.borderless)
             .tint(.primary)
 #else
