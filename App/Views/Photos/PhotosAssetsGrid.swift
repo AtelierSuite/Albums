@@ -197,7 +197,7 @@ struct PhotosAssetsGridLayout: View {
         .contextMenu {
             PhotosAssetContextMenu(asset: asset)
         }
-#if targetEnvironment(macCatalyst)
+#if os(macOS) || targetEnvironment(macCatalyst)
         .buttonStyle(.borderless)
 #else
         .buttonStyle(.plain)
