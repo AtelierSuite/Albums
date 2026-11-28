@@ -14,6 +14,7 @@ final class AppModel {
     let webServer = WebServerManager()
     let imageMigration = ImageMigrationManager()
     let importManager = ImportManager.shared
+    let openRequests = MacOpenRequests()
 }
 
 extension View {
@@ -30,5 +31,6 @@ extension View {
             .environment(model.pipManager)
             .environment(model.webServer)
             .environment(model.imageMigration)
+            .environment(model.openRequests)
     }
 }

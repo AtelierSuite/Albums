@@ -174,6 +174,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4D1C3A7E9B2F4E6A8C0D1E2F /* Exceptions for "Mac" folder in "Albums for Mac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A72ED22F6F6270DAEDE8C4D0 /* Albums for Mac */;
+		};
 		02F66BFB6DA9E1B3E7AA24A4 /* Exceptions for "Save to Last Used" folder in "Save to Last Used" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -388,6 +395,7 @@
 		6ACDEFBD67C8E1F77F22D46D /* Mac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				4D1C3A7E9B2F4E6A8C0D1E2F /* Exceptions for "Mac" folder in "Albums for Mac" target */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -1097,6 +1105,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				INFOPLIST_FILE = Mac/Info.plist;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20;
@@ -1180,6 +1189,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Mac/Mac.entitlements;
+				INFOPLIST_FILE = Mac/Info.plist;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20;
